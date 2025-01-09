@@ -1,0 +1,824 @@
+SampleID	CollectionDate	Subj_Certainty	Subject	n_16s_extract	n_16s_sample	ExtractID	ExtractDate	ExtractConc	ExtractedBy	ExtractKit	ExtractBox	ExtractNotes
+BUD-11-MGE	2023-03-20	yes	Buddy	1	1	DNA1-BUD-11-MGE	2024-05-07	7.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+BUD-16-DRS	2023-03-25	yes	Buddy	1	1	DNA1-BUD-16-DRS	2023-08-08	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+BUD-16-MGE	2023-03-25	yes	Buddy	0	0	DNA1-BUD-16-MGE	2023-08-08	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+BUD-17-MGE	2023-03-26	yes	Buddy	0	0	DNA1-BUD-17-MGE	2024-05-28	14	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+BUD-18-MGE	2023-03-27	yes	Buddy	0	0	DNA1-BUD-18-MGE	2024-08-07	1.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+BUD-21-MGE	2023-03-30	yes	Buddy	0	0	DNA1-BUD-21-MGE	2024-08-07	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+BUD-27-DRS	2023-04-05	yes	Buddy	0	0	DNA1-BUD-27-DRS	2023-06-22	6.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+BUD-27-MGE	2023-04-05	yes	Buddy	0	0	DNA1-BUD-27-MGE	2023-06-22	8.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	out
+BUD-28-MGE	2023-04-06	yes	Buddy	1	1	DNA1-BUD-28-MGE	2023-11-01	9.6	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+BUD-29-DRS	2023-04-07	yes	Buddy	0	0	DNA1-BUD-29-DRS	2023-07-11	7.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+BUD-29-DRS	2023-04-07	yes	Buddy	0	0	DNA2-BUD-29-DRS	2023-07-12	41	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+BUD-29-MGE	2023-04-07	yes	Buddy	0	0	DNA1-BUD-29-MGE	2023-07-11	4.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+BUD-29-MGE	2023-04-07	yes	Buddy	0	0	DNA2-BUD-29-MGE	2023-07-12	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+BUD-36-MGE	2023-04-14	yes	Buddy	0	0	DNA1-BUD-36-MGE	2023-10-11	27	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+BUD-41-DRS	2023-04-19	yes	Buddy	0	0	DNA1-BUD-41-DRS	2023-09-15	3.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+BUD-41-MGE	2023-04-19	yes	Buddy	0	0	DNA1-BUD-41-MGE	2023-09-15	1.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+BUD-43-DRS	2023-04-21	yes	Buddy	0	0	DNA1-BUD-43-DRS	2023-07-25	5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+BUD-43-MGE	2023-04-21	yes	Buddy	0	0	DNA1-BUD-43-MGE	2023-07-25	8.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+BUD-44-MGE	2023-04-22	yes	Buddy	1	1	DNA1-BUD-44-MGE	2024-04-30	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+BUD-45-MGE	2023-04-23	yes	Buddy	0	0	DNA1-BUD-45-MGE	2024-05-21	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+BUD-46-DRS	2023-04-24	yes	Buddy	0	0	DNA1-BUD-46-DRS	2023-12-19	2.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+BUD-46-MGE	2023-04-24	yes	Buddy	1	1	DNA1-BUD-46-MGE	2023-12-19	3.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+BUD-48-DRS	2023-04-26	yes	Buddy	0	0	DNA1-BUD-48-DRS	2023-11-15	2.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+BUD-48-MGE	2023-04-26	yes	Buddy	1	1	DNA1-BUD-48-MGE	2023-11-15	4.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+BUD-49-MGE	2023-04-27	yes	Buddy	0	0	DNA1-BUD-49-MGE	2023-10-25	0.6	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+BUD-50-DRS	2023-04-28	yes	Buddy	0	0	DNA1-BUD-50-DRS	2024-02-16	3.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+BUD-50-MGE	2023-04-28	yes	Buddy	1	1	DNA1-BUD-50-MGE	2024-02-16	1.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+BUD-52-MGE	2023-04-30	yes	Buddy	0	0	DNA1-BUD-52-MGE	2024-03-25	4.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+BUD-56-DRS	2023-05-04	yes	Buddy	0	0	DNA1-BUD-56-DRS	2024-02-02	101	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+BUD-56-MGE	2023-05-04	yes	Buddy	1	1	DNA1-BUD-56-MGE	2024-02-02	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+BUD-57-DRS	2023-05-05	yes	Buddy	0	0	DNA1-BUD-57-DRS	2023-06-20	41	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+BUD-57-MGE	2023-05-05	yes	Buddy	1	1	DNA1-BUD-57-MGE	2023-06-20	3.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+BUD-66-DRS	2023-05-14	yes	Buddy	0	0	DNA1-BUD-66-DRS	2023-06-27	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+BUD-66-MGE	2023-05-14	yes	Buddy	0	0	DNA1-BUD-66-MGE	2023-06-27	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+BUD-69-DRS	2023-05-17	yes	Buddy	0	0	DNA1-BUD-69-DRS	2023-08-18	3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+BUD-69-MGE	2023-05-17	yes	Buddy	0	0	DNA1-BUD-69-MGE	2023-08-18	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+BUD-70-DRS	2023-05-18	yes	Buddy	0	0	DNA1-BUD-70-DRS	2023-06-29	7.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+BUD-70-MGE	2023-05-18	yes	Buddy	0	0	DNA1-BUD-70-MGE	2023-06-29	0.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+CHA-17-DRS	2023-03-26	yes	Charles	0	0	DNA1-CHA-17-DRS	2023-06-22	65	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+CHA-17-MGE	2023-03-26	yes	Charles	0	0	DNA1-CHA-17-MGE	2023-06-22	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+CHA-20-MGE	2023-03-29	yes	Charles	0	0	DNA1-CHA-20-MGE	2024-03-21	0.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+CHA-36-MGE	2023-04-14	yes	Charles	0	0	DNA1-CHA-36-MGE	2023-08-29	7.2	SA/GC	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+CHA-41-DRS	2023-04-19	yes	Charles	1	1	DNA1-CHA-41-DRS	2023-08-18	58	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+CHA-41-MGE	2023-04-19	yes	Charles	0	0	DNA1-CHA-41-MGE	2023-08-18	1.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+CHA-43-DRS	2023-04-21	yes	Charles	0	0	DNA1-CHA-43-DRS	2023-07-18	32	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+CHA-43-MGE	2023-04-21	yes	Charles	0	0	DNA1-CHA-43-MGE	2023-07-18	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+CHA-44-DRS	2023-04-22	yes	Charles	0	0	DNA1-CHA-44-DRS	2023-11-08	25	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+CHA-44-MGE	2023-04-22	yes	Charles	1	1	DNA1-CHA-44-MGE	2023-11-08	5.4	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+CHA-45-DRS	2023-04-23	yes	Charles	0	0	DNA1-CHA-45-DRS	2023-12-19	29	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+CHA-45-MGE	2023-04-23	yes	Charles	0	0	DNA1-CHA-45-MGE	2023-12-19	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+CHA-46-MGE	2023-04-24	yes	Charles	1	1	DNA1-CHA-46-MGE	2023-10-18	15	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+CHA-47-DRS	2023-04-25	yes	Charles	0	0	DNA1-CHA-47-DRS	2023-06-20	88	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+CHA-47-MGE	2023-04-25	yes	Charles	0	0	DNA1-CHA-47-MGE	2023-06-20	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+CHA-48-MGE	2023-04-26	yes	Charles	0	0	DNA1-CHA-48-MGE	2024-04-30	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+CHA-49-DRS	2023-04-27	yes	Charles	0	0	DNA1-CHA-49-DRS	2024-02-16	105	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+CHA-49-MGE	2023-04-27	yes	Charles	1	1	DNA1-CHA-49-MGE	2024-02-16	84	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+CHA-50-DRS	2023-04-28	yes	Charles	0	0	DNA1-CHA-50-DRS	2024-02-07	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+CHA-50-MGE	2023-04-28	yes	Charles	1	1	DNA1-CHA-50-MGE	2024-02-07	3.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+CHA-51-DRS	2023-04-29	yes	Charles	0	0	DNA1-CHA-51-DRS	2024-03-08	50	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+CHA-51-MGE	2023-04-29	yes	Charles	1	1	DNA1-CHA-51-MGE	2024-03-08	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+CHA-52-MGE	2023-04-30	yes	Charles	0	0	DNA1-CHA-52-MGE	2024-05-21	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+CHA-53-MGE	2023-05-01	yes	Charles	0	0	DNA1-CHA-53-MGE	2024-09-09	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+CHA-55-MGE	2023-05-03	yes	Charles	0	0	DNA1-CHA-55-MGE	2024-03-25	3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+CHA-57-DRS	2023-05-05	yes	Charles	1	1	DNA1-CHA-57-DRS	2023-07-28	47	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+CHA-57-MGE	2023-05-05	yes	Charles	0	0	DNA1-CHA-57-MGE	2023-07-28	5.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+CHA-59-DRS	2023-05-07	yes	Charles	0	0	DNA1-CHA-59-DRS	2023-07-13	36	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+CHA-59-MGE	2023-05-07	yes	Charles	0	0	DNA1-CHA-59-MGE	2023-07-13	48	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+CHA-66-DRS	2023-05-14	yes	Charles	0	0	DNA1-CHA-66-DRS	2023-07-25	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+CHA-66-MGE	2023-05-14	yes	Charles	0	0	DNA1-CHA-66-MGE	2023-07-25	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+CHA-69-MGE	2023-05-17	yes	Charles	0	0	DNA1-CHA-69-MGE	2023-11-01	40	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+CHA-7-DRS	2023-03-16	yes	Charles	0	0	DNA1-CHA-7-DRS	2023-06-15	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	low
+CHA-7-MGE	2023-03-16	yes	Charles	0	0	DNA1-CHA-7-MGE	2023-06-15	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	low
+CHA-70-DRS	2023-05-18	yes	Charles	0	0	DNA1-CHA-70-DRS	2023-08-08	44	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+CHA-70-MGE	2023-05-18	yes	Charles	0	0	DNA1-CHA-70-MGE	2023-08-08	9.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+CHA-9-MGE	2023-03-18	yes	Charles	1	1	DNA1-CHA-9-MGE	2024-05-07	2.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+FRA-17-DRS	2023-03-26	yes	Franc	0	0	DNA1-FRA-17-DRS	2023-05-16	0.1	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	low
+FRA-17-DRS	2023-03-26	yes	Franc	0	0	DNA2-FRA-17-DRS	2023-05-29	0.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+FRA-17-DRS	2023-03-26	yes	Franc	0	0	DNA3-FRA-17-DRS	2023-06-02	2.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+FRA-17-MGE	2023-03-26	yes	Franc	0	0	DNA1-FRA-17-MGE	2023-05-16	0	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+FRA-17-MGE	2023-03-26	yes	Franc	0	0	DNA2-FRA-17-MGE	2023-05-29	0.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+FRA-17-MGE	2023-03-26	yes	Franc	0	0	DNA3-FRA-17-MGE	2023-06-02	0	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+FRA-19-MGE	2023-03-28	yes	Franc	0	0	DNA1-FRA-19-MGE	2024-04-23	3.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+FRA-22-MGE	2023-03-31	yes	Franc	1	1	DNA1-FRA-22-MGE	2023-11-01	2.3	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+FRA-24-MGE	2023-04-02	yes	Franc	0	0	DNA1-FRA-24-MGE	2024-08-09	7.9	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+FRA-36-MGE	2023-04-14	yes	Franc	0	0	DNA1-FRA-36-MGE	2023-08-18	1.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+FRA-37-MGE	2023-04-15	yes	Franc	0	0	DNA1-FRA-37-MGE	2024-03-08	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-41-DRS	2023-04-19	yes	Franc	0	0	DNA1-FRA-41-DRS	2023-08-04	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+FRA-41-MGE	2023-04-19	yes	Franc	0	0	DNA1-FRA-41-MGE	2023-08-04	7.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+FRA-42-MGE	2023-04-20	no		0	0	DNA1-FRA-42-MGE	2024-05-21	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+FRA-43-DRS	2023-04-21	yes	Franc	0	0	DNA1-FRA-43-DRS	2023-07-13	63	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+FRA-43-MGE	2023-04-21	yes	Franc	0	0	DNA1-FRA-43-MGE	2023-07-13	49	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+FRA-44-DRS	2023-04-22	yes	Franc	1	1	DNA1-FRA-44-DRS	2023-10-11	9.5	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+FRA-44-MGE	2023-04-22	yes	Franc	0	0	DNA1-FRA-44-MGE	2023-10-11	1.5	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+FRA-45-DRS	2023-04-23	yes	Franc	1	1	DNA1-FRA-45-DRS	2023-11-08	4.2	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+FRA-45-MGE	2023-04-23	yes	Franc	0	0	DNA1-FRA-45-MGE	2023-11-10	43	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+FRA-46-DRS	2023-04-24	yes	Franc	0	0	DNA1-FRA-46-DRS	2023-06-23	8.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+FRA-46-MGE	2023-04-24	yes	Franc	0	0	DNA1-FRA-46-MGE	2023-06-23	9.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+FRA-47-MGE	2023-04-25	yes	Franc	1	1	DNA1-FRA-47-MGE	2024-04-30	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+FRA-48-DRS	2023-04-26	yes	Franc	0	0	DNA1-FRA-48-DRS	2024-02-16	77	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-48-MGE	2023-04-26	yes	Franc	1	1	DNA1-FRA-48-MGE	2024-02-16	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-49-DRS	2023-04-27	yes	Franc	0	0	DNA1-FRA-49-DRS	2024-03-04	91	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-49-MGE	2023-04-27	yes	Franc	1	1	DNA1-FRA-49-MGE	2024-03-04	60	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-50-MGE	2023-04-28	yes	Franc	0	0	DNA1-FRA-50-MGE	2024-06-17	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+FRA-51-MGE	2023-04-29	yes	Franc	0	0	DNA1-FRA-51-MGE	2024-09-09	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+FRA-53-MGE	2023-05-01	yes	Franc	0	0	DNA1-FRA-53-MGE	2024-03-25	1.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+FRA-56-DRS	2023-05-04	yes	Franc	0	0	DNA1-FRA-56-DRS	2024-02-07	56	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-56-MGE	2023-05-04	yes	Franc	1	1	DNA1-FRA-56-MGE	2024-02-07	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+FRA-57-DRS	2023-05-05	yes	Franc	0	0	DNA1-FRA-57-DRS	2023-07-25	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+FRA-57-MGE	2023-05-05	yes	Franc	0	0	DNA1-FRA-57-MGE	2023-07-25	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+FRA-66-DRS	2023-05-14	yes	Franc	0	0	DNA1-FRA-66-DRS	2023-07-06	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+FRA-66-DRS	2023-05-14	yes	Franc	0	0	DNA2-FRA-66-DRS	2023-07-10	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+FRA-66-MGE	2023-05-14	yes	Franc	0	0	DNA1-FRA-66-MGE	2023-07-06	8.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	out
+FRA-66-MGE	2023-05-14	yes	Franc	0	0	DNA2-FRA-66-MGE	2023-07-10	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+FRA-67-DRS	2023-05-15	yes	Franc	0	0	DNA1-FRA-67-DRS	2023-09-15	6.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+FRA-67-MGE	2023-05-15	yes	Franc	0	0	DNA1-FRA-67-MGE	2023-09-15	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+FRA-68-MGE	2023-05-16	yes	Franc	1	1	DNA1-FRA-68-MGE	2023-11-01	4.8	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+FRA-70-DRS	2023-05-18	yes	Franc	0	0	DNA1-FRA-70-DRS	2023-06-27	62	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+FRA-70-MGE	2023-05-18	yes	Franc	0	0	DNA1-FRA-70-MGE	2023-06-27	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+FRA-9-DRS	2023-03-18	yes	Franc	0	0	DNA1-FRA-9-DRS	2023-12-12	32	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+FRA-9-MGE	2023-03-18	yes	Franc	1	1	DNA1-FRA-9-MGE	2023-12-12	9.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GIN-1-DRS	2023-03-10	yes	Ginger	0	0	DNA1-GIN-1-DRS	2023-06-26	47	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GIN-1-MGE	2023-03-10	yes	Ginger	0	0	DNA1-GIN-1-MGE	2023-06-26	0.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GIN-14-DRS	2023-03-23	yes	Ginger	0	0	DNA1-GIN-14-DRS	2023-12-12	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GIN-14-MGE	2023-03-23	yes	Ginger	1	1	DNA1-GIN-14-MGE	2023-12-12	5.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GIN-18-MGE	2023-03-27	yes	Ginger	0	0	DNA1-GIN-18-MGE	2024-05-07	2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GIN-2-DRS	2023-03-11	yes	Ginger	0	0	DNA1-GIN-2-DRS	2023-07-18	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GIN-2-MGE	2023-03-11	yes	Ginger	1	1	DNA1-GIN-2-MGE	2023-07-18	1.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GIN-20-MGE	2023-03-29	yes	Ginger	0	0	DNA1-GIN-20-MGE	2024-08-07	1.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GIN-24-MGE	2023-04-02	yes	Ginger	0	0	DNA1-GIN-24-MGE	2024-05-28	14	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GIN-27-DRS	2023-04-05	yes	Ginger	0	0	DNA1-GIN-27-DRS	2023-06-23	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GIN-27-MGE	2023-04-05	yes	Ginger	1	1	DNA1-GIN-27-MGE	2023-06-23	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GIN-29-DRS	2023-04-07	yes	Ginger	0	0	DNA1-GIN-29-DRS	2023-06-27	3.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GIN-29-MGE	2023-04-07	yes	Ginger	1	1	DNA1-GIN-29-MGE	2023-06-27	7.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GIN-36-MGE	2023-04-14	yes	Ginger	0	0	DNA1-GIN-36-MGE	2023-12-12	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GIN-41-MGE	2023-04-19	yes	Ginger	0	0	DNA1-GIN-41-MGE	2024-05-21	8.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GIN-42-MGE	2023-04-20	no		0	0	DNA1-GIN-42-MGE	2024-06-17	8.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GIN-43-DRS	2023-04-21	yes	Ginger	1	1	DNA1-GIN-43-DRS	2023-07-28	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GIN-43-MGE	2023-04-21	yes	Ginger	0	0	DNA1-GIN-43-MGE	2023-07-28	9.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GIN-44-MGE	2023-04-22	yes	Ginger	0	0	DNA1-GIN-44-MGE	2024-08-15	2.7	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GIN-46-MGE	2023-04-24	yes	Ginger	1	1	DNA1-GIN-46-MGE	2024-04-30	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GIN-47-MGE	2023-04-25	yes	Ginger	1	1	DNA1-GIN-47-MGE	2023-10-18	2.1	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GIN-49-DRS	2023-04-27	yes	Ginger	0	0	DNA1-GIN-49-DRS	2024-03-08	45	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GIN-49-MGE	2023-04-27	yes	Ginger	1	1	DNA1-GIN-49-MGE	2024-03-08	29	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GIN-50-MGE	2023-04-28	yes	Ginger	1	1	DNA1-GIN-50-MGE	2024-04-30	8.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GIN-52-MGE	2023-04-30	yes	Ginger	0	0	DNA1-GIN-52-MGE	2024-03-25	5.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GIN-55-DRS	2023-05-03	yes	Ginger	1	1	DNA1-GIN-55-DRS	2024-02-02	5.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GIN-55-MGE	2023-05-03	yes	Ginger	1	1	DNA1-GIN-55-MGE	2024-02-02	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GIN-57-DRS	2023-05-05	yes	Ginger	0	0	DNA1-GIN-57-DRS	2023-06-16	4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+GIN-57-MGE	2023-05-05	yes	Ginger	0	0	DNA1-GIN-57-MGE	2023-06-16	7.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+GIN-58-MGE	2023-05-06	yes	Ginger	1	1	DNA1-GIN-58-MGE	2023-10-25	16	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GIN-66-DRS	2023-05-14	yes	Ginger	1	1	DNA1-GIN-66-DRS	2023-08-04	29	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GIN-66-MGE	2023-05-14	yes	Ginger	0	0	DNA1-GIN-66-MGE	2023-08-04	8.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+GIN-69-DRS	2023-05-17	yes	Ginger	0	0	DNA1-GIN-69-DRS	2023-07-18	42	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GIN-69-MGE	2023-05-17	yes	Ginger	0	0	DNA1-GIN-69-MGE	2023-07-18	39	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GIN-7-DRS	2023-03-16	yes	Ginger	1	1	DNA1-GIN-7-DRS	2024-01-16	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GIN-7-MGE	2023-03-16	yes	Ginger	1	1	DNA1-GIN-7-MGE	2024-01-16	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GIN-70-DRS	2023-05-18	yes	Ginger	0	0	DNA1-GIN-70-DRS	2023-07-11	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+GIN-70-DRS	2023-05-18	yes	Ginger	0	0	DNA2-GIN-70-DRS	2023-07-12	66	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GIN-70-MGE	2023-05-18	yes	Ginger	0	0	DNA1-GIN-70-MGE	2023-07-11	5.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GIN-70-MGE	2023-05-18	yes	Ginger	0	0	DNA2-GIN-70-MGE	2023-07-12	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GOO-1-DRS	2023-03-10	yes	Goose	0	0	DNA1-GOO-1-DRS	2023-07-06	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+GOO-1-DRS	2023-03-10	yes	Goose	0	0	DNA2-GOO-1-DRS	2023-07-10	4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-1-MGE	2023-03-10	yes	Goose	0	0	DNA1-GOO-1-MGE	2023-07-06	2.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-1-MGE	2023-03-10	yes	Goose	0	0	DNA2-GOO-1-MGE	2023-07-10	4.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-17-DRS	2023-03-26	yes	Goose	0	0	DNA1-GOO-17-DRS	2023-06-16	35	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+GOO-17-MGE	2023-03-26	yes	Goose	0	0	DNA1-GOO-17-MGE	2023-06-16	33	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+GOO-2-DRS	2023-03-11	yes	Goose	0	0	DNA1-GOO-2-DRS	2023-07-28	9.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GOO-2-MGE	2023-03-11	yes	Goose	0	0	DNA1-GOO-2-MGE	2023-07-28	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GOO-20-MGE	2023-03-29	yes	Goose	0	0	DNA1-GOO-20-MGE	2024-04-23	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GOO-22-MGE	2023-03-31	yes	Goose	0	0	DNA1-GOO-22-MGE	2024-03-21	4.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GOO-24-MGE	2023-04-02	yes	Goose	0	0	DNA1-GOO-24-MGE	2024-05-07	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GOO-36-MGE	2023-04-14	yes	Goose	0	0	DNA1-GOO-36-MGE	2023-08-04	3.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GOO-37-MGE	2023-04-15	yes	Goose	1	1	DNA1-GOO-37-MGE	2024-02-16	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GOO-4-DRS	2023-03-13	yes	Goose	2	2	DNA1-GOO-4-DRS	2023-09-22	8.9	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GOO-4-MGE	2023-03-13	yes	Goose	2	2	DNA1-GOO-4-MGE	2023-09-22	5.6	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GOO-41-DRS	2023-04-19	yes	Goose	0	0	DNA1-GOO-41-DRS	2023-08-03	78	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GOO-41-MGE	2023-04-19	yes	Goose	0	0	DNA1-GOO-41-MGE	2023-08-03	65	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+GOO-42-DRS	2023-04-20	yes	Goose	0	0	DNA1-GOO-42-DRS	2023-12-19	26	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GOO-42-MGE	2023-04-20	no		1	1	DNA1-GOO-42-MGE	2023-12-19	6.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GOO-43-DRS	2023-04-21	yes	Goose	0	0	DNA1-GOO-43-DRS	2023-07-11	1.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-43-DRS	2023-04-21	yes	Goose	0	0	DNA2-GOO-43-DRS	2023-07-12	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-43-MGE	2023-04-21	yes	Goose	0	0	DNA1-GOO-43-MGE	2023-07-11	7.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-43-MGE	2023-04-21	yes	Goose	0	0	DNA2-GOO-43-MGE	2023-07-12	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GOO-44-DRS	2023-04-22	yes	Goose	0	0	DNA1-GOO-44-DRS	2024-03-04	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GOO-44-MGE	2023-04-22	yes	Goose	1	1	DNA1-GOO-44-MGE	2024-03-04	2.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GOO-46-DRS	2023-04-24	yes	Goose	1	1	DNA1-GOO-46-DRS	2023-11-10	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GOO-46-MGE	2023-04-24	yes	Goose	0	0	DNA1-GOO-46-MGE	2023-11-10	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GOO-52-MGE	2023-04-30	yes	Goose	0	0	DNA1-GOO-52-MGE	2024-09-09	2.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GOO-57-DRS	2023-05-05	yes	Goose	0	0	DNA1-GOO-57-DRS	2023-07-21	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GOO-57-MGE	2023-05-05	yes	Goose	0	0	DNA1-GOO-57-MGE	2023-07-21	4.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GOO-58-DRS	2023-05-06	yes	Goose	0	0	DNA1-GOO-58-DRS	2024-02-02	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GOO-58-MGE	2023-05-06	yes	Goose	1	1	DNA1-GOO-58-MGE	2024-02-02	1.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GOO-59-MGE	2023-05-07	yes	Goose	1	1	DNA1-GOO-59-MGE	2023-10-25	12	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GOO-60-MGE	2023-05-08	yes	Goose	0	0	DNA1-GOO-60-MGE	2024-03-25	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GOO-66-DRS	2023-05-14	yes	Goose	0	0	DNA1-GOO-66-DRS	2023-06-22	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GOO-66-MGE	2023-05-14	yes	Goose	0	0	DNA1-GOO-66-MGE	2023-06-22	6.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GOO-70-DRS	2023-05-18	yes	Goose	0	0	DNA1-GOO-70-DRS	2023-08-18	81	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+GOO-70-MGE	2023-05-18	yes	Goose	0	0	DNA1-GOO-70-MGE	2023-08-18	38	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+GRO-18-MGE	2023-03-27	yes	Grogu	0	0	DNA1-GRO-18-MGE	2024-03-21	3.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GRO-22-MGE	2023-03-31	yes	Grogu	1	1	DNA1-GRO-22-MGE	2024-04-23	9.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GRO-24-MGE	2023-04-02	yes	Grogu	1	1	DNA1-GRO-24-MGE	2023-11-01	6.8	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GRO-36-MGE	2023-04-14	yes	Grogu	2	2	DNA1-GRO-36-MGE	2023-08-30	23	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+GRO-37-MGE	2023-04-15	yes	Grogu	1	1	DNA1-GRO-37-MGE	2024-02-02	78	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GRO-41-DRS	2023-04-19	yes	Grogu	1	1	DNA1-GRO-41-DRS	2023-08-18	107	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+GRO-41-MGE	2023-04-19	yes	Grogu	2	2	DNA1-GRO-41-MGE	2023-08-18	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+GRO-42-MGE	2023-04-20	no		0	0	DNA1-GRO-42-MGE	2024-06-17	43	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GRO-43-DRS	2023-04-21	yes	Grogu	0	0	DNA1-GRO-43-DRS	2023-06-15	48	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+GRO-43-MGE	2023-04-21	yes	Grogu	0	0	DNA1-GRO-43-MGE	2023-06-15	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+GRO-44-DRS	2023-04-22	yes	Grogu	1	1	DNA1-GRO-44-DRS	2023-11-15	6.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GRO-44-MGE	2023-04-22	yes	Grogu	0	0	DNA1-GRO-44-MGE	2023-11-15	26	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GRO-45-DRS	2023-04-23	yes	Grogu	0	0	DNA1-GRO-45-DRS	2024-03-08	62	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GRO-45-MGE	2023-04-23	yes	Grogu	1	1	DNA1-GRO-45-MGE	2024-03-08	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GRO-46-DRS	2023-04-24	yes	Grogu	1	1	DNA1-GRO-46-DRS	2023-11-10	8.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GRO-46-MGE	2023-04-24	yes	Grogu	1	1	DNA1-GRO-46-MGE	2023-11-10	6.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+GRO-47-MGE	2023-04-25	yes	Grogu	0	0	DNA1-GRO-47-MGE	2023-10-18	22	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GRO-48-DRS	2023-04-26	yes	Grogu	0	0	DNA1-GRO-48-DRS	2024-03-04	25	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GRO-48-MGE	2023-04-26	yes	Grogu	0	0	DNA1-GRO-48-MGE	2024-03-04	109	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+GRO-49-DRS	2023-04-27	yes	Grogu	0	0	DNA1-GRO-49-DRS	2023-06-23	51	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GRO-49-MGE	2023-04-27	yes	Grogu	0	0	DNA1-GRO-49-MGE	2023-06-23	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+GRO-50-MGE	2023-04-28	yes	Grogu	1	1	DNA1-GRO-50-MGE	2024-04-30	9.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GRO-52-MGE	2023-04-30	yes	Grogu	0	0	DNA1-GRO-52-MGE	2024-09-09	36	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+GRO-56-MGE	2023-05-04	yes	Grogu	0	0	DNA1-GRO-56-MGE	2024-03-25	7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+GRO-57-DRS	2023-05-05	yes	Grogu	0	0	DNA1-GRO-57-DRS	2023-07-13	40	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GRO-57-MGE	2023-05-05	yes	Grogu	0	0	DNA1-GRO-57-MGE	2023-07-13	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+GRO-66-DRS	2023-05-14	yes	Grogu	0	0	DNA1-GRO-66-DRS	2023-06-28	47	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GRO-66-MGE	2023-05-14	yes	Grogu	0	0	DNA1-GRO-66-MGE	2023-06-28	6.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+GRO-70-DRS	2023-05-18	yes	Grogu	2	2	DNA1-GRO-70-DRS	2023-09-15	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GRO-70-MGE	2023-05-18	yes	Grogu	0	0	DNA1-GRO-70-MGE	2023-09-15	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+GRO-9-MGE	2023-03-18	yes	Grogu	0	0	DNA1-GRO-9-MGE	2024-05-28	5.5	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HAM-1-DRS	2023-03-10	yes	Hamlet	0	0	DNA1-HAM-1-DRS	2023-05-16	0.2	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	low
+HAM-1-DRS	2023-03-10	yes	Hamlet	0	0	DNA2-HAM-1-DRS	2023-05-29	0.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HAM-1-DRS	2023-03-10	yes	Hamlet	0	0	DNA3-HAM-1-DRS	2023-06-02	3.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HAM-1-MGE	2023-03-10	yes	Hamlet	0	0	DNA1-HAM-1-MGE	2023-05-16	0	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HAM-1-MGE	2023-03-10	yes	Hamlet	0	0	DNA2-HAM-1-MGE	2023-05-29	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HAM-1-MGE	2023-03-10	yes	Hamlet	0	0	DNA3-HAM-1-MGE	2023-06-02	0	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HAM-11-MGE	2023-03-20	yes	Hamlet	1	1	DNA1-HAM-11-MGE	2024-05-07	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HAM-15-DRS	2023-03-24	yes	Hamlet	0	0	DNA1-HAM-15-DRS	2023-07-18	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-15-MGE	2023-03-24	yes	Hamlet	0	0	DNA1-HAM-15-MGE	2023-07-18	3.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-16-DRS	2023-03-25	yes	Hamlet	0	0	DNA1-HAM-16-DRS	2023-07-21	41	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-16-MGE	2023-03-25	yes	Hamlet	0	0	DNA1-HAM-16-MGE	2023-07-21	9.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-17-DRS	2023-03-26	yes	Hamlet	0	0	DNA1-HAM-17-DRS	2023-08-18	50	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-17-MGE	2023-03-26	yes	Hamlet	2	2	DNA1-HAM-17-MGE	2023-08-18	9.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-18-MGE	2023-03-27	yes	Hamlet	0	0	DNA1-HAM-18-MGE	2024-04-23	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HAM-2-DRS	2023-03-11	yes	Hamlet	0	0	DNA1-HAM-2-DRS	2023-06-22	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HAM-2-MGE	2023-03-11	yes	Hamlet	0	0	DNA1-HAM-2-MGE	2023-06-22	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+HAM-20-MGE	2023-03-29	yes	Hamlet	0	0	DNA1-HAM-20-MGE	2024-05-28	10	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HAM-21-MGE	2023-03-30	yes	Hamlet	0	0	DNA1-HAM-21-MGE	2024-08-07	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HAM-22-MGE	2023-03-31	yes	Hamlet	1	1	DNA1-HAM-22-MGE	2023-11-01	9.6	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HAM-23-MGE	2023-04-01	yes	Hamlet	0	0	DNA1-HAM-23-MGE	2024-03-21	4.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HAM-25-MGE	2023-04-03	yes	Hamlet	1	1	DNA1-HAM-25-MGE	2024-04-23	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HAM-29-DRS	2023-04-07	yes	Hamlet	0	0	DNA1-HAM-29-DRS	2023-06-26	98	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HAM-29-MGE	2023-04-07	yes	Hamlet	0	0	DNA1-HAM-29-MGE	2023-06-26	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+HAM-3-DRS	2023-03-12	yes	Hamlet	0	0	DNA1-HAM-3-DRS	2023-08-30	1.4	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-3-MGE	2023-03-12	yes	Hamlet	0	0	DNA1-HAM-3-MGE	2023-08-30	20	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-31-DRS	2023-04-09	yes	Hamlet	0	0	DNA1-HAM-31-DRS	2023-10-11	32	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HAM-31-MGE	2023-04-09	yes	Hamlet	1	1	DNA1-HAM-31-MGE	2023-10-11	13	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HAM-33-DRS	2023-04-11	yes	Hamlet	0	0	DNA1-HAM-33-DRS	2023-06-20	2.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HAM-33-MGE	2023-04-11	yes	Hamlet	0	0	DNA1-HAM-33-MGE	2023-06-20	5.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HAM-36-MGE	2023-04-14	yes	Hamlet	0	0	DNA1-HAM-36-MGE	2023-07-18	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-37-MGE	2023-04-15	yes	Hamlet	0	0	DNA1-HAM-37-MGE	2023-06-23	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HAM-4-DRS	2023-03-13	yes	Hamlet	1	1	DNA1-HAM-4-DRS	2023-08-03	88	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HAM-4-MGE	2023-03-13	yes	Hamlet	1	1	DNA1-HAM-4-MGE	2023-08-03	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HAM-41-DRS	2023-04-19	yes	Hamlet	1	1	DNA1-HAM-41-DRS	2023-11-15	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HAM-41-MGE	2023-04-19	yes	Hamlet	1	1	DNA1-HAM-41-MGE	2023-11-15	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HAM-43-DRS	2023-04-21	yes	Hamlet	0	0	DNA1-HAM-43-DRS	2023-07-21	40	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-43-MGE	2023-04-21	yes	Hamlet	0	0	DNA1-HAM-43-MGE	2023-07-21	4.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HAM-44-DRS	2023-04-22	yes	Hamlet	0	0	DNA1-HAM-44-DRS	2023-08-04	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HAM-44-MGE	2023-04-22	yes	Hamlet	0	0	DNA1-HAM-44-MGE	2023-08-04	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HAM-45-MGE	2023-04-23	yes	Hamlet	0	0	DNA1-HAM-45-MGE	2024-05-21	9.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HAM-46-MGE	2023-04-24	yes	Hamlet	0	0	DNA1-HAM-46-MGE	2024-06-17	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HAM-48-MGE	2023-04-26	yes	Hamlet	0	0	DNA1-HAM-48-MGE	2024-08-16	30	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HAM-57-DRS	2023-05-05	yes	Hamlet	0	0	DNA1-HAM-57-DRS	2023-06-27	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HAM-57-MGE	2023-05-05	yes	Hamlet	0	0	DNA1-HAM-57-MGE	2023-06-27	7.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+HAM-58-DRS	2023-05-06	yes	Hamlet	0	0	DNA1-HAM-58-DRS	2023-08-08	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-58-MGE	2023-05-06	yes	Hamlet	0	0	DNA1-HAM-58-MGE	2023-08-08	8.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-59-DRS	2023-05-07	yes	Hamlet	0	0	DNA1-HAM-59-DRS	2023-06-28	38	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HAM-59-MGE	2023-05-07	yes	Hamlet	1	1	DNA1-HAM-59-MGE	2023-06-28	3.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HAM-67-DRS	2023-05-15	yes	Hamlet	1	1	DNA1-HAM-67-DRS	2023-08-29	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-67-MGE	2023-05-15	yes	Hamlet	2	2	DNA1-HAM-67-MGE	2023-08-29	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HAM-9-DRS	2013-03-18	yes	Hamlet	0	0	DNA1-HAM-9-DRS	2023-12-12	80	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HAM-9-MGE	2023-03-18	yes	Hamlet	0	0	DNA1-HAM-9-MGE	2023-12-12	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HEN-14-MGE	2023-03-23	yes	Henry	0	0	DNA1-HEN-14-MGE	2024-03-21	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-17-DRS	2023-03-26	yes	Henry	0	0	DNA1-HEN-17-DRS	2023-06-20	26	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HEN-17-MGE	2023-03-26	yes	Henry	0	0	DNA1-HEN-17-MGE	2023-06-20	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HEN-2-DRS	2023-03-11	yes	Henry	0	0	DNA1-HEN-2-DRS	2023-07-21	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HEN-2-MGE	2023-03-11	yes	Henry	0	0	DNA1-HEN-2-MGE	2023-07-21	7.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HEN-22-MGE	2023-03-31	yes	Henry	0	0	DNA1-HEN-22-MGE	2024-05-28	8.6	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HEN-24-MGE	2023-04-02	yes	Henry	0	0	DNA1-HEN-24-MGE	2024-05-07	4.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-25-MGE	2023-04-03	yes	Henry	0	0	DNA1-HEN-25-MGE	2024-08-09	0.7	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HEN-29-DRS	2023-04-07	yes	Henry	0	0	DNA1-HEN-29-DRS	2023-06-16	42	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HEN-29-MGE	2023-04-07	yes	Henry	1	1	DNA1-HEN-29-MGE	2023-06-16	2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HEN-36-MGE	2023-04-14	yes	Henry	1	1	DNA1-HEN-36-MGE	2023-11-15	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HEN-42-DRS	2023-04-20	yes	Henry	0	0	DNA1-HEN-42-DRS	2024-03-08	48	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HEN-42-MGE	2023-04-20	no		1	1	DNA1-HEN-42-MGE	2024-03-08	7.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HEN-43-DRS	2023-04-21	yes	Henry	0	0	DNA1-HEN-43-DRS	2023-07-25	0.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HEN-43-MGE	2023-04-21	yes	Henry	0	0	DNA1-HEN-43-MGE	2023-07-25	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HEN-44-MGE	2023-04-22	yes	Henry	0	0	DNA1-HEN-44-MGE	2024-04-30	0.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-45-MGE	2023-04-23	yes	Henry	0	0	DNA1-HEN-45-MGE	2024-05-21	6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HEN-46-MGE	2023-04-24	yes	Henry	0	0	DNA1-HEN-46-MGE	2024-04-30	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-48-MGE	2023-04-26	yes	Henry	1	1	DNA1-HEN-48-MGE	2024-04-30	2.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-49-MGE	2023-04-27	yes	Henry	0	0	DNA1-HEN-49-MGE	2024-08-16	9.5	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HEN-54-MGE	2023-05-02	yes	Henry	0	0	DNA1-HEN-54-MGE	2024-03-25	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-57-DRS	2023-05-05	yes	Henry	0	0	DNA1-HEN-57-DRS	2023-07-06	7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HEN-57-DRS	2023-05-05	yes	Henry	0	0	DNA2-HEN-57-DRS	2023-07-10	0.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HEN-57-MGE	2023-05-05	yes	Henry	0	0	DNA1-HEN-57-MGE	2023-07-06	3.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HEN-57-MGE	2023-05-05	yes	Henry	0	0	DNA2-HEN-57-MGE	2023-07-10	3.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HEN-58-MGE	2023-05-06	yes	Henry	0	0	DNA1-HEN-58-MGE	2024-03-25	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HEN-59-MGE	2023-05-07	yes	Henry	1	1	DNA1-HEN-59-MGE	2023-10-25	2	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HEN-66-DRS	2023-05-14	yes	Henry	0	0	DNA1-HEN-66-DRS	2023-06-26	35	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HEN-66-MGE	2023-05-14	yes	Henry	1	1	DNA1-HEN-66-MGE	2023-06-26	1.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HEN-67-DRS	2023-05-15	yes	Henry	0	0	DNA1-HEN-67-DRS	2023-08-08	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HEN-67-MGE	2023-05-15	yes	Henry	0	0	DNA1-HEN-67-MGE	2023-08-08	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HEN-69-DRS	2023-05-17	yes	Henry	0	0	DNA1-HEN-69-DRS	2023-07-18	30	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HEN-69-MGE	2023-05-17	yes	Henry	0	0	DNA1-HEN-69-MGE	2023-07-18	2.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HEN-70-DRS	2023-05-18	yes	Henry	0	0	DNA1-HEN-70-DRS	2023-07-13	46	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HEN-70-MGE	2023-05-18	yes	Henry	0	0	DNA1-HEN-70-MGE	2023-07-13	29	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HEN-9-DRS	2023-03-18	yes	Henry	1	1	DNA1-HEN-9-DRS	2024-02-07	6.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HEN-9-MGE	2023-03-18	yes	Henry	1	1	DNA1-HEN-9-MGE	2024-02-07	8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HER-1-DRS	2023-03-10	yes	Hera	0	0	DNA1-HER-1-DRS	2023-06-27	66	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HER-1-MGE	2023-03-10	yes	Hera	1	1	DNA1-HER-1-MGE	2023-06-27	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	out
+HER-11-DRS	2023-03-20	yes	Hera	0	0	DNA1-HER-11-DRS	2023-12-12	57	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HER-11-MGE	2023-03-20	yes	Hera	1	1	DNA1-HER-11-MGE	2023-12-12	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HER-14-DRS	2023-03-23	yes	Hera	0	0	DNA1-HER-14-DRS	2024-02-07	95	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HER-14-MGE	2023-03-23	yes	Hera	1	1	DNA1-HER-14-MGE	2024-02-07	26	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HER-15-MGE	2023-03-24	yes	Hera	0	0	DNA1-HER-15-MGE	2023-06-26	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+HER-16-DRS	2023-03-25	yes	Hera	0	0	DNA1-HER-16-DRS	2023-07-18	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HER-16-MGE	2023-03-25	yes	Hera	0	0	DNA1-HER-16-MGE	2023-07-18	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HER-17-DRS	2023-03-26	yes	Hera	0	0	DNA1-HER-17-DRS	2023-08-18	48	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HER-17-MGE	2023-03-26	yes	Hera	1	1	DNA1-HER-17-MGE	2023-08-18	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HER-18-MGE	2023-03-27	yes	Hera	0	0	DNA1-HER-18-MGE	2024-05-07	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HER-19-DRS	2023-03-28	yes	Hera	0	0	DNA1-HER-19-DRS	2023-10-04	47	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HER-19-MGE	2023-03-28	yes	Hera	1	1	DNA1-HER-19-MGE	2023-10-04	11	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HER-2-DRS	2023-03-11	yes	Hera	1	1	DNA1-HER-2-DRS	2023-08-04	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HER-2-MGE	2023-03-11	yes	Hera	1	1	DNA1-HER-2-MGE	2023-08-04	6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HER-20-MGE	2023-03-29	yes	Hera	0	0	DNA1-HER-20-MGE	2024-04-23	50	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HER-22-MGE	2023-03-31	yes	Hera	0	0	DNA1-HER-22-MGE	2024-08-07	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HER-24-MGE	2023-04-02	yes	Hera	0	0	DNA1-HER-24-MGE	2024-03-21	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HER-29-DRS	2023-04-07	yes	Hera	0	0	DNA1-HER-29-DRS	2023-05-16	0.1	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HER-29-DRS	2023-04-07	yes	Hera	0	0	DNA2-HER-29-DRS	2023-05-29	0.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HER-29-DRS	2023-04-07	yes	Hera	0	0	DNA3-HER-29-DRS	2023-06-02	1.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HER-29-MGE	2023-04-07	yes	Hera	0	0	DNA1-HER-29-MGE	2023-05-16	0	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HER-29-MGE	2023-04-07	yes	Hera	0	0	DNA2-HER-29-MGE	2023-05-29	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HER-29-MGE	2023-04-07	yes	Hera	0	0	DNA3-HER-29-MGE	2023-06-02	0.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+HER-36-MGE	2023-04-14	yes	Hera	0	0	DNA1-HER-36-MGE	2023-07-18	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	low
+HER-37-MGE	2023-04-15	yes	Hera	0	0	DNA1-HER-37-MGE	2023-12-19	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HER-41-MGE	2023-04-19	yes	Hera	0	0	DNA1-HER-41-MGE	2024-05-21	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HER-43-DRS	2023-04-21	yes	Hera	0	0	DNA1-HER-43-DRS	2023-07-21	70	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HER-43-MGE	2023-04-21	yes	Hera	0	0	DNA1-HER-43-MGE	2023-07-21	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HER-44-DRS	2023-04-22	yes	Hera	1	1	DNA1-HER-44-DRS	2023-08-03	52	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HER-44-MGE	2023-04-22	yes	Hera	1	1	DNA1-HER-44-MGE	2023-08-03	9.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+HER-45-DRS	2023-04-23	yes	Hera	0	0	DNA1-HER-45-DRS	2024-03-08	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HER-45-MGE	2023-04-23	yes	Hera	1	1	DNA1-HER-45-MGE	2024-03-08	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+HER-48-MGE	2023-04-26	yes	Hera	0	0	DNA1-HER-48-MGE	2024-06-17	48	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HER-49-DRS	2023-04-27	yes	Hera	0	0	DNA1-HER-49-DRS	2023-11-15	60	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HER-49-MGE	2023-04-27	yes	Hera	0	0	DNA1-HER-49-MGE	2023-11-15	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+HER-53-MGE	2023-05-01	yes	Hera	0	0	DNA1-HER-53-MGE	2024-03-25	1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+HER-57-DRS	2023-05-05	yes	Hera	0	0	DNA1-HER-57-DRS	2023-06-28	79	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HER-57-MGE	2023-05-05	yes	Hera	0	0	DNA1-HER-57-MGE	2023-06-28	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+HER-58-DRS	2023-05-06	yes	Hera	1	1	DNA1-HER-58-DRS	2023-08-18	58	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HER-58-MGE	2023-05-06	yes	Hera	1	1	DNA1-HER-58-MGE	2023-08-18	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+HER-59-DRS	2023-05-07	yes	Hera	0	0	DNA1-HER-59-DRS	2023-06-29	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+HER-59-MGE	2023-05-07	yes	Hera	0	0	DNA1-HER-59-MGE	2023-06-29	9.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+HER-67-MGE	2023-05-15	yes	Hera	1	1	DNA1-HER-67-MGE	2023-11-01	11	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+HER-7-MGE	2023-03-16	yes	Hera	0	0	DNA1-HER-7-MGE	2024-05-28	11	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+HER-70-DRS	2023-05-18	yes	Hera	0	0	DNA1-HER-70-DRS	2023-07-21	59	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HER-70-MGE	2023-05-18	yes	Hera	0	0	DNA1-HER-70-MGE	2023-07-21	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+HER-9-DRS	2023-03-18	yes	Hera	0	0	DNA1-HER-9-DRS	2023-06-20	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+HER-9-MGE	2023-03-18	yes	Hera	0	0	DNA1-HER-9-MGE	2023-06-20	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+IRI-1-DRS	2023-03-10	yes	Iris	0	0	DNA1-IRI-1-DRS	2023-06-29	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-1-MGE	2023-03-10	yes	Iris	0	0	DNA1-IRI-1-MGE	2023-06-29	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+IRI-11-DRS	2023-03-20	yes	Iris	0	0	DNA1-IRI-11-DRS	2023-10-04	52	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IRI-11-MGE	2023-03-20	yes	Iris	1	1	DNA1-IRI-11-MGE	2023-10-04	7.1	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IRI-14-MGE	2023-03-23	yes	Iris	0	0	DNA1-IRI-14-MGE	2024-05-07	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IRI-15-MGE	2023-03-24	yes	Iris	0	0	DNA1-IRI-15-MGE	2023-07-11	4.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-15-MGE	2023-03-24	yes	Iris	0	0	DNA2-IRI-15-MGE	2023-07-12	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-16-DRS	2023-03-25	yes	Iris	1	1	DNA1-IRI-16-DRS	2023-08-04	84	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-16-MGE	2023-03-25	yes	Iris	2	2	DNA1-IRI-16-MGE	2023-08-04	6.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-17-MGE	2023-03-26	yes	Iris	0	0	DNA1-IRI-17-MGE	2024-04-23	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IRI-18-MGE	2023-03-27	yes	Iris	0	0	DNA1-IRI-18-MGE	2024-05-28	20	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IRI-18-MGE	2023-03-28	yes	Iris	0	0	DNA1-IRI-18-MGE	2024-05-28	20	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IRI-2-DRS	2023-03-11	yes	Iris	0	0	DNA1-IRI-2-DRS	2023-08-29	11	SA/GC	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+IRI-2-MGE	2023-03-11	yes	Iris	0	0	DNA1-IRI-2-MGE	2023-08-29	15	SA/GC	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+IRI-20-MGE	2023-03-29	yes	Iris	0	0	DNA1-IRI-20-MGE	2024-08-07	4.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IRI-22-MGE	2023-03-31	yes	Iris	1	1	DNA1-IRI-22-MGE	2024-04-23	5.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IRI-23-MGE	2023-04-01	yes	Iris	0	0	DNA1-IRI-23-MGE	2024-03-21	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IRI-28-DRS	2023-04-06	yes	Iris	0	0	DNA1-IRI-28-DRS	2023-06-23	35	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IRI-28-MGE	2023-04-06	yes	Iris	0	0	DNA1-IRI-28-MGE	2023-06-23	8.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+IRI-29-DRS	2023-04-07	yes	Iris	0	0	DNA1-IRI-29-DRS	2023-10-11	47	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IRI-29-MGE	2023-04-07	yes	Iris	1	1	DNA1-IRI-29-MGE	2023-10-11	16	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IRI-36-MGE	2023-04-14	yes	Iris	1	1	DNA1-IRI-36-MGE	2023-08-03	3.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-41-DRS	2023-04-19	yes	Iris	0	0	DNA1-IRI-41-DRS	2023-07-25	32	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-41-MGE	2023-04-19	yes	Iris	0	0	DNA1-IRI-41-MGE	2023-07-25	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-43-DRS	2023-04-21	yes	Iris	0	0	DNA1-IRI-43-DRS	2023-07-06	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-43-DRS	2023-04-21	yes	Iris	0	0	DNA2-IRI-43-DRS	2023-07-10	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-43-MGE	2023-04-21	yes	Iris	0	0	DNA1-IRI-43-MGE	2023-07-06	4.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-43-MGE	2023-04-21	yes	Iris	0	0	DNA2-IRI-43-MGE	2023-07-10	6.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-44-DRS	2023-04-22	yes	Iris	0	0	DNA1-IRI-44-DRS	2023-11-15	69	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IRI-44-MGE	2023-04-22	yes	Iris	1	1	DNA1-IRI-44-MGE	2023-11-15	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IRI-46-DRS	2023-04-24	yes	Iris	0	0	DNA1-IRI-46-DRS	2023-12-19	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IRI-46-MGE	2023-04-24	yes	Iris	1	1	DNA1-IRI-46-MGE	2023-12-19	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IRI-48-MGE	2023-04-26	yes	Iris	1	1	DNA1-IRI-48-MGE	2023-10-18	12	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IRI-49-MGE	2023-04-27	yes	Iris	0	0	DNA1-IRI-49-MGE	2024-08-16	5.5	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IRI-55-MGE	2023-05-03	yes	Iris	0	0	DNA1-IRI-55-MGE	2024-06-17	8.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IRI-57-DRS	2023-05-05	yes	Iris	0	0	DNA1-IRI-57-DRS	2023-06-06	1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IRI-57-MGE	2023-05-05	yes	Iris	0	0	DNA1-IRI-57-MGE	2023-06-06	7.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IRI-59-DRS	2023-05-07	yes	Iris	0	0	DNA1-IRI-59-DRS	2023-07-11	5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-59-DRS	2023-05-07	yes	Iris	0	0	DNA2-IRI-59-DRS	2023-07-12	38	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+IRI-59-MGE	2023-05-07	yes	Iris	1	1	DNA1-IRI-59-MGE	2023-07-11	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IRI-59-MGE	2023-05-07	yes	Iris	0	0	DNA2-IRI-59-MGE	2023-07-12	25	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+IRI-60-DRS	2023-05-08	yes	Iris	0	0	DNA1-IRI-60-DRS	2024-02-02	80	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+IRI-60-MGE	2023-05-08	yes	Iris	1	1	DNA1-IRI-60-MGE	2024-02-02	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+IRI-66-DRS	2023-05-14	yes	Iris	0	0	DNA1-IRI-66-DRS	2023-07-25	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-66-MGE	2023-05-14	yes	Iris	0	0	DNA1-IRI-66-MGE	2023-07-25	3.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IRI-69-DRS	2023-05-17	yes	Iris	0	0	DNA1-IRI-69-DRS	2023-06-20	46	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IRI-69-MGE	2023-05-17	yes	Iris	0	0	DNA1-IRI-69-MGE	2023-06-20	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IRI-7-DRS	2023-03-16	yes	Iris	1	1	DNA1-IRI-7-DRS	2024-01-16	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IRI-7-MGE	2023-03-16	yes	Iris	1	1	DNA1-IRI-7-MGE	2024-01-16	5.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IRI-70-DRS	2023-05-18	yes	Iris	0	0	DNA1-IRI-70-DRS	2023-06-26	59	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IRI-70-MGE	2023-05-18	yes	Iris	0	0	DNA1-IRI-70-MGE	2023-06-26	63	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IVY-1-DRS	2023-03-10	yes	Ivy	0	0	DNA1-IVY-1-DRS	2023-07-13	36	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+IVY-1-MGE	2023-03-10	yes	Ivy	0	0	DNA1-IVY-1-MGE	2023-07-13	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+IVY-17-MGE	2023-03-26	yes	Ivy	0	0	DNA1-IVY-17-MGE	2024-05-07	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IVY-18-MGE	2023-03-27	yes	Ivy	0	0	DNA1-IVY-18-MGE	2024-05-28	2.7	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-19-MGE	2023-03-28	yes	Ivy	0	0	DNA1-IVY-19-MGE	2024-08-07	4.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-2-DRS	2023-03-11	yes	Ivy	0	0	DNA1-IVY-2-DRS	2023-10-04	18	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-2-MGE	2023-03-11	yes	Ivy	0	0	DNA1-IVY-2-MGE	2023-10-04	1.2	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-24-DRS	2023-04-02	yes	Ivy	1	1	DNA1-IVY-24-DRS	2024-01-16	1.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IVY-24-MGE	2023-04-02	yes	Ivy	1	1	DNA1-IVY-24-MGE	2024-01-16	2.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+IVY-29-DRS	2023-04-07	yes	Ivy	0	0	DNA1-IVY-29-DRS	2023-06-20	2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IVY-29-MGE	2023-04-07	yes	Ivy	1	1	DNA1-IVY-29-MGE	2023-06-20	1.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IVY-3-DRS	2023-03-12	yes	Ivy	0	0	DNA1-IVY-3-DRS	2023-07-25	2.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IVY-3-MGE	2023-03-12	yes	Ivy	0	0	DNA1-IVY-3-MGE	2023-07-25	1.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IVY-36-MGE	2023-04-14	yes	Ivy	1	1	DNA1-IVY-36-MGE	2023-08-18	3.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+IVY-41-DRS	2023-04-19	yes	Ivy	0	0	DNA1-IVY-41-DRS	2023-08-08	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+IVY-41-MGE	2023-04-19	yes	Ivy	0	0	DNA1-IVY-41-MGE	2023-08-08	8.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+IVY-42-MGE	2023-04-20	no		0	0	DNA1-IVY-42-MGE	2024-05-21	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-43-DRS	2023-04-21	yes	Ivy	0	0	DNA1-IVY-43-DRS	2023-05-16	0.1	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IVY-43-DRS	2023-04-21	yes	Ivy	0	0	DNA2-IVY-43-DRS	2023-05-29	0.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IVY-43-DRS	2023-04-21	yes	Ivy	0	0	DNA3-IVY-43-DRS	2023-06-02	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IVY-43-MGE	2023-04-21	yes	Ivy	0	0	DNA1-IVY-43-MGE	2023-05-16	0	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IVY-43-MGE	2023-04-21	yes	Ivy	0	0	DNA2-IVY-43-MGE	2023-05-29	0.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IVY-43-MGE	2023-04-21	yes	Ivy	0	0	DNA3-IVY-43-MGE	2023-06-02	0.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+IVY-44-DRS	2023-04-22	yes	Ivy	1	1	DNA1-IVY-44-DRS	2023-11-08	13	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-44-MGE	2023-04-22	yes	Ivy	1	1	DNA1-IVY-44-MGE	2023-11-08	15	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-45-DRS	2023-04-23	yes	Ivy	0	0	DNA1-IVY-45-DRS	2023-10-11	44	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-45-MGE	2023-04-23	yes	Ivy	1	1	DNA1-IVY-45-MGE	2023-10-11	15	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-46-DRS	2023-04-24	yes	Ivy	0	0	DNA1-IVY-46-DRS	2024-03-04	41	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+IVY-46-MGE	2023-04-24	yes	Ivy	1	1	DNA1-IVY-46-MGE	2024-03-04	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+IVY-47-MGE	2023-04-25	yes	Ivy	1	1	DNA1-IVY-47-MGE	2024-04-30	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IVY-48-MGE	2023-04-26	yes	Ivy	0	0	DNA1-IVY-48-MGE	2024-05-21	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-49-MGE	2023-04-27	yes	Ivy	0	0	DNA1-IVY-49-MGE	2024-06-17	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-50-MGE	2023-04-28	yes	Ivy	0	0	DNA1-IVY-50-MGE	2024-09-09	9.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-52-DRS	2023-04-30	yes	Ivy	0	0	DNA1-IVY-52-DRS	2023-06-22	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IVY-52-MGE	2023-04-30	yes	Ivy	0	0	DNA1-IVY-52-MGE	2023-06-22	5.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+IVY-54-MGE	2023-05-02	yes	Ivy	0	0	DNA1-IVY-54-MGE	2024-03-25	0.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+IVY-55-MGE	2023-05-03	yes	Ivy	0	0	DNA1-IVY-55-MGE	2024-06-17	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+IVY-57-DRS	2023-05-05	yes	Ivy	0	0	DNA1-IVY-57-DRS	2023-07-25	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IVY-57-MGE	2023-05-05	yes	Ivy	0	0	DNA1-IVY-57-MGE	2023-07-25	1.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IVY-66-DRS	2023-05-14	yes	Ivy	0	0	DNA1-IVY-66-DRS	2023-07-28	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IVY-66-MGE	2023-05-14	yes	Ivy	0	0	DNA1-IVY-66-MGE	2023-07-28	0.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+IVY-67-MGE	2023-05-15	yes	Ivy	1	1	DNA1-IVY-67-MGE	2023-11-01	7.8	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+IVY-70-DRS	2023-05-18	yes	Ivy	0	0	DNA1-IVY-70-DRS	2023-06-28	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IVY-70-MGE	2023-05-18	yes	Ivy	1	1	DNA1-IVY-70-MGE	2023-06-28	1.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+IVY-9-DRS	2023-03-18	yes	Ivy	0	0	DNA1-IVY-9-DRS	2024-02-07	104	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+IVY-9-MGE	2023-03-18	yes	Ivy	1	1	DNA1-IVY-9-MGE	2024-02-07	9.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JAR-1-DRS	2023-03-10	yes	JarJar BINKS	0	0	DNA1-JAR-1-DRS	2023-06-28	0.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JAR-1-MGE	2023-03-10	yes	JarJar BINKS	0	0	DNA1-JAR-1-MGE	2023-06-28	3.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JAR-11-MGE	2023-03-20	yes	JarJar BINKS	0	0	DNA1-JAR-11-MGE	2024-05-28	5.1	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JAR-14-MGE	2023-03-23	yes	JarJar BINKS	1	1	DNA1-JAR-14-MGE	2024-05-07	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JAR-15-MGE	2023-03-24	yes	JarJar BINKS	1	1	DNA1-JAR-15-MGE	2023-06-27	4.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JAR-16-DRS	2023-03-25	yes	JarJar BINKS	0	0	DNA1-JAR-16-DRS	2023-07-25	5.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JAR-16-MGE	2023-03-25	yes	JarJar BINKS	0	0	DNA1-JAR-16-MGE	2023-07-25	5.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JAR-17-DRS	2023-03-26	yes	JarJar BINKS	0	0	DNA1-JAR-17-DRS	2023-08-30	51	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-17-MGE	2023-03-26	yes	JarJar BINKS	0	0	DNA1-JAR-17-MGE	2023-08-30	12	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-18-MGE	2023-03-27	yes	JarJar BINKS	0	0	DNA1-JAR-18-MGE	2024-08-07	5.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JAR-2-DRS	2023-03-11	yes	JarJar BINKS	2	2	DNA1-JAR-2-DRS	2023-08-08	5.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-2-MGE	2023-03-11	yes	JarJar BINKS	2	2	DNA1-JAR-2-MGE	2023-08-08	5.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-21-MGE	2023-03-30	yes	JarJar BINKS	1	1	DNA1-JAR-21-MGE	2024-04-23	3.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JAR-22-MGE	2023-03-31	yes	JarJar BINKS	0	0	DNA1-JAR-22-MGE	2024-03-21	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JAR-29-DRS	2023-04-07	yes	JarJar BINKS	0	0	DNA1-JAR-29-DRS	2023-06-29	1.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JAR-29-MGE	2023-04-07	yes	JarJar BINKS	1	1	DNA1-JAR-29-MGE	2023-06-29	1.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JAR-3-DRS	2023-03-12	yes	JarJar BINKS	2	2	DNA1-JAR-3-DRS	2023-09-22	9.4	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JAR-3-MGE	2023-03-12	yes	JarJar BINKS	2	2	DNA1-JAR-3-MGE	2023-09-22	7.4	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JAR-32-DRS	2023-04-10	yes	JarJar BINKS	1	1	DNA1-JAR-32-DRS	2023-10-11	5.7	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JAR-32-MGE	2023-04-10	yes	JarJar BINKS	1	1	DNA1-JAR-32-MGE	2023-10-11	5.6	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JAR-36-MGE	2023-04-14	yes	JarJar BINKS	0	0	DNA1-JAR-36-MGE	2023-07-21	7.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+JAR-41-DRS	2023-04-19	yes	JarJar BINKS	0	0	DNA1-JAR-41-DRS	2023-07-18	60	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+JAR-41-MGE	2023-04-19	yes	JarJar BINKS	0	0	DNA1-JAR-41-MGE	2023-07-18	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+JAR-43-DRS	2023-04-21	yes	JarJar BINKS	0	0	DNA1-JAR-43-DRS	2023-06-26	4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JAR-43-MGE	2023-04-21	yes	JarJar BINKS	0	0	DNA1-JAR-43-MGE	2023-06-26	3.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JAR-44-DRS	2023-04-22	yes	JarJar BINKS	1	1	DNA1-JAR-44-DRS	2023-08-29	56	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-44-MGE	2023-04-22	yes	JarJar BINKS	2	2	DNA1-JAR-44-MGE	2023-08-29	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-45-DRS	2023-04-23	yes	JarJar BINKS	0	0	DNA1-JAR-45-DRS	2023-11-08	27	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JAR-45-MGE	2023-04-23	yes	JarJar BINKS	1	1	DNA1-JAR-45-MGE	2023-11-08	11	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JAR-48-MGE	2023-04-26	yes	JarJar BINKS	0	0	DNA1-JAR-48-MGE	2024-05-21	5.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JAR-49-DRS	2023-04-27	yes	JarJar BINKS	1	1	DNA1-JAR-49-DRS	2023-11-15	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JAR-49-MGE	2023-04-27	yes	JarJar BINKS	0	0	DNA1-JAR-49-MGE	2023-11-15	2.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JAR-50-DRS	2023-04-28	yes	JarJar BINKS	0	0	DNA1-JAR-50-DRS	2024-02-07	4.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JAR-50-MGE	2023-04-28	yes	JarJar BINKS	1	1	DNA1-JAR-50-MGE	2024-02-07	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JAR-52-MGE	2023-04-30	yes	JarJar BINKS	0	0	DNA1-JAR-52-MGE	2024-06-17	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JAR-57-DRS	2023-05-05	yes	JarJar BINKS	0	0	DNA1-JAR-57-DRS	2023-05-16	0.2	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JAR-57-DRS	2023-05-05	yes	JarJar BINKS	0	0	DNA2-JAR-57-DRS	2023-05-29	0.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	low
+JAR-57-DRS	2023-05-05	yes	JarJar BINKS	0	0	DNA3-JAR-57-DRS	2023-06-02	9.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JAR-57-MGE	2023-05-05	yes	JarJar BINKS	0	0	DNA1-JAR-57-MGE	2023-05-16	0	SA/AMR	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JAR-57-MGE	2023-05-05	yes	JarJar BINKS	0	0	DNA2-JAR-57-MGE	2023-05-29	0.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JAR-57-MGE	2023-05-05	yes	JarJar BINKS	0	0	DNA3-JAR-57-MGE	2023-06-02	0	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JAR-58-DRS	2023-05-06	yes	JarJar BINKS	0	0	DNA1-JAR-58-DRS	2023-08-04	8.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JAR-58-MGE	2023-05-06	yes	JarJar BINKS	0	0	DNA1-JAR-58-MGE	2023-08-04	5.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JAR-59-DRS	2023-05-07	yes	JarJar BINKS	0	0	DNA1-JAR-59-DRS	2023-06-27	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JAR-59-MGE	2023-05-07	yes	JarJar BINKS	0	0	DNA1-JAR-59-MGE	2023-06-27	40	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JAR-66-DRS	2023-05-14	yes	JarJar BINKS	0	0	DNA1-JAR-66-DRS	2023-07-13	32	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+JAR-66-MGE	2023-05-14	yes	JarJar BINKS	0	0	DNA1-JAR-66-MGE	2023-07-13	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+JAR-67-DRS	2023-05-15	yes	JarJar BINKS	0	0	DNA1-JAR-67-DRS	2023-08-18	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-67-MGE	2023-05-15	yes	JarJar BINKS	0	0	DNA1-JAR-67-MGE	2023-08-18	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+JAR-68-MGE	2023-05-16	yes	JarJar BINKS	1	1	DNA1-JAR-68-MGE	2023-11-01	8	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JAR-70-DRS	2023-05-18	yes	JarJar BINKS	0	0	DNA1-JAR-70-DRS	2023-07-21	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JAR-70-MGE	2023-05-18	yes	JarJar BINKS	0	0	DNA1-JAR-70-MGE	2023-07-21	9.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JAR-9-DRS	2023-03-18	yes	JarJar BINKS	0	0	DNA1-JAR-9-DRS	2023-06-22	41	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JAR-9-MGE	2023-03-18	yes	JarJar BINKS	0	0	DNA1-JAR-9-MGE	2023-06-22	8.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	out
+JOA-1-DRS	2023-03-10	yes	Joans	0	0	DNA1-JOA-1-DRS	2023-06-16	58	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JOA-1-MGE	2023-03-10	yes	Joans	0	0	DNA1-JOA-1-MGE	2023-06-16	49	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JOA-11-MGE	2023-03-20	yes	Joans	0	0	DNA1-JOA-11-MGE	2024-05-28	6	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JOA-14-DRS	2023-03-23	yes	Joans	0	0	DNA1-JOA-14-DRS	2023-06-23	7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JOA-14-MGE	2023-03-23	yes	Joans	1	1	DNA1-JOA-14-MGE	2023-06-23	4.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JOA-2-DRS	2023-03-11	yes	Joans	0	0	DNA1-JOA-2-DRS	2023-07-21	38	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+JOA-2-MGE	2023-03-11	yes	Joans	0	0	DNA1-JOA-2-MGE	2023-07-21	9.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	low
+JOA-21-DRS	2023-03-30	yes	Joans	0	0	DNA1-JOA-21-DRS	2024-01-16	1.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JOA-21-MGE	2023-03-30	yes	Joans	1	1	DNA1-JOA-21-MGE	2024-01-16	7.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JOA-22-MGE	2023-03-31	yes	Joans	0	0	DNA1-JOA-22-MGE	2024-08-07	5.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JOA-24-MGE	2023-04-02	yes	Joans	0	0	DNA1-JOA-24-MGE	2024-03-21	8.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JOA-25-DRS	2023-04-03	yes	Joans	0	0	DNA1-JOA-25-DRS	2023-06-20	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JOA-25-MGE	2023-04-03	yes	Joans	0	0	DNA1-JOA-25-MGE	2023-06-20	3.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+JOA-28-MGE	2023-04-06	yes	Joans	0	0	DNA1-JOA-28-MGE	2023-11-01	24	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JOA-29-DRS	2023-04-07	yes	Joans	0	0	DNA1-JOA-29-DRS	2023-06-28	2.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-29-MGE	2023-04-07	yes	Joans	1	1	DNA1-JOA-29-MGE	2023-06-28	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+JOA-3-DRS	2023-03-12	yes	Joans	0	0	DNA1-JOA-3-DRS	2023-10-04	50	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JOA-3-MGE	2023-03-12	yes	Joans	2	2	DNA1-JOA-3-MGE	2023-10-04	9.6	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JOA-36-MGE	2023-04-14	yes	Joans	1	1	DNA1-JOA-36-MGE	2023-11-08	16	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JOA-41-DRS	2023-04-19	yes	Joans	1	1	DNA1-JOA-41-DRS	2023-11-15	17	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JOA-41-MGE	2023-04-19	yes	Joans	1	1	DNA1-JOA-41-MGE	2023-11-15	7.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+JOA-43-DRS	2023-04-21	yes	Joans	0	0	DNA1-JOA-43-DRS	2023-06-06	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JOA-43-MGE	2023-04-21	yes	Joans	0	0	DNA1-JOA-43-MGE	2023-06-06	6.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+JOA-44-DRS	2023-04-22	yes	Joans	0	0	DNA1-JOA-44-DRS	2024-03-04	55	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JOA-44-MGE	2023-04-22	yes	Joans	1	1	DNA1-JOA-44-MGE	2024-03-04	64	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JOA-45-MGE	2023-04-23	yes	Joans	0	0	DNA1-JOA-45-MGE	2024-04-30	39	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JOA-46-MGE	2023-04-24	yes	Joans	0	0	DNA1-JOA-46-MGE	2024-06-17	68	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JOA-48-MGE	2023-04-26	yes	Joans	0	0	DNA1-JOA-48-MGE	2024-08-16	9.8	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JOA-49-MGE	2023-04-27	yes	Joans	1	1	DNA1-JOA-49-MGE	2024-04-30	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JOA-50-MGE	2023-04-28	yes	Joans	0	0	DNA1-JOA-50-MGE	2024-05-21	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+JOA-51-DRS	2023-04-29	yes	Joans	0	0	DNA1-JOA-51-DRS	2024-02-16	45	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JOA-51-MGE	2023-04-29	yes	Joans	1	1	DNA1-JOA-51-MGE	2024-02-16	54	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+JOA-56-MGE	2023-05-04	yes	Joans	0	0	DNA1-JOA-56-MGE	2024-03-25	6.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JOA-57-DRS	2023-05-05	yes	Joans	0	0	DNA1-JOA-57-DRS	2023-07-11	6.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-57-DRS	2023-05-05	yes	Joans	0	0	DNA2-JOA-57-DRS	2023-07-12	30	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-57-MGE	2023-05-05	yes	Joans	1	1	DNA1-JOA-57-MGE	2023-07-11	2.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-57-MGE	2023-05-05	yes	Joans	0	0	DNA2-JOA-57-MGE	2023-07-12	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-60-MGE	2023-05-08	yes	Joans	0	0	DNA1-JOA-60-MGE	2024-03-25	5.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+JOA-62-MGE	2023-05-10	yes	Joans	1	1	DNA1-JOA-62-MGE	2023-11-01	2.7	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+JOA-66-DRS	2023-05-14	yes	Joans	0	0	DNA1-JOA-66-DRS	2023-08-03	52	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JOA-66-MGE	2023-05-14	yes	Joans	0	0	DNA1-JOA-66-MGE	2023-08-03	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+JOA-70-DRS	2023-05-18	yes	Joans	0	0	DNA1-JOA-70-DRS	2023-07-06	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-70-DRS	2023-05-18	yes	Joans	0	0	DNA2-JOA-70-DRS	2023-07-10	4.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-70-MGE	2023-05-18	yes	Joans	0	0	DNA1-JOA-70-MGE	2023-07-06	3.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+JOA-70-MGE	2023-05-18	yes	Joans	0	0	DNA2-JOA-70-MGE	2023-07-10	5.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+KOR-14-MGE	2023-03-23	yes	Korra	0	0	DNA1-KOR-14-MGE	2024-03-21	5.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KOR-15-MGE	2023-03-24	yes	Korra	0	0	DNA1-KOR-15-MGE	2023-06-29	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+KOR-16-DRS	2023-03-25	yes	Korra	0	0	DNA1-KOR-16-DRS	2023-08-03	2.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KOR-16-MGE	2023-03-25	yes	Korra	0	0	DNA1-KOR-16-MGE	2023-08-03	2.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KOR-17-DRS	2023-03-26	yes	Korra	0	0	DNA1-KOR-17-DRS	2023-12-12	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+KOR-17-MGE	2023-03-26	yes	Korra	0	0	DNA1-KOR-17-MGE	2023-12-12	33	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+KOR-20-DRS	2023-03-29	yes	Korra	1	1	DNA1-KOR-20-DRS	2023-10-11	10	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KOR-21-MGE	2023-03-30	yes	Korra	1	1	DNA1-KOR-21-MGE	2024-04-23	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KOR-22-MGE	2023-03-31	yes	Korra	0	0	DNA1-KOR-22-MGE	2024-05-07	4.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KOR-23-MGE	2023-04-01	yes	Korra	0	0	DNA1-KOR-23-MGE	2024-08-09	5	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KOR-25-MGE	2023-04-03	yes	Korra	0	0	DNA1-KOR-25-MGE	2023-11-01	7.8	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KOR-29-DRS	2023-04-07	yes	Korra	0	0	DNA1-KOR-29-DRS	2023-06-22	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+KOR-29-MGE	2023-04-07	yes	Korra	1	1	DNA1-KOR-29-MGE	2023-06-22	8.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	out
+KOR-3-DRS	2023-03-12	yes	Korra	0	0	DNA1-KOR-3-DRS	2023-06-06	8.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+KOR-3-MGE	2023-03-12	yes	Korra	0	0	DNA1-KOR-3-MGE	2023-06-06	8.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+KOR-36-MGE	2023-04-14	yes	Korra	0	0	DNA1-KOR-36-MGE	2023-07-25	5.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KOR-41-DRS	2023-04-19	yes	Korra	0	0	DNA1-KOR-41-DRS	2023-07-21	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KOR-41-MGE	2023-04-19	yes	Korra	0	0	DNA1-KOR-41-MGE	2023-07-21	66	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KOR-43-DRS	2023-04-21	yes	Korra	0	0	DNA1-KOR-43-DRS	2023-06-28	53	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+KOR-43-MGE	2023-04-21	yes	Korra	0	0	DNA1-KOR-43-MGE	2023-06-28	32	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+KOR-44-DRS	2023-04-22	yes	Korra	1	1	DNA1-KOR-44-DRS	2023-08-18	29	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KOR-44-MGE	2023-04-22	yes	Korra	2	2	DNA1-KOR-44-MGE	2023-08-18	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KOR-45-MGE	2023-04-23	yes	Korra	0	0	DNA1-KOR-45-MGE	2024-08-15	5	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KOR-46-MGE	2023-04-24	yes	Korra	0	0	DNA1-KOR-46-MGE	2024-05-21	0.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KOR-48-MGE	2023-04-26	yes	Korra	1	1	DNA1-KOR-48-MGE	2024-04-30	3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KOR-49-MGE	2023-04-27	yes	Korra	1	1	DNA1-KOR-49-MGE	2023-10-25	2.1	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KOR-50-MGE	2023-04-28	yes	Korra	0	0	DNA1-KOR-50-MGE	2024-06-17	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KOR-57-DRS	2023-05-05	yes	Korra	0	0	DNA1-KOR-57-DRS	2023-07-18	57	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KOR-57-MGE	2023-05-05	yes	Korra	0	0	DNA1-KOR-57-MGE	2023-07-18	35	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KOR-58-DRS	2023-05-06	yes	Korra	0	0	DNA1-KOR-58-DRS	2023-09-15	7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KOR-58-MGE	2023-05-06	yes	Korra	2	2	DNA1-KOR-58-MGE	2023-09-15	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KOR-6-DRS	2023-03-15	yes	Korra	1	1	DNA1-KOR-6-DRS	2024-01-16	3.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+KOR-6-MGE	2023-03-15	yes	Korra	1	1	DNA1-KOR-6-MGE	2024-01-16	2.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+KOR-66-DRS	2023-05-14	yes	Korra	0	0	DNA1-KOR-66-DRS	2023-07-21	61	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KOR-66-MGE	2023-05-14	yes	Korra	0	0	DNA1-KOR-66-MGE	2023-07-21	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KOR-70-DRS	2023-05-18	yes	Korra	0	0	DNA1-KOR-70-DRS	2023-07-28	36	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KOR-70-MGE	2023-05-18	yes	Korra	0	0	DNA1-KOR-70-MGE	2023-07-28	9.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KOR-9-MGE	2023-03-18	yes	Korra	0	0	DNA1-KOR-9-MGE	2024-05-28	8.9	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-14-DRS	2023-03-23	yes	Kubo	0	0	DNA1-KUB-14-DRS	2023-12-12	62	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+KUB-14-MGE	2023-03-23	yes	Kubo	1	1	DNA1-KUB-14-MGE	2023-12-12	5.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+KUB-15-MGE	2023-03-24	yes	Kubo	1	1	DNA1-KUB-15-MGE	2023-06-28	8.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	out
+KUB-16-DRS	2023-03-25	yes	Kubo	0	0	DNA1-KUB-16-DRS	2023-07-28	40	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KUB-16-MGE	2023-03-25	yes	Kubo	0	0	DNA1-KUB-16-MGE	2023-07-28	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KUB-17-MGE	2023-03-26	yes	Kubo	0	0	DNA1-KUB-17-MGE	2024-03-21	25	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KUB-18-MGE	2023-03-27	yes	Kubo	0	0	DNA1-KUB-18-MGE	2024-05-07	6.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KUB-20-MGE	2023-03-29	yes	Kubo	1	1	DNA1-KUB-20-MGE	2023-10-11	3.7	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KUB-21-MGE	2023-03-30	yes	Kubo	1	1	DNA1-KUB-21-MGE	2024-04-23	1.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+KUB-22-MGE	2023-03-31	yes	Kubo	0	0	DNA1-KUB-22-MGE	2024-05-28	2.3	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-24-MGE	2023-04-02	yes	Kubo	1	1	DNA1-KUB-24-MGE	2023-11-01	7.7	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KUB-25-MGE	2023-04-03	yes	Kubo	0	0	DNA1-KUB-25-MGE	2024-08-09	12	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-29-DRS	2023-04-07	yes	Kubo	0	0	DNA1-KUB-29-DRS	2023-06-15	45	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+KUB-29-MGE	2023-04-07	yes	Kubo	0	0	DNA1-KUB-29-MGE	2023-06-15	4.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+KUB-30-DRS	2023-04-08	yes	Kubo	0	0	DNA1-KUB-30-DRS	2023-10-11	22	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KUB-30-MGE	2023-04-08	yes	Kubo	1	1	DNA1-KUB-30-MGE	2023-10-11	1.5	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KUB-36-MGE	2023-04-14	yes	Kubo	0	0	DNA1-KUB-36-MGE	2023-07-25	0.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KUB-37-MGE	2023-04-15	yes	Kubo	1	1	DNA1-KUB-37-MGE	2024-02-07	2.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+KUB-41-DRS	2023-04-19	yes	Kubo	0	0	DNA1-KUB-41-DRS	2023-07-21	32	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KUB-41-MGE	2023-04-19	yes	Kubo	0	0	DNA1-KUB-41-MGE	2023-07-21	6.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KUB-43-DRS	2023-04-21	yes	Kubo	0	0	DNA1-KUB-43-DRS	2023-06-20	71	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+KUB-43-MGE	2023-04-21	yes	Kubo	0	0	DNA1-KUB-43-MGE	2023-06-20	3.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+KUB-44-DRS	2023-04-22	yes	Kubo	0	0	DNA1-KUB-44-DRS	2023-09-15	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KUB-44-MGE	2023-04-22	yes	Kubo	0	0	DNA1-KUB-44-MGE	2023-09-15	5.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KUB-45-MGE	2023-04-23	yes	Kubo	0	0	DNA1-KUB-45-MGE	2024-06-17	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-48-DRS	2023-04-26	yes	Kubo	0	0	DNA1-KUB-48-DRS	2024-03-04	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+KUB-48-MGE	2023-04-26	yes	Kubo	1	1	DNA1-KUB-48-MGE	2024-03-04	90	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+KUB-49-MGE	2023-04-27	yes	Kubo	0	0	DNA1-KUB-49-MGE	2024-06-17	8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-50-MGE	2023-04-28	yes	Kubo	1	1	DNA1-KUB-50-MGE	2023-10-25	5.7	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+KUB-52-MGE	2023-04-30	yes	Kubo	0	0	DNA1-KUB-52-MGE	2024-05-21	26	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-53-MGE	2023-05-01	yes	Kubo	0	0	DNA1-KUB-53-MGE	2024-09-09	6.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+KUB-57-DRS	2023-05-05	yes	Kubo	0	0	DNA1-KUB-57-DRS	2023-06-29	41	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+KUB-57-MGE	NA	NA	NA	0	0	DNA1-KUB-57-MGE	2023-06-29	1.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+KUB-58-DRS	2023-05-06	yes	Kubo	1	1	DNA1-KUB-58-DRS	2023-08-29	33	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KUB-58-MGE	2023-05-05	yes	Kubo	2	2	DNA1-KUB-58-MGE	2023-08-29	4.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KUB-58-MGE	2023-05-06	yes	Kubo	2	2	DNA1-KUB-58-MGE	2023-08-29	4.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+KUB-59-DRS	2023-05-07	yes	Kubo	0	0	DNA1-KUB-59-DRS	2023-06-26	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+KUB-59-MGE	2023-05-07	yes	Kubo	0	0	DNA1-KUB-59-MGE	2023-06-26	29	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+KUB-66-DRS	2023-05-14	yes	Kubo	0	0	DNA1-KUB-66-DRS	2023-07-18	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KUB-66-MGE	2023-05-14	yes	Kubo	0	0	DNA1-KUB-66-MGE	2023-07-18	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+KUB-70-DRS	2023-05-18	yes	Kubo	0	0	DNA1-KUB-70-DRS	2023-07-25	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KUB-70-MGE	2023-05-18	yes	Kubo	0	0	DNA1-KUB-70-MGE	2023-07-25	8.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+KUB-9-DRS	2023-03-18	yes	Kubo	0	0	DNA1-KUB-9-DRS	2023-06-23	59	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+KUB-9-MGE	2023-03-18	yes	Kubo	0	0	DNA1-KUB-9-MGE	2023-06-23	4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+LAM-1-DRS	2023-03-10	yes	Lambchop	0	0	DNA1-LAM-1-DRS	2023-07-11	0.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+LAM-1-DRS	2023-03-10	yes	Lambchop	0	0	DNA2-LAM-1-DRS	2023-07-12	18	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+LAM-1-MGE	2023-03-10	yes	Lambchop	0	0	DNA1-LAM-1-MGE	2023-07-11	6.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+LAM-1-MGE	2023-03-10	yes	Lambchop	0	0	DNA2-LAM-1-MGE	2023-07-12	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+LAM-15-MGE	2023-03-24	yes	Lambchop	0	0	DNA1-LAM-15-MGE	2023-07-13	1.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+LAM-17-MGE	2023-03-26	yes	Lambchop	0	0	DNA1-LAM-17-MGE	2024-04-23	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+LAM-18-DRS	2023-03-27	yes	Lambchop	0	0	DNA1-LAM-18-DRS	2023-10-04	34	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+LAM-18-MGE	2023-03-27	yes	Lambchop	1	1	DNA1-LAM-18-MGE	2023-10-04	4.5	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+LAM-2-DRS	2023-03-11	yes	Lambchop	2	2	DNA1-LAM-2-DRS	2023-09-22	6.3	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+LAM-2-MGE	2023-03-11	yes	Lambchop	2	2	DNA1-LAM-2-MGE	2023-09-22	3.2	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+LAM-20-MGE	2023-03-29	yes	Lambchop	0	0	DNA1-LAM-20-MGE	2024-03-21	1.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+LAM-25-MGE	2023-04-03	yes	Lambchop	1	1	DNA1-LAM-25-MGE	2024-04-23	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+LAM-3-DRS	2023-03-12	yes	Lambchop	0	0	DNA1-LAM-3-DRS	2023-07-25	35	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-3-MGE	2023-03-12	yes	Lambchop	0	0	DNA1-LAM-3-MGE	2023-07-25	9.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-36-MGE	2023-04-14	yes	Lambchop	0	0	DNA1-LAM-36-MGE	2023-08-08	2.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+LAM-37-MGE	2023-04-15	yes	Lambchop	1	1	DNA1-LAM-37-MGE	2024-03-04	88	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+LAM-41-DRS	2023-04-19	yes	Lambchop	0	0	DNA1-LAM-41-DRS	2023-07-28	30	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-41-MGE	2023-04-19	yes	Lambchop	0	0	DNA1-LAM-41-MGE	2023-07-28	2.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-42-DRS	2023-04-20	yes	Lambchop	0	0	DNA1-LAM-42-DRS	2024-03-08	63	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+LAM-42-MGE	2023-04-20	no		0	0	DNA1-LAM-42-MGE	2024-03-08	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+LAM-43-DRS	2023-04-21	yes	Lambchop	0	0	DNA1-LAM-43-DRS	2023-06-16	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+LAM-43-MGE	2023-04-21	yes	Lambchop	0	0	DNA1-LAM-43-MGE	2023-06-16	3.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+LAM-44-DRS	2023-04-22	yes	Lambchop	1	1	DNA1-LAM-44-DRS	2023-12-19	3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+LAM-44-MGE	2023-04-22	yes	Lambchop	0	0	DNA1-LAM-44-MGE	2023-12-19	24	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+LAM-46-MGE	2023-04-24	yes	Lambchop	1	1	DNA1-LAM-46-MGE	2023-10-18	15	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+LAM-48-DRS	2023-04-26	yes	Lambchop	0	0	DNA1-LAM-48-DRS	2023-11-10	0.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+LAM-48-MGE	2023-04-26	yes	Lambchop	1	1	DNA1-LAM-48-MGE	2023-11-10	3.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+LAM-50-DRS	2023-04-28	yes	Lambchop	0	0	DNA1-LAM-50-DRS	2024-02-16	1.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+LAM-50-MGE	2023-04-28	yes	Lambchop	1	1	DNA1-LAM-50-MGE	2024-02-16	3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+LAM-51-MGE	2023-04-29	yes	Lambchop	0	0	DNA1-LAM-51-MGE	2024-09-09	1.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+LAM-55-MGE	2023-05-03	yes	Lambchop	0	0	DNA1-LAM-55-MGE	2024-03-25	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+LAM-57-DRS	2023-05-05	yes	Lambchop	0	0	DNA1-LAM-57-DRS	2023-07-21	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-57-MGE	2023-05-05	yes	Lambchop	0	0	DNA1-LAM-57-MGE	2023-07-21	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-66-DRS	2023-05-14	yes	Lambchop	0	0	DNA1-LAM-66-DRS	2023-06-29	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+LAM-66-MGE	2023-05-14	yes	Lambchop	0	0	DNA1-LAM-66-MGE	2023-06-29	2.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+LAM-67-DRS	2023-05-15	yes	Lambchop	0	0	DNA1-LAM-67-DRS	2023-08-18	3.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+LAM-67-MGE	2023-05-15	yes	Lambchop	0	0	DNA1-LAM-67-MGE	2023-08-18	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+LAM-70-DRS	2023-05-18	yes	Lambchop	1	1	DNA1-LAM-70-DRS	2023-08-03	5.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+LAM-70-MGE	2023-05-18	yes	Lambchop	1	1	DNA1-LAM-70-MGE	2023-08-03	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+MAR-17-DRS	2023-03-26	yes	Marshmallow	0	0	DNA1-MAR-17-DRS	2023-06-06	5.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+MAR-17-MGE	2023-03-26	yes	Marshmallow	0	0	DNA1-MAR-17-MGE	2023-06-06	9.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+MAR-22-MGE	2023-03-31	yes	Marshmallow	0	0	DNA1-MAR-22-MGE	2024-05-07	9.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+MAR-24-DRS	2023-04-02	yes	Marshmallow	1	1	DNA1-MAR-24-DRS	2024-01-16	4.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+MAR-24-MGE	2023-04-02	yes	Marshmallow	0	0	DNA1-MAR-24-MGE	2024-01-16	0.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+MAR-25-MGE	2023-04-03	yes	Marshmallow	0	0	DNA1-MAR-25-MGE	2023-11-01	1.9	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+MAR-29-DRS	2023-04-07	yes	Marshmallow	0	0	DNA1-MAR-29-DRS	2023-07-13	40	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+MAR-29-MGE	2023-04-07	yes	Marshmallow	0	0	DNA1-MAR-29-MGE	2023-07-13	38	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+MAR-36-MGE	2023-04-14	yes	Marshmallow	1	1	DNA1-MAR-36-MGE	2023-10-04	17	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+MAR-37-MGE	2023-04-15	yes	Marshmallow	2	2	DNA1-MAR-37-MGE	2023-09-22	19	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+MAR-41-DRS	2023-04-19	yes	Marshmallow	0	0	DNA1-MAR-41-DRS	2023-08-29	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+MAR-41-MGE	2023-04-19	yes	Marshmallow	2	2	DNA1-MAR-41-MGE	2023-08-29	6.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+MAR-43-DRS	2023-04-21	yes	Marshmallow	0	0	DNA1-MAR-43-DRS	2023-07-18	66	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+MAR-43-MGE	2023-04-21	yes	Marshmallow	0	0	DNA1-MAR-43-MGE	2023-07-18	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+MAR-44-DRS	2023-04-22	yes	Marshmallow	0	0	DNA1-MAR-44-DRS	2023-12-19	25	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+MAR-44-MGE	2023-04-22	yes	Marshmallow	1	1	DNA1-MAR-44-MGE	2023-12-19	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+MAR-45-MGE	2023-04-23	yes	Marshmallow	0	0	DNA1-MAR-45-MGE	2024-04-30	36	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+MAR-46-MGE	2023-04-24	yes	Marshmallow	0	0	DNA1-MAR-46-MGE	2024-05-21	6.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+MAR-47-MGE	2023-04-25	yes	Marshmallow	0	0	DNA1-MAR-47-MGE	2024-08-15	5.7	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+MAR-48-MGE	2023-04-26	yes	Marshmallow	1	1	DNA1-MAR-48-MGE	2023-10-25	12	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+MAR-49-MGE	2023-04-27	yes	Marshmallow	1	1	DNA1-MAR-49-MGE	2024-04-30	3.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+MAR-52-MGE	2023-04-30	yes	Marshmallow	0	0	DNA1-MAR-52-MGE	2024-06-17	23	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+MAR-53-MGE	2023-05-01	yes	Marshmallow	0	0	DNA1-MAR-53-MGE	2024-03-25	19	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+MAR-57-DRS	2023-05-05	yes	Marshmallow	0	0	DNA1-MAR-57-DRS	2023-08-03	75	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+MAR-57-MGE	2023-05-05	yes	Marshmallow	0	0	DNA1-MAR-57-MGE	2023-08-03	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+MAR-60-DRS	2023-05-08	yes	Marshmallow	0	0	DNA1-MAR-60-DRS	2024-02-02	33	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+MAR-60-MGE	2023-05-08	yes	Marshmallow	1	1	DNA1-MAR-60-MGE	2024-02-02	71	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+MAR-66-DRS	2023-05-14	yes	Marshmallow	0	0	DNA1-MAR-66-DRS	2023-07-11	4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+MAR-66-DRS	2023-05-14	yes	Marshmallow	0	0	DNA2-MAR-66-DRS	2023-07-12	54	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+MAR-66-MGE	2023-05-14	yes	Marshmallow	0	0	DNA1-MAR-66-MGE	2023-07-11	6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+MAR-66-MGE	2023-05-14	yes	Marshmallow	0	0	DNA2-MAR-66-MGE	2023-07-12	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	low
+MAR-70-DRS	2023-05-18	yes	Marshmallow	1	1	DNA1-MAR-70-DRS	2023-08-29	30	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+MAR-70-MGE	2023-05-18	yes	Marshmallow	0	0	DNA1-MAR-70-MGE	2023-08-29	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-15-MGE	2023-03-24	yes	Ophelia	0	0	DNA1-OPH-15-MGE	2023-06-15	3.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+OPH-16-DRS	2023-03-25	yes	Ophelia	0	0	DNA1-OPH-16-DRS	2023-07-25	34	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+OPH-16-MGE	2023-03-25	yes	Ophelia	0	0	DNA1-OPH-16-MGE	2023-07-25	8.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+OPH-17-DRS	2023-03-26	yes	Ophelia	0	0	DNA1-OPH-17-DRS	2023-10-04	29	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+OPH-17-MGE	2023-03-26	yes	Ophelia	0	0	DNA1-OPH-17-MGE	2023-10-04	26	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+OPH-18-MGE	2023-03-27	yes	Ophelia	0	0	DNA1-OPH-18-MGE	2024-03-21	9.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+OPH-19-MGE	2023-03-28	yes	Ophelia	0	0	DNA1-OPH-19-MGE	2024-04-23	9.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+OPH-2-DRS	2023-03-11	yes	Ophelia	0	0	DNA1-OPH-2-DRS	2023-08-18	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-2-MGE	2023-03-11	yes	Ophelia	0	0	DNA1-OPH-2-MGE	2023-08-18	3.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-20-MGE	2023-03-29	yes	Ophelia	0	0	DNA1-OPH-20-MGE	2024-05-28	13	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+OPH-24-MGE	2023-04-02	yes	Ophelia	0	0	DNA1-OPH-24-MGE	2024-08-09	15	AS	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+OPH-29-DRS	2023-04-07	yes	Ophelia	0	0	DNA1-OPH-29-DRS	2023-07-06	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+OPH-29-DRS	2023-04-07	yes	Ophelia	0	0	DNA2-OPH-29-DRS	2023-07-10	2.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+OPH-29-MGE	2023-04-07	yes	Ophelia	0	0	DNA1-OPH-29-MGE	2023-07-06	4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+OPH-29-MGE	2023-04-07	yes	Ophelia	0	0	DNA2-OPH-29-MGE	2023-07-10	8.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	low
+OPH-36-MGE	2023-04-14	yes	Ophelia	0	0	DNA1-OPH-36-MGE	2023-07-21	4.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+OPH-37-MGE	2023-04-15	yes	Ophelia	1	1	DNA1-OPH-37-MGE	2024-01-16	33	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+OPH-41-DRS	2023-04-19	yes	Ophelia	0	0	DNA1-OPH-41-DRS	2023-07-18	7.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+OPH-41-MGE	2023-04-19	yes	Ophelia	0	0	DNA1-OPH-41-MGE	2023-07-18	3.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+OPH-43-DRS	2023-04-21	yes	Ophelia	0	0	DNA1-OPH-43-DRS	2023-06-27	37	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+OPH-43-MGE	2023-04-21	yes	Ophelia	1	1	DNA1-OPH-43-MGE	2023-06-27	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+OPH-44-DRS	2023-04-22	yes	Ophelia	0	0	DNA1-OPH-44-DRS	2023-08-08	28	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-44-MGE	2023-04-22	yes	Ophelia	0	0	DNA1-OPH-44-MGE	2023-08-08	5.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-45-DRS	2023-04-23	yes	Ophelia	0	0	DNA1-OPH-45-DRS	2023-12-19	54	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+OPH-45-MGE	2023-04-23	yes	Ophelia	1	1	DNA1-OPH-45-MGE	2023-12-19	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+OPH-48-DRS	2023-04-26	yes	Ophelia	0	0	DNA1-OPH-48-DRS	2024-02-16	105	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-48-MGE	2023-04-26	yes	Ophelia	1	1	DNA1-OPH-48-MGE	2024-02-16	91	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-49-DRS	2023-04-27	yes	Ophelia	0	0	DNA1-OPH-49-DRS	2024-03-08	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-49-MGE	2023-04-27	yes	Ophelia	1	1	DNA1-OPH-49-MGE	2024-03-08	46	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-50-MGE	2023-04-28	yes	Ophelia	0	0	DNA1-OPH-50-MGE	2024-05-21	20	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+OPH-55-DRS	2023-05-03	yes	Ophelia	0	0	DNA1-OPH-55-DRS	2024-02-02	80	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+OPH-55-MGE	2023-05-03	yes	Ophelia	1	1	DNA1-OPH-55-MGE	2024-02-02	21	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-57-DRS	2023-05-05	yes	Ophelia	0	0	DNA1-OPH-57-DRS	2023-06-26	98	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+OPH-57-MGE	2023-05-05	yes	Ophelia	1	1	DNA1-OPH-57-MGE	2023-06-26	12	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+OPH-58-DRS	2023-05-06	yes	Ophelia	0	0	DNA1-OPH-58-DRS	2023-08-18	73	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-58-MGE	2023-05-06	yes	Ophelia	0	0	DNA1-OPH-58-MGE	2023-08-18	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+OPH-59-DRS	2023-05-07	yes	Ophelia	0	0	DNA1-OPH-59-DRS	2024-02-02	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-59-MGE	2023-05-07	yes	Ophelia	1	1	DNA1-OPH-59-MGE	2024-02-02	52	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+OPH-63-MGE	2023-05-11	yes	Ophelia	0	0	DNA1-OPH-63-MGE	2023-11-01	0.7	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+OPH-66-DRS	2023-05-14	yes	Ophelia	0	0	DNA1-OPH-66-DRS	2023-07-18	68	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+OPH-66-MGE	2023-05-14	yes	Ophelia	0	0	DNA1-OPH-66-MGE	2023-07-18	38	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+OPH-69-MGE	2023-05-17	yes	Ophelia	0	0	DNA1-OPH-69-MGE	2023-11-01	2.6	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+OPH-70-DRS	2023-05-18	yes	Ophelia	0	0	DNA1-OPH-70-DRS	2023-07-25	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+OPH-70-MGE	2023-05-18	yes	Ophelia	0	0	DNA1-OPH-70-MGE	2023-07-25	9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+OPH-9-MGE	2023-03-18	yes	Ophelia	1	1	DNA1-OPH-9-MGE	2024-05-07	16	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+PAD-1-DRS	2023-03-10	yes	Padme	0	0	DNA1-PAD-1-DRS	2023-07-18	35	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+PAD-1-MGE	2023-03-10	yes	Padme	1	1	DNA1-PAD-1-MGE	2023-07-18	91	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+PAD-11-DRS	2023-03-20	yes	Padme	0	0	DNA1-PAD-11-DRS	2023-12-12	53	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+PAD-11-MGE	2023-03-20	yes	Padme	1	1	DNA1-PAD-11-MGE	2023-12-12	11	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+PAD-15-DRS	2023-03-24	yes	Padme	0	0	DNA1-PAD-15-DRS	2023-07-21	77	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+PAD-15-MGE	2023-03-24	yes	Padme	0	0	DNA1-PAD-15-MGE	2023-07-21	78	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+PAD-17-MGE	2023-03-26	yes	Padme	0	0	DNA1-PAD-17-MGE	2024-03-21	37	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+PAD-20-DRS	2023-03-29	yes	Padme	0	0	DNA1-PAD-20-DRS	2023-06-15	84	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+PAD-20-MGE	2023-03-29	yes	Padme	0	0	DNA1-PAD-20-MGE	2023-06-15	27	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+PAD-5-DRS	2023-03-14	yes	Padme	0	0	DNA1-PAD-5-DRS	2024-01-16	0.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+PAD-5-MGE	2023-03-14	yes	Padme	1	1	DNA1-PAD-5-MGE	2024-01-16	2.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 8	
+PAD-6-DRS	2023-03-15	yes	Padme	0	0	DNA1-PAD-6-DRS	2023-10-04	34	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+PAD-6-MGE	2023-03-15	yes	Padme	1	1	DNA1-PAD-6-MGE	2023-10-04	11	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+PAD-7-MGE	2023-03-16	yes	Padme	0	0	DNA1-PAD-7-MGE	2024-05-28	23	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+WOL-1-DRS	2023-03-10	yes	Wolverine	0	0	DNA1-WOL-1-DRS	2023-06-20	0.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+WOL-1-MGE	2023-03-10	yes	Wolverine	1	1	DNA1-WOL-1-MGE	2023-06-20	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+WOL-14-DRS	2023-03-23	yes	Wolverine	0	0	DNA1-WOL-14-DRS	2024-02-07	100	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+WOL-14-MGE	2023-03-23	yes	Wolverine	1	1	DNA1-WOL-14-MGE	2024-02-07	40	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+WOL-15-MGE	2023-03-24	yes	Wolverine	0	0	DNA1-WOL-15-MGE	2023-07-06	2.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-15-MGE	2023-03-24	yes	Wolverine	0	0	DNA2-WOL-15-MGE	2023-07-10	6.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-16-DRS	2023-03-25	yes	Wolverine	0	0	DNA1-WOL-16-DRS	2023-08-29	11	SA/GC	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-16-MGE	2023-03-25	yes	Wolverine	0	0	DNA1-WOL-16-MGE	2023-08-29	1.8	SA/GC	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-17-MGE	2023-03-26	yes	Wolverine	1	1	DNA1-WOL-17-MGE	2024-05-07	15	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+WOL-18-MGE	2023-03-27	yes	Wolverine	0	0	DNA1-WOL-18-MGE	2024-04-23	7.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+WOL-19-MGE	2023-03-28	yes	Wolverine	0	0	DNA1-WOL-19-MGE	2024-08-07	4.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+WOL-2-DRS	2023-03-11	yes	Wolverine	0	0	DNA1-WOL-2-DRS	2023-08-18	8.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-2-MGE	2023-03-11	yes	Wolverine	0	0	DNA1-WOL-2-MGE	2023-08-18	2.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-20-MGE	2023-03-29	yes	Wolverine	0	0	DNA1-WOL-20-MGE	2024-03-21	13	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+WOL-24-MGE	2023-04-02	yes	Wolverine	0	0	DNA1-WOL-24-MGE	2024-05-28	4	SA/TSP	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+WOL-28-MGE	2023-04-06	yes	Wolverine	0	0	DNA1-WOL-28-MGE	2023-11-01	0.4	SA/MB	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+WOL-29-DRS	2023-04-07	yes	Wolverine	0	0	DNA1-WOL-29-DRS	2023-06-06	1.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+WOL-29-MGE	2023-04-07	yes	Wolverine	0	0	DNA1-WOL-29-MGE	2023-06-06	2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 1	
+WOL-36-MGE	2023-04-14	yes	Wolverine	0	0	DNA1-WOL-36-MGE	2023-07-28	0.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+WOL-37-MGE	2023-04-15	yes	Wolverine	1	1	DNA1-WOL-37-MGE	2023-06-22	0.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+WOL-41-DRS	2023-04-19	yes	Wolverine	0	0	DNA1-WOL-41-DRS	2023-07-25	7.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+WOL-41-MGE	2023-04-19	yes	Wolverine	0	0	DNA1-WOL-41-MGE	2023-07-25	7.8	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+WOL-43-DRS	2023-04-21	yes	Wolverine	0	0	DNA1-WOL-43-DRS	2023-06-29	26	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-43-MGE	2023-04-21	yes	Wolverine	0	0	DNA1-WOL-43-MGE	2023-06-29	1.7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-44-DRS	2023-04-22	yes	Wolverine	1	1	DNA1-WOL-44-DRS	2023-08-18	106	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-44-MGE	2023-04-22	yes	Wolverine	2	2	DNA1-WOL-44-MGE	2023-08-18	7	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-46-DRS	2023-04-24	yes	Wolverine	0	0	DNA1-WOL-46-DRS	2024-03-04	33	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+WOL-46-MGE	2023-04-24	yes	Wolverine	0	0	DNA1-WOL-46-MGE	2024-03-04	0.5	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+WOL-48-MGE	2023-04-26	yes	Wolverine	0	0	DNA1-WOL-48-MGE	2024-06-17	10	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+WOL-49-DRS	2023-04-27	yes	Wolverine	0	0	DNA1-WOL-49-DRS	2024-02-16	31	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+WOL-49-MGE	2023-04-27	yes	Wolverine	1	1	DNA1-WOL-49-MGE	2024-02-16	14	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 9	
+WOL-50-MGE	2023-04-28	yes	Wolverine	0	0	DNA1-WOL-50-MGE	2024-09-09	1.4	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 11	
+WOL-57-DRS	2023-05-05	yes	Wolverine	0	0	DNA1-WOL-57-DRS	2023-07-18	44	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+WOL-57-MGE	2023-05-05	yes	Wolverine	1	1	DNA1-WOL-57-MGE	2023-07-18	1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 4	
+WOL-58-MGE	2023-05-06	yes	Wolverine	0	0	DNA1-WOL-58-MGE	2024-03-25	1.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 10	
+WOL-59-DRS	2023-05-07	yes	Wolverine	0	0	DNA1-WOL-59-DRS	2023-07-06	1.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-59-DRS	2023-05-07	yes	Wolverine	0	0	DNA2-WOL-59-DRS	2023-07-10	1.2	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-59-MGE	2023-05-07	yes	Wolverine	0	0	DNA1-WOL-59-MGE	2023-07-06	1.6	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-59-MGE	2023-05-07	yes	Wolverine	0	0	DNA2-WOL-59-MGE	2023-07-10	6.3	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 3	
+WOL-60-MGE	2023-05-08	yes	Wolverine	1	1	DNA1-WOL-60-MGE	2023-10-25	2.3	SA/SK	Quick-DNA Fecal/Soil Microbe	DNA Extracts 7	
+WOL-61-DRS	2023-05-09	yes	Wolverine	0	0	DNA1-WOL-61-DRS	2023-06-23	79	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	
+WOL-61-MGE	2023-05-09	yes	Wolverine	0	0	DNA1-WOL-61-MGE	2023-06-23	8.9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 2	low
+WOL-66-DRS	2023-05-14	yes	Wolverine	0	0	DNA1-WOL-66-DRS	2023-07-21	51	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+WOL-66-MGE	2023-05-14	yes	Wolverine	0	0	DNA1-WOL-66-MGE	2023-07-21	5.1	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 5	
+WOL-70-DRS	2023-05-18	yes	Wolverine	1	1	DNA1-WOL-70-DRS	2023-08-04	22	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	
+WOL-70-MGE	2023-05-18	yes	Wolverine	2	2	DNA1-WOL-70-MGE	2023-08-04	9	SA	Quick-DNA Fecal/Soil Microbe	DNA Extracts 6	

@@ -1,0 +1,233 @@
+---
+title: "Clean Sample Data"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme:
+      bootswatch: yeti
+params:
+  sampleset: "marmoset"
+  
+---
+
+```{r, setup, include = F}
+global           <- config::get(config = "default")
+micro            <- config::get(config = "microbiome")
+read_processing  <- config::get(config = "read_processing")
+notebooks        <- config::get(config = "notebooks")
+loris            <- config::get(config = "loris")
+marm             <- config::get(config = "marmoset")
+path             <- config::get(config = params$sampleset)
+
+day1        <- loris$day1
+
+source(paste0(global$functions))
+source(paste0(global$packages))
+source(paste0(global$conflicts))
+source(paste0(global$inputs))
+source(paste0(read_processing$functions))
+
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
+```
+
+
+```{r}
+samples     <- read.csv(path$samples_csv, header = T) %>% 
+                      filter(str_starts(SampleID, "\\w+")) %>% 
+                      select(-SampleBox)  %>%
+                      mutate(SampleID = str_squish(str_trim(SampleID, "both"))) %>% distinct() %>%
+                      mutate(CollectionDate     = mdy(SampleDate),
+                             Subject            = str_squish(str_trim(SampleSubject)),
+                             .keep = "unused") %>% distinct() %>%
+                      mutate(Subj_Certainty = if_else(Subject %in% subject_list, "yes", "no")) %>%
+                      mutate(Subject        = str_remove_all(Subject, "\\?"))
+```
+
+```{r}
+extracts <- read.csv(path$extracts_csv, header = T) %>% 
+  filter(str_starts(SampleID, "\\w+")) %>%
+  mutate(SampleID = str_squish(str_trim(SampleID, "both")),
+         ExtractID= str_squish(str_trim(ExtractID, "both")),
+         ExtractDate       = mdy(ExtractDate)) %>%
+  mutate(ExtractConc       = str_remove_all(ExtractConcentration, ">"), .keep = "unused") %>%
+  mutate(ExtractConc = if_else(str_detect(ExtractConc, "Higher"), "100", ExtractConc),
+         ExtractConc = if_else(str_detect(ExtractConc, "HIGHER"), "100", ExtractConc),
+         ExtractConc = if_else(ExtractConc == "LOW", "0", ExtractConc),
+         ExtractConc = if_else(ExtractConc == "", NA, ExtractConc)) %>%
+  mutate(ExtractConc = round(as.numeric(ExtractConc), 1))  %>% filter(ExtractType == "DNA") %>%
+  select(-ExtractType) %>%
+  left_join(samples) %>% distinct() 
+```
+
+```{r}
+compilation <- read.csv(path$compilation_csv, header = T)      %>% 
+  filter(str_starts(SampleID, "\\w+") & str_starts(SequenceID, "\\w+") & Pooled.Library.Code != "#N/A") %>% 
+  mutate(SampleID   = str_squish(str_trim(SampleID  , "both")),
+         ExtractID  = str_squish(str_trim(ExtractID , "both")),
+         SequenceID = str_squish(str_trim(SequenceID, "both"))) %>% 
+  select(-c(ExtractDate:SampleBox)) %>%
+  left_join(extracts, by = join_by(ExtractID)) %>% distinct() %>%
+  mutate(SampleSet      = paste(params$sampleset),
+         LibraryTube    = as.integer(LibraryTube),
+         LibPrepDate    = ymd(str_remove_all(str_trim(Run.ID, "both"), "MIN_16_|MIN_16-")),
+         strands        = 2,
+         fragment_type  = 0,
+         Length         = 1500,
+         InputMassStart = 10,
+         SampVolPool    = round(as.numeric(Volume.Added.to.Pool..uL.), 0),) %>%
+  mutate(LibPrepWorkflow = if_else(str_detect(Kit, "LSK"), "lsk16s", "rapid16s")) %>%
+  mutate(TemplateVolPrep = if_else(LibPrepWorkflow == "lsk", 47, 15),
+         PoolSamples     = "yes",
+         InputMassFinal  = 50,
+         LibraryCode     = Pooled.Library.Code) %>%
+  mutate(TotalPoolVol = sum(SampVolPool), .by = LibraryCode) %>%
+  mutate(BeadVol = TotalPoolVol * 0.6) %>%
+  select(LibraryTube,
+         ExtractID,
+         SampleID,
+         LibraryBarcode,
+         ExtractConc,
+         SampleSet,
+         LibraryCode,
+         SequenceID,
+         LibPrepDate,
+         LibPrepWorkflow,
+         LibPrepKit = Kit,
+         FlowCellType   = Flow.Cell.Type,
+         FlowCellSerial = Flow.Cell.ID,
+         SeqDevice = Sequencer,
+         strands,
+         fragment_type,
+         Length,
+         InputMassStart,
+         TemplateVolPrep,
+         PoolSamples,
+         SampVolPool,
+         TotalPoolVol,
+         BeadVol,
+         InputMassFinal,
+         Conc_QC2 = Final.Library.Concentration) %>%
+  arrange(ExtractID, SequenceID)  %>% distinct() 
+```
+
+```{r}
+count.extracts    <- extracts %>% select(ExtractID, SampleID) %>% distinct() %>% 
+  group_by(SampleID)  %>% 
+  mutate(n_dna_extracts = n_distinct(ExtractID)) %>% ungroup() %>% select(-ExtractID)
+
+count.libraries <- compilation %>% select(SequenceID, ExtractID, SampleID) %>% distinct() %>% 
+  group_by(ExtractID) %>% mutate(n_16s_extract = n_distinct(SequenceID)) %>% ungroup() %>%
+  group_by(SampleID)  %>% mutate(n_16s_sample  = n_distinct(SequenceID)) %>% ungroup() %>% select(-SequenceID)
+
+```
+
+```{r}
+extracts.export <- extracts %>% left_join(count.libraries) %>% 
+  mutate(n_16s_extract = if_else(is.na(n_16s_extract), 0, n_16s_extract),
+         n_16s_sample  = if_else(is.na(n_16s_sample) , 0, n_16s_sample)) %>%
+  select(SampleID,
+         CollectionDate,
+         Subj_Certainty,
+         Subject,
+         n_16s_extract,
+         n_16s_sample,
+         ExtractID,
+         ExtractDate,
+         ExtractConc,
+         ExtractedBy,
+         ExtractKit,
+         ExtractBox,
+         ExtractNotes) %>%
+  distinct() %>%
+  arrange(SampleID, ExtractID)
+```
+
+```{r}
+samples.export <- samples %>% left_join(count.extracts) %>% 
+  left_join(select(count.libraries, c("SampleID", "n_16s_sample"))) %>% 
+  mutate(n_16s_sample   = if_else(is.na(n_16s_sample)   , 0, n_16s_sample),
+         n_dna_extracts = if_else(is.na(n_dna_extracts) , 0, n_dna_extracts)) %>%
+  select(SampleID,
+         SampleCollectedBy,
+         SampleNotes,
+         CollectionDate,
+         Subj_Certainty,
+         Subject,
+         n_dna_extracts,
+         n_16s_sample) %>%
+  distinct() %>%
+  arrange(SampleID)
+```
+
+
+```{r}
+libraries <- compilation %>%
+  filter(str_detect(ExtractID, "\\w")) %>%
+  select(LibraryTube,
+         ExtractID,
+         SequenceID,
+         LibPrepDate,
+         Pipeline          = LibPrepWorkflow,
+         LibraryBarcode,
+         LibraryFinalConc  = Conc_QC2,
+         LibraryCode,
+         LibraryPoolVol_ul = TotalPoolVol)
+```
+
+```{r}
+compilation.export <- compilation %>%
+  filter(str_detect(ExtractID, "\\w")) %>%
+  left_join(extracts.export) %>%
+  left_join(samples.export) %>% distinct() %>%
+  select(SampleID,
+         CollectionDate,
+         Subj_Certainty,
+         Subject,
+         SampleCollectedBy,
+         SampleNotes,
+         ExtractID,
+         ExtractDate,
+         ExtractConc,
+         ExtractedBy,
+         ExtractKit,
+         ExtractBox,
+         ExtractNotes,
+         LibraryCode,
+         LibPrepWorkflow,
+         LibPrepDate,
+         SequenceID,
+         LibraryTube,
+         LibraryBarcode,
+         LibraryConc_QC2     = Conc_QC2,
+         LibraryTotalPoolVol = TotalPoolVol) %>%
+  arrange(SampleID, LibraryCode, LibraryTube)
+```
+
+
+```{r}
+write.table(compilation.export,
+              paste0(path$compilation),
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE)
+
+write.table(libraries,
+              paste0(path$libraries),
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE)
+write.table(extracts.export,
+              paste0(path$extracts),
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE)
+
+write.table(samples.export,
+              paste0(path$samples),
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE)
+```
+
+

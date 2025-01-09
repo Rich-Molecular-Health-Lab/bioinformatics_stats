@@ -1,0 +1,4 @@
+index,ref,startpos,endpos,number of reads,covbases,coverage,meandepth,meanbaseq,meanmapq,taxid,superkingdom,kingdom,phylum,class,order,family,genus,species,mean,sd,Coefficient of Variance,pcreads
+0,NR_043231.1,1,1396,1,1363,97.6361,0.976361,37.9,1.0,308994,Bacteria,unclassified Bacteria kingdom,Firmicutes,Negativicutes,Veillonellales,Veillonellaceae,Dialister,Dialister propionicifaciens,0.9763610315186246,0.15197602631191165,0.1556555632659051,16.67
+1,NR_133027.1,1,1519,3,1484,97.6959,2.90388,35.7,8.33,1232428,Bacteria,unclassified Bacteria kingdom,Firmicutes,Negativicutes,Veillonellales,Veillonellaceae,Megasphaera,Megasphaera massiliensis,2.903884134298881,0.4787769081782946,0.1648746596061731,50.0
+2,NR_178978.1,1,1529,2,1449,94.7678,1.86004,34.2,1.0,1676614,Bacteria,unclassified Bacteria kingdom,Bacteroidota,Bacteroidia,Bacteroidales,Prevotellaceae,Prevotella,Prevotella rara,1.8600392413342053,0.47451297548553517,0.255109120786703,33.33

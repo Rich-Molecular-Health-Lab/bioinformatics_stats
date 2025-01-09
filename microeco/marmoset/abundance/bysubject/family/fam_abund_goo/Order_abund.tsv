@@ -1,0 +1,17 @@
+"Taxa"	"goose20"	"goose22"	"goose37"	"goose42"	"goose44"
+"k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales"	0.256036576653808	0.146142857142857	0.114763470058597	0.201972555746141	0.377841315225161
+"k__Bacteria|p__Firmicutes|c__Negativicutes|o__Selenomonadales"	0.180168595513645	0.180142857142857	0.138202086608547	0.151658090337336	0.204860614724803
+"k__Bacteria|p__Firmicutes|c__Negativicutes|o__Acidaminococcales"	0.152878982711816	0.108	0.257396026868658	0.19811320754717	0.119370979270908
+"k__Bacteria|p__Firmicutes|c__Clostridia|o__Eubacteriales"	0.167881125875125	0.161285714285714	0.127197370301558	0.11735277301315	0.150822015725518
+"k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales"	0.143163309044149	0.165428571428571	0.186508503644419	0.145940537449971	0.0343102215868477
+"k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Aeromonadales"	0.0647235319331333	0.0548571428571429	0.104616264113191	0.14065180102916	0.0550393137955683
+"k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales"	0.000285755107872553	0.166	0.0408746605688152	0.0134362492853059	0.0254467476769121
+"k__Bacteria|p__Proteobacteria|c__Betaproteobacteria|o__Burkholderiales"	0.0317188169738534	0.0158571428571429	0.0250107188795198	0.0294453973699257	0.0108649035025018
+"k__Bacteria|p__Actinobacteria|c__Coriobacteriia|o__Coriobacteriales"	0.00200028575510787	0	0.00242961269115335	0.00114351057747284	0.0203002144388849
+"k__Bacteria|p__Fusobacteria|c__Fusobacteriia|o__Fusobacteriales"	0.00042863266180883	0.00142857142857143	0.00300128626554238	0	0.000142959256611866
+"k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales"	0.000571510215745106	0.000428571428571429	0	0	0.000428877769835597
+"k__Bacteria|p__Actinobacteria|c__Actinomycetia|o__Bifidobacteriales"	0	0.000142857142857143	0	0	0.000285918513223731
+"k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Pasteurellales"	0.000142877553936277	0.000285714285714286	0	0	0
+"k__Bacteria|p__Actinobacteria|c__Actinomycetia|o__Corynebacteriales"	0	0	0	0.000142938822184105	0.000142959256611866
+"k__Bacteria|p__Actinobacteria|c__Coriobacteriia|o__Eggerthellales"	0	0	0	0	0.000142959256611866
+"k__Bacteria|p__Proteobacteria|c__Betaproteobacteria|o__Neisseriales"	0	0	0	0.000142938822184105	0

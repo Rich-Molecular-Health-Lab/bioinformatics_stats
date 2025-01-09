@@ -1,0 +1,9 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"grogu22"	22	2023-03-31	"grogu"	"F"	"cm010"	"barcode05"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"2"	2	15	2	4
+"grogu36"	36	2023-04-14	"grogu"	"F"	"cm001"	"barcode42"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	15	2	5
+"grogu37"	37	2023-04-15	"grogu"	"F"	"cm006"	"barcode02"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	15	2	5
+"grogu41"	41	2023-04-19	"grogu"	"F"	"cm001"	"barcode30"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"D_R-Shield"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	15	2	5
+"grogu45"	45	2023-04-23	"grogu"	"F"	"cm007"	"barcode13"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	15	2	2
+"grogu50"	50	2023-04-28	"grogu"	"F"	"cm010"	"barcode17"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	15	2	2
+"grogu56"	56	2023-05-04	"grogu"	"F"	"cm008"	"barcode13"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	15	2	2
+"grogu70"	70	2023-05-18	"grogu"	"F"	"cm001"	"barcode44"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"D_R-Shield"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	15	2	3

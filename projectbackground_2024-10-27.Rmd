@@ -1,0 +1,56 @@
+---
+title: "Project Background: Loris Microbiome"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    citation_package: biblatex
+    extra_dependencies: 
+      - biblatex
+      - geometry
+      - setspace
+      - pdfpages
+      - graphicx
+      - enumitem
+      - hyperref
+    toc: true
+    number_sections: true
+    latex_engine: xelatex
+fontsize: 11pt
+geometry: "letterpaper, margin=1in"
+header-includes:
+  - \hypersetup{pdfauthor={Alicia Rich}, pdftitle={Project Background: Loris Microbiome}, colorlinks=true, linkcolor=blue, bookmarksopen=true, bookmarksnumbered=true}
+  - \usepackage[style=numeric, sorting=ydnt, backend=biber]{biblatex}
+params:
+  local: "/Users/aliciamrich/RStudioMacbook/GitRepos/microbiomes_loris/"
+  
+---
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+source(paste0(params$local, "dependencies/R/setup.R"))
+source(paste0(params$local, "dependencies/R/microeco_setup.R"))
+```
+
+# Project Background
+
+## Subjects
+
+```{r}
+subjects <- read.recent.version.csv("data", "subjects_studbook_") %>%
+            mutate(Age = year(now()) - Born,
+                   Location = str_glue("{Location}", fixed(" ("), "{Location.Code}", fixed(")"))) %>%
+            select(
+                   Common,
+                   Name,
+                   Sex,
+                   Location,
+                   Age,
+                   StudbookID = ID,
+                   Birth_Location = Birth.Location) %>%
+            gt(rowname_col = "Common", groupname_col = "Location") %>%
+            
+
+subjects
+```
+

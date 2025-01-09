@@ -1,0 +1,7 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"henry29"	29	2023-04-07	"henry"	"F"	"cm009"	"barcode01"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	19	2	5
+"henry36"	36	2023-04-14	"henry"	"F"	"cm004"	"barcode16"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"NE"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	19	2	5
+"henry42"	42	2023-04-20	"henry"	"F"	"cm007"	"barcode11"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	19	2	5
+"henry48"	48	2023-04-26	"henry"	"F"	"cm010"	"barcode14"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	19	2	2
+"henry59"	59	2023-05-07	"henry"	"F"	"cm007"	"barcode20"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	19	2	3
+"henry66"	66	2023-05-14	"henry"	"F"	"cm009"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	19	2	3

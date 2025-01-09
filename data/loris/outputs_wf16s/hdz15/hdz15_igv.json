@@ -1,0 +1,228 @@
+{
+    "reference": {
+        "id": "ref",
+        "name": "ref",
+        "wholeGenomeView": false,
+        "fastaURL": "igv_reference/reduced_reference.fasta.gz",
+        "indexURL": "igv_reference/reduced_reference.fasta.gz.fai",
+        "compressedIndexURL": "igv_reference/reduced_reference.fasta.gz.gzi"
+    },
+    "tracks": [
+        {
+            "name": "bams/hdz-330-s323.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-330-s323.reference.bam",
+            "indexURL": "bams/hdz-330-s323.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-331-s324.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-331-s324.reference.bam",
+            "indexURL": "bams/hdz-331-s324.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-334-s325.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-334-s325.reference.bam",
+            "indexURL": "bams/hdz-334-s325.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-340-s326.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-340-s326.reference.bam",
+            "indexURL": "bams/hdz-340-s326.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-381-s327.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-381-s327.reference.bam",
+            "indexURL": "bams/hdz-381-s327.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-382-s328.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-382-s328.reference.bam",
+            "indexURL": "bams/hdz-382-s328.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-398-s329.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-398-s329.reference.bam",
+            "indexURL": "bams/hdz-398-s329.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-399-s330.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-399-s330.reference.bam",
+            "indexURL": "bams/hdz-399-s330.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-400-s331.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-400-s331.reference.bam",
+            "indexURL": "bams/hdz-400-s331.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-401-s332.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-401-s332.reference.bam",
+            "indexURL": "bams/hdz-401-s332.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-402-s333.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-402-s333.reference.bam",
+            "indexURL": "bams/hdz-402-s333.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-403-s334.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-403-s334.reference.bam",
+            "indexURL": "bams/hdz-403-s334.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-405-s335.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-405-s335.reference.bam",
+            "indexURL": "bams/hdz-405-s335.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-406-s336.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-406-s336.reference.bam",
+            "indexURL": "bams/hdz-406-s336.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-407-s337.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-407-s337.reference.bam",
+            "indexURL": "bams/hdz-407-s337.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-408-s338.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-408-s338.reference.bam",
+            "indexURL": "bams/hdz-408-s338.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-409-s339.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-409-s339.reference.bam",
+            "indexURL": "bams/hdz-409-s339.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-441-s340.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-441-s340.reference.bam",
+            "indexURL": "bams/hdz-441-s340.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-446-s341.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-446-s341.reference.bam",
+            "indexURL": "bams/hdz-446-s341.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-447-s342.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-447-s342.reference.bam",
+            "indexURL": "bams/hdz-447-s342.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-451-s343.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-451-s343.reference.bam",
+            "indexURL": "bams/hdz-451-s343.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-452-s344.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-452-s344.reference.bam",
+            "indexURL": "bams/hdz-452-s344.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/hdz-453-s345.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/hdz-453-s345.reference.bam",
+            "indexURL": "bams/hdz-453-s345.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        },
+        {
+            "name": "bams/pl-ntc-015-ctrl.reference.bam",
+            "type": "alignment",
+            "format": "bam",
+            "url": "bams/pl-ntc-015-ctrl.reference.bam",
+            "indexURL": "bams/pl-ntc-015-ctrl.reference.bam.bai",
+            "displayMode": "SQUISHED",
+            "colorBy": "strand"
+        }
+    ]
+}

@@ -1,0 +1,2 @@
+index,ref,startpos,endpos,number of reads,covbases,coverage,meandepth,meanbaseq,meanmapq,taxid,superkingdom,kingdom,phylum,class,order,family,genus,species,mean,sd,Coefficient of Variance,pcreads
+0,NR_041367.1,1,1477,1,1448,98.0366,0.980366,39.9,40,363843,Bacteria,unclassified Bacteria kingdom,Proteobacteria,Betaproteobacteria,Burkholderiales,unclassified Burkholderiales family,Rhizobacter,Rhizobacter fulvus,0.980365605958023,0.13878734042526675,0.1415669211382037,100.0

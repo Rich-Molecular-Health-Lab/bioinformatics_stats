@@ -1,0 +1,9 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"hera11"	11	2023-03-20	"hera"	"B"	"cm005"	"barcode03"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"2"	1	2	1	1
+"hera14"	14	2023-03-23	"hera"	"B"	"cm006"	"barcode14"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"F"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"1"	1	2	1	1
+"hera17"	17	2023-03-26	"hera"	"B"	"cm001"	"barcode28"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	2	1	2
+"hera24"	24	2023-04-02	"hera"	"B"	"cm008"	"barcode04"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	2	1	2
+"hera44"	44	2023-04-22	"hera"	"B"	"cm001"	"barcode08"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"2"	4	2	1	4
+"hera45"	45	2023-04-23	"hera"	"B"	"cm007"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	2	1	4
+"hera58"	58	2023-05-06	"hera"	"B"	"cm001"	"barcode26"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	2	1	5
+"hera67"	67	2023-05-15	"hera"	"B"	"cm004"	"barcode02"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	2	1	5

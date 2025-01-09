@@ -1,0 +1,8 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"ivy24"	24	2023-04-02	"ivy"	"F"	"cm005"	"barcode21"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"2"	2	12	2	4
+"ivy29"	29	2023-04-07	"ivy"	"F"	"cm009"	"barcode03"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	12	2	5
+"ivy36"	36	2023-04-14	"ivy"	"F"	"cm001"	"barcode29"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	12	2	5
+"ivy44"	44	2023-04-22	"ivy"	"F"	"cm004"	"barcode07"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"NE"	"F"	"D_R-Shield"	"2"	"intervention_2"	"2"	"gum"	"3"	4	12	2	2
+"ivy46"	46	2023-04-24	"ivy"	"F"	"cm007"	"barcode08"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	12	2	2
+"ivy47"	47	2023-04-25	"ivy"	"F"	"cm010"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	12	2	2
+"ivy70"	70	2023-05-18	"ivy"	"F"	"cm009"	"barcode22"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	12	2	3

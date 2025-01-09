@@ -1,0 +1,67 @@
+---
+title: "Make Dummy Data to Inventory Samples and Rxn Products"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme:
+      bootswatch: yeti
+  
+---
+
+```{r, setup, include = F}
+global           <- config::get(config = "default")
+bats             <- config::get(config = "bats")
+isolates         <- config::get(config = "isolates")
+envir            <- config::get(config = "envir")
+
+source(paste0(global$functions))
+source(paste0(global$packages))
+source(paste0(global$conflicts))
+source(paste0(global$inputs))
+source(paste0(read_processing$functions))
+
+```
+
+```{r}
+blank.libraries <- tibble(
+  LibraryTube       = c(1),
+  ExtractID         = c("BLANK"),
+  SequenceID        = c("BLANK"),
+  LibPrepDate       = c("2024-12-31"),
+  Pipeline          = c("NONE"),
+  LibraryBarcode    = c("NONE"),
+  LibraryFinalConc  = c(0),
+  LibraryCode       = c("NONE"),
+  LibraryPoolVol_ul = c(0)
+) %>%
+  mutate(LibPrepDate = ymd(LibPrepDate))
+
+blank.extracts <- tibble(
+  SampleID       = c("BLANK"),
+  CollectionDate = c("2024-12-31"),
+  Subj_Certainty = c("BLANK"),
+  Subject        = c("BLANK"),
+  n_16s_extract  = c(0),
+  n_16s_sample   = c(0),
+  ExtractID      = c("BLANK"),
+  ExtractDate    = c("2024-12-31"),
+  ExtractConc    = c(0),
+  ExtractedBy    = c("BLANK"),
+  ExtractKit     = c("BLANK"),
+  ExtractBox     = c("BLANK"),
+  ExtractNotes   = c("BLANK")
+) %>%
+  mutate(CollectionDate = ymd(CollectionDate), ExtractDate = ymd(ExtractDate))
+```
+
+```{r}
+export_table(blank.extracts , isolates$extracts)
+export_table(blank.extracts , bats$extracts)
+export_table(blank.extracts , envir$extracts)
+export_table(blank.libraries, isolates$libraries)
+export_table(blank.libraries, bats$libraries)
+export_table(blank.libraries, envir$libraries)
+```
+
+

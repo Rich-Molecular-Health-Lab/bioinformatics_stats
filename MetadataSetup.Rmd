@@ -1,0 +1,411 @@
+---
+title: "Constructing Metadata Files"
+author: "Alicia Rich"
+output:
+  html_document:
+    toc: true
+    toc_location: "before"
+    toc_depth: 4
+    number_sections: false
+    toc_float: true
+    code_folding: "hide"
+    fig_caption: true
+editor_options: 
+  chunk_output_type: inline
+params:
+  taxon: "loris"
+                     
+---
+
+```{r, setup, include = F}
+global             <- config::get(config = "default")
+micro              <- config::get(config = "microbiome")
+read_processing    <- config::get(config = "read_processing")
+notebooks          <- config::get(config = "notebooks")
+
+source(paste0(global$functions))
+source(paste0(global$packages))
+source(paste0(global$conflicts))
+source(paste0(global$inputs))
+source(paste0(read_processing$functions))
+```
+
+# Intro
+
+This script shows an example of how to construct a metadata table that you can use for modeling interactions between variables in your data. I am going to do this with the Pygmy Loris dataset. There are many ways that you can code and organize these variables or add others, and many of those used here will interact with each other or overlap. This is only a rough starting table that we can further streamline in later analyses. The coding of your variables should depend on the specific questions or relationships you are trying to examine.  
+
+## Previous Scripts
+
+Before this, you should use the SampleInventory script to create the file compilation.tsv.  
+
+## Configurations
+
+### Taxon in Params
+
+You can use the taxon setting under params in the header of this script to select which taxon you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
+
+### Sequencing Run Lists
+
+Below is a chunk to generate a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date. The next chunk will format a list of all subject names for whichever taxon you identified in the header.
+
+```{r}
+seqruns <- list(
+  loris     = as.list(paste0("hdz", 1:18)),
+  marmoset  = as.list(sprintf("cm%03d", 1:10))
+)
+
+subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
+```
+
+### File Paths
+
+Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. 
+
+```
+sample_sheets:
+  compilations:
+    loris:    "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz_combined_sample_sheet.csv"
+    marmoset: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm_combined_sample_sheet.csv"
+  hdz1:  "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz1_sample_sheet.csv"
+  hdz2:  "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz2_sample_sheet.csv"
+  hdz3:  "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz3_sample_sheet.csv"
+  cm001: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm001_sample_sheet.csv"
+  cm002: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm002_sample_sheet.csv"
+  cm003: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm003_sample_sheet.csv"
+
+barcode_alignments:
+  compilations:
+    loris: "../labwork/minion_data/barcode_alignments/loris/hdz_combined_barcode_alignment.tsv"
+    marmoset: "../labwork/minion_data/barcode_alignments/marmoset/cm_combined_barcode_alignment.tsv"
+  hdz1:  "../labwork/minion_data/barcode_alignments/loris/hdz1_barcode_alignment.tsv"
+  hdz2:  "../labwork/minion_data/barcode_alignments/loris/hdz2_barcode_alignment.tsv"
+  hdz3:  "../labwork/minion_data/barcode_alignments/loris/hdz3_barcode_alignment.tsv"
+  cm001: "../labwork/minion_data/barcode_alignments/marmoset/cm001_barcode_alignment.tsv"
+  cm002: "../labwork/minion_data/barcode_alignments/marmoset/cm002_barcode_alignment.tsv"
+  cm003: "../labwork/minion_data/barcode_alignments/marmoset/cm003_barcode_alignment.tsv"
+  
+loris:
+  libraries_csv: "../data/libraries_loris.csv"
+  compilation_csv: "../data/compilation_loris.csv"
+  extracts_csv: "../data/extracts_loris.csv"
+  samples_csv: "../data/samples_loris.csv"
+  sample_sheet: "../bioinformatics_stats/loris/dataframes/sample_sheet/"
+  taxonomy_list: "../bioinformatics_stats/loris/dataframes/taxonomy_list/"
+
+marmoset:
+  libraries_csv: "../data/libraries_marmoset.csv"
+  compilation_csv: "../data/compilation_marmoset.csv"
+  extracts_csv: "../data/extracts_marmoset.csv"
+  samples_csv: "../data/samples_marmoset.csv"
+  sample_sheet: "../bioinformatics_stats/marmoset/dataframes/sample_sheet/"
+  taxonomy_list: "../bioinformatics_stats/marmoset/dataframes/taxonomy_list/"
+
+```
+
+Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working taxon you identified in the header:
+
+```{r}
+loris              <- config::get(config = "loris")
+marm               <- config::get(config = "marmoset")
+path               <- config::get(config = params$taxon)
+```
+
+### Other Scripts
+
+I also create some of the tables and lists used here in some scripts that the chunk below will run. This just keeps this script a bit tidier by modularizing some of the parts.
+
+```{r}
+source(path$metadata$diet)
+```
+
+
+# Script
+
+The chunk below is duplicated above. I am adding it here to run the full setup chunk again in case you skipped past the intro material:
+
+```{r, include = F}
+global             <- config::get(config = "default")
+micro              <- config::get(config = "microbiome")
+read_processing    <- config::get(config = "read_processing")
+notebooks          <- config::get(config = "notebooks")
+
+source(paste0(global$functions))
+source(paste0(global$packages))
+source(paste0(global$conflicts))
+source(paste0(global$inputs))
+source(paste0(read_processing$functions))
+
+seqruns <- list(
+  loris     = as.list(paste0("hdz", 1:18)),
+  marmoset  = as.list(sprintf("cm%03d", 1:10))
+)
+
+subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
+
+loris              <- config::get(config = "loris")
+marm               <- config::get(config = "marmoset")
+path               <- config::get(config = params$taxon)
+
+source(path$metadata$diet)
+source(path$metadata$bristol)
+source(path$metadata$envir)
+source(path$metadata$health)
+source(path$metadata$meds)
+source(path$metadata$repro)
+
+```
+
+# Script
+
+## Data Tables from Script
+
+Below are some summary tables for the data imported from the external script modules above.
+
+```{r}
+diet.table
+```
+
+```{r}
+health.table
+```
+
+```{r}
+housing.table
+```
+
+## Import Sample Records
+
+Now I will read in the summary table for all samples, extracts, and libraries that we cleaned and compiled in a previous script (SampleInventory.Rmd). Then I will match each record to the metadata tables that I made based on overlapping dates.
+
+```{r}
+samples <- read.table(path$compilation, header = T, sep = "\t") %>%
+  mutate(SeqDate        = ymd(SeqDate),
+         SeqDateTime    = as_datetime(SeqDateTime),
+         LibPrepDate    = ymd(LibPrepDate),
+         ExtractDate    = ymd(ExtractDate),
+         CollectionDate = ymd(CollectionDate),
+         Subject        = str_to_lower(Subject))
+```
+
+```{r}
+samples.dt <- samples   %>% 
+              filter(!is.na(CollectionDate)) %>% 
+              mutate(collection        = decimal_date(as.POSIXct(CollectionDate)),
+                     collection_y      = collection,
+                     subject = factor(Subject, levels = c("warble", "culi"))) %>%
+              select(SampleID, 
+                     subject, 
+                     collection, 
+                     collection_y) %>%
+              as.data.table()
+```
+
+
+```{r}
+setkey(samples.dt, subject, collection, collection_y)
+
+samples.nosubj.dt <- as.data.table(samples.dt)
+setkey(samples.nosubj.dt,   collection, collection_y)
+```
+
+## Merge Set 1
+
+### Diet
+
+```{r metadata diet, message=FALSE, warning=FALSE, paged.print=TRUE}
+samples.diet  <- foverlaps(samples.dt, diet.dt, type = "any", nomatch = NA, mult = "all") %>% tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+```
+
+### Housing
+
+```{r metadata housing, message=FALSE, warning=FALSE, paged.print=TRUE}
+samples.housing      <- foverlaps(samples.dt, housing.dt, type = "any", nomatch = 0L) %>% tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+```
+
+### Medication
+
+```{r metadata meds, message=FALSE, warning=FALSE, paged.print=TRUE}
+samples.meds <- foverlaps(samples.dt, meds.dt, type = "any", nomatch = 0L) %>% tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+```
+
+
+## Merge Set 2
+
+### Culi's Diet Phases Only
+```{r}
+samples.culi.diet <- foverlaps(samples.nosubj.dt, diet.culi.dt, type = "any", nomatch = NA, mult = "all") %>%
+  tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+```
+
+
+### Estrus Cycles
+
+```{r metadata estrus, message=FALSE, warning=FALSE, paged.print=TRUE}
+samples.estrus    <- foverlaps(samples.nosubj.dt, warble.cyle.dt, type = "any", nomatch = 0L) %>%
+  tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+```
+
+### Breeding Access
+
+```{r metadata breeding access, message=FALSE, warning=FALSE, paged.print=TRUE}
+samples.access <- foverlaps(samples.nosubj.dt, breeding.access.dt, type = "any", nomatch = 0L) %>%
+  tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+```
+
+## Merge Set 3
+
+### Notes Diet Changes
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+notes.diet  <- diet.log.both %>% filter(event_state == "event") %>% 
+                                  group_by(start, subject) %>% 
+                                  summarize(diet_change = str_flatten(title, ", ", na.rm = TRUE)) %>% 
+                                  ungroup() %>%
+                                  mutate(note_type   = "diet_change",
+                                         note_detail = diet_change, .keep = "unused")
+```
+
+### Notes Health
+
+```{r message=FALSE, warning=FALSE}
+notes.health  <- health.log %>% filter(event_state == "event") %>% 
+                              group_by(start, subject) %>% 
+                             summarize(category = str_flatten(category, ", ", na.rm = TRUE),
+                                    title       = str_flatten(title,    ", ", na.rm = TRUE)) %>% 
+                              ungroup() %>%
+                            mutate(note_type   = str_glue("health_", "{category}"),
+                                   note_detail = title, .keep = "unused")
+
+```
+
+### Notes Repro
+
+```{r message=FALSE, warning=FALSE}
+notes.repro  <- repro.log %>% filter(event_state == "event") %>% 
+                            group_by(start) %>% 
+                          summarize(category   = str_flatten(category,   ", ", na.rm = TRUE),
+                                    title      = str_flatten(title, ", ", na.rm = TRUE)) %>% ungroup()
+
+notes.repro.c <- notes.repro %>% mutate(subject = factor("culi"))
+notes.repro.w <- notes.repro %>% mutate(subject = factor("warble"))
+
+notes.repro <- bind_rows(notes.repro.c, notes.repro.w) %>%
+                        mutate(note_type   = str_glue("repro_", "{category}"),
+                               note_detail = title,
+                               .keep = "unused")
+```
+
+## Bristol Scores
+
+```{r}
+bristol.range    <- bristol %>% 
+  mutate(subject = factor("culi"),
+         bristol = score_culi, 
+         .keep = "unused") %>% 
+ group_by(date, subject) %>%
+         summarize(bristol_min  = min(bristol),
+                   bristol_max  = max(bristol),
+                   bristol_mean = round(mean(bristol), digits = 1)) %>% ungroup()
+```
+
+# Combining Match Sets {.tabset}
+
+## Set 1 Together
+
+```{r warning=FALSE}
+samples.set1 <- samples %>% 
+             mutate(subject = str_to_lower(Subject), .keep = "unused") %>%
+             left_join(samples.diet,    by = join_by(SampleID, subject)) %>%
+             left_join(samples.housing, by = join_by(SampleID, subject)) %>%
+             left_join(samples.meds,    by = join_by(SampleID, subject)) %>%
+             mutate(across(where(is.numeric), replace_na, 0)) %>% distinct()
+```
+
+## Set 2 Together
+
+```{r warning=FALSE}
+samples.set1.2 <- samples.set1 %>% 
+   left_join(samples.estrus,    by = join_by(SampleID, subject)) %>%
+   left_join(samples.access,    by = join_by(SampleID, subject)) %>%
+   left_join(samples.culi.diet, by = join_by(SampleID, subject)) %>%
+   mutate(across(where(is.numeric), replace_na, 0)) %>%
+   mutate(warble_cycle = replace_na(warble_cycle, "not_estrus"),
+          med_type     = replace_na(med_type, "none"),
+          med_name     = replace_na(med_name, "none"))
+```
+
+## Set 3 Together
+
+```{r message=FALSE, warning=FALSE}
+set3.notes <- bind_rows(notes.diet,
+                        notes.health,
+                        notes.repro) %>%
+    ungroup() %>%
+    group_by(start, subject) %>%
+    summarize(note_type   = str_flatten(note_type,   "; ", na.rm = TRUE),
+              note_detail = str_flatten(note_detail, "; ", na.rm = TRUE)) %>%
+    ungroup()
+```
+
+## All Together
+
+```{r}
+samples.metadata <- samples.set1.2 %>% left_join(bristol.range,
+                                                 by = join_by(CollectionDate == date, subject)) %>%
+                                       left_join(set3.notes,
+                                                 by = join_by(CollectionDate == start, subject)) %>%
+                                       mutate(note_type   = replace_na("none"),
+                                              note_detail = replace_na("none"))  %>%
+  arrange(CollectionDate, subject, SampleID)
+
+write.table(samples.metadata,
+            path$metadata$summary,
+            row.names = F,
+            sep = "\t")
+```
+
+
+```{r}
+samples.metadata %>%
+  kbl() %>%
+  kable_styling(full_width = T,
+                fixed_thead = T,
+                c("hover", "responsive"),
+                position = "center") %>%
+  column_spec(1, bold = T) %>%
+  collapse_rows(columns = 1, valign = "top") %>%
+  scroll_box(width = "800px", height = "400px")
+
+```
+
+
+# Next Steps
+
+>Now you should proceed to the MicroEco Workflow to Begin Merging Metadata with Microbiome Results for Analysis.
+
+
+

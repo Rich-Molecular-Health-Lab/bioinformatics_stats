@@ -1,0 +1,29 @@
+---
+title: "microeco_first_use"
+output: html_document
+---
+
+
+# download link of the compressed packages archive
+# Alternative from Gitee "https://gitee.com/chiliubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
+url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
+# allow more time to download the zip file in R
+options(timeout = 2000)
+
+# Another way is to open the upper url in browser to download the zip file and move it to the current R working directory
+download.file(url = url, destfile = "microeco_dependence.zip")
+# uncompress the file in R
+tmp <- "microeco_dependence"
+unzip(paste0(tmp, ".zip"))
+# install devtools
+# run these one by one
+devtools::install_local(paste0(tmp, "/", "SpiecEasi-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "mixedCCA-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "SPRING-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "NetCoMi-main.zip"), repos = BiocManager::repositories())
+devtools::install_local(paste0(tmp, "/", "beem-static-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "chorddiag-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "ggradar-master.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "ggnested-main.zip"), dependencies = TRUE)
+devtools::install_local(paste0(tmp, "/", "ggcor-1-master.zip"), dependencies = TRUE)
+

@@ -1,0 +1,8 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"charles41"	41	2023-04-19	"charles"	"F"	"cm001"	"barcode23"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	13	2	5
+"charles46"	46	2023-04-24	"charles"	"F"	"cm003"	"barcode15 "	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	13	2	2
+"charles49"	49	2023-04-27	"charles"	"F"	"cm007"	"barcode01"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"5"	4	13	2	2
+"charles50"	50	2023-04-28	"charles"	"F"	"cm006"	"barcode18"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	13	2	2
+"charles51"	51	2023-04-29	"charles"	"F"	"cm007"	"barcode16"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	13	2	2
+"charles55"	55	2023-05-03	"charles"	"F"	"cm008"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	13	2	2
+"charles57"	57	2023-05-05	"charles"	"F"	"cm001"	"barcode04"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	13	2	3

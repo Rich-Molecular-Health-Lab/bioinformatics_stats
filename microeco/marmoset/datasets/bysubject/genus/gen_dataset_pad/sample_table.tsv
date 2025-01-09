@@ -1,0 +1,2 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"padme11"	11	2023-03-20	"padme"	"F"	"cm005"	"barcode04"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"Ethanol"	"2"	"run-in"	"0"	"baseline"	"1"	1	14	2	1

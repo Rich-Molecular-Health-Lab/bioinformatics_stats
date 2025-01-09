@@ -1,0 +1,17 @@
+"Taxa"	"korra21"	"korra29"	"korra44"	"korra48"	"korra58"
+"k__Bacteria|p__Bacteroidota|c__Bacteroidia|o__Bacteroidales"	0.159	0.0448635519359909	0.58084345961401	0.217745392198886	0.310330047149593
+"k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales"	0.219285714285714	0.457351050150021	0.00657612580414582	0.154307758251179	0.421631661665952
+"k__Bacteria|p__Firmicutes|c__Negativicutes|o__Selenomonadales"	0.164571428571429	0.285469352764681	0.045746962115797	0.166880982997571	0.116445206458065
+"k__Bacteria|p__Firmicutes|c__Negativicutes|o__Acidaminococcales"	0.171571428571429	0.0972996142306044	0.0904932094353109	0.132590370052865	0.0292898985569367
+"k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales"	0.15	0.064580654379197	0.0491779842744818	0.178596942420346	0.0251464494927847
+"k__Bacteria|p__Firmicutes|c__Clostridia|o__Eubacteriales"	0.112857142857143	0.0394342048864123	0.0877769835596855	0.116873839119874	0.0181454493499071
+"k__Bacteria|p__Proteobacteria|c__Betaproteobacteria|o__Burkholderiales"	0.0112857142857143	0.00728675525075011	0.0537526804860615	0.0210030004286327	0.0490070010001429
+"k__Bacteria|p__Actinobacteria|c__Actinomycetia|o__Bifidobacteriales"	0	0	0.0777698355968549	0	0.0278611230175739
+"k__Bacteria|p__Actinobacteria|c__Coriobacteriia|o__Coriobacteriales"	0.008	0.000714387769681383	0.00528949249463903	0.0105729389912845	0.00114302043149021
+"k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Aeromonadales"	0.00257142857142857	0.00257179597085298	0.00185847033595425	0.00114302043149021	0.00100014287755394
+"k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales"	0.000571428571428571	0.000142877553936277	0	0.000285755107872553	0
+"k__Bacteria|p__Tenericutes|c__Mollicutes|o__Anaeroplasmatales"	0	0	0.000571837026447462	0	0
+"k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Pasteurellales"	0.000142857142857143	0.000142877553936277	0	0	0
+"k__Bacteria|p__Actinobacteria|c__Coriobacteriia|o__Eggerthellales"	0	0	0.000142959256611866	0	0
+"k__Bacteria|p__Firmicutes|c__Bacilli|o__Bacillales"	0	0.000142877553936277	0	0	0
+"k__Bacteria|p__Fusobacteria|c__Fusobacteriia|o__Fusobacteriales"	0.000142857142857143	0	0	0	0

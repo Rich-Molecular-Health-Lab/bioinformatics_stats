@@ -1,0 +1,11 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"lambchop17"	17	2023-03-26	"lambchop"	"F"	"cm008"	"barcode18"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	10	2	2
+"lambchop18"	18	2023-03-27	"lambchop"	"F"	"cm003"	"barcode03"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	10	2	2
+"lambchop25"	25	2023-04-03	"lambchop"	"F"	"cm010"	"barcode07"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	10	2	2
+"lambchop37"	37	2023-04-15	"lambchop"	"F"	"cm007"	"barcode05"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"F"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	10	2	3
+"lambchop44"	44	2023-04-22	"lambchop"	"F"	"cm005"	"barcode08"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"lambchop46"	46	2023-04-24	"lambchop"	"F"	"cm003"	"barcode14"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"lambchop48"	48	2023-04-26	"lambchop"	"F"	"cm004"	"barcode15 "	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"lambchop50"	50	2023-04-28	"lambchop"	"F"	"cm007"	"barcode02"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"lambchop55"	55	2023-05-03	"lambchop"	"F"	"cm008"	"barcode11"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"lambchop70"	70	2023-05-18	"lambchop"	"F"	"cm001"	"barcode10"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"3"	5	10	2	5

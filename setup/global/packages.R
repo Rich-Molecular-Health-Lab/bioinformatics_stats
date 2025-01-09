@@ -1,0 +1,92 @@
+required_packages <- c(
+  "knitr",
+  "ape",
+  "bibtex",
+  "BiocManager",
+  "bookdown",
+  "bsicons",
+  "bslib",
+  "config",
+  "conflicted",
+  "data.table",
+  "devtools",
+  "fontawesome",
+  "glue",
+  "ggtext",
+  "gt",
+  "gtExtras",
+  "gtable",
+  "htmltools",
+  "kableExtra",
+  "MASS",
+  "lmerTest",
+  "lubridate",
+  "paletteer",
+  "pander",
+  "pandoc",
+  "philr",
+  "phyloseq",
+  "png",
+  "rcompanion",
+  "reactable",
+  "rmarkdown",
+  "sass",
+  "scales",
+  "shinydashboard",
+  "shinyjs",
+  "shinyMatrix",
+  "shinyTime",
+  "showtext",
+  "tidyverse",
+  "usethis",
+  "utf8",
+  "rmdformats"
+)
+
+if (!exists("packages_checked")) {
+  install_missing_packages(required_packages)
+  packages_checked <- TRUE
+}
+
+library(knitr)
+library(ape)
+library(bibtex)
+library(BiocManager)
+library(bookdown)
+library(bsicons)
+library(bslib)
+library(config)
+library(conflicted)
+library(data.table)
+library(devtools)
+library(fontawesome)
+library(glue)
+library(ggtext)
+library(gt)
+library(gtExtras)
+library(gtable)
+library(htmltools)
+library(kableExtra)
+library(MASS)
+library(lmerTest)
+library(lubridate)
+library(paletteer)
+library(pander)
+library(pandoc)
+library(philr)
+library(phyloseq)
+library(png)
+library(rcompanion)
+library(reactable)
+library(rmarkdown)
+library(sass)
+library(scales)
+library(shinydashboard)
+library(shinyjs)
+library(shinyMatrix)
+library(shinyTime)
+library(showtext)
+library(tidyverse)
+library(usethis)
+library(utf8)
+library(rmdformats)

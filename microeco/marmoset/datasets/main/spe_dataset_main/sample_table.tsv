@@ -1,0 +1,149 @@
+"ID"	"study_day"	"collection"	"subject"	"room"	"seqrun"	"barcode"	"tech_replicates"	"kit"	"flow_cell"	"flow_cell_id"	"origin"	"sex"	"stabilizer"	"group"	"diet_trial"	"gum_ml"	"group_phase"	"bristol"	"trl.num"	"subj.num"	"rm.num"	"phs.num"
+"buddy11"	11	2023-03-20	"buddy"	"F"	"cm010"	"barcode22"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"run-in"	"0"	"baseline"	"3"	1	17	2	1
+"hamlet11"	11	2023-03-20	"hamlet"	"B"	"cm010"	"barcode21"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"M"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"2"	1	1	1	1
+"hera11"	11	2023-03-20	"hera"	"B"	"cm005"	"barcode03"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"2"	1	2	1	1
+"padme11"	11	2023-03-20	"padme"	"F"	"cm005"	"barcode04"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"Ethanol"	"2"	"run-in"	"0"	"baseline"	"1"	1	14	2	1
+"ginger14"	14	2023-03-23	"ginger"	"F"	"cm005"	"barcode06"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"Ethanol"	"2"	"run-in"	"0"	"baseline"	"1"	1	20	2	1
+"hera14"	14	2023-03-23	"hera"	"B"	"cm006"	"barcode14"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"F"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"1"	1	2	1	1
+"jarjarbinks14"	14	2023-03-23	"jarjarbinks"	"B"	"cm010"	"barcode23"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"1"	1	3	1	1
+"joans14"	14	2023-03-23	"joans"	"F"	"cm009"	"barcode09"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"run-in"	"0"	"baseline"	"4"	1	18	2	1
+"kubo14"	14	2023-03-23	"kubo"	"B"	"cm005"	"barcode05"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"M"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"2"	1	5	1	1
+"wolverine14"	14	2023-03-23	"wolverine"	"B"	"cm006"	"barcode15 "	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"M"	"Ethanol"	"1"	"run-in"	"0"	"baseline"	"2"	1	7	1	1
+"jarjarbinks15"	15	2023-03-24	"jarjarbinks"	"B"	"cm009"	"barcode15 "	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"TX"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"1"	2	3	1	2
+"kubo15"	15	2023-03-24	"kubo"	"B"	"cm009"	"barcode19"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	5	1	2
+"buddy16"	16	2023-03-25	"buddy"	"F"	"cm001"	"barcode21"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"D_R-Shield"	"2"	"intervention_1"	"0"	"control"	"4"	2	17	2	4
+"iris16"	16	2023-03-25	"iris"	"B"	"cm001"	"barcode14"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"intervention_1"	"2"	"gum"	"2"	2	8	1	2
+"hamlet17"	17	2023-03-26	"hamlet"	"B"	"cm001"	"barcode22"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	1	1	2
+"hera17"	17	2023-03-26	"hera"	"B"	"cm001"	"barcode28"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	2	1	2
+"iris17"	17	2023-03-26	"iris"	"B"	"cm008"	"barcode17"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	8	1	2
+"lambchop17"	17	2023-03-26	"lambchop"	"F"	"cm008"	"barcode18"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	10	2	2
+"wolverine17"	17	2023-03-26	"wolverine"	"B"	"cm010"	"barcode09"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	7	1	2
+"lambchop18"	18	2023-03-27	"lambchop"	"F"	"cm003"	"barcode03"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	10	2	2
+"franc19"	19	2023-03-28	"franc"	"F"	"cm008"	"barcode22"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"M"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"2"	2	11	2	4
+"ophelia19"	19	2023-03-28	"ophelia"	"B"	"cm008"	"barcode21"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	4	1	2
+"goose20"	20	2023-03-29	"goose"	"F"	"cm008"	"barcode23"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"M"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"2"	2	9	2	4
+"jarjarbinks21"	21	2023-03-30	"jarjarbinks"	"B"	"cm010"	"barcode01"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	3	1	2
+"joans21"	21	2023-03-30	"joans"	"F"	"cm005"	"barcode20"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"3"	2	18	2	4
+"korra21"	21	2023-03-30	"korra"	"B"	"cm010"	"barcode03"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	6	1	2
+"kubo21"	21	2023-03-30	"kubo"	"B"	"cm010"	"barcode02"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	5	1	2
+"franc22"	22	2023-03-31	"franc"	"F"	"cm007"	"barcode23"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"M"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"3"	2	11	2	4
+"goose22"	22	2023-03-31	"goose"	"F"	"cm008"	"barcode01"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	9	2	2
+"grogu22"	22	2023-03-31	"grogu"	"F"	"cm010"	"barcode05"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"2"	2	15	2	4
+"hamlet22"	22	2023-03-31	"hamlet"	"B"	"cm003"	"barcode21"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"NE"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	1	1	2
+"iris22"	22	2023-03-31	"iris"	"B"	"cm010"	"barcode04"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	8	1	2
+"hera24"	24	2023-04-02	"hera"	"B"	"cm008"	"barcode04"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	2	1	2
+"ivy24"	24	2023-04-02	"ivy"	"F"	"cm005"	"barcode21"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"2"	2	12	2	4
+"marshmallow24"	24	2023-04-02	"marshmallow"	"F"	"cm005"	"barcode22"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"D_R-Shield"	"2"	"intervention_1"	"0"	"control"	"2"	2	16	2	4
+"hamlet25"	25	2023-04-03	"hamlet"	"B"	"cm010"	"barcode06"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"M"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"2"	2	1	1	2
+"lambchop25"	25	2023-04-03	"lambchop"	"F"	"cm010"	"barcode07"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"F"	"Ethanol"	"1"	"intervention_1"	"2"	"gum"	"3"	2	10	2	2
+"ginger27"	27	2023-04-05	"ginger"	"F"	"cm009"	"barcode10"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"intervention_1"	"0"	"control"	"1"	2	20	2	4
+"henry29"	29	2023-04-07	"henry"	"F"	"cm009"	"barcode01"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	19	2	5
+"ivy29"	29	2023-04-07	"ivy"	"F"	"cm009"	"barcode03"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	12	2	5
+"jarjarbinks29"	29	2023-04-07	"jarjarbinks"	"B"	"cm009"	"barcode23"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"TX"	"M"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	3	1	3
+"joans29"	29	2023-04-07	"joans"	"F"	"cm009"	"barcode20"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	18	2	5
+"korra29"	29	2023-04-07	"korra"	"B"	"cm009"	"barcode07"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	6	1	3
+"kubo30"	30	2023-04-08	"kubo"	"B"	"cm007"	"barcode17"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"2"	3	5	1	3
+"hamlet31"	31	2023-04-09	"hamlet"	"B"	"cm003"	"barcode09"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"NE"	"M"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"2"	3	1	1	3
+"jarjarbinks32"	32	2023-04-10	"jarjarbinks"	"B"	"cm003"	"barcode10"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"TX"	"M"	"D_R-Shield"	"1"	"washout_1"	"0"	"gum-washout"	"2"	3	3	1	3
+"grogu36"	36	2023-04-14	"grogu"	"F"	"cm001"	"barcode42"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	15	2	5
+"henry36"	36	2023-04-14	"henry"	"F"	"cm004"	"barcode16"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"NE"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	19	2	5
+"iris36"	36	2023-04-14	"iris"	"B"	"cm001"	"barcode07"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	8	1	3
+"ivy36"	36	2023-04-14	"ivy"	"F"	"cm001"	"barcode29"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	12	2	5
+"goose37"	37	2023-04-15	"goose"	"F"	"cm006"	"barcode20"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"M"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	9	2	3
+"grogu37"	37	2023-04-15	"grogu"	"F"	"cm006"	"barcode02"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	15	2	5
+"lambchop37"	37	2023-04-15	"lambchop"	"F"	"cm007"	"barcode05"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"F"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	10	2	3
+"marshmallow37"	37	2023-04-15	"marshmallow"	"F"	"cm001"	"barcode51"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	16	2	5
+"ophelia37"	37	2023-04-15	"ophelia"	"B"	"cm006"	"barcode01"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"F"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"1"	3	4	1	3
+"wolverine37"	37	2023-04-15	"wolverine"	"B"	"cm009"	"barcode08"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"1"	3	7	1	3
+"charles41"	41	2023-04-19	"charles"	"F"	"cm001"	"barcode23"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	13	2	5
+"grogu41"	41	2023-04-19	"grogu"	"F"	"cm001"	"barcode30"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"D_R-Shield"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	15	2	5
+"hamlet41"	41	2023-04-19	"hamlet"	"B"	"cm004"	"barcode17"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"NE"	"M"	"D_R-Shield"	"1"	"washout_1"	"0"	"gum-washout"	"2"	3	1	1	3
+"joans41"	41	2023-04-19	"joans"	"F"	"cm004"	"barcode19"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"NE"	"F"	"D_R-Shield"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	18	2	5
+"marshmallow41"	41	2023-04-19	"marshmallow"	"F"	"cm001"	"barcode34"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"3"	3	16	2	5
+"goose42"	42	2023-04-20	"goose"	"F"	"cm005"	"barcode07"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"M"	"Ethanol"	"1"	"washout_1"	"0"	"gum-washout"	"3"	3	9	2	3
+"henry42"	42	2023-04-20	"henry"	"F"	"cm007"	"barcode11"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"washout_1"	"0"	"control-washout"	"2"	3	19	2	5
+"ginger43"	43	2023-04-21	"ginger"	"F"	"cm001"	"barcode03"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"D_R-Shield"	"2"	"intervention_2"	"2"	"gum"	"2"	4	20	2	2
+"ophelia43"	43	2023-04-21	"ophelia"	"B"	"cm009"	"barcode17"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	4	1	4
+"buddy44"	44	2023-04-22	"buddy"	"F"	"cm010"	"barcode08"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	17	2	2
+"franc44"	44	2023-04-22	"franc"	"F"	"cm003"	"barcode12"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"TX"	"M"	"D_R-Shield"	"2"	"intervention_2"	"2"	"gum"	"3"	4	11	2	2
+"goose44"	44	2023-04-22	"goose"	"F"	"cm007"	"barcode06"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"M"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	9	2	4
+"hera44"	44	2023-04-22	"hera"	"B"	"cm001"	"barcode08"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"2"	4	2	1	4
+"iris44"	44	2023-04-22	"iris"	"B"	"cm004"	"barcode21"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	8	1	4
+"ivy44"	44	2023-04-22	"ivy"	"F"	"cm004"	"barcode07"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"NE"	"F"	"D_R-Shield"	"2"	"intervention_2"	"2"	"gum"	"3"	4	12	2	2
+"jarjarbinks44"	44	2023-04-22	"jarjarbinks"	"B"	"cm001"	"barcode35"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"2"	4	3	1	4
+"joans44"	44	2023-04-22	"joans"	"F"	"cm007"	"barcode07"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	18	2	2
+"korra44"	44	2023-04-22	"korra"	"B"	"cm001"	"barcode32"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"3"	4	6	1	4
+"lambchop44"	44	2023-04-22	"lambchop"	"F"	"cm005"	"barcode08"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"marshmallow44"	44	2023-04-22	"marshmallow"	"F"	"cm005"	"barcode09"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	16	2	2
+"wolverine44"	44	2023-04-22	"wolverine"	"B"	"cm001"	"barcode24"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"2"	4	7	1	4
+"franc45"	45	2023-04-23	"franc"	"F"	"cm004"	"barcode11"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"M"	"D_R-Shield"	"2"	"intervention_2"	"2"	"gum"	"3"	4	11	2	2
+"grogu45"	45	2023-04-23	"grogu"	"F"	"cm007"	"barcode13"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	15	2	2
+"hera45"	45	2023-04-23	"hera"	"B"	"cm007"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	2	1	4
+"ophelia45"	45	2023-04-23	"ophelia"	"B"	"cm005"	"barcode10"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"NE"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	4	1	4
+"buddy46"	46	2023-04-24	"buddy"	"F"	"cm005"	"barcode12"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	17	2	2
+"charles46"	46	2023-04-24	"charles"	"F"	"cm003"	"barcode15 "	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	13	2	2
+"ginger46"	46	2023-04-24	"ginger"	"F"	"cm010"	"barcode10"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	20	2	2
+"iris46"	46	2023-04-24	"iris"	"B"	"cm005"	"barcode11"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	8	1	4
+"ivy46"	46	2023-04-24	"ivy"	"F"	"cm007"	"barcode08"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	12	2	2
+"lambchop46"	46	2023-04-24	"lambchop"	"F"	"cm003"	"barcode14"	1	"SQK-16S024"	"FLO-FLG001"	"ARM773"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"franc47"	47	2023-04-25	"franc"	"F"	"cm010"	"barcode11"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	11	2	2
+"ivy47"	47	2023-04-25	"ivy"	"F"	"cm010"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	12	2	2
+"buddy48"	48	2023-04-26	"buddy"	"F"	"cm004"	"barcode23"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	17	2	2
+"franc48"	48	2023-04-26	"franc"	"F"	"cm006"	"barcode22"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	11	2	2
+"henry48"	48	2023-04-26	"henry"	"F"	"cm010"	"barcode14"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	19	2	2
+"korra48"	48	2023-04-26	"korra"	"B"	"cm010"	"barcode13"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	6	1	4
+"kubo48"	48	2023-04-26	"kubo"	"B"	"cm007"	"barcode09"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	5	1	4
+"lambchop48"	48	2023-04-26	"lambchop"	"F"	"cm004"	"barcode15 "	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"ophelia48"	48	2023-04-26	"ophelia"	"B"	"cm006"	"barcode21"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"1"	4	4	1	4
+"charles49"	49	2023-04-27	"charles"	"F"	"cm007"	"barcode01"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"5"	4	13	2	2
+"franc49"	49	2023-04-27	"franc"	"F"	"cm007"	"barcode10"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	11	2	2
+"ginger49"	49	2023-04-27	"ginger"	"F"	"cm007"	"barcode15 "	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	20	2	2
+"jarjarbinks49"	49	2023-04-27	"jarjarbinks"	"B"	"cm005"	"barcode01"	1	"SQK-16S024"	"FLO-FLG001"	"ARM042"	"TX"	"M"	"D_R-Shield"	"1"	"intervention_2"	"0"	"control"	"3"	4	3	1	4
+"joans49"	49	2023-04-27	"joans"	"F"	"cm010"	"barcode16"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	18	2	2
+"marshmallow49"	49	2023-04-27	"marshmallow"	"F"	"cm010"	"barcode15 "	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	16	2	2
+"ophelia49"	49	2023-04-27	"ophelia"	"B"	"cm007"	"barcode14"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	4	1	4
+"wolverine49"	49	2023-04-27	"wolverine"	"B"	"cm006"	"barcode23"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"M"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"2"	4	7	1	4
+"buddy50"	50	2023-04-28	"buddy"	"F"	"cm007"	"barcode03"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	17	2	2
+"charles50"	50	2023-04-28	"charles"	"F"	"cm006"	"barcode18"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	13	2	2
+"ginger50"	50	2023-04-28	"ginger"	"F"	"cm010"	"barcode18"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	20	2	2
+"grogu50"	50	2023-04-28	"grogu"	"F"	"cm010"	"barcode17"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI583"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	15	2	2
+"lambchop50"	50	2023-04-28	"lambchop"	"F"	"cm007"	"barcode02"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"charles51"	51	2023-04-29	"charles"	"F"	"cm007"	"barcode16"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	13	2	2
+"joans51"	51	2023-04-29	"joans"	"F"	"cm007"	"barcode04"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	18	2	2
+"ginger52"	52	2023-04-30	"ginger"	"F"	"cm008"	"barcode07"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	20	2	2
+"marshmallow53"	53	2023-05-01	"marshmallow"	"F"	"cm008"	"barcode10"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	16	2	2
+"charles55"	55	2023-05-03	"charles"	"F"	"cm008"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	13	2	2
+"ginger55"	55	2023-05-03	"ginger"	"F"	"cm006"	"barcode04"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"F"	"D_R-Shield"	"2"	"intervention_2"	"2"	"gum"	"3"	4	20	2	2
+"lambchop55"	55	2023-05-03	"lambchop"	"F"	"cm008"	"barcode11"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"3"	4	10	2	4
+"ophelia55"	55	2023-05-03	"ophelia"	"B"	"cm006"	"barcode03"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"F"	"Ethanol"	"1"	"intervention_2"	"0"	"control"	"1"	4	4	1	4
+"buddy56"	56	2023-05-04	"buddy"	"F"	"cm006"	"barcode06"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	17	2	2
+"franc56"	56	2023-05-04	"franc"	"F"	"cm006"	"barcode19"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	11	2	2
+"grogu56"	56	2023-05-04	"grogu"	"F"	"cm008"	"barcode13"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"TX"	"M"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"3"	4	15	2	2
+"joans56"	56	2023-05-04	"joans"	"F"	"cm008"	"barcode14"	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"F"	"Ethanol"	"2"	"intervention_2"	"2"	"gum"	"2"	4	18	2	2
+"buddy57"	57	2023-05-05	"buddy"	"F"	"cm009"	"barcode04"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"TX"	"M"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	17	2	3
+"charles57"	57	2023-05-05	"charles"	"F"	"cm001"	"barcode04"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	13	2	3
+"joans57"	57	2023-05-05	"joans"	"F"	"cm009"	"barcode05"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	18	2	3
+"ophelia57"	57	2023-05-05	"ophelia"	"B"	"cm009"	"barcode11"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	4	1	5
+"wolverine57"	57	2023-05-05	"wolverine"	"B"	"cm009"	"barcode18"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	7	1	5
+"hera58"	58	2023-05-06	"hera"	"B"	"cm001"	"barcode26"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	2	1	5
+"korra58"	58	2023-05-06	"korra"	"B"	"cm001"	"barcode43"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"3"	5	6	1	5
+"kubo58"	58	2023-05-06	"kubo"	"B"	"cm001"	"barcode37"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	5	1	5
+"wolverine58"	58	2023-05-06	"wolverine"	"B"	"cm008"	"barcode15 "	1	"SQK-16S114-24"	"FLO-FLG114"	"AUD426"	"NE"	"M"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	7	1	5
+"hamlet59"	59	2023-05-07	"hamlet"	"B"	"cm009"	"barcode21"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	1	1	5
+"henry59"	59	2023-05-07	"henry"	"F"	"cm007"	"barcode20"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	19	2	3
+"iris59"	59	2023-05-07	"iris"	"B"	"cm009"	"barcode06"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"TX"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"3"	5	8	1	5
+"ophelia59"	59	2023-05-07	"ophelia"	"B"	"cm006"	"barcode08"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"3"	5	4	1	5
+"iris60"	60	2023-05-08	"iris"	"B"	"cm006"	"barcode09"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"TX"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"3"	5	8	1	5
+"marshmallow60"	60	2023-05-08	"marshmallow"	"F"	"cm006"	"barcode10"	1	"SQK-16S024"	"FLO-FLG001"	"ARM904"	"NE"	"F"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	16	2	3
+"wolverine60"	60	2023-05-08	"wolverine"	"B"	"cm007"	"barcode21"	1	"SQK-16S114-24"	"FLO-FLG001"	"AQL192"	"NE"	"M"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	7	1	5
+"ginger66"	66	2023-05-14	"ginger"	"F"	"cm001"	"barcode16"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"D_R-Shield"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	20	2	3
+"henry66"	66	2023-05-14	"henry"	"F"	"cm009"	"barcode12"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"M"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	19	2	3
+"hamlet67"	67	2023-05-15	"hamlet"	"B"	"cm001"	"barcode39"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	1	1	5
+"hera67"	67	2023-05-15	"hera"	"B"	"cm004"	"barcode02"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"F"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	2	1	5
+"franc68"	68	2023-05-16	"franc"	"F"	"cm004"	"barcode05"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"M"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	11	2	3
+"jarjarbinks68"	68	2023-05-16	"jarjarbinks"	"B"	"cm004"	"barcode04"	1	"SQK-16S024"	"FLO-FLG001"	"ARL498"	"TX"	"M"	"Ethanol"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	3	1	5
+"grogu70"	70	2023-05-18	"grogu"	"F"	"cm001"	"barcode44"	2	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"M"	"D_R-Shield"	"2"	"washout_2"	"0"	"gum-washout"	"3"	5	15	2	3
+"ivy70"	70	2023-05-18	"ivy"	"F"	"cm009"	"barcode22"	1	"SQK-16S114-24"	"FLO-FLG114"	"AVI598"	"NE"	"F"	"Ethanol"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	12	2	3
+"lambchop70"	70	2023-05-18	"lambchop"	"F"	"cm001"	"barcode10"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"TX"	"F"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"3"	5	10	2	5
+"marshmallow70"	70	2023-05-18	"marshmallow"	"F"	"cm001"	"barcode41"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"F"	"D_R-Shield"	"2"	"washout_2"	"0"	"gum-washout"	"2"	5	16	2	3
+"wolverine70"	70	2023-05-18	"wolverine"	"B"	"cm001"	"barcode17"	1	"SQK-LSK114 EXP-PBC096"	"FLO-MIN114"	"FAW97410"	"NE"	"M"	"D_R-Shield"	"1"	"washout_2"	"0"	"control-washout"	"2"	5	7	1	5

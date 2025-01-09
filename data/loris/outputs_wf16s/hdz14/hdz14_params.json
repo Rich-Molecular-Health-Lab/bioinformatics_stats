@@ -1,0 +1,81 @@
+{
+    "help": false,
+    "version": false,
+    "fastq": "/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz14",
+    "bam": null,
+    "sample": null,
+    "sample_sheet": null,
+    "classifier": "minimap2",
+    "exclude_host": null,
+    "max_len": 2000,
+    "min_len": 1000,
+    "min_read_qual": 7,
+    "threads": 32,
+    "server_threads": 2,
+    "kraken_clients": 2,
+    "taxonomy": null,
+    "reference": null,
+    "ref2taxid": null,
+    "database": null,
+    "taxonomic_rank": "S",
+    "minimap2filter": null,
+    "minimap2exclude": false,
+    "keep_bam": true,
+    "split_prefix": false,
+    "minimap2_by_reference": true,
+    "min_percent_identity": 85,
+    "min_ref_coverage": 80,
+    "store_dir": "store_dir",
+    "out_dir": "/work/richlab/aliciarich/microbiomes_loris/data/outputs_wf16s/hdz14",
+    "bracken_length": null,
+    "port": 8080,
+    "host": "localhost",
+    "external_kraken2": false,
+    "kraken2_memory_mapping": false,
+    "include_kraken2_assignments": false,
+    "kraken2_confidence": 0,
+    "batch_size": 0,
+    "real_time": false,
+    "read_limit": null,
+    "database_set": "ncbi_16s_18s",
+    "database_sets": {
+        "ncbi_16s_18s": {
+            "reference": "https://ont-exd-int-s3-euwst1-epi2me-labs.s3.amazonaws.com/wf-metagenomics/ncbi_16s_18s/ncbi_targeted_loci_16s_18s.fna",
+            "database": "https://ont-exd-int-s3-euwst1-epi2me-labs.s3.amazonaws.com/wf-metagenomics/ncbi_16s_18s/ncbi_targeted_loci_kraken2.tar.gz",
+            "ref2taxid": "https://ont-exd-int-s3-euwst1-epi2me-labs.s3.amazonaws.com/wf-metagenomics/ncbi_16s_18s/ref2taxid.targloci.tsv",
+            "taxonomy": "https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2023-01-01.zip"
+        },
+        "ncbi_16s_18s_28s_ITS": {
+            "reference": "https://ont-exd-int-s3-euwst1-epi2me-labs.s3.amazonaws.com/wf-metagenomics/ncbi_16s_18s_28s_ITS/ncbi_16s_18s_28s_ITS.fna",
+            "database": "https://ont-exd-int-s3-euwst1-epi2me-labs.s3.amazonaws.com/wf-metagenomics/ncbi_16s_18s_28s_ITS/ncbi_16s_18s_28s_ITS_kraken2.tar.gz",
+            "ref2taxid": "https://ont-exd-int-s3-euwst1-epi2me-labs.s3.amazonaws.com/wf-metagenomics/ncbi_16s_18s_28s_ITS/ref2taxid.ncbi_16s_18s_28s_ITS.tsv",
+            "taxonomy": "https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2023-01-01.zip"
+        },
+        "SILVA_138_1": {
+            "database": null
+        }
+    },
+    "amr": false,
+    "amr_db": "resfinder",
+    "amr_minid": 80,
+    "amr_mincov": 80,
+    "abundance_threshold": 0,
+    "n_taxa_barplot": 12,
+    "aws_image_prefix": null,
+    "aws_queue": null,
+    "disable_ping": false,
+    "monochrome_logs": false,
+    "validate_params": true,
+    "show_hidden_params": false,
+    "analyse_unclassified": false,
+    "schema_ignore_params": "show_hidden_params,validate_params,monochrome_logs,aws_queue,aws_image_prefix,wf,amr,amr_db,amr_minid,amr_mincov,database_sets",
+    "wf": {
+        "example_cmd": [
+            "--fastq wf-16s-demo/test_data",
+            "--minimap2_by_reference"
+        ],
+        "agent": null,
+        "container_sha": "sha44a6dacff5f2001d917b774647bb4cbc1b53bc76",
+        "common_sha": "sha338caea0a2532dc0ea8f46638ccc322bb8f9af48"
+    }
+}
