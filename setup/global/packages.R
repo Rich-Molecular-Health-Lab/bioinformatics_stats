@@ -1,3 +1,16 @@
+install_missing_packages <- function(required_packages) {
+  installed_packages <- rownames(installed.packages())
+  missing_packages   <- dplyr::setdiff(required_packages, installed_packages)
+  
+  if (length(missing_packages) > 0) {
+    message("Installing missing packages: ", paste(missing_packages, collapse = ", "))
+    install.packages(missing_packages)
+  } else {
+    message("All required packages are already installed.")
+  }
+}
+
+
 required_packages <- c(
   "knitr",
   "ape",

@@ -1,6 +1,5 @@
-#Terminal Code as Text
 open.job <- function(name, mem, hrs, cpus) {
-  cat("paste to terminal:\n\nsrun --partition=guest --nodes=1 --ntasks-per-node=1", paste0(" --job-name=", name, " --mem=", mem, "GB --time=", hrs, ":00:00 --cpus-per-task=", cpus), "--pty $SHELL\n\n")
+  paste0("paste to terminal:\n\nsrun --partition=guest --nodes=1 --ntasks-per-node=1", paste0(" --job-name=", name, " --mem=", mem, "GB --time=", hrs, ":00:00 --cpus-per-task=", cpus), "--pty $SHELL\n\n")
 }
 
 conda.env <- function(env) {

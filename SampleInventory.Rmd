@@ -20,14 +20,14 @@ params:
 ```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
 global             <- config::get(config = "default")
 micro              <- config::get(config = "microbiome")
-read_processing    <- config::get(config = "read_processing")
+swan               <- config::get(config = "swan")
 notebooks          <- config::get(config = "notebooks")
 
 source(paste0(global$functions))
 source(paste0(global$packages))
 source(paste0(global$conflicts))
 source(paste0(global$inputs))
-source(paste0(read_processing$functions))
+source(paste0(swan$functions))
 ```
 
 
@@ -363,8 +363,8 @@ write.table(samplesheet,
 ### Splitting Samplesheet to Individual Files for Each Run
 
 
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
-samplesheet.nested <- samplesheet %>% mutate(LibraryCode = seqrun) %>% nest(.by = LibraryCode) %>%
+```{r, echo = FALSE, comment=FALSE, warning=FALSE}
+samplesheet.nested <- samplesheet %>% nest(.by = seqrun) %>%
   deframe()
 
 imap(samplesheet.nested, ~ {
