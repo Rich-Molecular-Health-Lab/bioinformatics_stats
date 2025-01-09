@@ -41,13 +41,13 @@ Description of files in parent directory (richlab_main/bioinformatics_stats/)
 
 Main R-Markdown (.Rmd) Files to Start From (each also available as a knitted html format):
 
-filename                                   |  purpose
--------------------------------------------|------------------------------------------------------------------------------------
-[SampleInventory.Rmd](SampleInventory.Rmd) |  Maintain records of all Rich Lab samples and export samplesheets for Dorado.
-[MetadataSetup.Rmd](MetadataSetup.Rmd)     |  Create predictor variables, code them, and then match to samples.
-[ReadProcessing.Rmd](ReadProcessing.Rmd)   |  Basecall, demultiplex, filter, clean, and organize raw ONT sequence data.
-[data_notes.Rmd](data_notes.Rmd)           |  Review basic statistical options available for some of our main datasets.
-[dummy_samples.Rmd](dummy_samples.Rmd)     |  Export formatted tables with dummy data for samples to test different pipelines.
+R Markdown File                                      |Knitted HTML Link                                      |  purpose
+-----------------------------------------------------|-------------------------------------------------------|------------------------------------------------------------------------------------
+[SampleInventory.Rmd](SampleInventory.Rmd)           |[SampleInventory.html](SampleInventory.html)           |  Maintain records of all Rich Lab samples and export samplesheets for Dorado.
+[MetadataSetup.Rmd](MetadataSetup.Rmd)               |[MetadataSetup.html](MetadataSetup.html)               |  Create predictor variables, code them, and then match to samples.
+[MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) |[MinIONReadProcessing.html](MinIONReadProcessing.html) |  Basecall, demultiplex, filter, clean, and organize raw ONT sequence data.
+[Data_Notes.Rmd](Data_Notes.Rmd)                     |[Data_Notes.html](Data_Notes.html)                     |  Review basic statistical options available for some of our main datasets.
+[dummy_samples.Rmd](dummy_samples.Rmd)               |[dummy_samples.Rmd](dummy_samples.html)                |  Export formatted tables with dummy data for samples to test different pipelines.
 
 Scripts not specific to R languages:
 
