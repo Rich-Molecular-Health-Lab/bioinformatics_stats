@@ -1,6 +1,8 @@
 # History files
 .Rhistory
 .Rapp.history
+**/.Rhistory
+**/.Rapp.history
 
 # Session Data files
 .RData
@@ -20,6 +22,7 @@
 
 # RStudio files
 .Rproj.user/
+**/.Rproj.user/
 
 # produced vignettes
 vignettes/*.html
@@ -30,7 +33,7 @@ vignettes/*.pdf
 
 # knitr and R markdown default cache directories
 *_cache/
-/cache/
+**/cache/
 
 # Temporary files created by R markdown
 *.utf8.md
@@ -48,6 +51,15 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
+# Mac OS Items
+*Icon*
+**/*Icon*
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+
 # Reference Databases
-setup/microbiome/Tax4Fun2_ReferenceData_v2/*
-setup/microbiome/ncbi-blast-2.16.0+/*
+**/Tax4Fun2_ReferenceData_v2/*
+**/ncbi-blast-2.16.0+/*
