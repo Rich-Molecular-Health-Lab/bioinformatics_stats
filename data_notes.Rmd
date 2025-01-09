@@ -24,6 +24,7 @@ source(paste0(micro$setup))
 
 
 # Independent Variables
+
 Here are some of the current predictor variables to consider in this dataset:\
 
 ## Currently in Metadata
@@ -32,7 +33,7 @@ Here are some of the current predictor variables to consider in this dataset:\
 ind_vars <- tribble(
   ~var_name     , ~var_descr                                                       , ~recorded_for, ~relevant_to, ~quantitative_version, ~qualitative_version, ~binary, ~category      ,
   "collection"  , "date the sample was collected on"                               , "both"       , "both"      ,  "discrete"          , "ordinal"           , "n"    , "temporal"     ,      
-  "subject"     , "subject collected from"                                         , "both"       , "both"      ,  "discrete"          , "nominal"           , "n"    , "identity"     ,
+  "subject"     , "subject collected from"                                         , "both"       , "both"      ,  "discrete"          , "nominal"           , "y"    , "identity"     ,
   "ster_mgpml"  , "steroid concentration administered in mg/ml"                    , "both"       , "culi"      ,  "continuous"        , "ordinal"           , "n"    , "medications"  ,
   "ster_dose_ml", "steroid volume administered per day in ml"                      , "both"       , "culi"      ,  "continuous"        , "ordinal"           , "n"    , "medications"  , 
   "ster_npday"  , "steroid frequency per day as count"                             , "both"       , "culi"      ,  "discrete"          , "ordinal"           , "n"    , "medications"  ,  
@@ -103,14 +104,17 @@ gtsave(ind_vars_gt, "meta_variables_loris.png", paste0(global$summaries$metadata
 ---
   
 ## To Gather from Video Data {.tabset}
+
 Here are some ideas for variables we could eventually extract from the video behavior files:\
 
 ### Both Subjects
+
 - Activity Level\
   - relative time active/inactive\
   - other quantitative score that folds in different activity types\
     
 ### Culi Only
+
 - Seizures\
   - Seizure Observed by Day/Week\
   - Qualitative metrics to breakdown seizure details/category\
@@ -118,9 +122,11 @@ Here are some ideas for variables we could eventually extract from the video beh
 ---
 
 # Dependent Variables
+
 Here are some of the dependent variables we can extract from the results:\
 
 ## Microbial Abundance
+
 **How we calculated microbial abundance:** Remember that we constructed sequencing libraries that amplified the entire 1500 bp region of the 16S gene for any and all available microbial DNA present in our DNA extracts. 
 Then, during sequencing, each available template was sequenced to produce an individual "read". 
 Most of the time we sequenced pooled libraries with 23 samples and 1 negative control until we used up all available pores on one Flongle Flow Cell. 
@@ -130,61 +136,79 @@ Then we counted the number of reads assigned to each taxon per sample.
 This result became our raw count data, which we then **rarefied** for **normalization** across all samples.\
 
 ### Normalization
+
 There is a complex literature available on all the pros and cons of options for when and how to normalize 16S microbiome data. 
 Rarefaction is still the most commonly used option, so that's what we have done here, especially because microeco makes it easy to automate the process. We did, however, apply a [modified version of rarefaction](https://peerj.com/articles/9593/) that is growing in popularity.\
+
 **What rarefaction does**: Our count data for each sample are confounded by variation in the total number of reads we started with for that sample after demultiplexing our libraries. 
 To correct for this, we choose a threshold read count as our **rarefaction threshold**. 
 Then we only keep samples for which we generated at least that number of reads, and we only keep that number of reads for all samples with more than the threshold.\
 **Which reads to keep/lose:** The next issue is how to select which reads to keep and ignore without introducing more bias to our data. We used the microeco option ***SRS***, which performs an alternative rarefaction method by **[scaling with ranked subsampling](https://peerj.com/articles/9593/)**.\
+
 **SRS Steps:**
-1. The total counts for all OTUs (operational taxonomic units) or species in each sample are divided by a scaling factor chosen in such a way that the sum of the scaled counts Cscaled equals Cmin.\
-2. The non-integer Cscaled values are converted into integers by an algorithm known as *ranked subsampling*.\
+
+1. The total counts for all OTUs (operational taxonomic units) or species in each sample are divided by a scaling factor chosen in such a way that the sum of the scaled counts Cscaled equals Cmin.
+2. The non-integer Cscaled values are converted into integers by an algorithm known as *ranked subsampling*.
 
 #### Our Rarefaction Threshold
+
 For now, we used 7,000 as our threshold. 
 I did this based on some of the early rarefaction curves coming out of the data, and because the standard in traditional short read 16S data is often somewhere between 6K and 12K reads. 
 Nanopore sequencing generates fewer relative reads, especially when we multiplex on a flongle flow cell, so we could reconsider using a lower rarefaction threshold once we have more data and look at the trends again. 
 The trick is to balance the tradeoff between not losing too much detail in our low-abundance taxa by choosing too low of a read count and not losing too much detail from our sample sizes by choosing too high of a read count.\
 
 ### Filtering
+
 We already filtered reads during our earlier pipelines based on their length and quality, but then we filtered taxa again to minimize the confounding impacts of taxa with very few representative reads in our data.\
+
 This is fairly standard practice, as low abundance taxa across all samples are more likely to appear as a result of false taxonomic assignment, especially with increasing sample sizes or sequencing depths.\
+
 I started with very generous filtering thresholds as we were looking for subtle patterns with a very small subset of our total samples, 
 but over time I have incrementally adjusted this to get a clearer picture of the key patterns in our data.\
+
 **Right now we are filtering out:**\
+
 1. Taxa with abundances less than **0.01%**.\
 2. Taxa present in fewer than **2.00%** of all samples.\
 
 ### Taxonomic Levels
+
 Analyzing the entire 16S gene through long read sequencing affords us a finer taxonomic resolution than traditional analysis of a hypervariable region of the 16S gene through short read sequencing. 
 That means we can safely analyze our abundances to as fine as the Species level.\
+
 Still, sometimes trends at the higher taxonomic scales are still more informative, depending on the question. 
 The microeco package makes it pretty easy to merge abundance data to a given higher taxonomic level after we construct our microbiome dataset object and normalize/filter the reads and taxa. 
 That is why I generally just compute our basic abundance summary statistics at each of the following levels:\
-  1. Phylum\
-  2. Class\
-  3. Order\
-  4. Family\
-  5. Genus\
-  6. Species\
+
+1. Phylum  
+2. Class  
+3. Order  
+4. Family  
+5. Genus  
+6. Species  
+
 After performing some other calculations like correlation coefficients, I merged those taxonomic scales back into our summary tables/figures for ease of comparison. 
 We should still take care to keep in mind that the stats we are looking at were computed individually at each taxonomic level.\
 
 ---
 
 ## Alpha Diversity {.tabset}
+
 Alpha diversity measures the overall taxonomic diversity within each sample. We have already generated the following Alpha Diversity metrics:\
 
 ### Chao1
-- estimator of species richness, which corrects for species that might be present but not detected in your sample due to low abundance\
-- assumes that:\
-  - rare species are more likely to be missed during sampling\
-- useful for:\
-  - low abundances\
-  - rare or hard to detect taxa\
+
+- estimator of species richness, which corrects for species that might be present but not detected in your sample due to low abundance  
+- assumes that:  
+  - rare species are more likely to be missed during sampling  
+- useful for:  
+  - low abundances  
+  - rare or hard to detect taxa  
   
 ### ACE
+
 *Abundance-based Coverage Estimator*\
+
 - estimates species richness by dividing observed frequencies into rare and abundant groups, and then considering only the presence or absence of abundant species.\
 - what it indicates:\
   - Higher ACE values indicate higher diversity. ACE is sensitive to rare OTUs (singletons and doubletons)\
@@ -194,6 +218,7 @@ Alpha diversity measures the overall taxonomic diversity within each sample. We 
   - estimating total richness of amplicon sequence variant (ASV) datasets like we might get from shotgun short read sequencing\
   
 ### Shannon
+
 - measures the number of species in a sample and how evenly their abundances are distributed\
 - what it indicates:\
   - A higher Shannon Index value indicates a higher degree of diversity, which can be due to a greater number of unique taxa or more even abundance distributions\
@@ -202,11 +227,13 @@ Alpha diversity measures the overall taxonomic diversity within each sample. We 
   - can help understand the complexity and balance of the gut microbiome\
   
 ### Simpson
+
 - an indicator of species evenness (proportional distribution of the number of each species in a sample) that displays the probability that two randomly selected sequences are of the same species.\
 - what it indicates:\
   - Values range from 0 to 1, and lower values indicate higher diversity.\
   
 ### Inverse Simpson
+
 - a measure of the effective number of equally common species in a dataset\
 - what it indicates:\
   - the richness of a community with uniform evenness\
@@ -217,6 +244,7 @@ Alpha diversity measures the overall taxonomic diversity within each sample. We 
   - it has some biological interpretation and is not as affected by sampling effort as the Shannon index\
   
 ### Fisher
+
 - a diversity index commonly used in ecology to quantify species diversity within a community\
 - takes into account:\
   - species richness and evenness\
@@ -224,6 +252,7 @@ Alpha diversity measures the overall taxonomic diversity within each sample. We 
   - data where species-abundance distribution follows a log-series distribution.\
   
 ### Pielou
+
 - a way to measure how the species are evenly distributed in a community\
 - values range between 0 and 1:\
   - 1 = community with perfect evenness\
@@ -232,37 +261,47 @@ Alpha diversity measures the overall taxonomic diversity within each sample. We 
 ---
 
 ## Beta Diversity
+
 Beta diversity measures the dissimilarity in composition between samples.\
 
 ### Matrix Calculations {.tabset}
+
 Before we map betadiversity patterns using the methods in the next section, we have to calculate a distance matrix that provides the dissimilarity index for each pair of samples. Within MicroEco we can use the following metrics to calculate the matrix:\
 
 #### Bray-Curtis Dissimilarity
 
 ##### Description
+
 This is one of the most commonly used dissimilarity indices in ecological studies. It calculates the dissimilarity between two samples based on the abundance of shared species (or taxa).\
 
 ##### Focus
+
 Takes into account both the presence/absence and abundance of taxa.\
 
 ##### Range
+
 0 (identical communities) to 1 (completely different communities).\
 
 ##### Recommended for
+
 Quantifying differences in community composition when you are interested in both the presence and relative abundance of taxa.\
 
 #### Jaccard Index
 
 ##### Description
+
 This index calculates dissimilarity based solely on the presence or absence of taxa between two samples.\
 
 ###### Focus
+
 Measures community dissimilarity based on species (taxa) presence/absence.\
 
 ##### Range
+
 0 (identical communities in terms of presence/absence) to 1 (no shared species between communities).\
 
 ##### Recommended for
+
 Cases where you are only interested in the presence or absence of taxa, and not their abundance.\
 
 ---
@@ -270,17 +309,22 @@ Cases where you are only interested in the presence or absence of taxa, and not 
 #### UniFrac (Unweighted and Weighted)
 
 ##### Description
+
 UniFrac distances are phylogenetic metrics that measure the dissimilarity between microbial communities based on the evolutionary distances between taxa.\
+
 - **Unweighted UniFrac**: Focuses on the presence or absence of taxa, considering phylogenetic relationships.\
 - **Weighted UniFrac**: Incorporates both phylogenetic relationships and the abundance of taxa in the communities.\
 
 ##### Focus
+
 Phylogenetic diversity; unweighted focuses on presence/absence, while weighted takes abundance into account.\
 
 ##### Range
+
 0 (identical communities with no evolutionary difference) to 1 (completely different communities).\
 
 ##### Recommended for
+
 When evolutionary relationships between microbial taxa are important in determining community dissimilarity.\
 
 ---
@@ -288,15 +332,19 @@ When evolutionary relationships between microbial taxa are important in determin
 #### Canberra Distance
 
 ##### Description
+
 Canberra distance is a dissimilarity measure that gives more weight to differences in low-abundance taxa than high-abundance taxa. It is sensitive to small differences in the relative abundance of species.\
 
 ##### Focus
+
 More sensitive to the abundance of rare taxa.\
 
 ##### Range
+
 0 (identical communities) to 1 (completely different communities).\
 
 ##### Recommended for
+
 When small differences in the abundance of rare taxa are of particular interest.\
 
 ---
@@ -304,15 +352,19 @@ When small differences in the abundance of rare taxa are of particular interest.
 #### Euclidean Distance
 
 ##### Description
+
 Euclidean distance is a straight-line measure between two points in a multidimensional space (here, representing microbial abundances).\
 
 ##### Focus
+
 Measures absolute differences in taxa abundances between samples.\
 
 ##### Range
+
 0 (identical communities) to a positive value, depending on the magnitude of difference.\
 
 ##### Recommended for
+
 Basic comparison of absolute differences in community composition, though it’s less commonly used in ecological contexts due to its sensitivity to large differences.\
 
 ---
@@ -320,15 +372,19 @@ Basic comparison of absolute differences in community composition, though it’s
 #### Aitchison Distance
 
 ##### Description
+
 Aitchison distance is used specifically for compositional data, where relative abundances matter more than absolute counts. It is based on log-ratio transformations.\
 
 ##### Focus
+
 Appropriate for comparing compositional data (relative abundances) while avoiding issues related to the "compositional nature" of microbiome data (e.g., total sum constraint).\
 
 ##### Range
+
 Positive values, where larger values indicate greater dissimilarity.\
 
 ##### Recommended for
+
 When analyzing microbial community compositions, especially when addressing issues like compositionality in microbiome data.\
 
 ---
@@ -336,15 +392,19 @@ When analyzing microbial community compositions, especially when addressing issu
 #### Sorensen (Dice) Index
 
 ##### Description
+
 This index is similar to the Jaccard index but gives more weight to shared species (taxa). It measures the proportion of shared taxa between two samples.\
 
 ##### Focus
+
 Presence/absence data, but more sensitive to shared taxa than Jaccard.\
 
 ##### Range
+
 0 (completely similar) to 1 (completely dissimilar).\
 
 ##### Recommended for
+
 Assessing beta diversity based on the presence/absence of taxa, giving more weight to shared taxa.\
 
 ---
@@ -352,15 +412,19 @@ Assessing beta diversity based on the presence/absence of taxa, giving more weig
 #### Chao Distance
 
 ##### Description
+
 Chao distance is an abundance-based metric that adjusts for unseen species by estimating how many rare or unseen taxa are likely shared between samples.\
 
 ##### Focus
+
 Accounts for unseen or rare taxa, improving the comparison of samples with low-abundance taxa.\
 
 ##### Range
+
 0 (identical communities) to 1 (completely different communities).\
 
 ##### Recommended for
+
 When dealing with datasets where rare or unobserved taxa might skew results.\
 
 ---
@@ -368,35 +432,44 @@ When dealing with datasets where rare or unobserved taxa might skew results.\
 #### Gower Distance
 
 ##### Description
+
 Gower distance is a flexible metric that can handle different types of data (e.g., categorical and continuous variables). For microbiome data, it’s often used for combining different types of diversity measures.\
 
 ##### Focus
+
 Measures similarity between samples while accounting for multiple types of data or weighting schemes.\
 
 ##### Range
+
 0 (complete similarity) to 1 (complete dissimilarity).\
 
 ##### Recommended for
+
 When you need a flexible approach to handling multiple types of data within the same matrix.\
 
 
 ---
 
 ### Distrubtion Metrics  {.tabset}
+
 #### Ordination
+
 **Ordination** methods are dimensionality reduction techniques that reduce complex data (e.g., community composition across multiple samples) into fewer dimensions for visualization and interpretation. These techniques can highlight patterns of similarity or difference between samples.\
-- Options in microeco: \
-  - **Principal Coordinates Analysis (PCoA)**\
-  - **Non-metric Multidimensional Scaling (NMDS)**\
-  - **Redundancy Analysis (RDA)**\
-- How it works: \
+
+- Options in microeco:  
+  - **Principal Coordinates Analysis (PCoA)**
+  - **Non-metric Multidimensional Scaling (NMDS)**
+  - **Redundancy Analysis (RDA)**
+- How it works: 
   - Ordination projects data points (samples) onto a low-dimensional space where the distance between points reflects the dissimilarity between the corresponding microbial communities. \
-  - It is often based on distance or dissimilarity matrices calculated using methods like Bray-Curtis or Jaccard.\
-- Purpose: \
-  - Visualizing the overall structure of microbial communities and identifying potential clusters or gradients in the data.\
+  - It is often based on distance or dissimilarity matrices calculated using methods like Bray-Curtis or Jaccard.  
+- Purpose:  
+  - Visualizing the overall structure of microbial communities and identifying potential clusters or gradients in the data.  
 
 #### Group Distance
-**Group distance** metrics calculate and compare the distances between groups of samples. This allows for the quantification of the beta diversity between predefined groups (e.g., treatment vs. control, or different geographic locations).\
+
+**Group distance** metrics calculate and compare the distances between groups of samples. This allows for the quantification of the beta diversity between predefined groups (e.g., treatment vs. control, or different geographic locations).
+
 - Options in microeco: \
   - **PERMANOVA (Permutational Multivariate Analysis of Variance)**\
   - **ADONIS (a function within PERMANOVA)**\
@@ -407,18 +480,22 @@ When you need a flexible approach to handling multiple types of data within the 
   - Testing hypotheses about the influence of environmental factors, treatments, or other variables on microbiome composition.\
 
 #### Clustering
+
 **Clustering methods** group samples together based on their similarities in microbial composition, forming clusters that represent similar microbial communities.\
-- Options in microeco: \
+
+- Options in microeco:  
   - **Hierarchical clustering**\
   - **k-means clustering**\
-- How it works: \
+- How it works:  
   - Clustering algorithms group samples based on a distance or dissimilarity matrix.\
   - In hierarchical clustering, for example, the most similar samples are joined together first, and the process continues until all samples are clustered into a dendrogram.\
-- Purpose: \
+- Purpose:  
   - This helps to categorize samples into clusters of similar microbial composition and visualize patterns of beta diversity across the dataset.\
 
 #### MANOVA (Multivariate Analysis of Variance)
-**MANOVA** is a statistical test that evaluates whether there are differences in the means of several dependent variables (e.g., microbial taxa) between different groups (e.g., treatment groups, environmental conditions).\
+
+**MANOVA** is a statistical test that evaluates whether there are differences in the means of several dependent variables (e.g., microbial taxa) between different groups (e.g., treatment groups, environmental conditions).  
+
 - Options in microeco: \
   - Multivariate tests like MANOVA can be applied to the compositional data to test for group-level differences.\
 - How it works: \
@@ -430,3 +507,204 @@ When you need a flexible approach to handling multiple types of data within the 
 ---
 
 # Inferential Statistics or Models
+
+Inferential statistics and mixed models are invaluable for analyzing microbiome datasets, particularly when dealing with the inherent complexities of microbial abundance data. These methods help us account for multiple sources of variability, hierarchical data structures, and overdispersion.  
+
+## Some Options
+
+### Generalized Linear Mixed Models (GLMMs)
+
+GLMMs are an extension of generalized linear models (GLMs), allowing for the inclusion of random effects to account for hierarchical or nested data structures.  
+  
+#### When to Use GLMMs
+
+1.  **Hierarchical Data**: For example, when samples are nested within subjects, and subjects are nested within treatment groups.
+2.  **Overdispersion**: When the variance in the data is greater than expected under a traditional GLM.
+3.  **Non-Normal Response Variables**: For example:
+  - Binomial data (e.g., presence/absence of a microbial taxon).
+  - Poisson data (e.g., counts of microbial reads).
+
+### Structure of a GLMM
+
+A GLMM has the form:  
+
+$g(E(y)) = X\beta + Zb$
+ 
+  
+- $g(E(y))$: A link function (e.g., log, logit) that relates the expected value of the response variable y to the linear predictors.
+- $X\beta$: Fixed effects (predictors like treatment, time, etc.).
+- $Zb$: Random effects (e.g., subject-specific effects).
+
+
+#### Common Applications
+
+- **Microbial Abundance:** Using Poisson or negative binomial distributions to model raw or normalized count data.
+- **Presence/Absence:** Modeling binary outcomes for specific taxa (e.g., the presence of a pathogenic species).
+- **Diversity Metrics:** Modeling alpha diversity indices as the response variable while accounting for repeated measures or nested study designs.
+
+#### How GLMMs Work for Microbiome Data
+
+A GLMM can handle situations like:  
+
+- **Raw Counts**: Model the abundance of a specific taxon across samples using Poisson or negative binomial distributions.
+- **Taxa Presence/Absence**: Use a logistic regression model to predict whether a taxon is present or absent based on variables like diet, time, or environmental factors.
+
+#### Why GLMMs Are Useful
+
+- They allow us to adjust for random effects, like individual variation between subjects or differences between sequencing runs.
+- GLMMs can account for overdispersion, which is common in count data like microbial abundances.
+
+### Linear Mixed Effects Models (LMEs)
+
+LMEs are ideal when your response variable is continuous and approximately normally distributed. They are helpful when analyzing diversity indices or microbial abundances that have already been transformed.  
+  
+#### When to Use LMEs
+
+1.	**Repeated Measures:** When the same subjects are sampled multiple times under different conditions.
+2.	**Nested Data:** When samples are nested within groups (e.g., subjects within enclosures or sites).
+3.	**Interactions:** Exploring interactions between fixed effects while accounting for random variability.
+
+### Structure of an LME
+
+An LME has the form:  
+
+$y = X\beta + Zb + \epsilon$  
+
+
+- $y$: The response variable.
+- $X\beta$: Fixed effects (e.g., diet, treatment).
+- $Zb$: Random effects (e.g., subject-specific effects).
+- $\epsilon$: Residual error.
+
+#### Common Applications
+
+- Modeling changes in alpha diversity metrics over time.
+- Analyzing environmental gradients affecting microbial abundance.
+
+#### How LMEs Work for Microbiome Data
+
+For example, suppose you want to see how Shannon diversity changes with a new diet:  
+- The fixed effect could be the diet phase.
+- Random effects could account for repeated measures within individuals or cages.
+
+#### Why LMEs Are Useful
+- They allow you to model temporal trends (e.g., before/after treatment) while accounting for the fact that some samples come from the same individual or group.
+
+### Zero-Inflated Models (ZIMs)
+
+Microbiome data often have a high proportion of zeros due to undetected or absent taxa in samples. Zero-inflated models explicitly account for these excess zeros.  
+
+#### Structure of a ZIM
+
+##### Zero-inflated models combine:
+
+1.	A binary component modeling the probability of a taxon being present or absent.
+2.	A count component (e.g., Poisson or negative binomial) modeling the abundance conditional on the taxon being present.
+
+### How ZIMs Work for Microbiome Data
+
+Imagine you’re modeling the abundance of a rare taxon:  
+- Part of the model handles whether the taxon is present or absent (binary).
+- The other part models its abundance if present (e.g., using a Poisson distribution).
+
+### Why ZIMs Are Useful
+
+They are particularly valuable for rare taxa that appear in only some samples but may still have biological importance.
+
+#### Applications
+
+- **Rare Taxa:** Understanding the factors driving the presence/absence and abundance of low-abundance taxa.
+- **Pathogens:** Analyzing taxa that may be conditionally present in certain environments.
+
+### Beta Regression
+
+Beta regression is designed for modeling response variables that are proportions or percentages (e.g., relative abundances).  
+
+#### Key Features
+
+- Models proportions (values between 0 and 1) while addressing the non-normality and heteroscedasticity of such data.
+- Uses link functions (e.g., logit, probit) to transform proportions.
+
+### How Beta Regression Works for Microbiome Data
+
+If you want to analyze the relative abundance of a genus across different treatment groups:  
+- Beta regression models the proportion of that genus in each sample, accounting for group differences.
+
+### Why Beta Regression Is Useful
+
+It’s well-suited for microbiome data because it handles proportional values (0 to 1) and avoids the pitfalls of linear regression on proportions.  
+
+#### Applications
+
+- **Taxonomic Proportions:** Modeling the relative abundance of microbial taxa while accounting for predictor variables.
+- **Alpha Diversity Indices:** Proportions such as Pielou’s evenness.
+
+## Choosing the Right Model
+
+### Key Questions to Guide Model Selection
+
+1.	What is the structure of the response variable?
+  - **Counts:** GLMM with Poisson or negative binomial.
+  - **Proportions:** Beta regression.
+  - **Continuous:** LME.
+2.	Is there nested or repeated data?
+  - **Yes:** Use mixed models (GLMM or LME) with random effects.
+3.	Are there excess zeros in the data?
+  - **Yes:** Consider zero-inflated models.
+4.	Do you need to account for overdispersion?
+  - **Yes:** Use negative binomial distributions or zero-inflated models.
+  
+### Table Format of Considerations
+
+```{r}
+model_selection <- tibble(
+  Data_Type = c(
+    "Raw counts",
+    "Presence/absence",
+    "Diversity indices",
+    "Relative abundances",
+    "Zero-heavy data"
+  ),
+  Example = c(
+    "Abundance of specific taxa",
+    "Presence of rare taxa in samples",
+    "Shannon or Simpson diversity",
+    "Proportion of taxa across groups",
+    "Rare taxa abundances"
+  ),	Recommended_Model = c(
+    "GLMM with Poisson or Negative Binomial",
+    "GLMM with logistic regression",
+    "LME",
+    "Beta Regression",
+    "Zero-Inflated Model"
+  )
+) %>%
+  gt(rowname_col = "Data_Type") %>%
+  cols_label(
+    Recommended_Model = "Recommended Model"
+  ) %>%
+  tab_stubhead("Data Type") %>%
+  opt_stylize(style = 3, color = "pink")
+  
+
+model_selection
+```
+
+
+  
+## Practical Recommendations
+
+1.	**Data Transformation and Normalization**
+  - Consider preprocessing steps like rarefaction, scaling, or SRS before modeling.
+2.	**Model Diagnostics**
+  - Evaluate residuals and fit to ensure the model assumptions are met.
+3.	**Effect Size**
+  - Focus on effect size estimates (e.g., regression coefficients) alongside p-values to understand the biological significance.
+4.	**Visualization**
+  - Use visualization tools (e.g., ggplot2) to interpret model results and communicate findings effectively.
+  - Many of our workflows start from the various plot functions in microeco, which work well with ggplot2 for refinement.
+5.	**Package Options**
+  - [Microeco's trans_diff Model-based class](https://chiliubio.github.io/microeco_tutorial/model-based-class.html#) incorporates the most common packages used to compute these models, including:
+    - **lme4** or **glmmTMB** packages for GLMMs.
+    - **mgcv** for generalized additive models (GAMs).
+    - **brms** or **rstanarm** for Bayesian modeling approaches.

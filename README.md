@@ -15,7 +15,7 @@ If you are working with any molecular samples in the lab, you should begin with 
 
 The raw scripts with chunk of code that you can run directly (assuming you download the entire repository with necessary dependencies) are in .Rmd format. I also use the knitr package to create "prettier" (but read-only) versions of those files, which are easier to read and study on their own.
 - To view any of the html files, first download the raw file, and then open it in the browser of your choice (it will automatically open in whichever browser you set as your default).
-- To use the .Rmd files, I recommend you [pull or clone the repository to your R Studio](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github. You can also download the individual Rmd files and then open them in your R Studio, but keep in mind that you will not have the files referenced in the code.
+- To use the .Rmd files, I recommend you [pull or clone the repository to your R Studio](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github). You can also download the individual Rmd files and then open them in your R Studio, but keep in mind that you will not have the files referenced in the code.
 
 Once you look through these, you should work on your own [MetadataSetup.Rmd](MetadataSetup.Rmd) script for the hypotheses you are trying to test. You can download the tutorial as a template and edit it from there.
 

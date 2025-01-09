@@ -11,7 +11,7 @@
 
 <meta name="author" content="Alicia M. Rich, Ph.D." />
 
-<meta name="date" content="2025-01-06" />
+<meta name="date" content="2025-01-08" />
 
 <title>Notes on Variables and Statistics for Microbiome Analysis in the Rich Lab</title>
 
@@ -1570,7 +1570,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Notes on Variables and Statistics for
 Microbiome Analysis in the Rich Lab</h1>
 <h4 class="author">Alicia M. Rich, Ph.D.</h4>
-<h4 class="date">2025-01-06</h4>
+<h4 class="date">2025-01-08</h4>
 
 </div>
 
@@ -1585,7 +1585,7 @@ dataset:<br />
 <pre class="r"><code>ind_vars &lt;- tribble(
   ~var_name     , ~var_descr                                                       , ~recorded_for, ~relevant_to, ~quantitative_version, ~qualitative_version, ~binary, ~category      ,
   &quot;collection&quot;  , &quot;date the sample was collected on&quot;                               , &quot;both&quot;       , &quot;both&quot;      ,  &quot;discrete&quot;          , &quot;ordinal&quot;           , &quot;n&quot;    , &quot;temporal&quot;     ,      
-  &quot;subject&quot;     , &quot;subject collected from&quot;                                         , &quot;both&quot;       , &quot;both&quot;      ,  &quot;discrete&quot;          , &quot;nominal&quot;           , &quot;n&quot;    , &quot;identity&quot;     ,
+  &quot;subject&quot;     , &quot;subject collected from&quot;                                         , &quot;both&quot;       , &quot;both&quot;      ,  &quot;discrete&quot;          , &quot;nominal&quot;           , &quot;y&quot;    , &quot;identity&quot;     ,
   &quot;ster_mgpml&quot;  , &quot;steroid concentration administered in mg/ml&quot;                    , &quot;both&quot;       , &quot;culi&quot;      ,  &quot;continuous&quot;        , &quot;ordinal&quot;           , &quot;n&quot;    , &quot;medications&quot;  ,
   &quot;ster_dose_ml&quot;, &quot;steroid volume administered per day in ml&quot;                      , &quot;both&quot;       , &quot;culi&quot;      ,  &quot;continuous&quot;        , &quot;ordinal&quot;           , &quot;n&quot;    , &quot;medications&quot;  , 
   &quot;ster_npday&quot;  , &quot;steroid frequency per day as count&quot;                             , &quot;both&quot;       , &quot;culi&quot;      ,  &quot;discrete&quot;          , &quot;ordinal&quot;           , &quot;n&quot;    , &quot;medications&quot;  ,  
@@ -1641,23 +1641,24 @@ dataset:<br />
                 style   = cell_text(transform = &quot;capitalize&quot;),
                 locations = cells_body(columns = !c(&quot;var_name&quot;, &quot;var_descr&quot;)) 
               ) %&gt;%
+              tab_source_note(paste0(&quot;last updated on &quot;, ymd(today()))) %&gt;%
               opt_stylize(style = 3, color = &quot;cyan&quot;)
 
 ind_vars_gt</code></pre>
-<div id="pxjycfuqlh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#pxjycfuqlh table {
+<div id="teyjsazkrk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#teyjsazkrk table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#pxjycfuqlh thead, #pxjycfuqlh tbody, #pxjycfuqlh tfoot, #pxjycfuqlh tr, #pxjycfuqlh td, #pxjycfuqlh th {
+#teyjsazkrk thead, #teyjsazkrk tbody, #teyjsazkrk tfoot, #teyjsazkrk tr, #teyjsazkrk td, #teyjsazkrk th {
 border-style: none;
 }
-#pxjycfuqlh p {
+#teyjsazkrk p {
 margin: 0;
 padding: 0;
 }
-#pxjycfuqlh .gt_table {
+#teyjsazkrk .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -1682,11 +1683,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#pxjycfuqlh .gt_caption {
+#teyjsazkrk .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#pxjycfuqlh .gt_title {
+#teyjsazkrk .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -1697,7 +1698,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#pxjycfuqlh .gt_subtitle {
+#teyjsazkrk .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -1708,7 +1709,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#pxjycfuqlh .gt_heading {
+#teyjsazkrk .gt_heading {
 background-color: #FFFFFF;
 text-align: left;
 border-bottom-color: #FFFFFF;
@@ -1719,12 +1720,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#pxjycfuqlh .gt_bottom_border {
+#teyjsazkrk .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#pxjycfuqlh .gt_col_headings {
+#teyjsazkrk .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #929292;
@@ -1738,7 +1739,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#pxjycfuqlh .gt_col_heading {
+#teyjsazkrk .gt_col_heading {
 color: #FFFFFF;
 background-color: #016763;
 font-size: 100%;
@@ -1757,7 +1758,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#pxjycfuqlh .gt_column_spanner_outer {
+#teyjsazkrk .gt_column_spanner_outer {
 color: #FFFFFF;
 background-color: #016763;
 font-size: 100%;
@@ -1768,13 +1769,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#pxjycfuqlh .gt_column_spanner_outer:first-child {
+#teyjsazkrk .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#pxjycfuqlh .gt_column_spanner_outer:last-child {
+#teyjsazkrk .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#pxjycfuqlh .gt_column_spanner {
+#teyjsazkrk .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
@@ -1785,10 +1786,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#pxjycfuqlh .gt_spanner_row {
+#teyjsazkrk .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#pxjycfuqlh .gt_group_heading {
+#teyjsazkrk .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1813,7 +1814,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#pxjycfuqlh .gt_empty_group_heading {
+#teyjsazkrk .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -1827,13 +1828,13 @@ border-bottom-width: 2px;
 border-bottom-color: #929292;
 vertical-align: middle;
 }
-#pxjycfuqlh .gt_from_md > :first-child {
+#teyjsazkrk .gt_from_md > :first-child {
 margin-top: 0;
 }
-#pxjycfuqlh .gt_from_md > :last-child {
+#teyjsazkrk .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#pxjycfuqlh .gt_row {
+#teyjsazkrk .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1851,7 +1852,7 @@ border-right-color: #929292;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#pxjycfuqlh .gt_stub {
+#teyjsazkrk .gt_stub {
 color: #333333;
 background-color: #D5D5D5;
 font-size: 100%;
@@ -1863,7 +1864,7 @@ border-right-color: #FFFFFF;
 padding-left: 5px;
 padding-right: 5px;
 }
-#pxjycfuqlh .gt_stub_row_group {
+#teyjsazkrk .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1876,13 +1877,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#pxjycfuqlh .gt_row_group_first td {
+#teyjsazkrk .gt_row_group_first td {
 border-top-width: 2px;
 }
-#pxjycfuqlh .gt_row_group_first th {
+#teyjsazkrk .gt_row_group_first th {
 border-top-width: 2px;
 }
-#pxjycfuqlh .gt_summary_row {
+#teyjsazkrk .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -1891,14 +1892,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#pxjycfuqlh .gt_first_summary_row {
+#teyjsazkrk .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #929292;
 }
-#pxjycfuqlh .gt_first_summary_row.thick {
+#teyjsazkrk .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#pxjycfuqlh .gt_last_summary_row {
+#teyjsazkrk .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1907,7 +1908,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#pxjycfuqlh .gt_grand_summary_row {
+#teyjsazkrk .gt_grand_summary_row {
 color: #333333;
 background-color: #D5D5D5;
 text-transform: inherit;
@@ -1916,7 +1917,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#pxjycfuqlh .gt_first_grand_summary_row {
+#teyjsazkrk .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1925,7 +1926,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #929292;
 }
-#pxjycfuqlh .gt_last_grand_summary_row_top {
+#teyjsazkrk .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1934,10 +1935,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #929292;
 }
-#pxjycfuqlh .gt_striped {
+#teyjsazkrk .gt_striped {
 background-color: #F4F4F4;
 }
-#pxjycfuqlh .gt_table_body {
+#teyjsazkrk .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #929292;
@@ -1945,7 +1946,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#pxjycfuqlh .gt_footnotes {
+#teyjsazkrk .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1958,7 +1959,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#pxjycfuqlh .gt_footnote {
+#teyjsazkrk .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -1966,7 +1967,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#pxjycfuqlh .gt_sourcenotes {
+#teyjsazkrk .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1979,64 +1980,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#pxjycfuqlh .gt_sourcenote {
+#teyjsazkrk .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#pxjycfuqlh .gt_left {
+#teyjsazkrk .gt_left {
 text-align: left;
 }
-#pxjycfuqlh .gt_center {
+#teyjsazkrk .gt_center {
 text-align: center;
 }
-#pxjycfuqlh .gt_right {
+#teyjsazkrk .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#pxjycfuqlh .gt_font_normal {
+#teyjsazkrk .gt_font_normal {
 font-weight: normal;
 }
-#pxjycfuqlh .gt_font_bold {
+#teyjsazkrk .gt_font_bold {
 font-weight: bold;
 }
-#pxjycfuqlh .gt_font_italic {
+#teyjsazkrk .gt_font_italic {
 font-style: italic;
 }
-#pxjycfuqlh .gt_super {
+#teyjsazkrk .gt_super {
 font-size: 65%;
 }
-#pxjycfuqlh .gt_footnote_marks {
+#teyjsazkrk .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#pxjycfuqlh .gt_asterisk {
+#teyjsazkrk .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#pxjycfuqlh .gt_indent_1 {
+#teyjsazkrk .gt_indent_1 {
 text-indent: 5px;
 }
-#pxjycfuqlh .gt_indent_2 {
+#teyjsazkrk .gt_indent_2 {
 text-indent: 10px;
 }
-#pxjycfuqlh .gt_indent_3 {
+#teyjsazkrk .gt_indent_3 {
 text-indent: 15px;
 }
-#pxjycfuqlh .gt_indent_4 {
+#teyjsazkrk .gt_indent_4 {
 text-indent: 20px;
 }
-#pxjycfuqlh .gt_indent_5 {
+#teyjsazkrk .gt_indent_5 {
 text-indent: 25px;
 }
-#pxjycfuqlh .katex-display {
+#teyjsazkrk .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#pxjycfuqlh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#teyjsazkrk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -2086,7 +2087,7 @@ height: 0px !important;
 <td headers="identity stub_1_2 relevant_to" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">both</td>
 <td headers="identity stub_1_2 quantitative_version" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">discrete</td>
 <td headers="identity stub_1_2 qualitative_version" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">nominal</td>
-<td headers="identity stub_1_2 binary" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">n</td></tr>
+<td headers="identity stub_1_2 binary" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">y</td></tr>
     <tr class="gt_group_heading_row">
       <th colspan="7" class="gt_group_heading" scope="colgroup" id="medications">medications</th>
     </tr>
@@ -2260,10 +2261,15 @@ height: 0px !important;
 <td headers="timing stub_1_24 qualitative_version" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">ordinal</td>
 <td headers="timing stub_1_24 binary" class="gt_row gt_left gt_striped" style="text-transform: capitalize;">n</td></tr>
   </tbody>
-  
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="7">last updated on 2025-01-08</td>
+    </tr>
+  </tfoot>
   
 </table>
 </div>
+<pre class="r"><code>gtsave(ind_vars_gt, &quot;meta_variables_loris.png&quot;, paste0(global$summaries$metadata))</code></pre>
 <hr />
 </div>
 <div id="to-gather-from-video-data" class="section level2 tabset">
@@ -2331,25 +2337,28 @@ is still the most commonly used option, so that’s what we have done
 here, especially because microeco makes it easy to automate the process.
 We did, however, apply a <a href="https://peerj.com/articles/9593/">modified version of
 rarefaction</a> that is growing in popularity.<br />
-<strong>What rarefaction does</strong>: Our count data for each sample
-are confounded by variation in the total number of reads we started with
-for that sample after demultiplexing our libraries. To correct for this,
-we choose a threshold read count as our <strong>rarefaction
-threshold</strong>. Then we only keep samples for which we generated at
-least that number of reads, and we only keep that number of reads for
-all samples with more than the threshold.<br />
+</p>
+<p><strong>What rarefaction does</strong>: Our count data for each
+sample are confounded by variation in the total number of reads we
+started with for that sample after demultiplexing our libraries. To
+correct for this, we choose a threshold read count as our
+<strong>rarefaction threshold</strong>. Then we only keep samples for
+which we generated at least that number of reads, and we only keep that
+number of reads for all samples with more than the threshold.<br />
 <strong>Which reads to keep/lose:</strong> The next issue is how to
 select which reads to keep and ignore without introducing more bias to
 our data. We used the microeco option <strong><em>SRS</em></strong>,
 which performs an alternative rarefaction method by <strong><a href="https://peerj.com/articles/9593/">scaling with ranked
 subsampling</a></strong>.<br />
-<strong>SRS Steps:</strong> 1. The total counts for all OTUs
-(operational taxonomic units) or species in each sample are divided by a
-scaling factor chosen in such a way that the sum of the scaled counts
-Cscaled equals Cmin.<br />
-2. The non-integer Cscaled values are converted into integers by an
-algorithm known as <em>ranked subsampling</em>.<br />
 </p>
+<p><strong>SRS Steps:</strong></p>
+<ol style="list-style-type: decimal">
+<li>The total counts for all OTUs (operational taxonomic units) or
+species in each sample are divided by a scaling factor chosen in such a
+way that the sum of the scaled counts Cscaled equals Cmin.</li>
+<li>The non-integer Cscaled values are converted into integers by an
+algorithm known as <em>ranked subsampling</em>.</li>
+</ol>
 <div id="our-rarefaction-threshold" class="section level4">
 <h4>Our Rarefaction Threshold</h4>
 <p>For now, we used 7,000 as our threshold. I did this based on some of
@@ -2371,19 +2380,26 @@ sizes by choosing too high of a read count.<br />
 length and quality, but then we filtered taxa again to minimize the
 confounding impacts of taxa with very few representative reads in our
 data.<br />
-This is fairly standard practice, as low abundance taxa across all
+</p>
+<p>This is fairly standard practice, as low abundance taxa across all
 samples are more likely to appear as a result of false taxonomic
 assignment, especially with increasing sample sizes or sequencing
 depths.<br />
-I started with very generous filtering thresholds as we were looking for
-subtle patterns with a very small subset of our total samples, but over
-time I have incrementally adjusted this to get a clearer picture of the
-key patterns in our data.<br />
-<strong>Right now we are filtering out:</strong><br />
-1. Taxa with abundances less than <strong>0.01%</strong>.<br />
-2. Taxa present in fewer than <strong>2.00%</strong> of all
-samples.<br />
 </p>
+<p>I started with very generous filtering thresholds as we were looking
+for subtle patterns with a very small subset of our total samples, but
+over time I have incrementally adjusted this to get a clearer picture of
+the key patterns in our data.<br />
+</p>
+<p><strong>Right now we are filtering out:</strong><br />
+</p>
+<ol style="list-style-type: decimal">
+<li>Taxa with abundances less than <strong>0.01%</strong>.<br />
+</li>
+<li>Taxa present in fewer than <strong>2.00%</strong> of all
+samples.<br />
+</li>
+</ol>
 </div>
 <div id="taxonomic-levels" class="section level3">
 <h3>Taxonomic Levels</h3>
@@ -2392,23 +2408,32 @@ a finer taxonomic resolution than traditional analysis of a
 hypervariable region of the 16S gene through short read sequencing. That
 means we can safely analyze our abundances to as fine as the Species
 level.<br />
-Still, sometimes trends at the higher taxonomic scales are still more
+</p>
+<p>Still, sometimes trends at the higher taxonomic scales are still more
 informative, depending on the question. The microeco package makes it
 pretty easy to merge abundance data to a given higher taxonomic level
 after we construct our microbiome dataset object and normalize/filter
 the reads and taxa. That is why I generally just compute our basic
 abundance summary statistics at each of the following levels:<br />
-1. Phylum<br />
-2. Class<br />
-3. Order<br />
-4. Family<br />
-5. Genus<br />
-6. Species<br />
-After performing some other calculations like correlation coefficients,
-I merged those taxonomic scales back into our summary tables/figures for
-ease of comparison. We should still take care to keep in mind that the
-stats we are looking at were computed individually at each taxonomic
-level.<br />
+</p>
+<ol style="list-style-type: decimal">
+<li>Phylum<br />
+</li>
+<li>Class<br />
+</li>
+<li>Order<br />
+</li>
+<li>Family<br />
+</li>
+<li>Genus<br />
+</li>
+<li>Species</li>
+</ol>
+<p>After performing some other calculations like correlation
+coefficients, I merged those taxonomic scales back into our summary
+tables/figures for ease of comparison. We should still take care to keep
+in mind that the stats we are looking at were computed individually at
+each taxonomic level.<br />
 </p>
 <hr />
 </div>
@@ -2425,37 +2450,49 @@ metrics:<br />
 <li>estimator of species richness, which corrects for species that might
 be present but not detected in your sample due to low abundance<br />
 </li>
-<li>assumes that:<br />
-
+<li>assumes that:
 <ul>
 <li>rare species are more likely to be missed during sampling<br />
 </li>
 </ul></li>
-<li>useful for:<br />
-
+<li>useful for:
 <ul>
 <li>low abundances<br />
 </li>
-<li>rare or hard to detect taxa<br />
-</li>
+<li>rare or hard to detect taxa</li>
 </ul></li>
 </ul>
 </div>
 <div id="ace" class="section level3">
 <h3>ACE</h3>
 <p><em>Abundance-based Coverage Estimator</em><br />
-- estimates species richness by dividing observed frequencies into rare
-and abundant groups, and then considering only the presence or absence
-of abundant species.<br />
-- what it indicates:<br />
-- Higher ACE values indicate higher diversity. ACE is sensitive to rare
-OTUs (singletons and doubletons)<br />
-- useful for:<br />
-- SSU rRNA like 16S<br />
-- do not use with:<br />
-- estimating total richness of amplicon sequence variant (ASV) datasets
-like we might get from shotgun short read sequencing<br />
 </p>
+<ul>
+<li>estimates species richness by dividing observed frequencies into
+rare and abundant groups, and then considering only the presence or
+absence of abundant species.<br />
+</li>
+<li>what it indicates:<br />
+
+<ul>
+<li>Higher ACE values indicate higher diversity. ACE is sensitive to
+rare OTUs (singletons and doubletons)<br />
+</li>
+</ul></li>
+<li>useful for:<br />
+
+<ul>
+<li>SSU rRNA like 16S<br />
+</li>
+</ul></li>
+<li>do not use with:<br />
+
+<ul>
+<li>estimating total richness of amplicon sequence variant (ASV)
+datasets like we might get from shotgun short read sequencing<br />
+</li>
+</ul></li>
+</ul>
 </div>
 <div id="shannon" class="section level3">
 <h3>Shannon</h3>
@@ -2644,11 +2681,15 @@ taxa, and not their abundance.<br />
 <p>UniFrac distances are phylogenetic metrics that measure the
 dissimilarity between microbial communities based on the evolutionary
 distances between taxa.<br />
-- <strong>Unweighted UniFrac</strong>: Focuses on the presence or
-absence of taxa, considering phylogenetic relationships.<br />
-- <strong>Weighted UniFrac</strong>: Incorporates both phylogenetic
-relationships and the abundance of taxa in the communities.<br />
 </p>
+<ul>
+<li><strong>Unweighted UniFrac</strong>: Focuses on the presence or
+absence of taxa, considering phylogenetic relationships.<br />
+</li>
+<li><strong>Weighted UniFrac</strong>: Incorporates both phylogenetic
+relationships and the abundance of taxa in the communities.<br />
+</li>
+</ul>
 </div>
 <div id="focus-2" class="section level5">
 <h5>Focus</h5>
@@ -2854,83 +2895,135 @@ techniques that reduce complex data (e.g., community composition across
 multiple samples) into fewer dimensions for visualization and
 interpretation. These techniques can highlight patterns of similarity or
 difference between samples.<br />
-- Options in microeco:<br />
-- <strong>Principal Coordinates Analysis (PCoA)</strong><br />
-- <strong>Non-metric Multidimensional Scaling (NMDS)</strong><br />
-- <strong>Redundancy Analysis (RDA)</strong><br />
-- How it works:<br />
-- Ordination projects data points (samples) onto a low-dimensional space
-where the distance between points reflects the dissimilarity between the
-corresponding microbial communities.<br />
-- It is often based on distance or dissimilarity matrices calculated
-using methods like Bray-Curtis or Jaccard.<br />
-- Purpose:<br />
-- Visualizing the overall structure of microbial communities and
-identifying potential clusters or gradients in the data.<br />
 </p>
+<ul>
+<li>Options in microeco:
+<ul>
+<li><strong>Principal Coordinates Analysis (PCoA)</strong></li>
+<li><strong>Non-metric Multidimensional Scaling (NMDS)</strong></li>
+<li><strong>Redundancy Analysis (RDA)</strong></li>
+</ul></li>
+<li>How it works:
+<ul>
+<li>Ordination projects data points (samples) onto a low-dimensional
+space where the distance between points reflects the dissimilarity
+between the corresponding microbial communities.<br />
+</li>
+<li>It is often based on distance or dissimilarity matrices calculated
+using methods like Bray-Curtis or Jaccard.<br />
+</li>
+</ul></li>
+<li>Purpose:
+<ul>
+<li>Visualizing the overall structure of microbial communities and
+identifying potential clusters or gradients in the data.</li>
+</ul></li>
+</ul>
 </div>
 <div id="group-distance" class="section level4">
 <h4>Group Distance</h4>
 <p><strong>Group distance</strong> metrics calculate and compare the
 distances between groups of samples. This allows for the quantification
 of the beta diversity between predefined groups (e.g., treatment
-vs. control, or different geographic locations).<br />
-- Options in microeco:<br />
-- <strong>PERMANOVA (Permutational Multivariate Analysis of
+vs. control, or different geographic locations).</p>
+<ul>
+<li>Options in microeco:<br />
+
+<ul>
+<li><strong>PERMANOVA (Permutational Multivariate Analysis of
 Variance)</strong><br />
-- <strong>ADONIS (a function within PERMANOVA)</strong><br />
-- How it works:<br />
-- The distance between groups of samples is calculated using
+</li>
+<li><strong>ADONIS (a function within PERMANOVA)</strong><br />
+</li>
+</ul></li>
+<li>How it works:<br />
+
+<ul>
+<li>The distance between groups of samples is calculated using
 dissimilarity measures like Bray-Curtis or UniFrac.<br />
-- Statistical tests like PERMANOVA then compare the distances between
+</li>
+<li>Statistical tests like PERMANOVA then compare the distances between
 groups to assess whether there is a significant difference in the
 microbial community structure between them.<br />
-- Purpose:<br />
-- Testing hypotheses about the influence of environmental factors,
+</li>
+</ul></li>
+<li>Purpose:<br />
+
+<ul>
+<li>Testing hypotheses about the influence of environmental factors,
 treatments, or other variables on microbiome composition.<br />
-</p>
+</li>
+</ul></li>
+</ul>
 </div>
 <div id="clustering" class="section level4">
 <h4>Clustering</h4>
 <p><strong>Clustering methods</strong> group samples together based on
 their similarities in microbial composition, forming clusters that
 represent similar microbial communities.<br />
-- Options in microeco:<br />
-- <strong>Hierarchical clustering</strong><br />
-- <strong>k-means clustering</strong><br />
-- How it works:<br />
-- Clustering algorithms group samples based on a distance or
+</p>
+<ul>
+<li>Options in microeco:
+<ul>
+<li><strong>Hierarchical clustering</strong><br />
+</li>
+<li><strong>k-means clustering</strong><br />
+</li>
+</ul></li>
+<li>How it works:
+<ul>
+<li>Clustering algorithms group samples based on a distance or
 dissimilarity matrix.<br />
-- In hierarchical clustering, for example, the most similar samples are
-joined together first, and the process continues until all samples are
-clustered into a dendrogram.<br />
-- Purpose:<br />
-- This helps to categorize samples into clusters of similar microbial
+</li>
+<li>In hierarchical clustering, for example, the most similar samples
+are joined together first, and the process continues until all samples
+are clustered into a dendrogram.<br />
+</li>
+</ul></li>
+<li>Purpose:
+<ul>
+<li>This helps to categorize samples into clusters of similar microbial
 composition and visualize patterns of beta diversity across the
 dataset.<br />
-</p>
+</li>
+</ul></li>
+</ul>
 </div>
 <div id="manova-multivariate-analysis-of-variance" class="section level4">
 <h4>MANOVA (Multivariate Analysis of Variance)</h4>
 <p><strong>MANOVA</strong> is a statistical test that evaluates whether
 there are differences in the means of several dependent variables (e.g.,
 microbial taxa) between different groups (e.g., treatment groups,
-environmental conditions).<br />
-- Options in microeco:<br />
-- Multivariate tests like MANOVA can be applied to the compositional
+environmental conditions).</p>
+<ul>
+<li>Options in microeco:<br />
+
+<ul>
+<li>Multivariate tests like MANOVA can be applied to the compositional
 data to test for group-level differences.<br />
-- How it works:<br />
-- MANOVA assesses multiple response variables simultaneously (e.g.,
+</li>
+</ul></li>
+<li>How it works:<br />
+
+<ul>
+<li>MANOVA assesses multiple response variables simultaneously (e.g.,
 microbial taxa abundances) across different groups (e.g., sample
 types).<br />
-- It tests whether the centroid (mean) of microbial community
+</li>
+<li>It tests whether the centroid (mean) of microbial community
 composition differs significantly across the groups.<br />
-- Purpose:<br />
-- It is used to test hypotheses regarding how different factors (like
+</li>
+</ul></li>
+<li>Purpose:<br />
+
+<ul>
+<li>It is used to test hypotheses regarding how different factors (like
 environmental conditions or treatments) impact microbial communities as
 a whole, accounting for the correlations between different taxa or
 features.<br />
-</p>
+</li>
+</ul></li>
+</ul>
 <hr />
 </div>
 </div>
@@ -2938,6 +3031,753 @@ features.<br />
 </div>
 <div id="inferential-statistics-or-models" class="section level1">
 <h1>Inferential Statistics or Models</h1>
+<p>Inferential statistics and mixed models are invaluable for analyzing
+microbiome datasets, particularly when dealing with the inherent
+complexities of microbial abundance data. These methods help us account
+for multiple sources of variability, hierarchical data structures, and
+overdispersion.</p>
+<div id="some-options" class="section level2">
+<h2>Some Options</h2>
+<div id="generalized-linear-mixed-models-glmms" class="section level3">
+<h3>Generalized Linear Mixed Models (GLMMs)</h3>
+<p>GLMMs are an extension of generalized linear models (GLMs), allowing
+for the inclusion of random effects to account for hierarchical or
+nested data structures.</p>
+<div id="when-to-use-glmms" class="section level4">
+<h4>When to Use GLMMs</h4>
+<ol style="list-style-type: decimal">
+<li><strong>Hierarchical Data</strong>: For example, when samples are
+nested within subjects, and subjects are nested within treatment
+groups.</li>
+<li><strong>Overdispersion</strong>: When the variance in the data is
+greater than expected under a traditional GLM.</li>
+<li><strong>Non-Normal Response Variables</strong>: For example:</li>
+</ol>
+<ul>
+<li>Binomial data (e.g., presence/absence of a microbial taxon).</li>
+<li>Poisson data (e.g., counts of microbial reads).</li>
+</ul>
+</div>
+</div>
+<div id="structure-of-a-glmm" class="section level3">
+<h3>Structure of a GLMM</h3>
+<p>A GLMM has the form:</p>
+<p><span class="math inline">\(g(E(y)) = X\beta + Zb\)</span></p>
+<ul>
+<li><span class="math inline">\(g(E(y))\)</span>: A link function (e.g.,
+log, logit) that relates the expected value of the response variable y
+to the linear predictors.</li>
+<li><span class="math inline">\(X\beta\)</span>: Fixed effects
+(predictors like treatment, time, etc.).</li>
+<li><span class="math inline">\(Zb\)</span>: Random effects (e.g.,
+subject-specific effects).</li>
+</ul>
+<div id="common-applications" class="section level4">
+<h4>Common Applications</h4>
+<ul>
+<li><strong>Microbial Abundance:</strong> Using Poisson or negative
+binomial distributions to model raw or normalized count data.</li>
+<li><strong>Presence/Absence:</strong> Modeling binary outcomes for
+specific taxa (e.g., the presence of a pathogenic species).</li>
+<li><strong>Diversity Metrics:</strong> Modeling alpha diversity indices
+as the response variable while accounting for repeated measures or
+nested study designs.</li>
+</ul>
+</div>
+<div id="how-glmms-work-for-microbiome-data" class="section level4">
+<h4>How GLMMs Work for Microbiome Data</h4>
+<p>A GLMM can handle situations like:</p>
+<ul>
+<li><strong>Raw Counts</strong>: Model the abundance of a specific taxon
+across samples using Poisson or negative binomial distributions.</li>
+<li><strong>Taxa Presence/Absence</strong>: Use a logistic regression
+model to predict whether a taxon is present or absent based on variables
+like diet, time, or environmental factors.</li>
+</ul>
+</div>
+<div id="why-glmms-are-useful" class="section level4">
+<h4>Why GLMMs Are Useful</h4>
+<ul>
+<li>They allow us to adjust for random effects, like individual
+variation between subjects or differences between sequencing runs.</li>
+<li>GLMMs can account for overdispersion, which is common in count data
+like microbial abundances.</li>
+</ul>
+</div>
+</div>
+<div id="linear-mixed-effects-models-lmes" class="section level3">
+<h3>Linear Mixed Effects Models (LMEs)</h3>
+<p>LMEs are ideal when your response variable is continuous and
+approximately normally distributed. They are helpful when analyzing
+diversity indices or microbial abundances that have already been
+transformed.</p>
+<div id="when-to-use-lmes" class="section level4">
+<h4>When to Use LMEs</h4>
+<ol style="list-style-type: decimal">
+<li><strong>Repeated Measures:</strong> When the same subjects are
+sampled multiple times under different conditions.</li>
+<li><strong>Nested Data:</strong> When samples are nested within groups
+(e.g., subjects within enclosures or sites).</li>
+<li><strong>Interactions:</strong> Exploring interactions between fixed
+effects while accounting for random variability.</li>
+</ol>
+</div>
+</div>
+<div id="structure-of-an-lme" class="section level3">
+<h3>Structure of an LME</h3>
+<p>An LME has the form:</p>
+<p><span class="math inline">\(y = X\beta + Zb + \epsilon\)</span></p>
+<ul>
+<li><span class="math inline">\(y\)</span>: The response variable.</li>
+<li><span class="math inline">\(X\beta\)</span>: Fixed effects (e.g.,
+diet, treatment).</li>
+<li><span class="math inline">\(Zb\)</span>: Random effects (e.g.,
+subject-specific effects).</li>
+<li><span class="math inline">\(\epsilon\)</span>: Residual error.</li>
+</ul>
+<div id="common-applications-1" class="section level4">
+<h4>Common Applications</h4>
+<ul>
+<li>Modeling changes in alpha diversity metrics over time.</li>
+<li>Analyzing environmental gradients affecting microbial
+abundance.</li>
+</ul>
+</div>
+<div id="how-lmes-work-for-microbiome-data" class="section level4">
+<h4>How LMEs Work for Microbiome Data</h4>
+<p>For example, suppose you want to see how Shannon diversity changes
+with a new diet:<br />
+- The fixed effect could be the diet phase. - Random effects could
+account for repeated measures within individuals or cages.</p>
+</div>
+<div id="why-lmes-are-useful" class="section level4">
+<h4>Why LMEs Are Useful</h4>
+<ul>
+<li>They allow you to model temporal trends (e.g., before/after
+treatment) while accounting for the fact that some samples come from the
+same individual or group.</li>
+</ul>
+</div>
+</div>
+<div id="zero-inflated-models-zims" class="section level3">
+<h3>Zero-Inflated Models (ZIMs)</h3>
+<p>Microbiome data often have a high proportion of zeros due to
+undetected or absent taxa in samples. Zero-inflated models explicitly
+account for these excess zeros.</p>
+<div id="structure-of-a-zim" class="section level4">
+<h4>Structure of a ZIM</h4>
+<div id="zero-inflated-models-combine" class="section level5">
+<h5>Zero-inflated models combine:</h5>
+<ol style="list-style-type: decimal">
+<li>A binary component modeling the probability of a taxon being present
+or absent.</li>
+<li>A count component (e.g., Poisson or negative binomial) modeling the
+abundance conditional on the taxon being present.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="how-zims-work-for-microbiome-data" class="section level3">
+<h3>How ZIMs Work for Microbiome Data</h3>
+<p>Imagine you’re modeling the abundance of a rare taxon:<br />
+- Part of the model handles whether the taxon is present or absent
+(binary). - The other part models its abundance if present (e.g., using
+a Poisson distribution).</p>
+</div>
+<div id="why-zims-are-useful" class="section level3">
+<h3>Why ZIMs Are Useful</h3>
+<p>They are particularly valuable for rare taxa that appear in only some
+samples but may still have biological importance.</p>
+<div id="applications" class="section level4">
+<h4>Applications</h4>
+<ul>
+<li><strong>Rare Taxa:</strong> Understanding the factors driving the
+presence/absence and abundance of low-abundance taxa.</li>
+<li><strong>Pathogens:</strong> Analyzing taxa that may be conditionally
+present in certain environments.</li>
+</ul>
+</div>
+</div>
+<div id="beta-regression" class="section level3">
+<h3>Beta Regression</h3>
+<p>Beta regression is designed for modeling response variables that are
+proportions or percentages (e.g., relative abundances).</p>
+<div id="key-features" class="section level4">
+<h4>Key Features</h4>
+<ul>
+<li>Models proportions (values between 0 and 1) while addressing the
+non-normality and heteroscedasticity of such data.</li>
+<li>Uses link functions (e.g., logit, probit) to transform
+proportions.</li>
+</ul>
+</div>
+</div>
+<div id="how-beta-regression-works-for-microbiome-data" class="section level3">
+<h3>How Beta Regression Works for Microbiome Data</h3>
+<p>If you want to analyze the relative abundance of a genus across
+different treatment groups:<br />
+- Beta regression models the proportion of that genus in each sample,
+accounting for group differences.</p>
+</div>
+<div id="why-beta-regression-is-useful" class="section level3">
+<h3>Why Beta Regression Is Useful</h3>
+<p>It’s well-suited for microbiome data because it handles proportional
+values (0 to 1) and avoids the pitfalls of linear regression on
+proportions.</p>
+<div id="applications-1" class="section level4">
+<h4>Applications</h4>
+<ul>
+<li><strong>Taxonomic Proportions:</strong> Modeling the relative
+abundance of microbial taxa while accounting for predictor
+variables.</li>
+<li><strong>Alpha Diversity Indices:</strong> Proportions such as
+Pielou’s evenness.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="choosing-the-right-model" class="section level2">
+<h2>Choosing the Right Model</h2>
+<div id="key-questions-to-guide-model-selection" class="section level3">
+<h3>Key Questions to Guide Model Selection</h3>
+<ol style="list-style-type: decimal">
+<li>What is the structure of the response variable?</li>
+</ol>
+<ul>
+<li><strong>Counts:</strong> GLMM with Poisson or negative
+binomial.</li>
+<li><strong>Proportions:</strong> Beta regression.</li>
+<li><strong>Continuous:</strong> LME.</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Is there nested or repeated data?</li>
+</ol>
+<ul>
+<li><strong>Yes:</strong> Use mixed models (GLMM or LME) with random
+effects.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Are there excess zeros in the data?</li>
+</ol>
+<ul>
+<li><strong>Yes:</strong> Consider zero-inflated models.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Do you need to account for overdispersion?</li>
+</ol>
+<ul>
+<li><strong>Yes:</strong> Use negative binomial distributions or
+zero-inflated models.</li>
+</ul>
+</div>
+<div id="table-format-of-considerations" class="section level3">
+<h3>Table Format of Considerations</h3>
+<pre class="r"><code>model_selection &lt;- tibble(
+  Data_Type = c(
+    &quot;Raw counts&quot;,
+    &quot;Presence/absence&quot;,
+    &quot;Diversity indices&quot;,
+    &quot;Relative abundances&quot;,
+    &quot;Zero-heavy data&quot;
+  ),
+  Example = c(
+    &quot;Abundance of specific taxa&quot;,
+    &quot;Presence of rare taxa in samples&quot;,
+    &quot;Shannon or Simpson diversity&quot;,
+    &quot;Proportion of taxa across groups&quot;,
+    &quot;Rare taxa abundances&quot;
+  ),    Recommended_Model = c(
+    &quot;GLMM with Poisson or Negative Binomial&quot;,
+    &quot;GLMM with logistic regression&quot;,
+    &quot;LME&quot;,
+    &quot;Beta Regression&quot;,
+    &quot;Zero-Inflated Model&quot;
+  )
+) %&gt;%
+  gt(rowname_col = &quot;Data_Type&quot;) %&gt;%
+  cols_label(
+    Recommended_Model = &quot;Recommended Model&quot;
+  ) %&gt;%
+  tab_stubhead(&quot;Data Type&quot;) %&gt;%
+  opt_stylize(style = 3, color = &quot;pink&quot;)
+  
+
+model_selection</code></pre>
+<div id="rebuwnpxfg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rebuwnpxfg table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#rebuwnpxfg thead, #rebuwnpxfg tbody, #rebuwnpxfg tfoot, #rebuwnpxfg tr, #rebuwnpxfg td, #rebuwnpxfg th {
+border-style: none;
+}
+#rebuwnpxfg p {
+margin: 0;
+padding: 0;
+}
+#rebuwnpxfg .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#rebuwnpxfg .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#rebuwnpxfg .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#rebuwnpxfg .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#rebuwnpxfg .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#rebuwnpxfg .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+}
+#rebuwnpxfg .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#rebuwnpxfg .gt_col_heading {
+color: #FFFFFF;
+background-color: #99195F;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#rebuwnpxfg .gt_column_spanner_outer {
+color: #FFFFFF;
+background-color: #99195F;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#rebuwnpxfg .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#rebuwnpxfg .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#rebuwnpxfg .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#rebuwnpxfg .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#rebuwnpxfg .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#rebuwnpxfg .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+vertical-align: middle;
+}
+#rebuwnpxfg .gt_from_md > :first-child {
+margin-top: 0;
+}
+#rebuwnpxfg .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#rebuwnpxfg .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: dashed;
+border-top-width: 1px;
+border-top-color: #929292;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #929292;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #929292;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#rebuwnpxfg .gt_stub {
+color: #333333;
+background-color: #D5D5D5;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #FFFFFF;
+padding-left: 5px;
+padding-right: 5px;
+}
+#rebuwnpxfg .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#rebuwnpxfg .gt_row_group_first td {
+border-top-width: 2px;
+}
+#rebuwnpxfg .gt_row_group_first th {
+border-top-width: 2px;
+}
+#rebuwnpxfg .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#rebuwnpxfg .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #929292;
+}
+#rebuwnpxfg .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#rebuwnpxfg .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+}
+#rebuwnpxfg .gt_grand_summary_row {
+color: #333333;
+background-color: #D5D5D5;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#rebuwnpxfg .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #929292;
+}
+#rebuwnpxfg .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #929292;
+}
+#rebuwnpxfg .gt_striped {
+background-color: #F4F4F4;
+}
+#rebuwnpxfg .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+}
+#rebuwnpxfg .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#rebuwnpxfg .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#rebuwnpxfg .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#rebuwnpxfg .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#rebuwnpxfg .gt_left {
+text-align: left;
+}
+#rebuwnpxfg .gt_center {
+text-align: center;
+}
+#rebuwnpxfg .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#rebuwnpxfg .gt_font_normal {
+font-weight: normal;
+}
+#rebuwnpxfg .gt_font_bold {
+font-weight: bold;
+}
+#rebuwnpxfg .gt_font_italic {
+font-style: italic;
+}
+#rebuwnpxfg .gt_super {
+font-size: 65%;
+}
+#rebuwnpxfg .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#rebuwnpxfg .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#rebuwnpxfg .gt_indent_1 {
+text-indent: 5px;
+}
+#rebuwnpxfg .gt_indent_2 {
+text-indent: 10px;
+}
+#rebuwnpxfg .gt_indent_3 {
+text-indent: 15px;
+}
+#rebuwnpxfg .gt_indent_4 {
+text-indent: 20px;
+}
+#rebuwnpxfg .gt_indent_5 {
+text-indent: 25px;
+}
+#rebuwnpxfg .katex-display {
+display: inline-flex !important;
+margin-bottom: 0.75em !important;
+}
+#rebuwnpxfg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="a::stub">Data Type</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Example">Example</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Recommended_Model">Recommended Model</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">Raw counts</th>
+<td headers="stub_1_1 Example" class="gt_row gt_left">Abundance of specific taxa</td>
+<td headers="stub_1_1 Recommended_Model" class="gt_row gt_left">GLMM with Poisson or Negative Binomial</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">Presence/absence</th>
+<td headers="stub_1_2 Example" class="gt_row gt_left gt_striped">Presence of rare taxa in samples</td>
+<td headers="stub_1_2 Recommended_Model" class="gt_row gt_left gt_striped">GLMM with logistic regression</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">Diversity indices</th>
+<td headers="stub_1_3 Example" class="gt_row gt_left">Shannon or Simpson diversity</td>
+<td headers="stub_1_3 Recommended_Model" class="gt_row gt_left">LME</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">Relative abundances</th>
+<td headers="stub_1_4 Example" class="gt_row gt_left gt_striped">Proportion of taxa across groups</td>
+<td headers="stub_1_4 Recommended_Model" class="gt_row gt_left gt_striped">Beta Regression</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">Zero-heavy data</th>
+<td headers="stub_1_5 Example" class="gt_row gt_left">Rare taxa abundances</td>
+<td headers="stub_1_5 Recommended_Model" class="gt_row gt_left">Zero-Inflated Model</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<div id="practical-recommendations" class="section level2">
+<h2>Practical Recommendations</h2>
+<ol style="list-style-type: decimal">
+<li><strong>Data Transformation and Normalization</strong></li>
+</ol>
+<ul>
+<li>Consider preprocessing steps like rarefaction, scaling, or SRS
+before modeling.</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Model Diagnostics</strong></li>
+</ol>
+<ul>
+<li>Evaluate residuals and fit to ensure the model assumptions are
+met.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Effect Size</strong></li>
+</ol>
+<ul>
+<li>Focus on effect size estimates (e.g., regression coefficients)
+alongside p-values to understand the biological significance.</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Visualization</strong></li>
+</ol>
+<ul>
+<li>Use visualization tools (e.g., ggplot2) to interpret model results
+and communicate findings effectively.</li>
+<li>Many of our workflows start from the various plot functions in
+microeco, which work well with ggplot2 for refinement.</li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Package Options</strong></li>
+</ol>
+<ul>
+<li><a href="https://chiliubio.github.io/microeco_tutorial/model-based-class.html#">Microeco’s
+trans_diff Model-based class</a> incorporates the most common packages
+used to compute these models, including:
+<ul>
+<li><strong>lme4</strong> or <strong>glmmTMB</strong> packages for
+GLMMs.</li>
+<li><strong>mgcv</strong> for generalized additive models (GAMs).</li>
+<li><strong>brms</strong> or <strong>rstanarm</strong> for Bayesian
+modeling approaches.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 
 
