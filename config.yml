@@ -99,6 +99,7 @@ loris:
   barcode_alignments: "../labwork/minion_data/barcode_alignments/hdz/"
   sample_sheet: "../bioinformatics_stats/loris/dataframes/sample_sheet/"
   taxonomy_list: "../bioinformatics_stats/loris/dataframes/taxonomy_list/"
+  abundance_wf16s: "../bioinformatics_stats/data/loris/wf16s_abundance/"
   microeco: 
     abund:
       main:
@@ -485,7 +486,7 @@ envir:
   samples_csv: "../data/samples_envir.csv"
   
 microbiome:
-  setup: "../bioinformatics_stats/setup/microbiome/setup.R"
+  inputs: "../bioinformatics_stats/setup/microbiome/inputs.R"
   packages: "../bioinformatics_stats/setup/microbiome/packages.R"
   first_use_packages: "../bioinformatics_stats/setup/microbiome/packages_first_use.R"
   functions: "../bioinformatics_stats/setup/microbiome/functions.R"

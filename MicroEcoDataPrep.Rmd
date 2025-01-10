@@ -1,0 +1,220 @@
+---
+title: "Preparing 16S Data for the MicroEco Statistical/Visualization Tools"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_location: "before"
+    toc_depth: 4
+    number_sections: false
+    toc_float: true
+    code_folding: "hide"
+    fig_caption: true
+params:
+  sampleset: "loris"
+  
+---
+
+```{r, message=FALSE}
+global      <- config::get(config = "default")
+path        <- config::get(config = paste0(params$sampleset))
+
+source(paste0(global$setup))
+source(paste0(swan$options))
+source(paste0(micro$packages))
+source(paste0(micro$functions))
+source(paste0(micro$inputs))
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = FALSE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+
+knitr::knit_engines$set(terminal = function(options) {
+  code <- paste(options$code, collapse = "\n")
+  for (param in names(params)) {
+    param_placeholder <- paste0("params\\$", param)
+    param_value <- params[[param]]
+    code <- gsub(param_placeholder, param_value, code)
+  }
+  for (method in names(methods_16s)) {
+    method_placeholder <- paste0("methods_16s\\$", method)
+    method_value <-      methods_16s[[method]]
+    code <- gsub(method_placeholder, method_value, code)
+  }
+  knitr::engine_output(options, code, out = code)
+})
+
+```
+
+# Intro {.tabset}
+
+## This Workflow
+
+This is the current recommended pipeline for processing **full-length 16S reads and count data** generated from the EPI2ME Labs wf-16s workflow.  
+
+## Some Background
+
+Microbiome data analysis has rapidly evolved into a cornerstone of biological and ecological research, offering insights into how microbial communities influence everything from human health to environmental ecosystems. However, this type of analysis often involves multiple complex steps: data normalization, diversity calculations, community composition comparisons, and advanced visualizations.  
+
+>For more information on some of the statistical tests I often use/recommend, see the tutorial in this directory called [Data_Notes](Data_Notes.html).
+
+## MicroEco
+
+The [microeco R package](https://chiliubio.github.io/microeco_tutorial/) provides an elegant and comprehensive solution by integrating many of the most current and popular microbiome analysis approaches into a unified framework. This package simplifies workflows, making it easy to prepare datasets, calculate metrics, and create publication-quality visualizations. Importantly, microeco is designed to work seamlessly with ggplot2 and other widely used R packages, offering flexibility for customization and compatibility with established workflows. If you click the link above, you will find a very comprehensive tutorial presenting the full array of analysis options.  
+
+In this workflow, we will prepare our datasets for use with microeco, ensuring that our data is clean, structured, and ready for downstream analyses such as diversity calculations, community comparisons, and informative visualizations.  
+
+### First Use
+
+MicroEco installation can be a bit tricky the first time, simply because of the number of dependencies. I created a separate markdown file to walk you through the packages you will need, but the tutorial on [MicroEco's page does an even better job of explaining things](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence). If this is your first time on this workflow, I recommend you start with that, ensure all packages have been installed, and then proceed with this.  
+
+## Notes on Syntax/Functions
+
+This script uses some fairly complex custom functions that I wrote for reproducibility. Those functions should automatically load in a separate .R script sourced in the setup chunk above. One of those scripts will also load some factor variables and other parameters that I use to keep this script tidy.  
+  
+This script also switches back and forth between local R console commands and code that you will use in your terminal both to access local directories and to send scripts to the Swan server on the HCC. For more information on accessing the HCC and using the terminal language engine in this script, please see the previous script in this pipeline - [MinIONReadProcessing](MinIONReadProcessing.html).  
+
+## The Data Used Here
+
+I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original .Rmd script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
+
+# Load Data into R
+
+## Sample Metadata
+
+You should have already completed the [SampleInventory](SampleInventory.html) and [MetadataSetup](MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
+
+```{r}
+samples <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
+                mutate(collection = ymd(CollectionDate)) %>%
+                filter(!is.na(CollectionDate)) %>%
+                mutate(subject    = factor(subject,      subj.levels,    labels = subj.labels),
+                       diet       = factor(diet_trial,   diet.levels,    labels = diet.labels, ordered = T),
+                       location   = factor(location,     loc.levels,     labels = loc.labels,  ordered = T),
+                       estrus     = factor(warble_cycle, estrus.levels,  labels = estrus.labels),
+                       pregnant   = factor(warble_cycle, preg.levels,    labels = preg.labels),
+                       together   = factor(access,       access.levels,  labels = access.labels),
+                       study_day  = since.start(ymd(path$day1), collection, "days"),
+                       study_week = ceiling(since.start(ymd(path$day1), collection, "days")/7)) %>%
+                mutate(subj_day   = str_glue("{subject}", "{study_day}"),
+                       subj_diet  = factor(interaction(subject, diet))) %>%
+                arrange(study_day, subject) %>%
+                mutate(subj_day   = factor(subj_day, ordered = T)) %>%
+                select(sampleID = SampleID,
+                       seqrun = LibraryCode,
+                       alias  = SequenceID, 
+                       subject,
+                       collection,
+                       subj_day,
+                       study_day,
+                       study_week,
+                       diet,
+                       location,
+                       estrus,
+                       pregnant,
+                       together,
+                       steroid_dose = ster_mgpday,
+                       subj_diet,
+                       bristol_min,
+                       bristol_max,
+                       bristol_mean
+                       ) %>%
+                arrange(subject, study_day)
+
+samples.list <- samples %>% select(sampleID) %>% distinct()
+```
+
+## Wf-16S Outputs
+
+You will need the following files from the output directory generated by running wf-16s at the end of the ReadProcessing script:
+
+```{r}
+wf16s.files <- tibble(
+  Name = c(
+    "Species-Level Abundance Table",
+    "Wf-16s Summary Report",
+    "Read Alignment Tables"
+  ),
+  Filename = c(
+    "abundance_table_species.tsv",
+    "wf-16s-report.html",
+    "wf-metagenomics-alignment.csv"
+  ),
+  Location = c(
+    "output directory created by wf-16s - transfer this to the path bioinformatics_stats/data/loris/ and rename with the sequencing run id as the file prefix.",
+    "This is in the output directory from wf-16s. Open the html report in your browser, and from there you can download other files for analysis.",
+    "You must individually download one table for each sample from the html summary file produced by wf-16s (see below)."
+  )
+) %>%
+  gt(rowname_col = "Name") %>%
+  opt_stylize(style = 3, color = "gray")
+
+wf16s.files
+```
+
+### Species-Level Abundance Table
+
+We are going to read all current versions of abundance tables produced by wf-16s and bind them into a single table. We really just want to use this to inventory the names and other data for every sample according to the wf-16s syntax though. We will calculate abundances on our own after we clean, filter, and manipulate the data a bit more.  
+
+For this step, make sure you have all abundance tables and only your abundance files in the subdirectory path identified in your config.yml file. They should also be named beginning with the sequencing run id or LibraryCode followed by "_abundance_table_species.tsv".  
+
+```{r}
+abundance.files <- list.files(path = path$abundance_wf16s,
+  pattern = "*_abundance_table_species.tsv$", full.names = TRUE)
+
+abundance <- tibble()
+
+if (length(abundance.files) > 0) {
+  abundance <- read.tables(abundance.files[[1]]) %>%
+               select(-c(starts_with("total"))) %>%
+               rename_with(~gsub(".", "-", .x, fixed = TRUE)) %>%
+               fix.strings() 
+  
+  if (length(abundance.files) > 1) {
+    for (i in 2:length(abundance.files)) {
+      temp_data <- read.tables(abundance.files[[i]]) %>%
+                   select(-c(starts_with("total")))
+      
+      abundance <- full_join(abundance, temp_data) %>%
+                   rename_with(~gsub(".", "-", .x, fixed = TRUE)) %>%
+                   fix.strings() 
+    }
+  }
+} else {
+  stop("No abundance files found")
+}
+
+```
+
+### Read Alignment Tables
+
+This step is pretty annoying, but until the developers update this gap I use the following workaround to import the raw alignment data for each sample and process it directly here in R.  
+
+First, we will use the list of IDs that we just generated from the abundance tables to create a table for renaming the csv files we download from the Wf-16S Report.  
+
+#### Generate Filenames
+
+```{r}
+filenames <- abundance %>% 
+  select(-tax) %>%
+  pivot_longer(cols     = everything(),
+              names_to  = "alias",
+              values_to = "abundance") %>%
+  select(alias) %>% distinct() %>% 
+  arrange(alias) %>%
+  mutate(file_append = (row_number() - 1)) %>%
+  mutate(old_name    = if_else(file_append == 0,
+                               "wf-metagenomics-alignment.csv",
+                      str_glue("wf-metagenomics-alignment (",
+                               "{file_append}", ").csv")),
+         new_name    = str_glue("{alias}",
+                                "_wf-metagenomics-alignment.csv"), 
+                                .keep = "none")
+export.list(filenames, "sampleid_files")
+```
+
+

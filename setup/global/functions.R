@@ -39,7 +39,7 @@ backup.df  <- function(df, directory, prefix) {
 }
 
 
-since.start <- function(date.col, units) {
+since.start <- function(day1, date.col, units) {
   as.numeric(as.period(interval(ymd(day1), date.col), unit = units), units)
 }
 
