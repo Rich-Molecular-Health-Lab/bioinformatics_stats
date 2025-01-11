@@ -26,27 +26,39 @@ source(paste0(micro$packages))
 source(paste0(micro$functions))
 source(paste0(micro$inputs))
 
+knitr::knit_engines$set(terminal = function(options) {
+  code <- paste(options$code, collapse = "\n")
+  for (param in names(params)) {
+    param_placeholder <- paste0("params\\$", param)
+    param_value       <-             params[[param]]
+    code <- gsub(param_placeholder, param_value, code)
+  }
+  for (method in names(methods_16s)) {
+    method_placeholder <- paste0("methods_16s\\$", method)
+    method_value       <-             methods_16s[[method]]
+    code <- gsub(method_placeholder, method_value, code)
+  }
+  for (opt in names(global)) {
+    opt_placeholder <- paste0("global\\$", opt)
+    opt_value       <-             global[[opt]]
+    code <- gsub(opt_placeholder, opt_value, code)
+  }
+  for (dir in names(path)) {
+    dir_placeholder <- paste0("path\\$", dir)
+    dir_value       <-             path[[dir]]
+    code <- gsub(dir_placeholder, dir_value, code)
+  }
+  
+  options$warning <- FALSE
+  knitr::engine_output(options, code, out = code)
+})
+
 opts_chunk$set(message = FALSE,
                warning = FALSE,
                echo    = FALSE,
                include = TRUE,
                eval    = TRUE,
                comment = "")
-
-knitr::knit_engines$set(terminal = function(options) {
-  code <- paste(options$code, collapse = "\n")
-  for (param in names(params)) {
-    param_placeholder <- paste0("params\\$", param)
-    param_value <- params[[param]]
-    code <- gsub(param_placeholder, param_value, code)
-  }
-  for (method in names(methods_16s)) {
-    method_placeholder <- paste0("methods_16s\\$", method)
-    method_value <-      methods_16s[[method]]
-    code <- gsub(method_placeholder, method_value, code)
-  }
-  knitr::engine_output(options, code, out = code)
-})
 
 ```
 
@@ -214,7 +226,162 @@ filenames <- abundance %>%
          new_name    = str_glue("{alias}",
                                 "_wf-metagenomics-alignment.csv"), 
                                 .keep = "none")
-export.list(filenames, "sampleid_files")
+write.table(filenames,  global$tmp_tsv,
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE,
+              col.names = FALSE)
+
 ```
 
+#### Download all Individual Alignment Tables
+
+Now comes the somewhat messy workaround...
+
+1. Make sure you have a completely clean temporary directory available for downloading.
+  - I generally just empty out my Downloads folder each time before I do this and download to there first.
+2. Go to the html workflow report in your browser window and scroll down to the **Alignment Statistics** section. 
+  - Click ***Export CSV***. Then use the dropdown box to select the next sample and repeat the *Export CSV* process. 
+  - Keep doing this for all 24 samples from your multiplexed run.
+  - This part is important: **You must be sure to download each table sequentially in the order it appears in the dropdown.**
+    - The code chunk that I wrote below uses an ordered list of those sample IDs to rename the files in your downloads folder based on the order in which you downloaded them (e.g., *wf-metagenomics-alignment (2).csv* and *wf-metagenomics-alignment (3).csv* may become *hdz-489-s391_wf-metagenomics-alignment.csv* and *hdz-488-s390_wf-metagenomics-alignment.csv*).
+3. Manually transfer all your newly downloaded **but not yet renamed** files to the following sub directory (found at global$tmp_downloads in my config.yml):
+  - "../bioinformatics_stats/tmp/downloads/"
+  - **NOTE: MAKE SURE THIS FOLDER IS EMPTY FIRST**
+3.  **Only after you have downloaded all 24 csv files and transferred them to that directory:** Run the code below from the Terminal tab. 
+  
+#### Rename and Transfer Files from the Local Terminal
+
+>Again, only do this after you have those 24 new csv files in the tmp_downloads directory beginning in *wf-metagenomics-alignment* and you have the filename table we created above sitting in the tmp_lists directory.
+  - The code will simultaneously rename all 24 files and transfer them to the subdirectory path$read_alignments.
+  - The rest of the script below uses this filename system to import and merge the files, matching every aligned read to its sampleID.
+  - If it worked, then all the files should disappear from the temp directory and you should see 24 new csv files in your data directory ending in *wf-metagenomics-alignment.csv*
+
+```{terminal, warning = FALSE}
+
+filenames="global$tmp_tsv"
+target_dir="path$read_alignments"
+downloads="global$tmp_downloads"
+
+cd $downloads
+
+while IFS=$'\t' read -r old_name new_name; do
+    mv "$old_name" "$target_dir/$new_name"
+done < "$filenames"
+
+```
+
+#### Read All Files In
+
+Now we will go ahead and read in those new tables as well as any others to update one comprehensive dataframe with all read alignments for this dataset to date. This code assumes that you have all properly named and structured alignment tables in a single subdirectory together and makes use of the config file's path to that subdirectory.  
+
+```{r, warning = FALSE}
+alignment.files.list <- list.files(path = path$read_alignments, pattern = "*_wf-metagenomics-alignment.csv$", full.names = TRUE)
+alignment.files      <- lapply(alignment.files.list, read_alignment_file)
+sampleID             <- str_extract(alignment.files.list, "(?<=//).+(?=_wf-metagenomics-alignment.csv$)")
+
+alignment.files <- Map(function(df, id) {
+  if (nrow(df) > 0) {
+    df$alias <- id
+  } else {
+    warning(paste("Data frame for", id, "is empty. Alias not assigned."))
+  }
+  return(df)
+}, alignment.files, alias)
+```
+
+
+```{r, warning = FALSE}
+alignments.long     <- bind_rows(alignment.files) %>%
+                        as_tibble() %>% fix.strings() %>% 
+                        select(ref,
+                               taxid,
+                               species,
+                               genus,
+                               family,
+                               order,
+                               class,
+                               phylum,
+                               superkingdom,
+                               alias,
+                               coverage,
+                               n_reads = number.of.reads)
+```
+
+
+```{r, warning = FALSE}
+   %>%
+                        filter(coverage >= 80 & !is.na(alias)) %>%
+                        mutate(sampleID = str_sub(alias, 1L, 7L)) %>%
+                        semi_join(samples.list, by=join_by(sampleID)) %>%
+                        left_join(select(samples, sampleID, subj_day), by = join_by(sampleID)) %>%
+                        group_by(ref,
+                                 taxid,
+                                 species,
+                                 genus,
+                                 family,
+                                 order,
+                                 class,
+                                 phylum,
+                                 superkingdom,
+                                 subj_day) %>%
+                        summarize(samp_cov     = mean(coverage),
+                                  samp_n_reads = mean(n_reads)) %>% ungroup()
+
+alignments.refs <- alignments.long %>% 
+                        group_by(ref,
+                                 taxid,
+                                 species,
+                                 genus,
+                                 family,
+                                 order,
+                                 class,
+                                 phylum,
+                                 superkingdom) %>%
+                        summarize(ref_n_reads   = round(sum(samp_n_reads),  digits = 2),
+                                  ref_mean_cov  = round(mean(samp_cov),     digits = 2)) %>%
+                        ungroup() %>% group_by(species,
+                                               genus,
+                                               family,
+                                               order,
+                                               class,
+                                               phylum,
+                                               superkingdom) %>%
+                        arrange(species, desc(ref_n_reads), desc(ref_mean_cov)) %>%
+                        mutate(ref_order       = row_number(),
+                               tax_total_count = sum(ref_n_reads)) %>%
+                        ungroup() %>%
+                        filter(ref_order == 1) %>%
+                        select(-ref_order) %>% sort.taxa()
+
+alignments    <- alignments.long %>% 
+                        group_by(superkingdom,
+                                 phylum,
+                                 class,
+                                 order,
+                                 family,
+                                 genus,
+                                 species,
+                                 subj_day) %>%
+                          summarize(counts = sum(samp_n_reads)) %>%
+                          ungroup() %>%
+                          left_join(alignments.refs,
+                    by = join_by(superkingdom,
+                                 phylum,
+                                 class,
+                                 order,
+                                 family,
+                                 genus,
+                                 species)) %>%
+                    pivot_wider(id_cols    = c(ref,
+                                               taxid,
+                                               params$taxonomy.ordered,
+                                               ref_mean_cov),
+                                names_from  = subj_day,
+                                values_from = counts) %>%
+                    sort.taxa() %>%
+                    mutate(across(where(is.numeric), ~replace_na(.x, 0)),
+                           organism = str_glue("txid", "{taxid}")) 
+
+```
 

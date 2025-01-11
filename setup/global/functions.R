@@ -98,3 +98,17 @@ read.tables <- function(file) {
     tibble()
   return(data)
 }
+
+read_alignment_file  <- function(file) {
+  read.csv(file, stringsAsFactors = FALSE, fill = T, header = T, blank.lines.skip = T)
+}
+
+
+read.csvs <- function(file) {
+  data <- read.table(file, 
+                     header = TRUE, 
+                     sep = ",", 
+                     stringsAsFactors = FALSE) %>%
+    tibble()
+  return(data)
+}

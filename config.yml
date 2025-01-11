@@ -7,6 +7,8 @@ default:
   fonts: "../bioinformatics_stats/setup/global/fonts/FA6_Free-Solid-900.otf"
   summaries:
     metadata: "../summaries/metadata/"
+  tmp_tsv: "../bioinformatics_stats/tmp/tmp_table.tsv"
+  tmp_downloads: "../bioinformatics_stats/tmp/downloads/"
   
 sample_sheets:
   compilations:
@@ -77,7 +79,8 @@ barcode_alignments:
   cm011: "../labwork/minion_data/barcode_alignments/marmoset/cm011_barcode_alignment.tsv"
   
 loris:
-  day1: "2023-10-25"
+  day1: "2023-10-26"
+  last: "2024-10-25"
   metadata: 
     diet: "../bioinformatics_stats/metadata/loris/loris_diets.R"
     bristol: "../bioinformatics_stats/metadata/loris/bristol_scores.R"
@@ -97,6 +100,7 @@ loris:
   samples_csv: "../data/samples_loris.csv"
   barcodes_output: "../bioinformatics_stats/dataframes/barcodes/loris/"
   barcode_alignments: "../labwork/minion_data/barcode_alignments/hdz/"
+  read_alignments: "../bioinformatics_stats/data/loris/read_alignments"
   sample_sheet: "../bioinformatics_stats/loris/dataframes/sample_sheet/"
   taxonomy_list: "../bioinformatics_stats/loris/dataframes/taxonomy_list/"
   abundance_wf16s: "../bioinformatics_stats/data/loris/wf16s_abundance/"

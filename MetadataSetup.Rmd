@@ -19,15 +19,7 @@ params:
 
 ```{r, setup, include = F}
 global             <- config::get(config = "default")
-micro              <- config::get(config = "microbiome")
-read_processing    <- config::get(config = "read_processing")
-notebooks          <- config::get(config = "notebooks")
-
-source(paste0(global$functions))
-source(paste0(global$packages))
-source(paste0(global$conflicts))
-source(paste0(global$inputs))
-source(paste0(swan$functions))
+source(paste0(global$setup))
 ```
 
 # Intro
@@ -125,15 +117,9 @@ The chunk below is duplicated above. I am adding it here to run the full setup c
 
 ```{r, include = F}
 global             <- config::get(config = "default")
-micro              <- config::get(config = "microbiome")
-read_processing    <- config::get(config = "read_processing")
-notebooks          <- config::get(config = "notebooks")
 
-source(paste0(global$functions))
-source(paste0(global$packages))
-source(paste0(global$conflicts))
-source(paste0(global$inputs))
-source(paste0(read_processing$functions))
+source(paste0(global$setup))
+source(paste0(swan$functions))
 
 seqruns <- list(
   loris     = as.list(paste0("hdz", 1:18)),
@@ -141,9 +127,6 @@ seqruns <- list(
 )
 
 subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
-
-loris              <- config::get(config = "loris")
-marm               <- config::get(config = "marmoset")
 path               <- config::get(config = params$taxon)
 
 source(path$metadata$diet)
@@ -184,53 +167,50 @@ samples <- read.table(path$compilation, header = T, sep = "\t") %>%
          LibPrepDate    = ymd(LibPrepDate),
          ExtractDate    = ymd(ExtractDate),
          CollectionDate = ymd(CollectionDate),
-         Subject        = str_to_lower(Subject))
-```
+         Subject        = str_to_lower(Subject))   %>% 
+         filter(!is.na(CollectionDate)) %>% 
+         mutate(collection        = decimal_date(as.POSIXct(CollectionDate))) %>%
+         mutate(collection_y      = collection,
+                subject = factor(Subject, levels = c("warble", "culi")))
 
-```{r}
-samples.dt <- samples   %>% 
-              filter(!is.na(CollectionDate)) %>% 
-              mutate(collection        = decimal_date(as.POSIXct(CollectionDate)),
-                     collection_y      = collection,
-                     subject = factor(Subject, levels = c("warble", "culi"))) %>%
+samples.dt <- samples  %>%
               select(SampleID, 
                      subject, 
                      collection, 
                      collection_y) %>%
               as.data.table()
-```
 
-
-```{r}
 setkey(samples.dt, subject, collection, collection_y)
 
-samples.nosubj.dt <- as.data.table(samples.dt)
-setkey(samples.nosubj.dt,   collection, collection_y)
+samples.nosubj.dt <- samples   %>% 
+              select(SampleID, 
+                     collection, 
+                     collection_y) %>%
+              as.data.table()
+
+setkey(samples.nosubj.dt, collection, collection_y)
+
+samples.culi.dt <- samples   %>% 
+              filter(subject == "culi") %>% 
+              select(SampleID, 
+                     subject,
+                     collection, 
+                     collection_y) %>%
+              as.data.table()
+samples.warb.dt <- samples   %>% 
+              filter(subject == "warble") %>% 
+              select(SampleID, 
+                     subject,
+                     collection, 
+                     collection_y) %>%
+              as.data.table()
+
+
+setkey(samples.culi.dt,   collection, collection_y)
+setkey(samples.warb.dt,   collection, collection_y)
 ```
 
-## Merge Set 1
-
-### Diet
-
-```{r metadata diet, message=FALSE, warning=FALSE, paged.print=TRUE}
-samples.diet  <- foverlaps(samples.dt, diet.dt, type = "any", nomatch = NA, mult = "all") %>% tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-```
-
-### Housing
-
-```{r metadata housing, message=FALSE, warning=FALSE, paged.print=TRUE}
-samples.housing      <- foverlaps(samples.dt, housing.dt, type = "any", nomatch = 0L) %>% tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-```
-
-### Medication
+## Medication
 
 ```{r metadata meds, message=FALSE, warning=FALSE, paged.print=TRUE}
 samples.meds <- foverlaps(samples.dt, meds.dt, type = "any", nomatch = 0L) %>% tibble() %>%
@@ -240,34 +220,71 @@ samples.meds <- foverlaps(samples.dt, meds.dt, type = "any", nomatch = 0L) %>% t
             "end"))
 ```
 
+## Diet
 
-## Merge Set 2
-
-### Culi's Diet Phases Only
-```{r}
+```{r metadata diet, message=FALSE, warning=FALSE, paged.print=TRUE}
 samples.culi.diet <- foverlaps(samples.nosubj.dt, diet.culi.dt, type = "any", nomatch = NA, mult = "all") %>%
   tibble() %>%
   select(-c("collection", 
             "collection_y",
             "start",
             "end"))
+
+samples.diet  <- foverlaps(samples.dt, diet.dt, type = "any", nomatch = NA, mult = "all") %>% tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end")) %>%
+  mutate(subj_diet_trial = diet_trial, .keep = "unused") %>%
+  left_join(samples.culi.diet, by = join_by(SampleID))
 ```
 
+## Environment
 
-### Estrus Cycles
-
-```{r metadata estrus, message=FALSE, warning=FALSE, paged.print=TRUE}
-samples.estrus    <- foverlaps(samples.nosubj.dt, warble.cyle.dt, type = "any", nomatch = 0L) %>%
-  tibble() %>%
+```{r metadata housing, message=FALSE, warning=FALSE, paged.print=TRUE}
+samples.housing      <- foverlaps(samples.dt, housing.dt, type = "any", nomatch = 0L) %>% tibble() %>%
   select(-c("collection", 
             "collection_y",
             "start",
             "end"))
 ```
 
-### Breeding Access
 
-```{r metadata breeding access, message=FALSE, warning=FALSE, paged.print=TRUE}
+## Repro
+
+
+```{r message=FALSE, warning=FALSE}
+notes.repro  <- repro.log %>% filter(event_state == "event") %>% 
+                            group_by(start) %>% 
+                          summarize(category   = str_flatten(category,   ", ", na.rm = TRUE),
+                                    title      = str_flatten(title, ", ", na.rm = TRUE)) %>% ungroup() %>%
+                        mutate(note_type   = str_glue("repro_", "{category}"),
+                               note_detail = title,
+                               .keep = "unused")
+```
+
+
+```{r message=FALSE, warning=FALSE}
+notes.repro.dt <- notes.repro %>%
+         mutate(start        = decimal_date(as.POSIXct(start))) %>%
+         mutate(end          = start) %>%
+        as.data.table()
+setkey(notes.repro.dt, start, end)  
+
+samples.notes.repro <- foverlaps(samples.nosubj.dt, notes.repro.dt, type = "any", nomatch = 0L) %>%
+  tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+
+samples.estrus    <- foverlaps(samples.nosubj.dt, warble.cyle.dt, type = "any", nomatch = 0L) %>%
+  tibble() %>%
+  select(-c("collection", 
+            "collection_y",
+            "start",
+            "end"))
+
 samples.access <- foverlaps(samples.nosubj.dt, breeding.access.dt, type = "any", nomatch = 0L) %>%
   tibble() %>%
   select(-c("collection", 
@@ -275,6 +292,15 @@ samples.access <- foverlaps(samples.nosubj.dt, breeding.access.dt, type = "any",
             "start",
             "end"))
 ```
+
+
+```{r message=FALSE, warning=FALSE}
+samples.repro <- samples.notes.repro %>%
+                 full_join(samples.estrus, by = join_by(SampleID)) %>%
+                 full_join(samples.access, by = join_by(SampleID)) %>%
+  arrange(SampleID)
+```
+
 
 ## Merge Set 3
 
@@ -302,22 +328,6 @@ notes.health  <- health.log %>% filter(event_state == "event") %>%
 
 ```
 
-### Notes Repro
-
-```{r message=FALSE, warning=FALSE}
-notes.repro  <- repro.log %>% filter(event_state == "event") %>% 
-                            group_by(start) %>% 
-                          summarize(category   = str_flatten(category,   ", ", na.rm = TRUE),
-                                    title      = str_flatten(title, ", ", na.rm = TRUE)) %>% ungroup()
-
-notes.repro.c <- notes.repro %>% mutate(subject = factor("culi"))
-notes.repro.w <- notes.repro %>% mutate(subject = factor("warble"))
-
-notes.repro <- bind_rows(notes.repro.c, notes.repro.w) %>%
-                        mutate(note_type   = str_glue("repro_", "{category}"),
-                               note_detail = title,
-                               .keep = "unused")
-```
 
 ## Bristol Scores
 
@@ -380,8 +390,22 @@ samples.metadata <- samples.set1.2 %>% left_join(bristol.range,
                                                  by = join_by(CollectionDate == start, subject)) %>%
                                        mutate(note_type   = replace_na("none"),
                                               note_detail = replace_na("none"))  %>%
-  arrange(CollectionDate, subject, SampleID)
+  arrange(CollectionDate, subject, SampleID) %>%
+  relocate(SampleID, ExtractID, SequenceID)
+```
 
+
+# Final Version of Dataframe
+
+Now, I am going to join back in some sample inventory tables. Right now the data are organized with one row per SampleID, but I am going to expand that so each SampleID row gets split into daughter rows for each ExtractID and SequenceID. This will make it easier to manipulate metadata later based on specific sequencing runs, as we will have multiple runs for the same sample sometimes.  
+
+```{r}
+export.metadata <- samples.metadata %>%
+  
+```
+
+
+```{r}
 write.table(samples.metadata,
             path$metadata$summary,
             row.names = F,
