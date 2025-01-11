@@ -82,12 +82,7 @@ loris:
   day1: "2023-10-26"
   last: "2024-10-25"
   metadata: 
-    diet: "../bioinformatics_stats/metadata/loris/loris_diets.R"
-    bristol: "../bioinformatics_stats/metadata/loris/bristol_scores.R"
-    envir: "../bioinformatics_stats/metadata/loris/environment_log.R"
-    health: "../bioinformatics_stats/metadata/loris/health_log.R"
-    meds: "../bioinformatics_stats/metadata/loris/meds.R"
-    repro: "../bioinformatics_stats/metadata/loris/repro_log.R"
+    bristol: "../bioinformatics_stats/metadata/loris/bristols.R"
     summary: "../bioinformatics_stats/metadata/loris/samples_metadata.tsv"
   extracts: "../bioinformatics_stats/dataframes/sample_inventories/extracts_loris.tsv"
   libraries: "../bioinformatics_stats/dataframes/sample_inventories/libraries_loris.tsv"

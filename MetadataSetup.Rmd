@@ -13,18 +13,33 @@ output:
 editor_options: 
   chunk_output_type: inline
 params:
-  taxon: "loris"
+  sampleset: "loris"
                      
 ---
 
-```{r, setup, include = F}
+```{r, include = F}
 global             <- config::get(config = "default")
+
 source(paste0(global$setup))
+source(paste0(swan$functions))
+
+seqruns <- list(
+  loris     = as.list(paste0("hdz", 1:18)),
+  marmoset  = as.list(sprintf("cm%03d", 1:10))
+)
+
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
+path               <- config::get(config = params$sampleset)
+
+source(path$metadata$bristol)
+
+opts_chunk$set(message = FALSE, warning = FALSE)
 ```
+
 
 # Intro
 
-This script shows an example of how to construct a metadata table that you can use for modeling interactions between variables in your data. I am going to do this with the Pygmy Loris dataset. There are many ways that you can code and organize these variables or add others, and many of those used here will interact with each other or overlap. This is only a rough starting table that we can further streamline in later analyses. The coding of your variables should depend on the specific questions or relationships you are trying to examine.  
+The purpose of a metadata file is to organize the potential independent or predictor variables for your analysis into a single table with one row per SampleID. Then, when you produce a set of potential dependent or outcome values, you organize those into a similar structure with the SampleIDs organized rowwise to streamline the process of matching predictor variables to outcome variables by SampleID. It's good practice to keep as much of your information in one tidy table as possible so that you can keep pulling from that source to further filter, wrangle and analyze without losing track of different versions and datasets over time. That means you should brainstorm as many possible predictor variables you might use in downstream analysis as possible and organize them into one tidy table where each SampleID is matched to a value for every variable. You will end up ignoring most of these variables as you construct individual tests and visuals later, so consider this simply a rough draft of your information of interest. I am going to do this with the Pygmy Loris dataset for this tutorial. You may have a very different set of variables to organize for your own project.  
 
 ## Previous Scripts
 
@@ -32,9 +47,9 @@ Before this, you should use the SampleInventory script to create the file compil
 
 ## Configurations
 
-### Taxon in Params
+### Sampleset in Params
 
-You can use the taxon setting under params in the header of this script to select which taxon you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
+You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
 
 ### Sequencing Run Lists
 
@@ -46,7 +61,7 @@ seqruns <- list(
   marmoset  = as.list(sprintf("cm%03d", 1:10))
 )
 
-subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 ```
 
 ### File Paths
@@ -94,20 +109,18 @@ marmoset:
 
 ```
 
-Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working taxon you identified in the header:
+Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
 
-```{r}
-loris              <- config::get(config = "loris")
-marm               <- config::get(config = "marmoset")
-path               <- config::get(config = params$taxon)
+```{r, message = FALSE}
+path               <- config::get(config = params$sampleset)
 ```
 
 ### Other Scripts
 
 I also create some of the tables and lists used here in some scripts that the chunk below will run. This just keeps this script a bit tidier by modularizing some of the parts.
 
-```{r}
-source(path$metadata$diet)
+```{r, message = FALSE}
+source(path$metadata$bristol)
 ```
 
 
@@ -115,7 +128,7 @@ source(path$metadata$diet)
 
 The chunk below is duplicated above. I am adding it here to run the full setup chunk again in case you skipped past the intro material:
 
-```{r, include = F}
+```{r, message = FALSE}
 global             <- config::get(config = "default")
 
 source(paste0(global$setup))
@@ -126,295 +139,366 @@ seqruns <- list(
   marmoset  = as.list(sprintf("cm%03d", 1:10))
 )
 
-subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
-path               <- config::get(config = params$taxon)
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
+path               <- config::get(config = params$sampleset)
 
-source(path$metadata$diet)
 source(path$metadata$bristol)
-source(path$metadata$envir)
-source(path$metadata$health)
-source(path$metadata$meds)
-source(path$metadata$repro)
-
 ```
 
-# Script
+## Sample Inventory
 
-## Data Tables from Script
-
-Below are some summary tables for the data imported from the external script modules above.
-
-```{r}
-diet.table
-```
-
-```{r}
-health.table
-```
-
-```{r}
-housing.table
-```
-
-## Import Sample Records
-
-Now I will read in the summary table for all samples, extracts, and libraries that we cleaned and compiled in a previous script (SampleInventory.Rmd). Then I will match each record to the metadata tables that I made based on overlapping dates.
+First I will read in the sample inventory, which is actually already a metadata table itself. We just want to match some more interesting variables to it.
 
 ```{r}
 samples <- read.table(path$compilation, header = T, sep = "\t") %>%
-  mutate(SeqDate        = ymd(SeqDate),
-         SeqDateTime    = as_datetime(SeqDateTime),
-         LibPrepDate    = ymd(LibPrepDate),
-         ExtractDate    = ymd(ExtractDate),
-         CollectionDate = ymd(CollectionDate),
-         Subject        = str_to_lower(Subject))   %>% 
-         filter(!is.na(CollectionDate)) %>% 
-         mutate(collection        = decimal_date(as.POSIXct(CollectionDate))) %>%
-         mutate(collection_y      = collection,
-                subject = factor(Subject, levels = c("warble", "culi")))
-
-samples.dt <- samples  %>%
-              select(SampleID, 
-                     subject, 
-                     collection, 
-                     collection_y) %>%
-              as.data.table()
-
-setkey(samples.dt, subject, collection, collection_y)
-
-samples.nosubj.dt <- samples   %>% 
-              select(SampleID, 
-                     collection, 
-                     collection_y) %>%
-              as.data.table()
-
-setkey(samples.nosubj.dt, collection, collection_y)
-
-samples.culi.dt <- samples   %>% 
-              filter(subject == "culi") %>% 
-              select(SampleID, 
-                     subject,
-                     collection, 
-                     collection_y) %>%
-              as.data.table()
-samples.warb.dt <- samples   %>% 
-              filter(subject == "warble") %>% 
-              select(SampleID, 
-                     subject,
-                     collection, 
-                     collection_y) %>%
-              as.data.table()
-
-
-setkey(samples.culi.dt,   collection, collection_y)
-setkey(samples.warb.dt,   collection, collection_y)
+            mutate(CollectionDate = ymd(CollectionDate))
 ```
 
-## Medication
+## Organizing Dates
 
-```{r metadata meds, message=FALSE, warning=FALSE, paged.print=TRUE}
-samples.meds <- foverlaps(samples.dt, meds.dt, type = "any", nomatch = 0L) %>% tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-```
-
-## Diet
-
-```{r metadata diet, message=FALSE, warning=FALSE, paged.print=TRUE}
-samples.culi.diet <- foverlaps(samples.nosubj.dt, diet.culi.dt, type = "any", nomatch = NA, mult = "all") %>%
-  tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-
-samples.diet  <- foverlaps(samples.dt, diet.dt, type = "any", nomatch = NA, mult = "all") %>% tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end")) %>%
-  mutate(subj_diet_trial = diet_trial, .keep = "unused") %>%
-  left_join(samples.culi.diet, by = join_by(SampleID))
-```
-
-## Environment
-
-```{r metadata housing, message=FALSE, warning=FALSE, paged.print=TRUE}
-samples.housing      <- foverlaps(samples.dt, housing.dt, type = "any", nomatch = 0L) %>% tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-```
-
-
-## Repro
-
-
-```{r message=FALSE, warning=FALSE}
-notes.repro  <- repro.log %>% filter(event_state == "event") %>% 
-                            group_by(start) %>% 
-                          summarize(category   = str_flatten(category,   ", ", na.rm = TRUE),
-                                    title      = str_flatten(title, ", ", na.rm = TRUE)) %>% ungroup() %>%
-                        mutate(note_type   = str_glue("repro_", "{category}"),
-                               note_detail = title,
-                               .keep = "unused")
-```
-
-
-```{r message=FALSE, warning=FALSE}
-notes.repro.dt <- notes.repro %>%
-         mutate(start        = decimal_date(as.POSIXct(start))) %>%
-         mutate(end          = start) %>%
-        as.data.table()
-setkey(notes.repro.dt, start, end)  
-
-samples.notes.repro <- foverlaps(samples.nosubj.dt, notes.repro.dt, type = "any", nomatch = 0L) %>%
-  tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-
-samples.estrus    <- foverlaps(samples.nosubj.dt, warble.cyle.dt, type = "any", nomatch = 0L) %>%
-  tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-
-samples.access <- foverlaps(samples.nosubj.dt, breeding.access.dt, type = "any", nomatch = 0L) %>%
-  tibble() %>%
-  select(-c("collection", 
-            "collection_y",
-            "start",
-            "end"))
-```
-
-
-```{r message=FALSE, warning=FALSE}
-samples.repro <- samples.notes.repro %>%
-                 full_join(samples.estrus, by = join_by(SampleID)) %>%
-                 full_join(samples.access, by = join_by(SampleID)) %>%
-  arrange(SampleID)
-```
-
-
-## Merge Set 3
-
-### Notes Diet Changes
-
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
-notes.diet  <- diet.log.both %>% filter(event_state == "event") %>% 
-                                  group_by(start, subject) %>% 
-                                  summarize(diet_change = str_flatten(title, ", ", na.rm = TRUE)) %>% 
-                                  ungroup() %>%
-                                  mutate(note_type   = "diet_change",
-                                         note_detail = diet_change, .keep = "unused")
-```
-
-### Notes Health
-
-```{r message=FALSE, warning=FALSE}
-notes.health  <- health.log %>% filter(event_state == "event") %>% 
-                              group_by(start, subject) %>% 
-                             summarize(category = str_flatten(category, ", ", na.rm = TRUE),
-                                    title       = str_flatten(title,    ", ", na.rm = TRUE)) %>% 
-                              ungroup() %>%
-                            mutate(note_type   = str_glue("health_", "{category}"),
-                                   note_detail = title, .keep = "unused")
-
-```
-
-
-## Bristol Scores
+The toughest variables to match and wrange in R are often dates, especially when you are dealing with both states (start and end dates for intervals) and events (single dates). For studies like this one based around daily sample collection, I find it easiest to start by populating a blank dataframe with one row per sample collection day. Then I match date-based variables to this dataframe and join my SampleIDs to it.
 
 ```{r}
-bristol.range    <- bristol %>% 
-  mutate(subject = factor("culi"),
-         bristol = score_culi, 
-         .keep = "unused") %>% 
- group_by(date, subject) %>%
-         summarize(bristol_min  = min(bristol),
-                   bristol_max  = max(bristol),
-                   bristol_mean = round(mean(bristol), digits = 1)) %>% ungroup()
+study_days <- tibble(Date = seq.Date(from = ymd(path$day1), to = ymd(path$last), by = "day")) %>%
+  mutate(study_day = row_number())
 ```
 
-# Combining Match Sets {.tabset}
+## Construct Variables
 
-## Set 1 Together
+### Diet
 
-```{r warning=FALSE}
-samples.set1 <- samples %>% 
-             mutate(subject = str_to_lower(Subject), .keep = "unused") %>%
-             left_join(samples.diet,    by = join_by(SampleID, subject)) %>%
-             left_join(samples.housing, by = join_by(SampleID, subject)) %>%
-             left_join(samples.meds,    by = join_by(SampleID, subject)) %>%
-             mutate(across(where(is.numeric), replace_na, 0)) %>% distinct()
-```
-
-## Set 2 Together
-
-```{r warning=FALSE}
-samples.set1.2 <- samples.set1 %>% 
-   left_join(samples.estrus,    by = join_by(SampleID, subject)) %>%
-   left_join(samples.access,    by = join_by(SampleID, subject)) %>%
-   left_join(samples.culi.diet, by = join_by(SampleID, subject)) %>%
-   mutate(across(where(is.numeric), replace_na, 0)) %>%
-   mutate(warble_cycle = replace_na(warble_cycle, "not_estrus"),
-          med_type     = replace_na(med_type, "none"),
-          med_name     = replace_na(med_name, "none"))
-```
-
-## Set 3 Together
-
-```{r message=FALSE, warning=FALSE}
-set3.notes <- bind_rows(notes.diet,
-                        notes.health,
-                        notes.repro) %>%
-    ungroup() %>%
-    group_by(start, subject) %>%
-    summarize(note_type   = str_flatten(note_type,   "; ", na.rm = TRUE),
-              note_detail = str_flatten(note_detail, "; ", na.rm = TRUE)) %>%
-    ungroup()
-```
-
-## All Together
+We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.
 
 ```{r}
-samples.metadata <- samples.set1.2 %>% left_join(bristol.range,
-                                                 by = join_by(CollectionDate == date, subject)) %>%
-                                       left_join(set3.notes,
-                                                 by = join_by(CollectionDate == start, subject)) %>%
-                                       mutate(note_type   = replace_na("none"),
-                                              note_detail = replace_na("none"))  %>%
-  arrange(CollectionDate, subject, SampleID) %>%
-  relocate(SampleID, ExtractID, SequenceID)
+# steroid doses are calculated as mg/day while probiotic and oatgel values are binary (included = 1, none = 0)
+diet_trials   <- list(
+baseline      = tibble(steroid = 0.00, probiotic = 0, oatgel = 0),
+option1       = tibble(steroid = 0.00, probiotic = 1, oatgel = 0),
+option2       = tibble(steroid = 0.00, probiotic = 1, oatgel = 1),
+option3       = tibble(steroid = 0.10, probiotic = 0, oatgel = 0),
+option4       = tibble(steroid = 0.20, probiotic = 0, oatgel = 0),
+option5       = tibble(steroid = 0.20, probiotic = 1, oatgel = 1),
+option6       = tibble(steroid = 0.20, probiotic = 0, oatgel = 1),
+option7       = tibble(steroid = 0.10, probiotic = 1, oatgel = 1),
+option8       = tibble(steroid = 0.05, probiotic = 1, oatgel = 1)
+)
+```
+
+```{r}
+# optionals are foods that are routinely cycled in and out of daily diets to maximize variety. here I am only noting those optionals which were permanently removed from culi's diet at a certain date in an attempt to reduce GI inflammation.
+optionals.culi <- list(
+  tomatoes    = tibble(start_day = ymd(path$day1), last_day = ymd("2024-02-19")),
+  cauliflower = tibble(start_day = ymd(path$day1), last_day = ymd("2024-01-22")),
+  broccoli    = tibble(start_day = ymd(path$day1), last_day = ymd("2024-01-22"))
+) 
+  
+optionals.culi <-   imodify(optionals.culi, ~ {
+  food <- .y
+  tbl  <- .x
+  rowwise(tbl) %>%
+    mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>% mutate(food = food) %>% select(Date, food) 
+}) %>%
+  list_rbind() %>%
+  mutate(value = 1) %>%
+  pivot_wider(
+    id_cols     = Date,
+    names_from  = food,
+    values_fill = 0
+  ) %>%
+  right_join(select(study_days, Date)) %>%
+  mutate(across(!Date, ~ replace_na(.x, 0))) %>%
+  nest(.by = Date, .key = "Foods_included")
+```
+
+```{r}
+culi.trials <- tribble(
+~start_day,        ~last_day        , ~diet,
+ymd(loris$day1)  , ymd("2023-11-01"), diet_trials$baseline,
+ymd("2023-11-02"), ymd("2023-11-22"), diet_trials$option1,
+ymd("2023-11-23"), ymd("2023-12-13"), diet_trials$option2,
+ymd("2023-12-14"), ymd("2024-01-03"), diet_trials$option3,
+ymd("2024-01-04"), ymd("2024-01-24"), diet_trials$option4,
+ymd("2024-01-25"), ymd("2024-02-19"), diet_trials$option5,
+ymd("2024-02-20"), ymd("2024-02-22"), diet_trials$option6,
+ymd("2024-02-23"), ymd("2024-05-14"), diet_trials$option7,
+ymd("2024-05-15"), ymd(path$last)   , diet_trials$option8
+)
+
+culi.schedule <- culi.trials %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         Trial_Phase = diet) %>%
+  left_join(optionals.culi, by = join_by(Date)) %>%
+  unnest(c(Trial_Phase, Foods_included))
 ```
 
 
-# Final Version of Dataframe
+```{r}
+optionals.warb <- study_days %>%
+  select(Date) %>%
+  mutate(tomatoes = 1, cauliflower = 1, broccoli = 1)
 
-Now, I am going to join back in some sample inventory tables. Right now the data are organized with one row per SampleID, but I am going to expand that so each SampleID row gets split into daughter rows for each ExtractID and SequenceID. This will make it easier to manipulate metadata later based on specific sequencing runs, as we will have multiple runs for the same sample sometimes.  
+warble.schedule <- study_days %>%
+  select(Date) %>%
+  rowwise() %>%
+  cbind(diet_trials$baseline) %>%
+  left_join(optionals.warb, by = join_by(Date))
+  
+```
+
+### Medication
+
+In addition to the steroids included in trials, Culi recieved antibiotics for a stint during our collections. We definitely want to keep something like antibiotics factored into our microbiome data analysis, so I will create a table for that.
 
 ```{r}
-export.metadata <- samples.metadata %>%
+meds <- list(
+  culi = tribble(
+~start_day,        ~last_day        , ~med_type,  ~med_name,  ~med_dose, ~dose_units,
+ymd(path$day1), ymd("2024-04-28"), "none", "none", 0, "mg/day",
+ymd("2024-04-29"), ymd("2024-05-06"), "antibiotic", "Metronidazole", 12.5, "mg/day",
+ymd("2024-05-06"), ymd(path$last), "none", "none", 0, "mg/day"
+  ),
+  warble = tribble(
+~start_day,        ~last_day        , ~med_type,  ~med_name,  ~med_dose, ~dose_units,
+ymd(path$day1), ymd(path$last), "none", "none", 0, "mg/day"
+  )
+)
+
+culi.meds <- meds$culi %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         med_type,
+         med_name,
+         med_dose,
+         dose_units
+         )
+
+warble.meds <- meds$warble %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         med_type,
+         med_name,
+         med_dose,
+         dose_units
+         )
   
 ```
 
 
+### Housing
+
+Over the course of the study, both lorises moved from neighboring enclosures in one building to a much more expansive set of enclosures with more variable shifting capabilities in another building. They moved at different dates, so I want to score each sample based on those different date ranges.
+
 ```{r}
-write.table(samples.metadata,
+housing <- list(
+  warble = tribble(
+~start_day,        ~last_day        , ~enclosure,
+ymd(loris$day1)    , ymd("2024-02-28"), "old",
+ymd("2024-02-29")  , ymd(loris$last)  , "new"
+  ),
+  culi = tribble(
+~start_day,        ~last_day        , ~enclosure,
+ymd(loris$day1)    , ymd("2024-02-27"), "old",
+ymd("2024-02-28")  , ymd(loris$last)  , "new"
+  )
+)
+
+warble.housing <- housing$warble %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         enclosure)
+
+culi.housing <- housing$culi %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         enclosure)
+```
+
+
+### Bristol Fecal Scores
+
+I only have scores available for Culi, and scores were recorded anywhere from 0 to 3x per day.
+
+```{r}
+culi.bristol <- bristol %>%
+  group_by(date) %>%
+  summarize(bristol_min  = min(score),
+            bristol_mean = round(mean(score), digits = 0),
+            bristol_max  = max(score)) %>%
+  ungroup() %>%
+  full_join(study_days, by = join_by(date == Date)) %>%
+  select(Date = date, 
+         bristol_min,
+         bristol_mean,
+         bristol_max) %>%
+  arrange(Date)
+```
+
+### Repro
+
+```{r}
+repro.log    <- list(
+  access = tribble(
+    ~value,     ~start_day,  ~last_day,
+    1     , ymd(path$day1)   , ymd("2023-10-29"),
+    0     , ymd("2023-10-30"), ymd("2024-04-01"),
+    1     , ymd("2024-04-02"), ymd("2024-04-15"),
+    0     , ymd("2024-04-16"), ymd(path$last)
+  ),
+  estrus = tribble(
+    ~value,     ~start_day,  ~last_day,
+    1     , ymd(path$day1)   , ymd("2023-10-29"),
+    0     , ymd("2023-10-30"), ymd("2024-03-31"),
+    1     , ymd("2024-03-21"), ymd("2024-04-05"),
+    0     , ymd("2024-04-06"), ymd(path$last)
+  ),
+  pregnant = tribble(
+    ~value,     ~start_day,  ~last_day,
+    0     , ymd(path$day1)   , ymd("2024-04-05"),
+    1     , ymd("2024-04-06"), ymd("2024-10-08"),
+    0     , ymd("2024-10-09"), ymd(path$last)
+  ),
+  notes = tribble(
+    ~repro_note          , ~subject  ,  ~Date,
+    "swollen_testicles"  , "culi"    , ymd("2024-02-29"),
+    "swollen_vulva"      , "warble"  , ymd("2024-03-21"),
+    "whistling"          , "culi"    , ymd("2024-03-21"),
+    "whistling"          , "warble"  , ymd("2024-04-04"),
+    "copulation_observed", "both"    , ymd("2024-04-03"),
+    "copulation_observed", "both"    , ymd("2024-04-04"),
+    "sperm_plug_observed", "warble"  , ymd("2024-04-05"),
+    "birth"              , "warble"  , ymd("2024-10-09"),
+    "double infanticide" , "warble"  , ymd("2024-10-10")
+  )
+) 
+```
+
+```{r}
+access.schedule <- repro.log$access %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         access = value)
+
+estrus.schedule <- repro.log$estrus %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         estrus = value)
+
+
+preg.schedule <- repro.log$pregnant %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         pregnant = value)
+
+warble.repro.notes <- repro.log$notes %>%
+  filter(subject == "warble" | subject == "both") %>%
+  select(Date, 
+         repro_note)
+
+culi.repro.notes <- repro.log$notes %>%
+  filter(subject == "culi" | subject == "both") %>%
+  select(Date, 
+         repro_note)
+  
+```
+
+
+### Health
+
+Now I will score the misc. notes provided by staff on health observations as variables. 
+
+```{r}
+culi.health <- tribble(
+  ~health_note                   , ~Date,
+  "dried blood around anus/tail" , ymd("2023-11-16"),
+  "coprophagy observed"          , ymd("2023-12-17"),
+  "weight - 451 g"               , ymd("2024-04-14"),
+  "left biscuit/gum behind"      , ymd("2024-02-10")
+)
+```
+
+## Metadata by Subject and Date
+
+Now I am going to populate metadata tables for each subject by day.
+
+### Culi
+
+```{r}
+culi.samples   <- samples %>% filter(Subject == "Culi")
+
+culi.metadata <- study_days %>%
+  left_join(culi.schedule) %>%
+  left_join(culi.meds) %>%
+  left_join(culi.housing) %>%
+  left_join(culi.bristol) %>%
+  left_join(access.schedule) %>%
+  left_join(culi.repro.notes) %>%
+  left_join(culi.health) %>%
+  mutate(CollectionDate = Date, .keep = "unused") %>%
+  right_join(culi.samples, by = join_by(CollectionDate))
+```
+
+### Warble
+
+```{r}
+warble.samples <- samples %>% filter(Subject == "Warble")
+
+warble.metadata <- study_days %>%
+  left_join(warble.schedule) %>%
+  left_join(warble.meds) %>%
+  left_join(warble.housing) %>%
+  left_join(access.schedule) %>%
+  left_join(estrus.schedule) %>%
+  left_join(preg.schedule) %>%
+  left_join(warble.repro.notes) %>%
+  mutate(CollectionDate = Date, .keep = "unused") %>%
+  right_join(warble.samples, by = join_by(CollectionDate))
+```
+
+## Merge and Export Complete Metadata Table
+
+
+```{r}
+metadata <- samples %>%
+  filter(Subject != "Warble" & Subject != "Culi") %>%
+  full_join(warble.metadata) %>%
+  full_join(culi.metadata) %>%
+  relocate(
+    SequenceID,
+    ExtractID,
+    SampleID,
+    study_day,
+    CollectionDate:health_note
+  ) %>%
+  arrange(CollectionDate, Subject)
+```
+
+```{r}
+write.table(metadata,
             path$metadata$summary,
             row.names = F,
             sep = "\t")
 ```
 
-
 ```{r}
-samples.metadata %>%
+metadata %>%
   kbl() %>%
   kable_styling(full_width = T,
                 fixed_thead = T,
@@ -426,10 +510,11 @@ samples.metadata %>%
 
 ```
 
-
 # Next Steps
 
 >Now you should proceed to the MicroEco Workflow to Begin Merging Metadata with Microbiome Results for Analysis.
+
+
 
 
 
