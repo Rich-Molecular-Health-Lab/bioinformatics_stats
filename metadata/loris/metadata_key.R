@@ -42,7 +42,25 @@ metadata_key <- list(
   SeqDevice       =  "MinION device used for sequencing (Angel or Spike)"       
 )
 
+tech_vars <- c(
+  "LibraryCode",
+  "ExtractDate",
+  "ExtractKit",
+  "ExtractedBy",
+  "ExtractNotes",
+  "LibPrepDate",
+  "LibPrepWorkflow",
+  "LibPrepKit",
+  "LibraryBarcode",
+  "SeqDate",
+  "FlowCellType",
+  "FlongleAdapter",
+  "SeqDevice"
+)
+
+
 ids <- c(
+  "Subject",
   "LibraryCode",
   "SequenceID", 
   "SampleID",   
@@ -61,6 +79,16 @@ binary.vars <- c(
   "access",   
   "estrus",   
   "pregnant"
+)
+
+replace.unknowns <- c(
+  "Subj_Certainty",
+  "probiotic", 
+  "oatgel",    
+  "cauliflower", 
+  "tomatoes",    
+  "broccoli", 
+  "access"
 )
 
 date.vars <- c(
@@ -100,16 +128,4 @@ qualitative.vars <- c(
   "repro_note", 
   "SampleNotes",
   "ExtractNotes"
-)
-
-diet_trials   <- list(
-  baseline      = tibble(steroid = 0.00, probiotic = 0, oatgel = 0),
-  option1       = tibble(steroid = 0.00, probiotic = 1, oatgel = 0),
-  option2       = tibble(steroid = 0.00, probiotic = 1, oatgel = 1),
-  option3       = tibble(steroid = 0.10, probiotic = 0, oatgel = 0),
-  option4       = tibble(steroid = 0.20, probiotic = 0, oatgel = 0),
-  option5       = tibble(steroid = 0.20, probiotic = 1, oatgel = 1),
-  option6       = tibble(steroid = 0.20, probiotic = 0, oatgel = 1),
-  option7       = tibble(steroid = 0.10, probiotic = 1, oatgel = 1),
-  option8       = tibble(steroid = 0.05, probiotic = 1, oatgel = 1)
 )

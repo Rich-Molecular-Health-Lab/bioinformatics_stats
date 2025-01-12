@@ -13,9 +13,7 @@ output:
     fig_caption: true
 params:
   taxon: "loris"
-  parent_dir: "/work/richlab/aliciarich/ont_reads/"
-  working_dir: "/work/richlab/aliciarich/ont_reads/microbiomes_loris"
-  seqrun: "hdz19"
+  seqrun: "hdz9"
   
 ---
 
@@ -26,8 +24,12 @@ path        <- config::get(config = paste0(params$taxon))
 source(paste0(global$setup))
 source(paste0(swan$functions))
 source(paste0(swan$options))
+```
 
-opts_chunk$set(message = FALSE,
+
+```{r, message=FALSE}
+opts_chunk$set(
+               message = FALSE,
                warning = FALSE,
                echo    = FALSE,
                include = TRUE,
@@ -36,20 +38,36 @@ opts_chunk$set(message = FALSE,
 
 knitr::knit_engines$set(terminal = function(options) {
   code <- paste(options$code, collapse = "\n")
-  for (param in names(params)) {
-    param_placeholder <- paste0("params\\$", param)
-    param_value <- params[[param]]
-    code <- gsub(param_placeholder, param_value, code)
+  
+  params <- map(params, ~ if (is.atomic(.)) list(.) else .) %>%
+  list_flatten()
+  
+  # Define placeholder groups
+  patterns <- list(
+    params        = params,
+    path          = path,
+    methods_16s   = methods_16s,
+    swan          = swan,
+    sample_sheets = sample_sheets
+  )
+  
+  # Replace placeholders group by group
+  for (group in names(patterns)) {
+    placeholder_list <- patterns[[group]]
+    for (name in names(placeholder_list)) {
+      placeholder <- paste(group, name, sep = "\\$") # Match exact placeholder
+      value <- placeholder_list[[name]]
+      
+      # Replace placeholders exactly and avoid breaking suffixes
+      code <- gsub(placeholder, value, code, perl = TRUE)
+    }
   }
-  for (method in names(methods_16s)) {
-    method_placeholder <- paste0("methods_16s\\$", method)
-    method_value <-      methods_16s[[method]]
-    code <- gsub(method_placeholder, method_value, code)
-  }
+  
+  options$warning <- FALSE
   knitr::engine_output(options, code, out = code)
 })
-
 ```
+
 
 # Intro {.tabset}
 
@@ -117,7 +135,7 @@ minion_files
 
 If you see a step involving the code "sbatch", that means I am referencing a separate file with the extension .sh as a complete batch script that runs from the HCC's SLURM server. You should transfer your version of that script to the local working directory before running the sbatch code. Sometimes I also run shorter jobs as an [interactive job](https://hcc.unl.edu/docs/submitting_jobs/creating_an_interactive_job/). You can read more about that on the HCC manual if you want to try it.  
 
-I also use a custom language engine in this script that I named "terminal." If you see a chunk of code with {terminal} written where you would usually see {r} at the top of the chunk, then running the chunk should only print that code as a text string in this document. This just makes it easier for me to copy and paste the code directly into the terminal panel that I use in my R Studio window when running code through a remote server instead of my local R console. There are ways to set R Studio up to run code through multiple servers, but I find this the simplest way to switch back and forth while still keeping a record of the code that have used or changes I have made to it.  
+I also use a custom language engine in this script that I named "terminal." If you see a chunk of code with {terminal, warning = FALSE} written where you would usually see {r} at the top of the chunk, then running the chunk should only print that code as a text string in this document. This just makes it easier for me to copy and paste the code directly into the terminal panel that I use in my R Studio window when running code through a remote server instead of my local R console. There are ways to set R Studio up to run code through multiple servers, but I find this the simplest way to switch back and forth while still keeping a record of the code that have used or changes I have made to it.  
 
 #### Methods Parameters
 
@@ -147,12 +165,12 @@ You should have some basic understanding of which models Dorado provides for bas
 
 For some reason dorado's automatic sourcing and use of models does not seem to work from the GPU nodes on the HCC, so we will download a stable version of our current wording model. - *This file needs to be in your working directory where you run the dorado basecaller command or script.*
 
-```{terminal}
-cd params$parent_dir
+```{terminal, warning = FALSE}
+cd swan$ont_reads
 
 module load dorado
 
-dorado download params$model
+dorado download methods_16s$dorado_model
 ```
 
 ## Create Conda Environments
@@ -161,7 +179,7 @@ We need to use some modules/packages that the HCC does not pre-install for us on
 
 ## pycoQC
 
-```{terminal}
+```{terminal, warning = FALSE}
 module load anaconda
 conda create -n pycoQC python=3.6
 conda activate pycoQC
@@ -171,7 +189,7 @@ conda deactivate
 
 ## filter
 
-```{terminal}
+```{terminal, warning = FALSE}
 conda create -n filter
 conda activate filter
 mamba install chopper
@@ -190,12 +208,12 @@ This step can be the most glitchy and time-consuming because of the more intensi
 
 #### Batch Script Header
 
-```{terminal}
+```{terminal, warning = FALSE}
 #!/bin/bash
 #SBATCH --time=2:00:00
-#SBATCH --job-name=params$seqrunbasecall
-#SBATCH --error=params$working_dir/logs/params$seqrunbasecall_%A_%a.err
-#SBATCH --output=params$working_dir/logs/params$seqrunbasecall_%A_%a.out
+#SBATCH --job-name=basecall_params$seqrun
+#SBATCH --error=swan$logs/basecall_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/basecall_params$seqrun_%A_%a.out
 #SBATCH --partition=gpu,guest_gpu
 #SBATCH --constraint='gpu_v100|gpu_t4'
 #SBATCH --nodes=1
@@ -207,21 +225,21 @@ This step can be the most glitchy and time-consuming because of the more intensi
 
 #### Open Interactive Job
 
-```{terminal}
-srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=params$seqrunbasecall --pty $SHELL
+```{terminal, warning = FALSE}
+srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=basecall_params$seqrun --pty $SHELL
 ```
 
 #### Code to Use
 
-```{terminal}
+```{terminal, warning = FALSE}
 module purge
 module load dorado-gpu/0.7
 
-pod5="params$working_dir/hdz_raw/params$seqrun/"
-basecalled="params$working_dir/basecalled/params$seqrun/"
+pod5="swan$raw_loris_mb/params$seqrun/"
+basecalled="swan$basecalled_loris_mb/params$seqrun/"
 mkdir -p $basecalled
 
-algo="params$parent_dirmethods_16s$dorado_model"
+algo="swan$dorado_model"
 
 dorado basecaller "$algo" \
     "$pod5" \
@@ -234,7 +252,8 @@ dorado summary "$basecalled/params$seqrun.bam" > "$basecalled/params$seqrun_base
 
 #### Submit Batch Script
 
-```{terminal}
+```{terminal, warning = FALSE}
+cd swan$scripts
 sbatch basecall_params$seqrun.sh
 ```
 
@@ -246,12 +265,12 @@ You do not need to use the GPU nodes for this or any of the other jobs in this w
 
 #### Batch Script Header
 
-```{terminal}
+```{terminal, warning = FALSE}
 #!/bin/bash
 #SBATCH --time=00:45:00
-#SBATCH --job-name=params$seqrundemux_trim
-#SBATCH --error=params$working_dir/logs/params$seqrundemux_trim_%A_%a.err
-#SBATCH --output=params$working_dir/logs/params$seqrundemux_trim_%A_%a.out
+#SBATCH --job-name=demux_trim_params$seqrun
+#SBATCH --error=swan$logs/demux_trim_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/demux_trim_params$seqrun_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -260,19 +279,21 @@ You do not need to use the GPU nodes for this or any of the other jobs in this w
 
 #### Open Interactive Job
 
-```{terminal}
+```{terminal, warning = FALSE}
 srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=params$seqrundemux_trim --mem=100GB --time=0:45:00 --pty $SHELL
 ```
 
 #### Code to Use
 
-```{terminal}
+```{terminal, warning = FALSE}
 module purge
 module load dorado/0.7
 
-basecalled="params$working_dir/basecalled/params$seqrun/"
-sample_sheet="params$working_dir/dataframes/params$seqrun_sample_sheet.csv"
-trimmed="params$working_dir/trimmed/params$seqrun"
+cd swan$bioinformatics_stats
+
+basecalled="swan$basecalled_loris_mb/params$seqrun/"
+sample_sheet="swan$samplesheets/params$sampleset/params$seqrun_sample_sheet.csv"
+trimmed="swan$trimmed_loris_mb/params$seqrun/"
 
 mkdir -p $trimmed
 
@@ -286,7 +307,8 @@ dorado demux "$basecalled" \
 
 #### Submit Batch Script
 
-```{terminal}
+```{terminal, warning = FALSE}
+cd swan$scripts
 sbatch demux_trim_params$seqrun.sh
 ```
 
@@ -296,12 +318,12 @@ Now we need to trim away the messy ends of our reads (they are kind of like the 
 
 #### Batch Script Header
 
-```{terminal}
+```{terminal, warning = FALSE}
 #!/bin/bash
 #SBATCH --time=00:45:00
-#SBATCH --job-name=params$seqrun_qc
-#SBATCH --error=params$working_dir/logs/params$seqrun_qc_%A_%a.err
-#SBATCH --output=params$working_dir/logs/params$seqrun_qc_%A_%a.out
+#SBATCH --job-name=qc_params$seqrun
+#SBATCH --error=swan$logs/qc_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/qc_params$seqrun_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -310,8 +332,8 @@ Now we need to trim away the messy ends of our reads (they are kind of like the 
 
 #### Open Interactive Job
 
-```{terminal}
-srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=params$seqrun_qc --mem=100GB --time=0:45:00 --pty $SHELL
+```{terminal, warning = FALSE}
+srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=qc_params$seqrun --mem=100GB --time=0:45:00 --pty $SHELL
 ```
 
 #### Code to Use
@@ -320,14 +342,14 @@ srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=params$seqrun_qc
 
 ##### Part 1
 
-```{terminal}
+```{terminal, warning = FALSE}
 module purge
 module load anaconda
 
 conda activate filter
 
-trimmed="params$working_dir/trimmed/params$seqrun"
-filtered="params$working_dir/filtered/params$seqrun"
+trimmed="swan$trimmed_loris_mb/params$seqrun"
+filtered="swan$filtered_loris_mb/params$seqrun"
 
 mkdir -p $filtered
 
@@ -354,7 +376,7 @@ done
 
 >This part just reorganizes the files so that they are in the proper structure for the EPI2ME Workflows that we use next to easily locate them.
 
-```{terminal}
+```{terminal, warning = FALSE}
 cd $filtered
 
 for file in "$filtered"/*.fastq; do
@@ -376,8 +398,9 @@ done
 
 #### Submit Batch Script
 
-```{terminal}
-sbatch demux_trim_params$seqrun.sh
+```{terminal, warning = FALSE}
+cd swan$scripts
+sbatch qc_params$seqrun.sh
 ```
 
 ## Final Processing Step: Alignment, Sorting, Etc.
@@ -399,12 +422,12 @@ We will use the wf-16s pipeline by EPI2ME to do this. You should have a look at 
 
 >Notice that this is a more memory- and time-intensive job than the others. You will need to scale up time for more samples/reads or longer reads.
 
-```{terminal}
+```{terminal, warning = FALSE}
 #!/bin/bash
 #SBATCH --time=03:00:00
-#SBATCH --job-name=params$seqrun_wf16s
-#SBATCH --error=params$working_dir/logs/params$seqrun_wf16s_%A_%a.err
-#SBATCH --output=params$working_dir/logs/params$seqrun_wf16s_%A_%a.out
+#SBATCH --job-name=wf16s_params$seqrun
+#SBATCH --error=swan$logs/wf16s_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/wf16s_params$seqrun_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -414,18 +437,23 @@ We will use the wf-16s pipeline by EPI2ME to do this. You should have a look at 
 
 ### Open Interactive Job
 
-```{terminal}
-srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=params$seqrun_wf16s --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL
+```{terminal, warning = FALSE}
+srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=wf16s_params$seqrun --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL
 ```
 
 ### Code to Use
 
-```{terminal}
+```{terminal, warning = FALSE}
 module purge
 module load dorado/0.7
 
-filtered="params$working_dir/filtered/params$seqrun/"
-processed="params$working_dir/data/outputs_wf16s/params$seqrun"
+filtered="swan$filtered_loris_mb/params$seqrun/"
+
+cd "swan$bioinformatics_stats/"
+
+processed="path$outputs_wf16sparams$seqrun/"
+
+mkdir -p $processed
 
 module load "nextflow"
 
@@ -442,15 +470,16 @@ nextflow run epi2me-labs/wf-16s \
 --min_read_qual methods_16s$min_qual \
 --min_percent_identity methods_16s$min_id \
 --min_ref_coverage methods_16s$min_cov \
---n_taxa_barplot 12 \
+--n_taxa_barplot methods_16s$n_taxa_barplot \
 --threads 32
 
 ```
 
 ### Submit Batch Script
 
-```{terminal}
-sbatch params$seqrun_wf16s
+```{terminal, warning = FALSE}
+cd swan$scripts
+sbatch wf16s_params$seqrun.sh
 ```
 
 # Next Steps

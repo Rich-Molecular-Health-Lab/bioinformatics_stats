@@ -16,3 +16,14 @@ preg.labels     <-  c("Y",           "N")
 
 access.levels     <-  c("together",    "separated")
 access.labels     <-  c("Y",           "N")
+
+
+taxonomy.ordered <- c(
+  "superkingdom",
+  "phylum",
+  "class",
+  "order",
+  "family",
+  "genus",
+  "species"
+)

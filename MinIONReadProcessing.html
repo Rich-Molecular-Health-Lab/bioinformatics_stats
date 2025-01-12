@@ -11,7 +11,7 @@
 
 <meta name="author" content="Alicia M. Rich, Ph.D." />
 
-<meta name="date" content="2025-01-09" />
+<meta name="date" content="2025-01-12" />
 
 <title>Post-Sequencing Raw ONT Read Processing Workflow</title>
 
@@ -1570,7 +1570,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Post-Sequencing Raw ONT Read Processing
 Workflow</h1>
 <h4 class="author">Alicia M. Rich, Ph.D.</h4>
-<h4 class="date">2025-01-09</h4>
+<h4 class="date">2025-01-12</h4>
 
 </div>
 
@@ -1580,29 +1580,7 @@ path        &lt;- config::get(config = paste0(params$taxon))
 
 source(paste0(global$setup))
 source(paste0(swan$functions))
-source(paste0(swan$options))
-
-opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = FALSE,
-               include = TRUE,
-               eval    = TRUE,
-               comment = &quot;&quot;)
-
-knitr::knit_engines$set(terminal = function(options) {
-  code &lt;- paste(options$code, collapse = &quot;\n&quot;)
-  for (param in names(params)) {
-    param_placeholder &lt;- paste0(&quot;params\\$&quot;, param)
-    param_value &lt;- params[[param]]
-    code &lt;- gsub(param_placeholder, param_value, code)
-  }
-  for (method in names(methods_16s)) {
-    method_placeholder &lt;- paste0(&quot;methods_16s\\$&quot;, method)
-    method_value &lt;-      methods_16s[[method]]
-    code &lt;- gsub(method_placeholder, method_value, code)
-  }
-  knitr::engine_output(options, code, out = code)
-})</code></pre>
+source(paste0(swan$options))</code></pre>
 <div id="intro" class="section level1 tabset">
 <h1 class="tabset">Intro</h1>
 <div id="this-workflow" class="section level2">
@@ -1681,20 +1659,20 @@ parameters, and tell the HCC when/how to run it for you.</li>
 subdirectories into a parent directory labeled with the name of your
 run. Here is what you should do with some of the main files you need to
 carry forward:</p>
-<div id="kiklwkmahq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kiklwkmahq table {
+<div id="wzfskbtgrf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wzfskbtgrf table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#kiklwkmahq thead, #kiklwkmahq tbody, #kiklwkmahq tfoot, #kiklwkmahq tr, #kiklwkmahq td, #kiklwkmahq th {
+#wzfskbtgrf thead, #wzfskbtgrf tbody, #wzfskbtgrf tfoot, #wzfskbtgrf tr, #wzfskbtgrf td, #wzfskbtgrf th {
 border-style: none;
 }
-#kiklwkmahq p {
+#wzfskbtgrf p {
 margin: 0;
 padding: 0;
 }
-#kiklwkmahq .gt_table {
+#wzfskbtgrf .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -1719,11 +1697,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#kiklwkmahq .gt_caption {
+#wzfskbtgrf .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#kiklwkmahq .gt_title {
+#wzfskbtgrf .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -1734,7 +1712,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#kiklwkmahq .gt_subtitle {
+#wzfskbtgrf .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -1745,7 +1723,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#kiklwkmahq .gt_heading {
+#wzfskbtgrf .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -1756,12 +1734,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#kiklwkmahq .gt_bottom_border {
+#wzfskbtgrf .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#kiklwkmahq .gt_col_headings {
+#wzfskbtgrf .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #929292;
@@ -1775,7 +1753,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#kiklwkmahq .gt_col_heading {
+#wzfskbtgrf .gt_col_heading {
 color: #FFFFFF;
 background-color: #016763;
 font-size: 100%;
@@ -1794,7 +1772,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#kiklwkmahq .gt_column_spanner_outer {
+#wzfskbtgrf .gt_column_spanner_outer {
 color: #FFFFFF;
 background-color: #016763;
 font-size: 100%;
@@ -1805,13 +1783,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#kiklwkmahq .gt_column_spanner_outer:first-child {
+#wzfskbtgrf .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#kiklwkmahq .gt_column_spanner_outer:last-child {
+#wzfskbtgrf .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#kiklwkmahq .gt_column_spanner {
+#wzfskbtgrf .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
@@ -1822,10 +1800,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#kiklwkmahq .gt_spanner_row {
+#wzfskbtgrf .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#kiklwkmahq .gt_group_heading {
+#wzfskbtgrf .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1850,7 +1828,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#kiklwkmahq .gt_empty_group_heading {
+#wzfskbtgrf .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -1864,13 +1842,13 @@ border-bottom-width: 2px;
 border-bottom-color: #929292;
 vertical-align: middle;
 }
-#kiklwkmahq .gt_from_md > :first-child {
+#wzfskbtgrf .gt_from_md > :first-child {
 margin-top: 0;
 }
-#kiklwkmahq .gt_from_md > :last-child {
+#wzfskbtgrf .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#kiklwkmahq .gt_row {
+#wzfskbtgrf .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1888,7 +1866,7 @@ border-right-color: #929292;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#kiklwkmahq .gt_stub {
+#wzfskbtgrf .gt_stub {
 color: #333333;
 background-color: #D5D5D5;
 font-size: 100%;
@@ -1900,7 +1878,7 @@ border-right-color: #FFFFFF;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kiklwkmahq .gt_stub_row_group {
+#wzfskbtgrf .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1913,13 +1891,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#kiklwkmahq .gt_row_group_first td {
+#wzfskbtgrf .gt_row_group_first td {
 border-top-width: 2px;
 }
-#kiklwkmahq .gt_row_group_first th {
+#wzfskbtgrf .gt_row_group_first th {
 border-top-width: 2px;
 }
-#kiklwkmahq .gt_summary_row {
+#wzfskbtgrf .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -1928,14 +1906,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kiklwkmahq .gt_first_summary_row {
+#wzfskbtgrf .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #929292;
 }
-#kiklwkmahq .gt_first_summary_row.thick {
+#wzfskbtgrf .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#kiklwkmahq .gt_last_summary_row {
+#wzfskbtgrf .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1944,7 +1922,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#kiklwkmahq .gt_grand_summary_row {
+#wzfskbtgrf .gt_grand_summary_row {
 color: #333333;
 background-color: #D5D5D5;
 text-transform: inherit;
@@ -1953,7 +1931,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kiklwkmahq .gt_first_grand_summary_row {
+#wzfskbtgrf .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1962,7 +1940,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #929292;
 }
-#kiklwkmahq .gt_last_grand_summary_row_top {
+#wzfskbtgrf .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1971,10 +1949,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #929292;
 }
-#kiklwkmahq .gt_striped {
+#wzfskbtgrf .gt_striped {
 background-color: #F4F4F4;
 }
-#kiklwkmahq .gt_table_body {
+#wzfskbtgrf .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #929292;
@@ -1982,7 +1960,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#kiklwkmahq .gt_footnotes {
+#wzfskbtgrf .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1995,7 +1973,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#kiklwkmahq .gt_footnote {
+#wzfskbtgrf .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -2003,7 +1981,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kiklwkmahq .gt_sourcenotes {
+#wzfskbtgrf .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2016,64 +1994,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#kiklwkmahq .gt_sourcenote {
+#wzfskbtgrf .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kiklwkmahq .gt_left {
+#wzfskbtgrf .gt_left {
 text-align: left;
 }
-#kiklwkmahq .gt_center {
+#wzfskbtgrf .gt_center {
 text-align: center;
 }
-#kiklwkmahq .gt_right {
+#wzfskbtgrf .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#kiklwkmahq .gt_font_normal {
+#wzfskbtgrf .gt_font_normal {
 font-weight: normal;
 }
-#kiklwkmahq .gt_font_bold {
+#wzfskbtgrf .gt_font_bold {
 font-weight: bold;
 }
-#kiklwkmahq .gt_font_italic {
+#wzfskbtgrf .gt_font_italic {
 font-style: italic;
 }
-#kiklwkmahq .gt_super {
+#wzfskbtgrf .gt_super {
 font-size: 65%;
 }
-#kiklwkmahq .gt_footnote_marks {
+#wzfskbtgrf .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#kiklwkmahq .gt_asterisk {
+#wzfskbtgrf .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#kiklwkmahq .gt_indent_1 {
+#wzfskbtgrf .gt_indent_1 {
 text-indent: 5px;
 }
-#kiklwkmahq .gt_indent_2 {
+#wzfskbtgrf .gt_indent_2 {
 text-indent: 10px;
 }
-#kiklwkmahq .gt_indent_3 {
+#wzfskbtgrf .gt_indent_3 {
 text-indent: 15px;
 }
-#kiklwkmahq .gt_indent_4 {
+#wzfskbtgrf .gt_indent_4 {
 text-indent: 20px;
 }
-#kiklwkmahq .gt_indent_5 {
+#wzfskbtgrf .gt_indent_5 {
 text-indent: 25px;
 }
-#kiklwkmahq .katex-display {
+#wzfskbtgrf .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#kiklwkmahq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#wzfskbtgrf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -2121,15 +2099,16 @@ sbatch code. Sometimes I also run shorter jobs as an <a href="https://hcc.unl.ed
 job</a>. You can read more about that on the HCC manual if you want to
 try it.</p>
 <p>I also use a custom language engine in this script that I named
-“terminal.” If you see a chunk of code with {terminal} written where you
-would usually see {r} at the top of the chunk, then running the chunk
-should only print that code as a text string in this document. This just
-makes it easier for me to copy and paste the code directly into the
-terminal panel that I use in my R Studio window when running code
-through a remote server instead of my local R console. There are ways to
-set R Studio up to run code through multiple servers, but I find this
-the simplest way to switch back and forth while still keeping a record
-of the code that have used or changes I have made to it.</p>
+“terminal.” If you see a chunk of code with {terminal, warning = FALSE}
+written where you would usually see {r} at the top of the chunk, then
+running the chunk should only print that code as a text string in this
+document. This just makes it easier for me to copy and paste the code
+directly into the terminal panel that I use in my R Studio window when
+running code through a remote server instead of my local R console.
+There are ways to set R Studio up to run code through multiple servers,
+but I find this the simplest way to switch back and forth while still
+keeping a record of the code that have used or changes I have made to
+it.</p>
 <div id="methods-parameters" class="section level4">
 <h4>Methods Parameters</h4>
 <p>I keep track of my paremeters for workflows using the config package
@@ -2171,7 +2150,7 @@ script.</em></p>
 
 module load dorado
 
-dorado download params$model</code></pre>
+dorado download &#39;dna_r10.4.1_e8.2_400bps_sup@v5.0.0&#39;</code></pre>
 </div>
 <div id="create-conda-environments" class="section level2">
 <h2>Create Conda Environments</h2>
@@ -2222,9 +2201,9 @@ package provided by the HCC team.</p>
 <h4>Batch Script Header</h4>
 <pre><code>#!/bin/bash
 #SBATCH --time=2:00:00
-#SBATCH --job-name=hdz19basecall
-#SBATCH --error=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19basecall_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19basecall_%A_%a.out
+#SBATCH --job-name=basecall_hdz9
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/basecall_hdz9_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/basecall_hdz9_%A_%a.out
 #SBATCH --partition=gpu,guest_gpu
 #SBATCH --constraint=&#39;gpu_v100|gpu_t4&#39;
 #SBATCH --nodes=1
@@ -2235,29 +2214,30 @@ package provided by the HCC team.</p>
 </div>
 <div id="open-interactive-job" class="section level4">
 <h4>Open Interactive Job</h4>
-<pre><code>srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=hdz19basecall --pty $SHELL</code></pre>
+<pre><code>srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=basecall_hdz9 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use" class="section level4">
 <h4>Code to Use</h4>
 <pre><code>module purge
 module load dorado-gpu/0.7
 
-pod5=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/hdz_raw/hdz19/&quot;
-basecalled=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/basecalled/hdz19/&quot;
+pod5=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/hdz_raw/hdz9/&quot;
+basecalled=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/basecalled/hdz9/&quot;
 mkdir -p $basecalled
 
-algo=&quot;/work/richlab/aliciarich/ont_reads/&#39;dna_r10.4.1_e8.2_400bps_sup@v5.0.0&#39;&quot;
+algo=&quot;/work/richlab/aliciarich/ont_reads/dna_r10.4.1_e8.2_400bps_sup@v5.0.0/&quot;
 
 dorado basecaller &quot;$algo&quot; \
     &quot;$pod5&quot; \
     --recursive \
     --no-trim \
-    &gt; &quot;$basecalled/hdz19.bam&quot; &amp;&amp; \
-dorado summary &quot;$basecalled/hdz19.bam&quot; &gt; &quot;$basecalled/hdz19_basecall_summary.tsv&quot;</code></pre>
+    &gt; &quot;$basecalled/hdz9.bam&quot; &amp;&amp; \
+dorado summary &quot;$basecalled/hdz9.bam&quot; &gt; &quot;$basecalled/hdz9_basecall_summary.tsv&quot;</code></pre>
 </div>
 <div id="submit-batch-script" class="section level4">
 <h4>Submit Batch Script</h4>
-<pre><code>sbatch basecall_hdz19.sh</code></pre>
+<pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
+sbatch basecall_hdz9.sh</code></pre>
 </div>
 </div>
 <div id="demultiplex-and-trim" class="section level3 tabset">
@@ -2277,9 +2257,9 @@ instead.</p>
 <h4>Batch Script Header</h4>
 <pre><code>#!/bin/bash
 #SBATCH --time=00:45:00
-#SBATCH --job-name=hdz19demux_trim
-#SBATCH --error=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19demux_trim_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19demux_trim_%A_%a.out
+#SBATCH --job-name=demux_trim_hdz9
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/demux_trim_hdz9_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/demux_trim_hdz9_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -2287,16 +2267,18 @@ instead.</p>
 </div>
 <div id="open-interactive-job-1" class="section level4">
 <h4>Open Interactive Job</h4>
-<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=hdz19demux_trim --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
+<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=hdz9demux_trim --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use-1" class="section level4">
 <h4>Code to Use</h4>
 <pre><code>module purge
 module load dorado/0.7
 
-basecalled=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/basecalled/hdz19/&quot;
-sample_sheet=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/dataframes/hdz19_sample_sheet.csv&quot;
-trimmed=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/trimmed/hdz19&quot;
+cd /work/richlab/aliciarich/bioinformatics_stats
+
+basecalled=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/basecalled/hdz9/&quot;
+sample_sheet=&quot;/work/richlab/aliciarich/bioinformatics_stats/dataframes/sample_sheet/loris/params$sampleset/hdz9_sample_sheet.csv&quot;
+trimmed=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/trimmed/hdz9/&quot;
 
 mkdir -p $trimmed
 
@@ -2308,7 +2290,8 @@ dorado demux &quot;$basecalled&quot; \
 </div>
 <div id="submit-batch-script-1" class="section level4">
 <h4>Submit Batch Script</h4>
-<pre><code>sbatch demux_trim_hdz19.sh</code></pre>
+<pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
+sbatch demux_trim_hdz9.sh</code></pre>
 </div>
 </div>
 <div id="quality-control" class="section level3 tabset">
@@ -2324,9 +2307,9 @@ below.</p>
 <h4>Batch Script Header</h4>
 <pre><code>#!/bin/bash
 #SBATCH --time=00:45:00
-#SBATCH --job-name=hdz19_qc
-#SBATCH --error=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19_qc_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19_qc_%A_%a.out
+#SBATCH --job-name=qc_hdz9
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/qc_hdz9_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/qc_hdz9_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -2334,7 +2317,7 @@ below.</p>
 </div>
 <div id="open-interactive-job-2" class="section level4">
 <h4>Open Interactive Job</h4>
-<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=hdz19_qc --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
+<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=qc_hdz9 --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use-2" class="section level4">
 <h4>Code to Use</h4>
@@ -2351,8 +2334,8 @@ module load anaconda
 
 conda activate filter
 
-trimmed=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/trimmed/hdz19&quot;
-filtered=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/filtered/hdz19&quot;
+trimmed=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/trimmed/hdz9&quot;
+filtered=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz9&quot;
 
 mkdir -p $filtered
 
@@ -2399,7 +2382,8 @@ done</code></pre>
 </div>
 <div id="submit-batch-script-2" class="section level4">
 <h4>Submit Batch Script</h4>
-<pre><code>sbatch demux_trim_hdz19.sh</code></pre>
+<pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
+sbatch qc_hdz9.sh</code></pre>
 </div>
 </div>
 </div>
@@ -2447,9 +2431,9 @@ reads.</p>
 </blockquote>
 <pre><code>#!/bin/bash
 #SBATCH --time=03:00:00
-#SBATCH --job-name=hdz19_wf16s
-#SBATCH --error=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19_wf16s_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/ont_reads/microbiomes_loris/logs/hdz19_wf16s_%A_%a.out
+#SBATCH --job-name=wf16s_hdz9
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/wf16s_hdz9_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/wf16s_hdz9_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -2458,15 +2442,20 @@ reads.</p>
 </div>
 <div id="open-interactive-job-3" class="section level3">
 <h3>Open Interactive Job</h3>
-<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=hdz19_wf16s --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL</code></pre>
+<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=wf16s_hdz9 --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use-3" class="section level3">
 <h3>Code to Use</h3>
 <pre><code>module purge
 module load dorado/0.7
 
-filtered=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/filtered/hdz19/&quot;
-processed=&quot;/work/richlab/aliciarich/ont_reads/microbiomes_loris/data/outputs_wf16s/hdz19&quot;
+filtered=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz9/&quot;
+
+cd &quot;/work/richlab/aliciarich/bioinformatics_stats/&quot;
+
+processed=&quot;../bioinformatics_stats/data/loris/outputs_wf16s/hdz9/&quot;
+
+mkdir -p $processed
 
 module load &quot;nextflow&quot;
 
@@ -2488,7 +2477,8 @@ nextflow run epi2me-labs/wf-16s \
 </div>
 <div id="submit-batch-script-3" class="section level3">
 <h3>Submit Batch Script</h3>
-<pre><code>sbatch hdz19_wf16s</code></pre>
+<pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
+sbatch wf16s_hdz9.sh</code></pre>
 </div>
 </div>
 </div>
