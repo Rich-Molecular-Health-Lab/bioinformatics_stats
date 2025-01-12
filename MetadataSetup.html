@@ -2005,6 +2005,501 @@ culi.schedule &lt;- culi.trials %&gt;%
          Trial_Phase = diet) %&gt;%
   left_join(optionals.culi, by = join_by(Date)) %&gt;%
   unnest(c(Trial_Phase, Foods_included))</code></pre>
+<pre class="r"><code>culi.diet.schedule &lt;- list(
+baseline = tibble(start_day = ymd(loris$day1)  , last_day = ymd(&quot;2023-11-01&quot;), diet = diet_trials$baseline),
+phase1   = tibble(start_day = ymd(&quot;2023-11-02&quot;), last_day = ymd(&quot;2023-11-22&quot;), diet = diet_trials$option1),
+phase2   = tibble(start_day = ymd(&quot;2023-11-23&quot;), last_day = ymd(&quot;2023-12-13&quot;), diet = diet_trials$option2),
+phase3   = tibble(start_day = ymd(&quot;2023-12-14&quot;), last_day = ymd(&quot;2024-01-03&quot;), diet = diet_trials$option3),
+phase4   = tibble(start_day = ymd(&quot;2024-01-04&quot;), last_day = ymd(&quot;2024-01-24&quot;), diet = diet_trials$option4),
+phase5   = tibble(start_day = ymd(&quot;2024-01-25&quot;), last_day = ymd(&quot;2024-02-19&quot;), diet = diet_trials$option5),
+phase6   = tibble(start_day = ymd(&quot;2024-02-20&quot;), last_day = ymd(&quot;2024-02-22&quot;), diet = diet_trials$option6),
+phase7   = tibble(start_day = ymd(&quot;2024-02-23&quot;), last_day = ymd(&quot;2024-05-14&quot;), diet = diet_trials$option7),
+phase8   = tibble(start_day = ymd(&quot;2024-05-15&quot;), last_day = ymd(path$last)   , diet = diet_trials$option8)
+)</code></pre>
+<pre class="r"><code>culi.diet.schedule %&gt;%
+  list_rbind() %&gt;%
+  mutate(Probiotic   = if_else(diet$probiotic == 1, &quot;check&quot;, &quot;minus&quot;),
+         Oatgel      = if_else(diet$oatgel == 1, &quot;check&quot;, &quot;minus&quot;),
+         Steroid     = if_else(diet$steroid == 0.00, &quot;minus&quot;, as.character(diet$steroid))) %&gt;%
+  select(start_day,
+         Steroid,
+         Probiotic,
+         Oatgel) %&gt;%
+  gt() %&gt;%
+    fmt_date(columns = ends_with(&quot;_day&quot;), date_style = &quot;m_day_year&quot;) %&gt;%
+    cols_label(start_day = &quot;Begin&quot;) %&gt;%
+    fmt_icon( columns = Steroid, rows = Steroid == &quot;minus&quot;) %&gt;%
+    fmt_icon( columns = c(&quot;Probiotic&quot;, &quot;Oatgel&quot;)) %&gt;%
+    cols_align(&quot;center&quot;) %&gt;%
+    tab_header(&quot;Summary of Trial Phases for Culi&quot;) %&gt;%
+    tab_footnote(&quot;Phase ends on the date the next row begins.&quot;, 
+                 locations = cells_column_labels(start_day)) %&gt;%
+    tab_footnote(&quot;Steroid (Budesonide) dose reported as mg/day&quot;, 
+                 locations = cells_column_labels(Steroid)) %&gt;%
+    tab_footnote(&quot;Warble stayed at baseline for duration of the study.&quot;, 
+                 locations = cells_title()) %&gt;%
+    opt_stylize(style = 3, color = &quot;gray&quot;)</code></pre>
+<div id="pjyoxherfq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pjyoxherfq table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#pjyoxherfq thead, #pjyoxherfq tbody, #pjyoxherfq tfoot, #pjyoxherfq tr, #pjyoxherfq td, #pjyoxherfq th {
+border-style: none;
+}
+#pjyoxherfq p {
+margin: 0;
+padding: 0;
+}
+#pjyoxherfq .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#pjyoxherfq .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#pjyoxherfq .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#pjyoxherfq .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#pjyoxherfq .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#pjyoxherfq .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+}
+#pjyoxherfq .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#pjyoxherfq .gt_col_heading {
+color: #FFFFFF;
+background-color: #000000;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#pjyoxherfq .gt_column_spanner_outer {
+color: #FFFFFF;
+background-color: #000000;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#pjyoxherfq .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#pjyoxherfq .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#pjyoxherfq .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#pjyoxherfq .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#pjyoxherfq .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#pjyoxherfq .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+vertical-align: middle;
+}
+#pjyoxherfq .gt_from_md > :first-child {
+margin-top: 0;
+}
+#pjyoxherfq .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#pjyoxherfq .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: dashed;
+border-top-width: 1px;
+border-top-color: #929292;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #929292;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #929292;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#pjyoxherfq .gt_stub {
+color: #333333;
+background-color: #D5D5D5;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #FFFFFF;
+padding-left: 5px;
+padding-right: 5px;
+}
+#pjyoxherfq .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#pjyoxherfq .gt_row_group_first td {
+border-top-width: 2px;
+}
+#pjyoxherfq .gt_row_group_first th {
+border-top-width: 2px;
+}
+#pjyoxherfq .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#pjyoxherfq .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #929292;
+}
+#pjyoxherfq .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#pjyoxherfq .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+}
+#pjyoxherfq .gt_grand_summary_row {
+color: #333333;
+background-color: #D5D5D5;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#pjyoxherfq .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #929292;
+}
+#pjyoxherfq .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #929292;
+}
+#pjyoxherfq .gt_striped {
+background-color: #F4F4F4;
+}
+#pjyoxherfq .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #929292;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #929292;
+}
+#pjyoxherfq .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#pjyoxherfq .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#pjyoxherfq .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#pjyoxherfq .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#pjyoxherfq .gt_left {
+text-align: left;
+}
+#pjyoxherfq .gt_center {
+text-align: center;
+}
+#pjyoxherfq .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#pjyoxherfq .gt_font_normal {
+font-weight: normal;
+}
+#pjyoxherfq .gt_font_bold {
+font-weight: bold;
+}
+#pjyoxherfq .gt_font_italic {
+font-style: italic;
+}
+#pjyoxherfq .gt_super {
+font-size: 65%;
+}
+#pjyoxherfq .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#pjyoxherfq .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#pjyoxherfq .gt_indent_1 {
+text-indent: 5px;
+}
+#pjyoxherfq .gt_indent_2 {
+text-indent: 10px;
+}
+#pjyoxherfq .gt_indent_3 {
+text-indent: 15px;
+}
+#pjyoxherfq .gt_indent_4 {
+text-indent: 20px;
+}
+#pjyoxherfq .gt_indent_5 {
+text-indent: 25px;
+}
+#pjyoxherfq .katex-display {
+display: inline-flex !important;
+margin-bottom: 0.75em !important;
+}
+#pjyoxherfq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Summary of Trial Phases for Culi<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="start_day">Begin<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>2</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Steroid">Steroid<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>3</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Probiotic">Probiotic</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Oatgel">Oatgel</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="start_day" class="gt_row gt_center">Oct 26, 2023</td>
+<td headers="Steroid" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Probiotic" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center gt_striped">Nov 2, 2023</td>
+<td headers="Steroid" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Probiotic" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center">Nov 23, 2023</td>
+<td headers="Steroid" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Probiotic" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center gt_striped">Dec 14, 2023</td>
+<td headers="Steroid" class="gt_row gt_center gt_striped">0.1</td>
+<td headers="Probiotic" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center">Jan 4, 2024</td>
+<td headers="Steroid" class="gt_row gt_center">0.2</td>
+<td headers="Probiotic" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center gt_striped">Jan 25, 2024</td>
+<td headers="Steroid" class="gt_row gt_center gt_striped">0.2</td>
+<td headers="Probiotic" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center">Feb 20, 2024</td>
+<td headers="Steroid" class="gt_row gt_center">0.2</td>
+<td headers="Probiotic" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Minus" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Minus</title><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center gt_striped">Feb 23, 2024</td>
+<td headers="Steroid" class="gt_row gt_center gt_striped">0.1</td>
+<td headers="Probiotic" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center gt_striped"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td></tr>
+    <tr><td headers="start_day" class="gt_row gt_center">May 15, 2024</td>
+<td headers="Steroid" class="gt_row gt_center">0.05</td>
+<td headers="Probiotic" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td>
+<td headers="Oatgel" class="gt_row gt_center"><span style="white-space:nowrap;"><svg aria-label="Check" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><title>Check</title><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" /></svg></span></td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Warble stayed at baseline for duration of the study.</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>2</sup></span> Phase ends on the date the next row begins.</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="4"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>3</sup></span> Steroid (Budesonide) dose reported as mg/day</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
 <pre class="r"><code>optionals.warb &lt;- study_days %&gt;%
   select(Date) %&gt;%
   mutate(tomatoes = 1, cauliflower = 1, broccoli = 1)
@@ -2229,19 +2724,24 @@ warble.metadata &lt;- study_days %&gt;%
   filter(Subject != &quot;Warble&quot; &amp; Subject != &quot;Culi&quot;) %&gt;%
   full_join(warble.metadata) %&gt;%
   full_join(culi.metadata) %&gt;%
+  mutate(subj_letter = str_sub(Subject, 1L, 1L)) %&gt;%
+  mutate(subj_day    = str_glue(&quot;{subj_letter}{study_day}&quot;)) %&gt;%
+  select(-subj_letter) %&gt;%
   relocate(
     SequenceID,
     ExtractID,
     SampleID,
     study_day,
+    subj_day,
     CollectionDate:health_note
   ) %&gt;%
   arrange(CollectionDate, Subject)</code></pre>
 <pre class="r"><code>write.table(metadata,
             path$metadata$summary,
             row.names = F,
-            sep = &quot;\t&quot;)</code></pre>
-<pre class="r"><code>metadata %&gt;%
+            sep = &quot;\t&quot;)
+
+metadata %&gt;%
   kbl() %&gt;%
   kable_styling(full_width = T,
                 fixed_thead = T,
@@ -2249,8 +2749,8 @@ warble.metadata &lt;- study_days %&gt;%
                 position = &quot;center&quot;) %&gt;%
   column_spec(1, bold = T) %&gt;%
   collapse_rows(columns = 1, valign = &quot;top&quot;) %&gt;%
-  scroll_box(width = &quot;800px&quot;, height = &quot;400px&quot;)</code></pre>
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:800px; ">
+  scroll_box(width = &quot;800px&quot;, height = &quot;800px&quot;)</code></pre>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:800px; overflow-x: scroll; width:800px; ">
 <table class="table table-hover table-responsive" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2265,6 +2765,9 @@ SampleID
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 study_day
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+subj_day
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
 CollectionDate
@@ -2454,6 +2957,9 @@ HDZ-013
 1
 </td>
 <td style="text-align:left;">
+C1
+</td>
+<td style="text-align:left;">
 2023-10-26
 </td>
 <td style="text-align:left;">
@@ -2635,6 +3141,9 @@ HDZ-095
 </td>
 <td style="text-align:right;">
 1
+</td>
+<td style="text-align:left;">
+W1
 </td>
 <td style="text-align:left;">
 2023-10-26
@@ -2820,6 +3329,9 @@ HDZ-014
 2
 </td>
 <td style="text-align:left;">
+C2
+</td>
+<td style="text-align:left;">
 2023-10-27
 </td>
 <td style="text-align:left;">
@@ -3001,6 +3513,9 @@ HDZ-005
 </td>
 <td style="text-align:right;">
 2
+</td>
+<td style="text-align:left;">
+W2
 </td>
 <td style="text-align:left;">
 2023-10-27
@@ -3187,6 +3702,9 @@ HDZ-021
 3
 </td>
 <td style="text-align:left;">
+C3
+</td>
+<td style="text-align:left;">
 2023-10-28
 </td>
 <td style="text-align:left;">
@@ -3368,6 +3886,9 @@ HDZ-004
 </td>
 <td style="text-align:right;">
 3
+</td>
+<td style="text-align:left;">
+W3
 </td>
 <td style="text-align:left;">
 2023-10-28
@@ -3554,6 +4075,9 @@ HDZ-011
 4
 </td>
 <td style="text-align:left;">
+C4
+</td>
+<td style="text-align:left;">
 2023-10-29
 </td>
 <td style="text-align:left;">
@@ -3735,6 +4259,9 @@ HDZ-019
 </td>
 <td style="text-align:right;">
 4
+</td>
+<td style="text-align:left;">
+W4
 </td>
 <td style="text-align:left;">
 2023-10-29
@@ -3921,6 +4448,9 @@ HDZ-018
 5
 </td>
 <td style="text-align:left;">
+C5
+</td>
+<td style="text-align:left;">
 2023-10-30
 </td>
 <td style="text-align:left;">
@@ -4102,6 +4632,9 @@ HDZ-015
 </td>
 <td style="text-align:right;">
 5
+</td>
+<td style="text-align:left;">
+W5
 </td>
 <td style="text-align:left;">
 2023-10-30
@@ -4287,6 +4820,9 @@ HDZ-010
 6
 </td>
 <td style="text-align:left;">
+C6
+</td>
+<td style="text-align:left;">
 2023-10-31
 </td>
 <td style="text-align:left;">
@@ -4468,6 +5004,9 @@ HDZ-025
 </td>
 <td style="text-align:right;">
 6
+</td>
+<td style="text-align:left;">
+W6
 </td>
 <td style="text-align:left;">
 2023-10-31
@@ -4653,6 +5192,9 @@ HDZ-016
 7
 </td>
 <td style="text-align:left;">
+C7
+</td>
+<td style="text-align:left;">
 2023-11-01
 </td>
 <td style="text-align:left;">
@@ -4834,6 +5376,9 @@ HDZ-002
 </td>
 <td style="text-align:right;">
 7
+</td>
+<td style="text-align:left;">
+W7
 </td>
 <td style="text-align:left;">
 2023-11-01
@@ -5019,6 +5564,9 @@ HDZ-026
 8
 </td>
 <td style="text-align:left;">
+C8
+</td>
+<td style="text-align:left;">
 2023-11-02
 </td>
 <td style="text-align:left;">
@@ -5200,6 +5748,9 @@ HDZ-024
 </td>
 <td style="text-align:right;">
 8
+</td>
+<td style="text-align:left;">
+C8
 </td>
 <td style="text-align:left;">
 2023-11-02
@@ -5385,6 +5936,9 @@ HDZ-029
 NA
 </td>
 <td style="text-align:left;">
+UNA
+</td>
+<td style="text-align:left;">
 2023-11-02
 </td>
 <td style="text-align:left;">
@@ -5566,6 +6120,9 @@ HDZ-022
 </td>
 <td style="text-align:right;">
 9
+</td>
+<td style="text-align:left;">
+C9
 </td>
 <td style="text-align:left;">
 2023-11-03
@@ -5751,6 +6308,9 @@ HDZ-023
 9
 </td>
 <td style="text-align:left;">
+W9
+</td>
+<td style="text-align:left;">
 2023-11-03
 </td>
 <td style="text-align:left;">
@@ -5932,6 +6492,9 @@ HDZ-020
 </td>
 <td style="text-align:right;">
 10
+</td>
+<td style="text-align:left;">
+C10
 </td>
 <td style="text-align:left;">
 2023-11-04
@@ -6117,6 +6680,9 @@ HDZ-001
 10
 </td>
 <td style="text-align:left;">
+W10
+</td>
+<td style="text-align:left;">
 2023-11-04
 </td>
 <td style="text-align:left;">
@@ -6298,6 +6864,9 @@ HDZ-028
 </td>
 <td style="text-align:right;">
 11
+</td>
+<td style="text-align:left;">
+C11
 </td>
 <td style="text-align:left;">
 2023-11-05
@@ -6483,6 +7052,9 @@ HDZ-028
 11
 </td>
 <td style="text-align:left;">
+C11
+</td>
+<td style="text-align:left;">
 2023-11-05
 </td>
 <td style="text-align:left;">
@@ -6664,6 +7236,9 @@ HDZ-027
 </td>
 <td style="text-align:right;">
 11
+</td>
+<td style="text-align:left;">
+W11
 </td>
 <td style="text-align:left;">
 2023-11-05
@@ -6849,6 +7424,9 @@ HDZ-035
 12
 </td>
 <td style="text-align:left;">
+C12
+</td>
+<td style="text-align:left;">
 2023-11-06
 </td>
 <td style="text-align:left;">
@@ -7030,6 +7608,9 @@ HDZ-030
 </td>
 <td style="text-align:right;">
 12
+</td>
+<td style="text-align:left;">
+W12
 </td>
 <td style="text-align:left;">
 2023-11-06
@@ -7215,6 +7796,9 @@ HDZ-030
 12
 </td>
 <td style="text-align:left;">
+W12
+</td>
+<td style="text-align:left;">
 2023-11-06
 </td>
 <td style="text-align:left;">
@@ -7396,6 +7980,9 @@ HDZ-045
 </td>
 <td style="text-align:right;">
 13
+</td>
+<td style="text-align:left;">
+W13
 </td>
 <td style="text-align:left;">
 2023-11-07
@@ -7581,6 +8168,9 @@ HDZ-050
 14
 </td>
 <td style="text-align:left;">
+W14
+</td>
+<td style="text-align:left;">
 2023-11-08
 </td>
 <td style="text-align:left;">
@@ -7762,6 +8352,9 @@ HDZ-040
 </td>
 <td style="text-align:right;">
 15
+</td>
+<td style="text-align:left;">
+C15
 </td>
 <td style="text-align:left;">
 2023-11-09
@@ -7947,6 +8540,9 @@ HDZ-036
 15
 </td>
 <td style="text-align:left;">
+W15
+</td>
+<td style="text-align:left;">
 2023-11-09
 </td>
 <td style="text-align:left;">
@@ -8128,6 +8724,9 @@ HDZ-037
 </td>
 <td style="text-align:right;">
 16
+</td>
+<td style="text-align:left;">
+C16
 </td>
 <td style="text-align:left;">
 2023-11-10
@@ -8313,6 +8912,9 @@ HDZ-032
 17
 </td>
 <td style="text-align:left;">
+C17
+</td>
+<td style="text-align:left;">
 2023-11-11
 </td>
 <td style="text-align:left;">
@@ -8494,6 +9096,9 @@ HDZ-033
 </td>
 <td style="text-align:right;">
 17
+</td>
+<td style="text-align:left;">
+W17
 </td>
 <td style="text-align:left;">
 2023-11-11
@@ -8679,6 +9284,9 @@ HDZ-038
 18
 </td>
 <td style="text-align:left;">
+C18
+</td>
+<td style="text-align:left;">
 2023-11-12
 </td>
 <td style="text-align:left;">
@@ -8860,6 +9468,9 @@ HDZ-034
 </td>
 <td style="text-align:right;">
 18
+</td>
+<td style="text-align:left;">
+W18
 </td>
 <td style="text-align:left;">
 2023-11-12
@@ -9045,6 +9656,9 @@ HDZ-042
 19
 </td>
 <td style="text-align:left;">
+C19
+</td>
+<td style="text-align:left;">
 2023-11-13
 </td>
 <td style="text-align:left;">
@@ -9226,6 +9840,9 @@ HDZ-052
 </td>
 <td style="text-align:right;">
 19
+</td>
+<td style="text-align:left;">
+W19
 </td>
 <td style="text-align:left;">
 2023-11-13
@@ -9411,6 +10028,9 @@ HDZ-041
 19
 </td>
 <td style="text-align:left;">
+W19
+</td>
+<td style="text-align:left;">
 2023-11-13
 </td>
 <td style="text-align:left;">
@@ -9592,6 +10212,9 @@ HDZ-039
 </td>
 <td style="text-align:right;">
 20
+</td>
+<td style="text-align:left;">
+C20
 </td>
 <td style="text-align:left;">
 2023-11-14
@@ -9777,6 +10400,9 @@ HDZ-046
 20
 </td>
 <td style="text-align:left;">
+C20
+</td>
+<td style="text-align:left;">
 2023-11-14
 </td>
 <td style="text-align:left;">
@@ -9958,6 +10584,9 @@ HDZ-051
 </td>
 <td style="text-align:right;">
 20
+</td>
+<td style="text-align:left;">
+W20
 </td>
 <td style="text-align:left;">
 2023-11-14
@@ -10143,6 +10772,9 @@ HDZ-047
 21
 </td>
 <td style="text-align:left;">
+C21
+</td>
+<td style="text-align:left;">
 2023-11-15
 </td>
 <td style="text-align:left;">
@@ -10324,6 +10956,9 @@ HDZ-053
 </td>
 <td style="text-align:right;">
 24
+</td>
+<td style="text-align:left;">
+C24
 </td>
 <td style="text-align:left;">
 2023-11-18
@@ -10509,6 +11144,9 @@ HDZ-049
 24
 </td>
 <td style="text-align:left;">
+W24
+</td>
+<td style="text-align:left;">
 2023-11-18
 </td>
 <td style="text-align:left;">
@@ -10690,6 +11328,9 @@ HDZ-054
 </td>
 <td style="text-align:right;">
 25
+</td>
+<td style="text-align:left;">
+C25
 </td>
 <td style="text-align:left;">
 2023-11-19
@@ -10875,6 +11516,9 @@ HDZ-044
 25
 </td>
 <td style="text-align:left;">
+W25
+</td>
+<td style="text-align:left;">
 2023-11-19
 </td>
 <td style="text-align:left;">
@@ -11056,6 +11700,9 @@ HDZ-094
 </td>
 <td style="text-align:right;">
 26
+</td>
+<td style="text-align:left;">
+C26
 </td>
 <td style="text-align:left;">
 2023-11-20
@@ -11241,6 +11888,9 @@ HDZ-104
 26
 </td>
 <td style="text-align:left;">
+W26
+</td>
+<td style="text-align:left;">
 2023-11-20
 </td>
 <td style="text-align:left;">
@@ -11422,6 +12072,9 @@ HDZ-058
 </td>
 <td style="text-align:right;">
 27
+</td>
+<td style="text-align:left;">
+C27
 </td>
 <td style="text-align:left;">
 2023-11-21
@@ -11607,6 +12260,9 @@ HDZ-069
 28
 </td>
 <td style="text-align:left;">
+C28
+</td>
+<td style="text-align:left;">
 2023-11-22
 </td>
 <td style="text-align:left;">
@@ -11788,6 +12444,9 @@ HDZ-079
 </td>
 <td style="text-align:right;">
 28
+</td>
+<td style="text-align:left;">
+W28
 </td>
 <td style="text-align:left;">
 2023-11-22
@@ -11973,6 +12632,9 @@ HDZ-064
 29
 </td>
 <td style="text-align:left;">
+C29
+</td>
+<td style="text-align:left;">
 2023-11-23
 </td>
 <td style="text-align:left;">
@@ -12154,6 +12816,9 @@ HDZ-078
 </td>
 <td style="text-align:right;">
 29
+</td>
+<td style="text-align:left;">
+C29
 </td>
 <td style="text-align:left;">
 2023-11-23
@@ -12339,6 +13004,9 @@ HDZ-063
 30
 </td>
 <td style="text-align:left;">
+C30
+</td>
+<td style="text-align:left;">
 2023-11-24
 </td>
 <td style="text-align:left;">
@@ -12520,6 +13188,9 @@ HDZ-068
 </td>
 <td style="text-align:right;">
 30
+</td>
+<td style="text-align:left;">
+W30
 </td>
 <td style="text-align:left;">
 2023-11-24
@@ -12707,6 +13378,9 @@ HDZ-057
 32
 </td>
 <td style="text-align:left;">
+C32
+</td>
+<td style="text-align:left;">
 2023-11-26
 </td>
 <td style="text-align:left;">
@@ -12888,6 +13562,9 @@ HDZ-073
 </td>
 <td style="text-align:right;">
 32
+</td>
+<td style="text-align:left;">
+W32
 </td>
 <td style="text-align:left;">
 2023-11-26
@@ -13073,6 +13750,9 @@ HDZ-077
 33
 </td>
 <td style="text-align:left;">
+C33
+</td>
+<td style="text-align:left;">
 2023-11-27
 </td>
 <td style="text-align:left;">
@@ -13254,6 +13934,9 @@ HDZ-067
 </td>
 <td style="text-align:right;">
 33
+</td>
+<td style="text-align:left;">
+W33
 </td>
 <td style="text-align:left;">
 2023-11-27
@@ -13439,6 +14122,9 @@ HDZ-072
 35
 </td>
 <td style="text-align:left;">
+W35
+</td>
+<td style="text-align:left;">
 2023-11-29
 </td>
 <td style="text-align:left;">
@@ -13620,6 +14306,9 @@ HDZ-066
 </td>
 <td style="text-align:right;">
 36
+</td>
+<td style="text-align:left;">
+C36
 </td>
 <td style="text-align:left;">
 2023-11-30
@@ -13805,6 +14494,9 @@ HDZ-076
 37
 </td>
 <td style="text-align:left;">
+C37
+</td>
+<td style="text-align:left;">
 2023-12-01
 </td>
 <td style="text-align:left;">
@@ -13986,6 +14678,9 @@ HDZ-071
 </td>
 <td style="text-align:right;">
 38
+</td>
+<td style="text-align:left;">
+C38
 </td>
 <td style="text-align:left;">
 2023-12-02
@@ -14171,6 +14866,9 @@ HDZ-070
 38
 </td>
 <td style="text-align:left;">
+W38
+</td>
+<td style="text-align:left;">
 2023-12-02
 </td>
 <td style="text-align:left;">
@@ -14352,6 +15050,9 @@ HDZ-065
 </td>
 <td style="text-align:right;">
 39
+</td>
+<td style="text-align:left;">
+C39
 </td>
 <td style="text-align:left;">
 2023-12-03
@@ -14537,6 +15238,9 @@ HDZ-188
 41
 </td>
 <td style="text-align:left;">
+W41
+</td>
+<td style="text-align:left;">
 2023-12-05
 </td>
 <td style="text-align:left;">
@@ -14718,6 +15422,9 @@ HDZ-187
 </td>
 <td style="text-align:right;">
 42
+</td>
+<td style="text-align:left;">
+C42
 </td>
 <td style="text-align:left;">
 2023-12-06
@@ -14903,6 +15610,9 @@ HDZ-186
 42
 </td>
 <td style="text-align:left;">
+W42
+</td>
+<td style="text-align:left;">
 2023-12-06
 </td>
 <td style="text-align:left;">
@@ -15084,6 +15794,9 @@ HDZ-184
 </td>
 <td style="text-align:right;">
 43
+</td>
+<td style="text-align:left;">
+C43
 </td>
 <td style="text-align:left;">
 2023-12-07
@@ -15269,6 +15982,9 @@ HDZ-183
 43
 </td>
 <td style="text-align:left;">
+W43
+</td>
+<td style="text-align:left;">
 2023-12-07
 </td>
 <td style="text-align:left;">
@@ -15450,6 +16166,9 @@ HDZ-182
 </td>
 <td style="text-align:right;">
 44
+</td>
+<td style="text-align:left;">
+C44
 </td>
 <td style="text-align:left;">
 2023-12-08
@@ -15635,6 +16354,9 @@ HDZ-176
 45
 </td>
 <td style="text-align:left;">
+C45
+</td>
+<td style="text-align:left;">
 2023-12-09
 </td>
 <td style="text-align:left;">
@@ -15816,6 +16538,9 @@ HDZ-195
 </td>
 <td style="text-align:right;">
 45
+</td>
+<td style="text-align:left;">
+W45
 </td>
 <td style="text-align:left;">
 2023-12-09
@@ -16001,6 +16726,9 @@ HDZ-181
 46
 </td>
 <td style="text-align:left;">
+C46
+</td>
+<td style="text-align:left;">
 2023-12-10
 </td>
 <td style="text-align:left;">
@@ -16182,6 +16910,9 @@ HDZ-179
 </td>
 <td style="text-align:right;">
 47
+</td>
+<td style="text-align:left;">
+C47
 </td>
 <td style="text-align:left;">
 2023-12-11
@@ -16367,6 +17098,9 @@ HDZ-180
 48
 </td>
 <td style="text-align:left;">
+C48
+</td>
+<td style="text-align:left;">
 2023-12-12
 </td>
 <td style="text-align:left;">
@@ -16548,6 +17282,9 @@ HDZ-175
 </td>
 <td style="text-align:right;">
 49
+</td>
+<td style="text-align:left;">
+C49
 </td>
 <td style="text-align:left;">
 2023-12-13
@@ -16733,6 +17470,9 @@ HDZ-177
 49
 </td>
 <td style="text-align:left;">
+W49
+</td>
+<td style="text-align:left;">
 2023-12-13
 </td>
 <td style="text-align:left;">
@@ -16914,6 +17654,9 @@ HDZ-167
 </td>
 <td style="text-align:right;">
 50
+</td>
+<td style="text-align:left;">
+C50
 </td>
 <td style="text-align:left;">
 2023-12-14
@@ -17099,6 +17842,9 @@ HDZ-157
 50
 </td>
 <td style="text-align:left;">
+W50
+</td>
+<td style="text-align:left;">
 2023-12-14
 </td>
 <td style="text-align:left;">
@@ -17280,6 +18026,9 @@ HDZ-173
 </td>
 <td style="text-align:right;">
 50
+</td>
+<td style="text-align:left;">
+W50
 </td>
 <td style="text-align:left;">
 2023-12-14
@@ -17465,6 +18214,9 @@ HDZ-156
 51
 </td>
 <td style="text-align:left;">
+C51
+</td>
+<td style="text-align:left;">
 2023-12-15
 </td>
 <td style="text-align:left;">
@@ -17646,6 +18398,9 @@ HDZ-060
 </td>
 <td style="text-align:right;">
 51
+</td>
+<td style="text-align:left;">
+C51
 </td>
 <td style="text-align:left;">
 2023-12-15
@@ -17831,6 +18586,9 @@ HDZ-155
 51
 </td>
 <td style="text-align:left;">
+W51
+</td>
+<td style="text-align:left;">
 2023-12-15
 </td>
 <td style="text-align:left;">
@@ -18012,6 +18770,9 @@ HDZ-174
 </td>
 <td style="text-align:right;">
 52
+</td>
+<td style="text-align:left;">
+C52
 </td>
 <td style="text-align:left;">
 2023-12-16
@@ -18197,6 +18958,9 @@ HDZ-161
 52
 </td>
 <td style="text-align:left;">
+W52
+</td>
+<td style="text-align:left;">
 2023-12-16
 </td>
 <td style="text-align:left;">
@@ -18378,6 +19142,9 @@ HDZ-168
 </td>
 <td style="text-align:right;">
 53
+</td>
+<td style="text-align:left;">
+C53
 </td>
 <td style="text-align:left;">
 2023-12-17
@@ -18563,6 +19330,9 @@ HDZ-162
 53
 </td>
 <td style="text-align:left;">
+W53
+</td>
+<td style="text-align:left;">
 2023-12-17
 </td>
 <td style="text-align:left;">
@@ -18744,6 +19514,9 @@ HDZ-169
 </td>
 <td style="text-align:right;">
 54
+</td>
+<td style="text-align:left;">
+C54
 </td>
 <td style="text-align:left;">
 2023-12-18
@@ -18929,6 +19702,9 @@ HDZ-170
 54
 </td>
 <td style="text-align:left;">
+W54
+</td>
+<td style="text-align:left;">
 2023-12-18
 </td>
 <td style="text-align:left;">
@@ -19110,6 +19886,9 @@ HDZ-163
 </td>
 <td style="text-align:right;">
 55
+</td>
+<td style="text-align:left;">
+C55
 </td>
 <td style="text-align:left;">
 2023-12-19
@@ -19295,6 +20074,9 @@ HDZ-084
 57
 </td>
 <td style="text-align:left;">
+C57
+</td>
+<td style="text-align:left;">
 2023-12-21
 </td>
 <td style="text-align:left;">
@@ -19476,6 +20258,9 @@ HDZ-099
 </td>
 <td style="text-align:right;">
 57
+</td>
+<td style="text-align:left;">
+W57
 </td>
 <td style="text-align:left;">
 2023-12-21
@@ -19661,6 +20446,9 @@ HDZ-098
 58
 </td>
 <td style="text-align:left;">
+C58
+</td>
+<td style="text-align:left;">
 2023-12-22
 </td>
 <td style="text-align:left;">
@@ -19842,6 +20630,9 @@ HDZ-103
 </td>
 <td style="text-align:right;">
 58
+</td>
+<td style="text-align:left;">
+W58
 </td>
 <td style="text-align:left;">
 2023-12-22
@@ -20027,6 +20818,9 @@ HDZ-102
 59
 </td>
 <td style="text-align:left;">
+C59
+</td>
+<td style="text-align:left;">
 2023-12-23
 </td>
 <td style="text-align:left;">
@@ -20208,6 +21002,9 @@ HDZ-093
 </td>
 <td style="text-align:right;">
 59
+</td>
+<td style="text-align:left;">
+W59
 </td>
 <td style="text-align:left;">
 2023-12-23
@@ -20393,6 +21190,9 @@ HDZ-089
 60
 </td>
 <td style="text-align:left;">
+C60
+</td>
+<td style="text-align:left;">
 2023-12-24
 </td>
 <td style="text-align:left;">
@@ -20574,6 +21374,9 @@ HDZ-101
 </td>
 <td style="text-align:right;">
 60
+</td>
+<td style="text-align:left;">
+W60
 </td>
 <td style="text-align:left;">
 2023-12-24
@@ -20760,6 +21563,9 @@ HDZ-097
 61
 </td>
 <td style="text-align:left;">
+C61
+</td>
+<td style="text-align:left;">
 2023-12-25
 </td>
 <td style="text-align:left;">
@@ -20941,6 +21747,9 @@ HDZ-092
 </td>
 <td style="text-align:right;">
 61
+</td>
+<td style="text-align:left;">
+W61
 </td>
 <td style="text-align:left;">
 2023-12-25
@@ -21126,6 +21935,9 @@ HDZ-088
 62
 </td>
 <td style="text-align:left;">
+C62
+</td>
+<td style="text-align:left;">
 2023-12-26
 </td>
 <td style="text-align:left;">
@@ -21307,6 +22119,9 @@ HDZ-083
 </td>
 <td style="text-align:right;">
 62
+</td>
+<td style="text-align:left;">
+W62
 </td>
 <td style="text-align:left;">
 2023-12-26
@@ -21492,6 +22307,9 @@ HDZ-108
 63
 </td>
 <td style="text-align:left;">
+C63
+</td>
+<td style="text-align:left;">
 2023-12-27
 </td>
 <td style="text-align:left;">
@@ -21673,6 +22491,9 @@ HDZ-096
 </td>
 <td style="text-align:right;">
 63
+</td>
+<td style="text-align:left;">
+W63
 </td>
 <td style="text-align:left;">
 2023-12-27
@@ -21858,6 +22679,9 @@ HDZ-091
 64
 </td>
 <td style="text-align:left;">
+C64
+</td>
+<td style="text-align:left;">
 2023-12-28
 </td>
 <td style="text-align:left;">
@@ -22039,6 +22863,9 @@ HDZ-105
 </td>
 <td style="text-align:right;">
 64
+</td>
+<td style="text-align:left;">
+W64
 </td>
 <td style="text-align:left;">
 2023-12-28
@@ -22224,6 +23051,9 @@ HDZ-087
 65
 </td>
 <td style="text-align:left;">
+C65
+</td>
+<td style="text-align:left;">
 2023-12-29
 </td>
 <td style="text-align:left;">
@@ -22405,6 +23235,9 @@ HDZ-082
 </td>
 <td style="text-align:right;">
 65
+</td>
+<td style="text-align:left;">
+W65
 </td>
 <td style="text-align:left;">
 2023-12-29
@@ -22590,6 +23423,9 @@ HDZ-086
 66
 </td>
 <td style="text-align:left;">
+C66
+</td>
+<td style="text-align:left;">
 2023-12-30
 </td>
 <td style="text-align:left;">
@@ -22771,6 +23607,9 @@ HDZ-090
 </td>
 <td style="text-align:right;">
 66
+</td>
+<td style="text-align:left;">
+W66
 </td>
 <td style="text-align:left;">
 2023-12-30
@@ -22957,6 +23796,9 @@ HDZ-081
 67
 </td>
 <td style="text-align:left;">
+C67
+</td>
+<td style="text-align:left;">
 2023-12-31
 </td>
 <td style="text-align:left;">
@@ -23138,6 +23980,9 @@ HDZ-109
 </td>
 <td style="text-align:right;">
 67
+</td>
+<td style="text-align:left;">
+W67
 </td>
 <td style="text-align:left;">
 2023-12-31
@@ -23323,6 +24168,9 @@ HDZ-085
 68
 </td>
 <td style="text-align:left;">
+C68
+</td>
+<td style="text-align:left;">
 2024-01-01
 </td>
 <td style="text-align:left;">
@@ -23504,6 +24352,9 @@ HDZ-106
 </td>
 <td style="text-align:right;">
 68
+</td>
+<td style="text-align:left;">
+W68
 </td>
 <td style="text-align:left;">
 2024-01-01
@@ -23689,6 +24540,9 @@ HDZ-107
 69
 </td>
 <td style="text-align:left;">
+W69
+</td>
+<td style="text-align:left;">
 2024-01-02
 </td>
 <td style="text-align:left;">
@@ -23870,6 +24724,9 @@ HDZ-190
 </td>
 <td style="text-align:right;">
 73
+</td>
+<td style="text-align:left;">
+C73
 </td>
 <td style="text-align:left;">
 2024-01-06
@@ -24055,6 +24912,9 @@ HDZ-193
 73
 </td>
 <td style="text-align:left;">
+W73
+</td>
+<td style="text-align:left;">
 2024-01-06
 </td>
 <td style="text-align:left;">
@@ -24238,6 +25098,9 @@ HDZ-192
 74
 </td>
 <td style="text-align:left;">
+C74
+</td>
+<td style="text-align:left;">
 2024-01-07
 </td>
 <td style="text-align:left;">
@@ -24419,6 +25282,9 @@ HDZ-191
 </td>
 <td style="text-align:right;">
 74
+</td>
+<td style="text-align:left;">
+W74
 </td>
 <td style="text-align:left;">
 2024-01-07
@@ -24606,6 +25472,9 @@ HDZ-264
 75
 </td>
 <td style="text-align:left;">
+C75
+</td>
+<td style="text-align:left;">
 2024-01-08
 </td>
 <td style="text-align:left;">
@@ -24787,6 +25656,9 @@ HDZ-268
 </td>
 <td style="text-align:right;">
 75
+</td>
+<td style="text-align:left;">
+W75
 </td>
 <td style="text-align:left;">
 2024-01-08
@@ -24972,6 +25844,9 @@ HDZ-263
 76
 </td>
 <td style="text-align:left;">
+C76
+</td>
+<td style="text-align:left;">
 2024-01-09
 </td>
 <td style="text-align:left;">
@@ -25153,6 +26028,9 @@ HDZ-258
 </td>
 <td style="text-align:right;">
 77
+</td>
+<td style="text-align:left;">
+C77
 </td>
 <td style="text-align:left;">
 2024-01-10
@@ -25338,6 +26216,9 @@ HDZ-259
 80
 </td>
 <td style="text-align:left;">
+W80
+</td>
+<td style="text-align:left;">
 2024-01-13
 </td>
 <td style="text-align:left;">
@@ -25519,6 +26400,9 @@ HDZ-269
 </td>
 <td style="text-align:right;">
 81
+</td>
+<td style="text-align:left;">
+C81
 </td>
 <td style="text-align:left;">
 2024-01-14
@@ -25704,6 +26588,9 @@ HDZ-274
 82
 </td>
 <td style="text-align:left;">
+C82
+</td>
+<td style="text-align:left;">
 2024-01-15
 </td>
 <td style="text-align:left;">
@@ -25885,6 +26772,9 @@ HDZ-245
 </td>
 <td style="text-align:right;">
 83
+</td>
+<td style="text-align:left;">
+C83
 </td>
 <td style="text-align:left;">
 2024-01-16
@@ -26070,6 +26960,9 @@ HDZ-251
 83
 </td>
 <td style="text-align:left;">
+W83
+</td>
+<td style="text-align:left;">
 2024-01-16
 </td>
 <td style="text-align:left;">
@@ -26251,6 +27144,9 @@ HDZ-253
 </td>
 <td style="text-align:right;">
 84
+</td>
+<td style="text-align:left;">
+C84
 </td>
 <td style="text-align:left;">
 2024-01-17
@@ -26436,6 +27332,9 @@ HDZ-323
 84
 </td>
 <td style="text-align:left;">
+W84
+</td>
+<td style="text-align:left;">
 2024-01-17
 </td>
 <td style="text-align:left;">
@@ -26617,6 +27516,9 @@ HDZ-252
 </td>
 <td style="text-align:right;">
 85
+</td>
+<td style="text-align:left;">
+C85
 </td>
 <td style="text-align:left;">
 2024-01-18
@@ -26802,6 +27704,9 @@ HDZ-246
 85
 </td>
 <td style="text-align:left;">
+W85
+</td>
+<td style="text-align:left;">
 2024-01-18
 </td>
 <td style="text-align:left;">
@@ -26983,6 +27888,9 @@ HDZ-249
 </td>
 <td style="text-align:right;">
 86
+</td>
+<td style="text-align:left;">
+C86
 </td>
 <td style="text-align:left;">
 2024-01-19
@@ -27168,6 +28076,9 @@ HDZ-240
 87
 </td>
 <td style="text-align:left;">
+C87
+</td>
+<td style="text-align:left;">
 2024-01-20
 </td>
 <td style="text-align:left;">
@@ -27349,6 +28260,9 @@ HDZ-247
 </td>
 <td style="text-align:right;">
 87
+</td>
+<td style="text-align:left;">
+W87
 </td>
 <td style="text-align:left;">
 2024-01-20
@@ -27534,6 +28448,9 @@ HDZ-272
 88
 </td>
 <td style="text-align:left;">
+C88
+</td>
+<td style="text-align:left;">
 2024-01-21
 </td>
 <td style="text-align:left;">
@@ -27715,6 +28632,9 @@ HDZ-250
 </td>
 <td style="text-align:right;">
 88
+</td>
+<td style="text-align:left;">
+C88
 </td>
 <td style="text-align:left;">
 2024-01-21
@@ -27900,6 +28820,9 @@ HDZ-248
 88
 </td>
 <td style="text-align:left;">
+W88
+</td>
+<td style="text-align:left;">
 2024-01-21
 </td>
 <td style="text-align:left;">
@@ -28081,6 +29004,9 @@ HDZ-270
 </td>
 <td style="text-align:right;">
 89
+</td>
+<td style="text-align:left;">
+C89
 </td>
 <td style="text-align:left;">
 2024-01-22
@@ -28266,6 +29192,9 @@ HDZ-267
 89
 </td>
 <td style="text-align:left;">
+W89
+</td>
+<td style="text-align:left;">
 2024-01-22
 </td>
 <td style="text-align:left;">
@@ -28447,6 +29376,9 @@ HDZ-273
 </td>
 <td style="text-align:right;">
 90
+</td>
+<td style="text-align:left;">
+C90
 </td>
 <td style="text-align:left;">
 2024-01-23
@@ -28632,6 +29564,9 @@ HDZ-265
 90
 </td>
 <td style="text-align:left;">
+W90
+</td>
+<td style="text-align:left;">
 2024-01-23
 </td>
 <td style="text-align:left;">
@@ -28813,6 +29748,9 @@ HDZ-262
 </td>
 <td style="text-align:right;">
 91
+</td>
+<td style="text-align:left;">
+C91
 </td>
 <td style="text-align:left;">
 2024-01-24
@@ -28998,6 +29936,9 @@ HDZ-271
 92
 </td>
 <td style="text-align:left;">
+C92
+</td>
+<td style="text-align:left;">
 2024-01-25
 </td>
 <td style="text-align:left;">
@@ -29179,6 +30120,9 @@ HDZ-203
 </td>
 <td style="text-align:right;">
 93
+</td>
+<td style="text-align:left;">
+C93
 </td>
 <td style="text-align:left;">
 2024-01-26
@@ -29364,6 +30308,9 @@ HDZ-209
 93
 </td>
 <td style="text-align:left;">
+W93
+</td>
+<td style="text-align:left;">
 2024-01-26
 </td>
 <td style="text-align:left;">
@@ -29545,6 +30492,9 @@ HDZ-202
 </td>
 <td style="text-align:right;">
 94
+</td>
+<td style="text-align:left;">
+C94
 </td>
 <td style="text-align:left;">
 2024-01-27
@@ -29730,6 +30680,9 @@ HDZ-207
 94
 </td>
 <td style="text-align:left;">
+W94
+</td>
+<td style="text-align:left;">
 2024-01-27
 </td>
 <td style="text-align:left;">
@@ -29911,6 +30864,9 @@ HDZ-266
 </td>
 <td style="text-align:right;">
 95
+</td>
+<td style="text-align:left;">
+C95
 </td>
 <td style="text-align:left;">
 2024-01-28
@@ -30096,6 +31052,9 @@ HDZ-260
 95
 </td>
 <td style="text-align:left;">
+W95
+</td>
+<td style="text-align:left;">
 2024-01-28
 </td>
 <td style="text-align:left;">
@@ -30277,6 +31236,9 @@ HDZ-204
 </td>
 <td style="text-align:right;">
 96
+</td>
+<td style="text-align:left;">
+C96
 </td>
 <td style="text-align:left;">
 2024-01-29
@@ -30462,6 +31424,9 @@ HDZ-205
 96
 </td>
 <td style="text-align:left;">
+W96
+</td>
+<td style="text-align:left;">
 2024-01-29
 </td>
 <td style="text-align:left;">
@@ -30643,6 +31608,9 @@ HDZ-206
 </td>
 <td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+UNA
 </td>
 <td style="text-align:left;">
 2024-01-30
@@ -30828,6 +31796,9 @@ HDZ-208
 97
 </td>
 <td style="text-align:left;">
+W97
+</td>
+<td style="text-align:left;">
 2024-01-30
 </td>
 <td style="text-align:left;">
@@ -31009,6 +31980,9 @@ HDZ-394
 </td>
 <td style="text-align:right;">
 99
+</td>
+<td style="text-align:left;">
+C99
 </td>
 <td style="text-align:left;">
 2024-02-01
@@ -31194,6 +32168,9 @@ HDZ-411
 99
 </td>
 <td style="text-align:left;">
+W99
+</td>
+<td style="text-align:left;">
 2024-02-01
 </td>
 <td style="text-align:left;">
@@ -31375,6 +32352,9 @@ HDZ-254
 </td>
 <td style="text-align:right;">
 100
+</td>
+<td style="text-align:left;">
+C100
 </td>
 <td style="text-align:left;">
 2024-02-02
@@ -31560,6 +32540,9 @@ HDZ-194
 100
 </td>
 <td style="text-align:left;">
+W100
+</td>
+<td style="text-align:left;">
 2024-02-02
 </td>
 <td style="text-align:left;">
@@ -31741,6 +32724,9 @@ HDZ-201
 </td>
 <td style="text-align:right;">
 101
+</td>
+<td style="text-align:left;">
+C101
 </td>
 <td style="text-align:left;">
 2024-02-03
@@ -31926,6 +32912,9 @@ HDZ-200
 101
 </td>
 <td style="text-align:left;">
+W101
+</td>
+<td style="text-align:left;">
 2024-02-03
 </td>
 <td style="text-align:left;">
@@ -32107,6 +33096,9 @@ HDZ-197
 </td>
 <td style="text-align:right;">
 102
+</td>
+<td style="text-align:left;">
+C102
 </td>
 <td style="text-align:left;">
 2024-02-04
@@ -32292,6 +33284,9 @@ HDZ-196
 103
 </td>
 <td style="text-align:left;">
+C103
+</td>
+<td style="text-align:left;">
 2024-02-05
 </td>
 <td style="text-align:left;">
@@ -32473,6 +33468,9 @@ HDZ-239
 </td>
 <td style="text-align:right;">
 103
+</td>
+<td style="text-align:left;">
+W103
 </td>
 <td style="text-align:left;">
 2024-02-05
@@ -32658,6 +33656,9 @@ HDZ-238
 104
 </td>
 <td style="text-align:left;">
+C104
+</td>
+<td style="text-align:left;">
 2024-02-06
 </td>
 <td style="text-align:left;">
@@ -32839,6 +33840,9 @@ HDZ-199
 </td>
 <td style="text-align:right;">
 104
+</td>
+<td style="text-align:left;">
+W104
 </td>
 <td style="text-align:left;">
 2024-02-06
@@ -33024,6 +34028,9 @@ HDZ-235
 105
 </td>
 <td style="text-align:left;">
+C105
+</td>
+<td style="text-align:left;">
 2024-02-07
 </td>
 <td style="text-align:left;">
@@ -33205,6 +34212,9 @@ HDZ-234
 </td>
 <td style="text-align:right;">
 105
+</td>
+<td style="text-align:left;">
+W105
 </td>
 <td style="text-align:left;">
 2024-02-07
@@ -33390,6 +34400,9 @@ HDZ-198
 106
 </td>
 <td style="text-align:left;">
+C106
+</td>
+<td style="text-align:left;">
 2024-02-08
 </td>
 <td style="text-align:left;">
@@ -33571,6 +34584,9 @@ HDZ-237
 </td>
 <td style="text-align:right;">
 106
+</td>
+<td style="text-align:left;">
+W106
 </td>
 <td style="text-align:left;">
 2024-02-08
@@ -33756,6 +34772,9 @@ HDZ-326
 107
 </td>
 <td style="text-align:left;">
+C107
+</td>
+<td style="text-align:left;">
 2024-02-09
 </td>
 <td style="text-align:left;">
@@ -33937,6 +34956,9 @@ HDZ-307
 </td>
 <td style="text-align:right;">
 107
+</td>
+<td style="text-align:left;">
+W107
 </td>
 <td style="text-align:left;">
 2024-02-09
@@ -34122,6 +35144,9 @@ HDZ-330
 108
 </td>
 <td style="text-align:left;">
+C108
+</td>
+<td style="text-align:left;">
 2024-02-10
 </td>
 <td style="text-align:left;">
@@ -34303,6 +35328,9 @@ HDZ-315
 </td>
 <td style="text-align:right;">
 108
+</td>
+<td style="text-align:left;">
+W108
 </td>
 <td style="text-align:left;">
 2024-02-10
@@ -34488,6 +35516,9 @@ HDZ-318
 109
 </td>
 <td style="text-align:left;">
+C109
+</td>
+<td style="text-align:left;">
 2024-02-11
 </td>
 <td style="text-align:left;">
@@ -34669,6 +35700,9 @@ HDZ-306
 </td>
 <td style="text-align:right;">
 109
+</td>
+<td style="text-align:left;">
+W109
 </td>
 <td style="text-align:left;">
 2024-02-11
@@ -34854,6 +35888,9 @@ HDZ-336
 110
 </td>
 <td style="text-align:left;">
+C110
+</td>
+<td style="text-align:left;">
 2024-02-12
 </td>
 <td style="text-align:left;">
@@ -35035,6 +36072,9 @@ HDZ-331
 </td>
 <td style="text-align:right;">
 110
+</td>
+<td style="text-align:left;">
+W110
 </td>
 <td style="text-align:left;">
 2024-02-12
@@ -35220,6 +36260,9 @@ HDZ-317
 111
 </td>
 <td style="text-align:left;">
+C111
+</td>
+<td style="text-align:left;">
 2024-02-13
 </td>
 <td style="text-align:left;">
@@ -35401,6 +36444,9 @@ HDZ-303
 </td>
 <td style="text-align:right;">
 111
+</td>
+<td style="text-align:left;">
+W111
 </td>
 <td style="text-align:left;">
 2024-02-13
@@ -35586,6 +36632,9 @@ HDZ-312
 112
 </td>
 <td style="text-align:left;">
+W112
+</td>
+<td style="text-align:left;">
 2024-02-14
 </td>
 <td style="text-align:left;">
@@ -35767,6 +36816,9 @@ HDZ-308
 </td>
 <td style="text-align:right;">
 113
+</td>
+<td style="text-align:left;">
+C113
 </td>
 <td style="text-align:left;">
 2024-02-15
@@ -35952,6 +37004,9 @@ HDZ-304
 113
 </td>
 <td style="text-align:left;">
+W113
+</td>
+<td style="text-align:left;">
 2024-02-15
 </td>
 <td style="text-align:left;">
@@ -36133,6 +37188,9 @@ HDZ-314
 </td>
 <td style="text-align:right;">
 114
+</td>
+<td style="text-align:left;">
+C114
 </td>
 <td style="text-align:left;">
 2024-02-16
@@ -36318,6 +37376,9 @@ HDZ-313
 114
 </td>
 <td style="text-align:left;">
+W114
+</td>
+<td style="text-align:left;">
 2024-02-16
 </td>
 <td style="text-align:left;">
@@ -36499,6 +37560,9 @@ HDZ-319
 </td>
 <td style="text-align:right;">
 115
+</td>
+<td style="text-align:left;">
+C115
 </td>
 <td style="text-align:left;">
 2024-02-17
@@ -36684,6 +37748,9 @@ HDZ-324
 116
 </td>
 <td style="text-align:left;">
+C116
+</td>
+<td style="text-align:left;">
 2024-02-18
 </td>
 <td style="text-align:left;">
@@ -36865,6 +37932,9 @@ HDZ-329
 </td>
 <td style="text-align:right;">
 116
+</td>
+<td style="text-align:left;">
+W116
 </td>
 <td style="text-align:left;">
 2024-02-18
@@ -37050,6 +38120,9 @@ HDZ-305
 117
 </td>
 <td style="text-align:left;">
+C117
+</td>
+<td style="text-align:left;">
 2024-02-19
 </td>
 <td style="text-align:left;">
@@ -37231,6 +38304,9 @@ HDZ-333
 </td>
 <td style="text-align:right;">
 117
+</td>
+<td style="text-align:left;">
+W117
 </td>
 <td style="text-align:left;">
 2024-02-19
@@ -37416,6 +38492,9 @@ HDZ-310
 118
 </td>
 <td style="text-align:left;">
+C118
+</td>
+<td style="text-align:left;">
 2024-02-20
 </td>
 <td style="text-align:left;">
@@ -37597,6 +38676,9 @@ HDZ-335
 </td>
 <td style="text-align:right;">
 118
+</td>
+<td style="text-align:left;">
+W118
 </td>
 <td style="text-align:left;">
 2024-02-20
@@ -37782,6 +38864,9 @@ HDZ-320
 119
 </td>
 <td style="text-align:left;">
+C119
+</td>
+<td style="text-align:left;">
 2024-02-21
 </td>
 <td style="text-align:left;">
@@ -37963,6 +39048,9 @@ HDZ-332
 </td>
 <td style="text-align:right;">
 119
+</td>
+<td style="text-align:left;">
+W119
 </td>
 <td style="text-align:left;">
 2024-02-21
@@ -38148,6 +39236,9 @@ HDZ-301
 120
 </td>
 <td style="text-align:left;">
+C120
+</td>
+<td style="text-align:left;">
 2024-02-22
 </td>
 <td style="text-align:left;">
@@ -38329,6 +39420,9 @@ HDZ-325
 </td>
 <td style="text-align:right;">
 120
+</td>
+<td style="text-align:left;">
+W120
 </td>
 <td style="text-align:left;">
 2024-02-22
@@ -38514,6 +39608,9 @@ HDZ-241
 121
 </td>
 <td style="text-align:left;">
+C121
+</td>
+<td style="text-align:left;">
 2024-02-23
 </td>
 <td style="text-align:left;">
@@ -38695,6 +39792,9 @@ HDZ-242
 </td>
 <td style="text-align:right;">
 121
+</td>
+<td style="text-align:left;">
+W121
 </td>
 <td style="text-align:left;">
 2024-02-23
@@ -38880,6 +39980,9 @@ HDZ-328
 122
 </td>
 <td style="text-align:left;">
+C122
+</td>
+<td style="text-align:left;">
 2024-02-24
 </td>
 <td style="text-align:left;">
@@ -39061,6 +40164,9 @@ HDZ-334
 </td>
 <td style="text-align:right;">
 122
+</td>
+<td style="text-align:left;">
+W122
 </td>
 <td style="text-align:left;">
 2024-02-24
@@ -39246,6 +40352,9 @@ HDZ-327
 123
 </td>
 <td style="text-align:left;">
+C123
+</td>
+<td style="text-align:left;">
 2024-02-25
 </td>
 <td style="text-align:left;">
@@ -39427,6 +40536,9 @@ HDZ-302
 </td>
 <td style="text-align:right;">
 123
+</td>
+<td style="text-align:left;">
+W123
 </td>
 <td style="text-align:left;">
 2024-02-25
@@ -39612,6 +40724,9 @@ HDZ-243
 124
 </td>
 <td style="text-align:left;">
+C124
+</td>
+<td style="text-align:left;">
 2024-02-26
 </td>
 <td style="text-align:left;">
@@ -39793,6 +40908,9 @@ HDZ-410
 </td>
 <td style="text-align:right;">
 124
+</td>
+<td style="text-align:left;">
+W124
 </td>
 <td style="text-align:left;">
 2024-02-26
@@ -39978,6 +41096,9 @@ HDZ-236
 125
 </td>
 <td style="text-align:left;">
+C125
+</td>
+<td style="text-align:left;">
 2024-02-27
 </td>
 <td style="text-align:left;">
@@ -40159,6 +41280,9 @@ HDZ-244
 </td>
 <td style="text-align:right;">
 125
+</td>
+<td style="text-align:left;">
+W125
 </td>
 <td style="text-align:left;">
 2024-02-27
@@ -40344,6 +41468,9 @@ HDZ-233
 126
 </td>
 <td style="text-align:left;">
+C126
+</td>
+<td style="text-align:left;">
 2024-02-28
 </td>
 <td style="text-align:left;">
@@ -40525,6 +41652,9 @@ HDZ-232
 </td>
 <td style="text-align:right;">
 126
+</td>
+<td style="text-align:left;">
+W126
 </td>
 <td style="text-align:left;">
 2024-02-28
@@ -40710,6 +41840,9 @@ HDZ-231
 127
 </td>
 <td style="text-align:left;">
+C127
+</td>
+<td style="text-align:left;">
 2024-02-29
 </td>
 <td style="text-align:left;">
@@ -40891,6 +42024,9 @@ HDZ-309
 </td>
 <td style="text-align:right;">
 127
+</td>
+<td style="text-align:left;">
+W127
 </td>
 <td style="text-align:left;">
 2024-02-29
@@ -41076,6 +42212,9 @@ HDZ-230
 128
 </td>
 <td style="text-align:left;">
+C128
+</td>
+<td style="text-align:left;">
 2024-03-01
 </td>
 <td style="text-align:left;">
@@ -41257,6 +42396,9 @@ HDZ-222
 </td>
 <td style="text-align:right;">
 129
+</td>
+<td style="text-align:left;">
+C129
 </td>
 <td style="text-align:left;">
 2024-03-02
@@ -41442,6 +42584,9 @@ HDZ-322
 130
 </td>
 <td style="text-align:left;">
+C130
+</td>
+<td style="text-align:left;">
 2024-03-03
 </td>
 <td style="text-align:left;">
@@ -41623,6 +42768,9 @@ HDZ-389
 </td>
 <td style="text-align:right;">
 131
+</td>
+<td style="text-align:left;">
+C131
 </td>
 <td style="text-align:left;">
 2024-03-04
@@ -41808,6 +42956,9 @@ HDZ-395
 132
 </td>
 <td style="text-align:left;">
+C132
+</td>
+<td style="text-align:left;">
 2024-03-05
 </td>
 <td style="text-align:left;">
@@ -41989,6 +43140,9 @@ HDZ-400
 </td>
 <td style="text-align:right;">
 133
+</td>
+<td style="text-align:left;">
+C133
 </td>
 <td style="text-align:left;">
 2024-03-06
@@ -42174,6 +43328,9 @@ HDZ-399
 133
 </td>
 <td style="text-align:left;">
+W133
+</td>
+<td style="text-align:left;">
 2024-03-06
 </td>
 <td style="text-align:left;">
@@ -42355,6 +43512,9 @@ HDZ-398
 </td>
 <td style="text-align:right;">
 134
+</td>
+<td style="text-align:left;">
+C134
 </td>
 <td style="text-align:left;">
 2024-03-07
@@ -42540,6 +43700,9 @@ HDZ-397
 NA
 </td>
 <td style="text-align:left;">
+UNA
+</td>
+<td style="text-align:left;">
 2024-03-07
 </td>
 <td style="text-align:left;">
@@ -42721,6 +43884,9 @@ HDZ-373
 </td>
 <td style="text-align:right;">
 135
+</td>
+<td style="text-align:left;">
+C135
 </td>
 <td style="text-align:left;">
 2024-03-08
@@ -42906,6 +44072,9 @@ HDZ-339
 135
 </td>
 <td style="text-align:left;">
+C135
+</td>
+<td style="text-align:left;">
 2024-03-08
 </td>
 <td style="text-align:left;">
@@ -43087,6 +44256,9 @@ HDZ-337
 </td>
 <td style="text-align:right;">
 135
+</td>
+<td style="text-align:left;">
+W135
 </td>
 <td style="text-align:left;">
 2024-03-08
@@ -43272,6 +44444,9 @@ HDZ-383
 136
 </td>
 <td style="text-align:left;">
+C136
+</td>
+<td style="text-align:left;">
 2024-03-09
 </td>
 <td style="text-align:left;">
@@ -43453,6 +44628,9 @@ HDZ-342
 </td>
 <td style="text-align:right;">
 136
+</td>
+<td style="text-align:left;">
+C136
 </td>
 <td style="text-align:left;">
 2024-03-09
@@ -43638,6 +44816,9 @@ HDZ-344
 136
 </td>
 <td style="text-align:left;">
+W136
+</td>
+<td style="text-align:left;">
 2024-03-09
 </td>
 <td style="text-align:left;">
@@ -43819,6 +45000,9 @@ HDZ-382
 </td>
 <td style="text-align:right;">
 136
+</td>
+<td style="text-align:left;">
+W136
 </td>
 <td style="text-align:left;">
 2024-03-09
@@ -44004,6 +45188,9 @@ HDZ-321
 137
 </td>
 <td style="text-align:left;">
+C137
+</td>
+<td style="text-align:left;">
 2024-03-10
 </td>
 <td style="text-align:left;">
@@ -44185,6 +45372,9 @@ HDZ-338
 </td>
 <td style="text-align:right;">
 137
+</td>
+<td style="text-align:left;">
+W137
 </td>
 <td style="text-align:left;">
 2024-03-10
@@ -44370,6 +45560,9 @@ HDZ-384
 138
 </td>
 <td style="text-align:left;">
+C138
+</td>
+<td style="text-align:left;">
 2024-03-11
 </td>
 <td style="text-align:left;">
@@ -44551,6 +45744,9 @@ HDZ-347
 </td>
 <td style="text-align:right;">
 138
+</td>
+<td style="text-align:left;">
+C138
 </td>
 <td style="text-align:left;">
 2024-03-11
@@ -44736,6 +45932,9 @@ HDZ-343
 138
 </td>
 <td style="text-align:left;">
+W138
+</td>
+<td style="text-align:left;">
 2024-03-11
 </td>
 <td style="text-align:left;">
@@ -44917,6 +46116,9 @@ HDZ-396
 </td>
 <td style="text-align:right;">
 139
+</td>
+<td style="text-align:left;">
+C139
 </td>
 <td style="text-align:left;">
 2024-03-12
@@ -45102,6 +46304,9 @@ HDZ-409
 139
 </td>
 <td style="text-align:left;">
+W139
+</td>
+<td style="text-align:left;">
 2024-03-12
 </td>
 <td style="text-align:left;">
@@ -45283,6 +46488,9 @@ HDZ-345
 </td>
 <td style="text-align:right;">
 140
+</td>
+<td style="text-align:left;">
+C140
 </td>
 <td style="text-align:left;">
 2024-03-13
@@ -45468,6 +46676,9 @@ HDZ-346
 140
 </td>
 <td style="text-align:left;">
+W140
+</td>
+<td style="text-align:left;">
 2024-03-13
 </td>
 <td style="text-align:left;">
@@ -45649,6 +46860,9 @@ HDZ-221
 </td>
 <td style="text-align:right;">
 141
+</td>
+<td style="text-align:left;">
+C141
 </td>
 <td style="text-align:left;">
 2024-03-14
@@ -45834,6 +47048,9 @@ HDZ-385
 141
 </td>
 <td style="text-align:left;">
+W141
+</td>
+<td style="text-align:left;">
 2024-03-14
 </td>
 <td style="text-align:left;">
@@ -46015,6 +47232,9 @@ HDZ-210
 </td>
 <td style="text-align:right;">
 141
+</td>
+<td style="text-align:left;">
+W141
 </td>
 <td style="text-align:left;">
 2024-03-14
@@ -46200,6 +47420,9 @@ HDZ-408
 142
 </td>
 <td style="text-align:left;">
+C142
+</td>
+<td style="text-align:left;">
 2024-03-15
 </td>
 <td style="text-align:left;">
@@ -46381,6 +47604,9 @@ HDZ-407
 </td>
 <td style="text-align:right;">
 142
+</td>
+<td style="text-align:left;">
+W142
 </td>
 <td style="text-align:left;">
 2024-03-15
@@ -46567,6 +47793,9 @@ HDZ-219
 143
 </td>
 <td style="text-align:left;">
+C143
+</td>
+<td style="text-align:left;">
 2024-03-16
 </td>
 <td style="text-align:left;">
@@ -46748,6 +47977,9 @@ HDZ-220
 </td>
 <td style="text-align:right;">
 144
+</td>
+<td style="text-align:left;">
+C144
 </td>
 <td style="text-align:left;">
 2024-03-17
@@ -46933,6 +48165,9 @@ HDZ-393
 144
 </td>
 <td style="text-align:left;">
+W144
+</td>
+<td style="text-align:left;">
 2024-03-17
 </td>
 <td style="text-align:left;">
@@ -47114,6 +48349,9 @@ HDZ-348
 </td>
 <td style="text-align:right;">
 145
+</td>
+<td style="text-align:left;">
+C145
 </td>
 <td style="text-align:left;">
 2024-03-18
@@ -47299,6 +48537,9 @@ HDZ-340
 145
 </td>
 <td style="text-align:left;">
+W145
+</td>
+<td style="text-align:left;">
 2024-03-18
 </td>
 <td style="text-align:left;">
@@ -47480,6 +48721,9 @@ HDZ-392
 </td>
 <td style="text-align:right;">
 146
+</td>
+<td style="text-align:left;">
+C146
 </td>
 <td style="text-align:left;">
 2024-03-19
@@ -47665,6 +48909,9 @@ HDZ-341
 147
 </td>
 <td style="text-align:left;">
+C147
+</td>
+<td style="text-align:left;">
 2024-03-20
 </td>
 <td style="text-align:left;">
@@ -47846,6 +49093,9 @@ HDZ-349
 </td>
 <td style="text-align:right;">
 147
+</td>
+<td style="text-align:left;">
+W147
 </td>
 <td style="text-align:left;">
 2024-03-20
@@ -48031,6 +49281,9 @@ HDZ-229
 148
 </td>
 <td style="text-align:left;">
+C148
+</td>
+<td style="text-align:left;">
 2024-03-21
 </td>
 <td style="text-align:left;">
@@ -48214,6 +49467,9 @@ HDZ-218
 148
 </td>
 <td style="text-align:left;">
+W148
+</td>
+<td style="text-align:left;">
 2024-03-21
 </td>
 <td style="text-align:left;">
@@ -48392,6 +49648,9 @@ HDZ-218
 </td>
 <td style="text-align:right;">
 148
+</td>
+<td style="text-align:left;">
+W148
 </td>
 <td style="text-align:left;">
 2024-03-21
@@ -48577,6 +49836,9 @@ HDZ-211
 149
 </td>
 <td style="text-align:left;">
+C149
+</td>
+<td style="text-align:left;">
 2024-03-22
 </td>
 <td style="text-align:left;">
@@ -48760,6 +50022,9 @@ HDZ-406
 149
 </td>
 <td style="text-align:left;">
+W149
+</td>
+<td style="text-align:left;">
 2024-03-22
 </td>
 <td style="text-align:left;">
@@ -48938,6 +50203,9 @@ HDZ-406
 </td>
 <td style="text-align:right;">
 149
+</td>
+<td style="text-align:left;">
+W149
 </td>
 <td style="text-align:left;">
 2024-03-22
@@ -49123,6 +50391,9 @@ HDZ-405
 150
 </td>
 <td style="text-align:left;">
+C150
+</td>
+<td style="text-align:left;">
 2024-03-23
 </td>
 <td style="text-align:left;">
@@ -49306,6 +50577,9 @@ HDZ-391
 150
 </td>
 <td style="text-align:left;">
+W150
+</td>
+<td style="text-align:left;">
 2024-03-23
 </td>
 <td style="text-align:left;">
@@ -49484,6 +50758,9 @@ HDZ-391
 </td>
 <td style="text-align:right;">
 150
+</td>
+<td style="text-align:left;">
+W150
 </td>
 <td style="text-align:left;">
 2024-03-23
@@ -49669,6 +50946,9 @@ HDZ-350
 151
 </td>
 <td style="text-align:left;">
+C151
+</td>
+<td style="text-align:left;">
 2024-03-24
 </td>
 <td style="text-align:left;">
@@ -49852,6 +51132,9 @@ HDZ-316
 151
 </td>
 <td style="text-align:left;">
+W151
+</td>
+<td style="text-align:left;">
 2024-03-24
 </td>
 <td style="text-align:left;">
@@ -50030,6 +51313,9 @@ HDZ-316
 </td>
 <td style="text-align:right;">
 151
+</td>
+<td style="text-align:left;">
+W151
 </td>
 <td style="text-align:left;">
 2024-03-24
@@ -50215,6 +51501,9 @@ HDZ-224
 152
 </td>
 <td style="text-align:left;">
+C152
+</td>
+<td style="text-align:left;">
 2024-03-25
 </td>
 <td style="text-align:left;">
@@ -50398,6 +51687,9 @@ HDZ-223
 152
 </td>
 <td style="text-align:left;">
+W152
+</td>
+<td style="text-align:left;">
 2024-03-25
 </td>
 <td style="text-align:left;">
@@ -50576,6 +51868,9 @@ HDZ-223
 </td>
 <td style="text-align:right;">
 152
+</td>
+<td style="text-align:left;">
+W152
 </td>
 <td style="text-align:left;">
 2024-03-25
@@ -50761,6 +52056,9 @@ HDZ-390
 153
 </td>
 <td style="text-align:left;">
+C153
+</td>
+<td style="text-align:left;">
 2024-03-26
 </td>
 <td style="text-align:left;">
@@ -50944,6 +52242,9 @@ HDZ-217
 153
 </td>
 <td style="text-align:left;">
+W153
+</td>
+<td style="text-align:left;">
 2024-03-26
 </td>
 <td style="text-align:left;">
@@ -51122,6 +52423,9 @@ HDZ-217
 </td>
 <td style="text-align:right;">
 153
+</td>
+<td style="text-align:left;">
+W153
 </td>
 <td style="text-align:left;">
 2024-03-26
@@ -51307,6 +52611,9 @@ HDZ-215
 154
 </td>
 <td style="text-align:left;">
+C154
+</td>
+<td style="text-align:left;">
 2024-03-27
 </td>
 <td style="text-align:left;">
@@ -51490,6 +52797,9 @@ HDZ-212
 154
 </td>
 <td style="text-align:left;">
+W154
+</td>
+<td style="text-align:left;">
 2024-03-27
 </td>
 <td style="text-align:left;">
@@ -51671,6 +52981,9 @@ HDZ-228
 </td>
 <td style="text-align:right;">
 154
+</td>
+<td style="text-align:left;">
+W154
 </td>
 <td style="text-align:left;">
 2024-03-27
@@ -51856,6 +53169,9 @@ HDZ-212
 154
 </td>
 <td style="text-align:left;">
+W154
+</td>
+<td style="text-align:left;">
 2024-03-27
 </td>
 <td style="text-align:left;">
@@ -52037,6 +53353,9 @@ HDZ-228
 </td>
 <td style="text-align:right;">
 154
+</td>
+<td style="text-align:left;">
+W154
 </td>
 <td style="text-align:left;">
 2024-03-27
@@ -52222,6 +53541,9 @@ HDZ-227
 156
 </td>
 <td style="text-align:left;">
+C156
+</td>
+<td style="text-align:left;">
 2024-03-29
 </td>
 <td style="text-align:left;">
@@ -52403,6 +53725,9 @@ HDZ-226
 </td>
 <td style="text-align:right;">
 157
+</td>
+<td style="text-align:left;">
+C157
 </td>
 <td style="text-align:left;">
 2024-03-30
@@ -52588,6 +53913,9 @@ HDZ-403
 157
 </td>
 <td style="text-align:left;">
+W157
+</td>
+<td style="text-align:left;">
 2024-03-30
 </td>
 <td style="text-align:left;">
@@ -52766,6 +54094,9 @@ HDZ-403
 </td>
 <td style="text-align:right;">
 157
+</td>
+<td style="text-align:left;">
+W157
 </td>
 <td style="text-align:left;">
 2024-03-30
@@ -52951,6 +54282,9 @@ HDZ-213
 NA
 </td>
 <td style="text-align:left;">
+UNA
+</td>
+<td style="text-align:left;">
 2024-03-31
 </td>
 <td style="text-align:left;">
@@ -53134,6 +54468,9 @@ HDZ-402
 158
 </td>
 <td style="text-align:left;">
+W158
+</td>
+<td style="text-align:left;">
 2024-03-31
 </td>
 <td style="text-align:left;">
@@ -53312,6 +54649,9 @@ HDZ-402
 </td>
 <td style="text-align:right;">
 158
+</td>
+<td style="text-align:left;">
+W158
 </td>
 <td style="text-align:left;">
 2024-03-31
@@ -53495,6 +54835,9 @@ HDZ-388
 </td>
 <td style="text-align:right;">
 159
+</td>
+<td style="text-align:left;">
+C159
 </td>
 <td style="text-align:left;">
 2024-04-01
@@ -53681,6 +55024,9 @@ HDZ-387
 159
 </td>
 <td style="text-align:left;">
+W159
+</td>
+<td style="text-align:left;">
 2024-04-01
 </td>
 <td style="text-align:left;">
@@ -53863,6 +55209,9 @@ HDZ-401
 </td>
 <td style="text-align:right;">
 160
+</td>
+<td style="text-align:left;">
+C160
 </td>
 <td style="text-align:left;">
 2024-04-02
@@ -54049,6 +55398,9 @@ HDZ-377
 161
 </td>
 <td style="text-align:left;">
+C161
+</td>
+<td style="text-align:left;">
 2024-04-03
 </td>
 <td style="text-align:left;">
@@ -54231,6 +55583,9 @@ HDZ-376
 </td>
 <td style="text-align:right;">
 161
+</td>
+<td style="text-align:left;">
+W161
 </td>
 <td style="text-align:left;">
 2024-04-03
@@ -54417,6 +55772,9 @@ HDZ-370
 162
 </td>
 <td style="text-align:left;">
+C162
+</td>
+<td style="text-align:left;">
 2024-04-04
 </td>
 <td style="text-align:left;">
@@ -54601,6 +55959,9 @@ HDZ-371
 162
 </td>
 <td style="text-align:left;">
+W162
+</td>
+<td style="text-align:left;">
 2024-04-04
 </td>
 <td style="text-align:left;">
@@ -54780,6 +56141,9 @@ HDZ-371
 </td>
 <td style="text-align:right;">
 162
+</td>
+<td style="text-align:left;">
+W162
 </td>
 <td style="text-align:left;">
 2024-04-04
@@ -54966,6 +56330,9 @@ HDZ-375
 163
 </td>
 <td style="text-align:left;">
+C163
+</td>
+<td style="text-align:left;">
 2024-04-05
 </td>
 <td style="text-align:left;">
@@ -55147,6 +56514,9 @@ HDZ-369
 </td>
 <td style="text-align:right;">
 163
+</td>
+<td style="text-align:left;">
+W163
 </td>
 <td style="text-align:left;">
 2024-04-05
@@ -55332,6 +56702,9 @@ HDZ-372
 164
 </td>
 <td style="text-align:left;">
+C164
+</td>
+<td style="text-align:left;">
 2024-04-06
 </td>
 <td style="text-align:left;">
@@ -55513,6 +56886,9 @@ HDZ-378
 </td>
 <td style="text-align:right;">
 164
+</td>
+<td style="text-align:left;">
+W164
 </td>
 <td style="text-align:left;">
 2024-04-06
@@ -55698,6 +57074,9 @@ HDZ-381
 165
 </td>
 <td style="text-align:left;">
+C165
+</td>
+<td style="text-align:left;">
 2024-04-07
 </td>
 <td style="text-align:left;">
@@ -55879,6 +57258,9 @@ HDZ-363
 </td>
 <td style="text-align:right;">
 168
+</td>
+<td style="text-align:left;">
+C168
 </td>
 <td style="text-align:left;">
 2024-04-10
@@ -56064,6 +57446,9 @@ HDZ-364
 170
 </td>
 <td style="text-align:left;">
+C170
+</td>
+<td style="text-align:left;">
 2024-04-12
 </td>
 <td style="text-align:left;">
@@ -56245,6 +57630,9 @@ HDZ-379
 </td>
 <td style="text-align:right;">
 170
+</td>
+<td style="text-align:left;">
+W170
 </td>
 <td style="text-align:left;">
 2024-04-12
@@ -56430,6 +57818,9 @@ HDZ-365
 171
 </td>
 <td style="text-align:left;">
+C171
+</td>
+<td style="text-align:left;">
 2024-04-13
 </td>
 <td style="text-align:left;">
@@ -56611,6 +58002,9 @@ HDZ-366
 </td>
 <td style="text-align:right;">
 171
+</td>
+<td style="text-align:left;">
+W171
 </td>
 <td style="text-align:left;">
 2024-04-13
@@ -56796,6 +58190,9 @@ HDZ-357
 172
 </td>
 <td style="text-align:left;">
+C172
+</td>
+<td style="text-align:left;">
 2024-04-14
 </td>
 <td style="text-align:left;">
@@ -56977,6 +58374,9 @@ HDZ-358
 </td>
 <td style="text-align:right;">
 173
+</td>
+<td style="text-align:left;">
+C173
 </td>
 <td style="text-align:left;">
 2024-04-15
@@ -57162,6 +58562,9 @@ HDZ-359
 173
 </td>
 <td style="text-align:left;">
+W173
+</td>
+<td style="text-align:left;">
 2024-04-15
 </td>
 <td style="text-align:left;">
@@ -57343,6 +58746,9 @@ HDZ-352
 </td>
 <td style="text-align:right;">
 174
+</td>
+<td style="text-align:left;">
+C174
 </td>
 <td style="text-align:left;">
 2024-04-16
@@ -57528,6 +58934,9 @@ HDZ-351
 174
 </td>
 <td style="text-align:left;">
+W174
+</td>
+<td style="text-align:left;">
 2024-04-16
 </td>
 <td style="text-align:left;">
@@ -57709,6 +59118,9 @@ HDZ-354
 </td>
 <td style="text-align:right;">
 177
+</td>
+<td style="text-align:left;">
+C177
 </td>
 <td style="text-align:left;">
 2024-04-19
@@ -57894,6 +59306,9 @@ HDZ-367
 177
 </td>
 <td style="text-align:left;">
+W177
+</td>
+<td style="text-align:left;">
 2024-04-19
 </td>
 <td style="text-align:left;">
@@ -58075,6 +59490,9 @@ HDZ-361
 </td>
 <td style="text-align:right;">
 178
+</td>
+<td style="text-align:left;">
+C178
 </td>
 <td style="text-align:left;">
 2024-04-20
@@ -58260,6 +59678,9 @@ HDZ-355
 178
 </td>
 <td style="text-align:left;">
+W178
+</td>
+<td style="text-align:left;">
 2024-04-20
 </td>
 <td style="text-align:left;">
@@ -58441,6 +59862,9 @@ HDZ-386
 </td>
 <td style="text-align:right;">
 180
+</td>
+<td style="text-align:left;">
+C180
 </td>
 <td style="text-align:left;">
 2024-04-22
@@ -58626,6 +60050,9 @@ HDZ-374
 180
 </td>
 <td style="text-align:left;">
+W180
+</td>
+<td style="text-align:left;">
 2024-04-22
 </td>
 <td style="text-align:left;">
@@ -58807,6 +60234,9 @@ HDZ-360
 </td>
 <td style="text-align:right;">
 180
+</td>
+<td style="text-align:left;">
+W180
 </td>
 <td style="text-align:left;">
 2024-04-22
@@ -58992,6 +60422,9 @@ HDZ-380
 181
 </td>
 <td style="text-align:left;">
+W181
+</td>
+<td style="text-align:left;">
 2024-04-23
 </td>
 <td style="text-align:left;">
@@ -59173,6 +60606,9 @@ HDZ-368
 </td>
 <td style="text-align:right;">
 182
+</td>
+<td style="text-align:left;">
+C182
 </td>
 <td style="text-align:left;">
 2024-04-24
@@ -59358,6 +60794,9 @@ HDZ-362
 183
 </td>
 <td style="text-align:left;">
+C183
+</td>
+<td style="text-align:left;">
 2024-04-25
 </td>
 <td style="text-align:left;">
@@ -59539,6 +60978,9 @@ HDZ-356
 </td>
 <td style="text-align:right;">
 184
+</td>
+<td style="text-align:left;">
+W184
 </td>
 <td style="text-align:left;">
 2024-04-26
@@ -59724,6 +61166,9 @@ HDZ-450
 185
 </td>
 <td style="text-align:left;">
+C185
+</td>
+<td style="text-align:left;">
 2024-04-27
 </td>
 <td style="text-align:left;">
@@ -59905,6 +61350,9 @@ HDZ-451
 </td>
 <td style="text-align:right;">
 185
+</td>
+<td style="text-align:left;">
+W185
 </td>
 <td style="text-align:left;">
 2024-04-27
@@ -60090,6 +61538,9 @@ HDZ-452
 187
 </td>
 <td style="text-align:left;">
+C187
+</td>
+<td style="text-align:left;">
 2024-04-29
 </td>
 <td style="text-align:left;">
@@ -60271,6 +61722,9 @@ HDZ-453
 </td>
 <td style="text-align:right;">
 187
+</td>
+<td style="text-align:left;">
+W187
 </td>
 <td style="text-align:left;">
 2024-04-29
@@ -60456,6 +61910,9 @@ HDZ-449
 188
 </td>
 <td style="text-align:left;">
+W188
+</td>
+<td style="text-align:left;">
 2024-04-30
 </td>
 <td style="text-align:left;">
@@ -60637,6 +62094,9 @@ HDZ-448
 </td>
 <td style="text-align:right;">
 189
+</td>
+<td style="text-align:left;">
+W189
 </td>
 <td style="text-align:left;">
 2024-05-01
@@ -60822,6 +62282,9 @@ HDZ-438
 191
 </td>
 <td style="text-align:left;">
+C191
+</td>
+<td style="text-align:left;">
 2024-05-03
 </td>
 <td style="text-align:left;">
@@ -61003,6 +62466,9 @@ HDZ-439
 </td>
 <td style="text-align:right;">
 191
+</td>
+<td style="text-align:left;">
+W191
 </td>
 <td style="text-align:left;">
 2024-05-03
@@ -61188,6 +62654,9 @@ HDZ-437
 192
 </td>
 <td style="text-align:left;">
+C192
+</td>
+<td style="text-align:left;">
 2024-05-04
 </td>
 <td style="text-align:left;">
@@ -61369,6 +62838,9 @@ HDZ-432
 </td>
 <td style="text-align:right;">
 192
+</td>
+<td style="text-align:left;">
+W192
 </td>
 <td style="text-align:left;">
 2024-05-04
@@ -61554,6 +63026,9 @@ HDZ-433
 195
 </td>
 <td style="text-align:left;">
+C195
+</td>
+<td style="text-align:left;">
 2024-05-07
 </td>
 <td style="text-align:left;">
@@ -61735,6 +63210,9 @@ HDZ-431
 </td>
 <td style="text-align:right;">
 195
+</td>
+<td style="text-align:left;">
+W195
 </td>
 <td style="text-align:left;">
 2024-05-07
@@ -61920,6 +63398,9 @@ HDZ-426
 196
 </td>
 <td style="text-align:left;">
+C196
+</td>
+<td style="text-align:left;">
 2024-05-08
 </td>
 <td style="text-align:left;">
@@ -62101,6 +63582,9 @@ HDZ-425
 </td>
 <td style="text-align:right;">
 196
+</td>
+<td style="text-align:left;">
+W196
 </td>
 <td style="text-align:left;">
 2024-05-08
@@ -62286,6 +63770,9 @@ HDZ-434
 197
 </td>
 <td style="text-align:left;">
+C197
+</td>
+<td style="text-align:left;">
 2024-05-09
 </td>
 <td style="text-align:left;">
@@ -62467,6 +63954,9 @@ HDZ-440
 </td>
 <td style="text-align:right;">
 197
+</td>
+<td style="text-align:left;">
+W197
 </td>
 <td style="text-align:left;">
 2024-05-09
@@ -62652,6 +64142,9 @@ HDZ-444
 198
 </td>
 <td style="text-align:left;">
+C198
+</td>
+<td style="text-align:left;">
 2024-05-10
 </td>
 <td style="text-align:left;">
@@ -62833,6 +64326,9 @@ HDZ-430
 </td>
 <td style="text-align:right;">
 199
+</td>
+<td style="text-align:left;">
+C199
 </td>
 <td style="text-align:left;">
 2024-05-11
@@ -63018,6 +64514,9 @@ HDZ-442
 200
 </td>
 <td style="text-align:left;">
+C200
+</td>
+<td style="text-align:left;">
 2024-05-12
 </td>
 <td style="text-align:left;">
@@ -63199,6 +64698,9 @@ HDZ-443
 </td>
 <td style="text-align:right;">
 200
+</td>
+<td style="text-align:left;">
+W200
 </td>
 <td style="text-align:left;">
 2024-05-12
@@ -63384,6 +64886,9 @@ HDZ-445
 201
 </td>
 <td style="text-align:left;">
+C201
+</td>
+<td style="text-align:left;">
 2024-05-13
 </td>
 <td style="text-align:left;">
@@ -63565,6 +65070,9 @@ HDZ-424
 </td>
 <td style="text-align:right;">
 201
+</td>
+<td style="text-align:left;">
+W201
 </td>
 <td style="text-align:left;">
 2024-05-13
@@ -63750,6 +65258,9 @@ HDZ-166
 202
 </td>
 <td style="text-align:left;">
+C202
+</td>
+<td style="text-align:left;">
 2024-05-14
 </td>
 <td style="text-align:left;">
@@ -63931,6 +65442,9 @@ HDZ-165
 </td>
 <td style="text-align:right;">
 202
+</td>
+<td style="text-align:left;">
+W202
 </td>
 <td style="text-align:left;">
 2024-05-14
@@ -64116,6 +65630,9 @@ HDZ-214
 221
 </td>
 <td style="text-align:left;">
+W221
+</td>
+<td style="text-align:left;">
 2024-06-02
 </td>
 <td style="text-align:left;">
@@ -64297,6 +65814,9 @@ HDZ-446
 </td>
 <td style="text-align:right;">
 222
+</td>
+<td style="text-align:left;">
+W222
 </td>
 <td style="text-align:left;">
 2024-06-03
@@ -64482,6 +66002,9 @@ HDZ-436
 223
 </td>
 <td style="text-align:left;">
+W223
+</td>
+<td style="text-align:left;">
 2024-06-04
 </td>
 <td style="text-align:left;">
@@ -64663,6 +66186,9 @@ HDZ-447
 </td>
 <td style="text-align:right;">
 224
+</td>
+<td style="text-align:left;">
+W224
 </td>
 <td style="text-align:left;">
 2024-06-05
@@ -64848,6 +66374,9 @@ HDZ-189
 225
 </td>
 <td style="text-align:left;">
+W225
+</td>
+<td style="text-align:left;">
 2024-06-06
 </td>
 <td style="text-align:left;">
@@ -65029,6 +66558,9 @@ HDZ-427
 </td>
 <td style="text-align:right;">
 226
+</td>
+<td style="text-align:left;">
+W226
 </td>
 <td style="text-align:left;">
 2024-06-07
@@ -65214,6 +66746,9 @@ HDZ-475
 227
 </td>
 <td style="text-align:left;">
+W227
+</td>
+<td style="text-align:left;">
 2024-06-08
 </td>
 <td style="text-align:left;">
@@ -65395,6 +66930,9 @@ HDZ-441
 </td>
 <td style="text-align:right;">
 228
+</td>
+<td style="text-align:left;">
+W228
 </td>
 <td style="text-align:left;">
 2024-06-09
@@ -65580,6 +67118,9 @@ HDZ-160
 229
 </td>
 <td style="text-align:left;">
+W229
+</td>
+<td style="text-align:left;">
 2024-06-10
 </td>
 <td style="text-align:left;">
@@ -65761,6 +67302,9 @@ HDZ-435
 </td>
 <td style="text-align:right;">
 230
+</td>
+<td style="text-align:left;">
+W230
 </td>
 <td style="text-align:left;">
 2024-06-11
@@ -65946,6 +67490,9 @@ HDZ-464
 230
 </td>
 <td style="text-align:left;">
+W230
+</td>
+<td style="text-align:left;">
 2024-06-11
 </td>
 <td style="text-align:left;">
@@ -66127,6 +67674,9 @@ HDZ-428
 </td>
 <td style="text-align:right;">
 231
+</td>
+<td style="text-align:left;">
+W231
 </td>
 <td style="text-align:left;">
 2024-06-12
@@ -66312,6 +67862,9 @@ HDZ-164
 232
 </td>
 <td style="text-align:left;">
+W232
+</td>
+<td style="text-align:left;">
 2024-06-13
 </td>
 <td style="text-align:left;">
@@ -66493,6 +68046,9 @@ HDZ-474
 </td>
 <td style="text-align:right;">
 234
+</td>
+<td style="text-align:left;">
+W234
 </td>
 <td style="text-align:left;">
 2024-06-15
@@ -66678,6 +68234,9 @@ HDZ-429
 235
 </td>
 <td style="text-align:left;">
+C235
+</td>
+<td style="text-align:left;">
 2024-06-16
 </td>
 <td style="text-align:left;">
@@ -66859,6 +68418,9 @@ HDZ-422
 </td>
 <td style="text-align:right;">
 235
+</td>
+<td style="text-align:left;">
+W235
 </td>
 <td style="text-align:left;">
 2024-06-16
@@ -67044,6 +68606,9 @@ HDZ-423
 236
 </td>
 <td style="text-align:left;">
+W236
+</td>
+<td style="text-align:left;">
 2024-06-17
 </td>
 <td style="text-align:left;">
@@ -67225,6 +68790,9 @@ HDZ-421
 </td>
 <td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+UNA
 </td>
 <td style="text-align:left;">
 2024-06-18
@@ -67410,6 +68978,9 @@ HDZ-420
 238
 </td>
 <td style="text-align:left;">
+W238
+</td>
+<td style="text-align:left;">
 2024-06-19
 </td>
 <td style="text-align:left;">
@@ -67591,6 +69162,9 @@ HDZ-178
 </td>
 <td style="text-align:right;">
 239
+</td>
+<td style="text-align:left;">
+W239
 </td>
 <td style="text-align:left;">
 2024-06-20
@@ -67776,6 +69350,9 @@ HDZ-416
 240
 </td>
 <td style="text-align:left;">
+W240
+</td>
+<td style="text-align:left;">
 2024-06-21
 </td>
 <td style="text-align:left;">
@@ -67957,6 +69534,9 @@ HDZ-417
 </td>
 <td style="text-align:right;">
 242
+</td>
+<td style="text-align:left;">
+W242
 </td>
 <td style="text-align:left;">
 2024-06-23
@@ -68142,6 +69722,9 @@ HDZ-415
 243
 </td>
 <td style="text-align:left;">
+W243
+</td>
+<td style="text-align:left;">
 2024-06-24
 </td>
 <td style="text-align:left;">
@@ -68323,6 +69906,9 @@ HDZ-419
 </td>
 <td style="text-align:right;">
 244
+</td>
+<td style="text-align:left;">
+W244
 </td>
 <td style="text-align:left;">
 2024-06-25
@@ -68508,6 +70094,9 @@ HDZ-414
 245
 </td>
 <td style="text-align:left;">
+W245
+</td>
+<td style="text-align:left;">
 2024-06-26
 </td>
 <td style="text-align:left;">
@@ -68689,6 +70278,9 @@ HDZ-418
 </td>
 <td style="text-align:right;">
 246
+</td>
+<td style="text-align:left;">
+W246
 </td>
 <td style="text-align:left;">
 2024-06-27
@@ -68874,6 +70466,9 @@ HDZ-171
 247
 </td>
 <td style="text-align:left;">
+W247
+</td>
+<td style="text-align:left;">
 2024-06-28
 </td>
 <td style="text-align:left;">
@@ -69055,6 +70650,9 @@ HDZ-172
 </td>
 <td style="text-align:right;">
 248
+</td>
+<td style="text-align:left;">
+W248
 </td>
 <td style="text-align:left;">
 2024-06-29
@@ -69240,6 +70838,9 @@ HDZ-413
 249
 </td>
 <td style="text-align:left;">
+W249
+</td>
+<td style="text-align:left;">
 2024-06-30
 </td>
 <td style="text-align:left;">
@@ -69421,6 +71022,9 @@ HDZ-412
 </td>
 <td style="text-align:right;">
 250
+</td>
+<td style="text-align:left;">
+W250
 </td>
 <td style="text-align:left;">
 2024-07-01
@@ -69606,6 +71210,9 @@ HDZ-159
 251
 </td>
 <td style="text-align:left;">
+W251
+</td>
+<td style="text-align:left;">
 2024-07-02
 </td>
 <td style="text-align:left;">
@@ -69787,6 +71394,9 @@ HDZ-470
 </td>
 <td style="text-align:right;">
 254
+</td>
+<td style="text-align:left;">
+W254
 </td>
 <td style="text-align:left;">
 2024-07-05
@@ -69972,6 +71582,9 @@ HDZ-469
 255
 </td>
 <td style="text-align:left;">
+W255
+</td>
+<td style="text-align:left;">
 2024-07-06
 </td>
 <td style="text-align:left;">
@@ -70153,6 +71766,9 @@ HDZ-468
 </td>
 <td style="text-align:right;">
 256
+</td>
+<td style="text-align:left;">
+W256
 </td>
 <td style="text-align:left;">
 2024-07-07
@@ -70338,6 +71954,9 @@ HDZ-473
 257
 </td>
 <td style="text-align:left;">
+W257
+</td>
+<td style="text-align:left;">
 2024-07-08
 </td>
 <td style="text-align:left;">
@@ -70519,6 +72138,9 @@ HDZ-465
 </td>
 <td style="text-align:right;">
 258
+</td>
+<td style="text-align:left;">
+W258
 </td>
 <td style="text-align:left;">
 2024-07-09
@@ -70704,6 +72326,9 @@ HDZ-463
 262
 </td>
 <td style="text-align:left;">
+W262
+</td>
+<td style="text-align:left;">
 2024-07-13
 </td>
 <td style="text-align:left;">
@@ -70885,6 +72510,9 @@ HDZ-462
 </td>
 <td style="text-align:right;">
 263
+</td>
+<td style="text-align:left;">
+W263
 </td>
 <td style="text-align:left;">
 2024-07-14
@@ -71070,6 +72698,9 @@ HDZ-467
 264
 </td>
 <td style="text-align:left;">
+W264
+</td>
+<td style="text-align:left;">
 2024-07-15
 </td>
 <td style="text-align:left;">
@@ -71251,6 +72882,9 @@ HDZ-158
 </td>
 <td style="text-align:right;">
 265
+</td>
+<td style="text-align:left;">
+W265
 </td>
 <td style="text-align:left;">
 2024-07-16
@@ -71436,6 +73070,9 @@ HDZ-459
 267
 </td>
 <td style="text-align:left;">
+W267
+</td>
+<td style="text-align:left;">
 2024-07-18
 </td>
 <td style="text-align:left;">
@@ -71617,6 +73254,9 @@ HDZ-458
 </td>
 <td style="text-align:right;">
 268
+</td>
+<td style="text-align:left;">
+W268
 </td>
 <td style="text-align:left;">
 2024-07-19
@@ -71802,6 +73442,9 @@ HDZ-461
 269
 </td>
 <td style="text-align:left;">
+W269
+</td>
+<td style="text-align:left;">
 2024-07-20
 </td>
 <td style="text-align:left;">
@@ -71983,6 +73626,9 @@ HDZ-457
 </td>
 <td style="text-align:right;">
 270
+</td>
+<td style="text-align:left;">
+W270
 </td>
 <td style="text-align:left;">
 2024-07-21
@@ -72168,6 +73814,9 @@ HDZ-456
 271
 </td>
 <td style="text-align:left;">
+W271
+</td>
+<td style="text-align:left;">
 2024-07-22
 </td>
 <td style="text-align:left;">
@@ -72349,6 +73998,9 @@ HDZ-466
 </td>
 <td style="text-align:right;">
 272
+</td>
+<td style="text-align:left;">
+W272
 </td>
 <td style="text-align:left;">
 2024-07-23
@@ -72534,6 +74186,9 @@ HDZ-455
 273
 </td>
 <td style="text-align:left;">
+W273
+</td>
+<td style="text-align:left;">
 2024-07-24
 </td>
 <td style="text-align:left;">
@@ -72715,6 +74370,9 @@ HDZ-460
 </td>
 <td style="text-align:right;">
 274
+</td>
+<td style="text-align:left;">
+W274
 </td>
 <td style="text-align:left;">
 2024-07-25
@@ -72900,6 +74558,9 @@ HDZ-454
 276
 </td>
 <td style="text-align:left;">
+W276
+</td>
+<td style="text-align:left;">
 2024-07-27
 </td>
 <td style="text-align:left;">
@@ -73081,6 +74742,9 @@ HDZ-482
 </td>
 <td style="text-align:right;">
 279
+</td>
+<td style="text-align:left;">
+W279
 </td>
 <td style="text-align:left;">
 2024-07-30
@@ -73266,6 +74930,9 @@ HDZ-488
 280
 </td>
 <td style="text-align:left;">
+W280
+</td>
+<td style="text-align:left;">
 2024-07-31
 </td>
 <td style="text-align:left;">
@@ -73447,6 +75114,9 @@ HDZ-483
 </td>
 <td style="text-align:right;">
 282
+</td>
+<td style="text-align:left;">
+W282
 </td>
 <td style="text-align:left;">
 2024-08-02
@@ -73632,6 +75302,9 @@ HDZ-489
 283
 </td>
 <td style="text-align:left;">
+W283
+</td>
+<td style="text-align:left;">
 2024-08-03
 </td>
 <td style="text-align:left;">
@@ -73813,6 +75486,9 @@ HDZ-495
 </td>
 <td style="text-align:right;">
 284
+</td>
+<td style="text-align:left;">
+W284
 </td>
 <td style="text-align:left;">
 2024-08-04
@@ -73998,6 +75674,9 @@ HDZ-494
 285
 </td>
 <td style="text-align:left;">
+W285
+</td>
+<td style="text-align:left;">
 2024-08-05
 </td>
 <td style="text-align:left;">
@@ -74179,6 +75858,9 @@ HDZ-477
 </td>
 <td style="text-align:right;">
 286
+</td>
+<td style="text-align:left;">
+W286
 </td>
 <td style="text-align:left;">
 2024-08-06
@@ -74364,6 +76046,9 @@ HDZ-476
 288
 </td>
 <td style="text-align:left;">
+W288
+</td>
+<td style="text-align:left;">
 2024-08-08
 </td>
 <td style="text-align:left;">
@@ -74545,6 +76230,9 @@ HDZ-500
 </td>
 <td style="text-align:right;">
 289
+</td>
+<td style="text-align:left;">
+W289
 </td>
 <td style="text-align:left;">
 2024-08-09
@@ -74730,6 +76418,9 @@ HDZ-478
 291
 </td>
 <td style="text-align:left;">
+W291
+</td>
+<td style="text-align:left;">
 2024-08-11
 </td>
 <td style="text-align:left;">
@@ -74911,6 +76602,9 @@ HDZ-484
 </td>
 <td style="text-align:right;">
 292
+</td>
+<td style="text-align:left;">
+W292
 </td>
 <td style="text-align:left;">
 2024-08-12
@@ -75096,6 +76790,9 @@ HDZ-490
 293
 </td>
 <td style="text-align:left;">
+W293
+</td>
+<td style="text-align:left;">
 2024-08-13
 </td>
 <td style="text-align:left;">
@@ -75277,6 +76974,9 @@ HDZ-501
 </td>
 <td style="text-align:right;">
 294
+</td>
+<td style="text-align:left;">
+W294
 </td>
 <td style="text-align:left;">
 2024-08-14
@@ -75462,6 +77162,9 @@ HDZ-507
 296
 </td>
 <td style="text-align:left;">
+W296
+</td>
+<td style="text-align:left;">
 2024-08-16
 </td>
 <td style="text-align:left;">
@@ -75643,6 +77346,9 @@ HDZ-502
 </td>
 <td style="text-align:right;">
 297
+</td>
+<td style="text-align:left;">
+W297
 </td>
 <td style="text-align:left;">
 2024-08-17
@@ -75828,6 +77534,9 @@ HDZ-497
 299
 </td>
 <td style="text-align:left;">
+W299
+</td>
+<td style="text-align:left;">
 2024-08-19
 </td>
 <td style="text-align:left;">
@@ -76009,6 +77718,9 @@ HDZ-508
 </td>
 <td style="text-align:right;">
 302
+</td>
+<td style="text-align:left;">
+W302
 </td>
 <td style="text-align:left;">
 2024-08-22
@@ -76194,6 +77906,9 @@ HDZ-503
 304
 </td>
 <td style="text-align:left;">
+W304
+</td>
+<td style="text-align:left;">
 2024-08-24
 </td>
 <td style="text-align:left;">
@@ -76375,6 +78090,9 @@ HDZ-491
 </td>
 <td style="text-align:right;">
 305
+</td>
+<td style="text-align:left;">
+W305
 </td>
 <td style="text-align:left;">
 2024-08-25
@@ -76560,6 +78278,9 @@ HDZ-506
 305
 </td>
 <td style="text-align:left;">
+W305
+</td>
+<td style="text-align:left;">
 2024-08-25
 </td>
 <td style="text-align:left;">
@@ -76741,6 +78462,9 @@ HDZ-485
 </td>
 <td style="text-align:right;">
 306
+</td>
+<td style="text-align:left;">
+W306
 </td>
 <td style="text-align:left;">
 2024-08-26
@@ -76926,6 +78650,9 @@ HDZ-509
 307
 </td>
 <td style="text-align:left;">
+W307
+</td>
+<td style="text-align:left;">
 2024-08-27
 </td>
 <td style="text-align:left;">
@@ -77107,6 +78834,9 @@ HDZ-479
 </td>
 <td style="text-align:right;">
 308
+</td>
+<td style="text-align:left;">
+W308
 </td>
 <td style="text-align:left;">
 2024-08-28
@@ -77292,6 +79022,9 @@ HDZ-510
 309
 </td>
 <td style="text-align:left;">
+W309
+</td>
+<td style="text-align:left;">
 2024-08-29
 </td>
 <td style="text-align:left;">
@@ -77473,6 +79206,9 @@ HDZ-504
 </td>
 <td style="text-align:right;">
 310
+</td>
+<td style="text-align:left;">
+W310
 </td>
 <td style="text-align:left;">
 2024-08-30
@@ -77658,6 +79394,9 @@ HDZ-498
 311
 </td>
 <td style="text-align:left;">
+W311
+</td>
+<td style="text-align:left;">
 2024-08-31
 </td>
 <td style="text-align:left;">
@@ -77839,6 +79578,9 @@ HDZ-492
 </td>
 <td style="text-align:right;">
 312
+</td>
+<td style="text-align:left;">
+W312
 </td>
 <td style="text-align:left;">
 2024-09-01
@@ -78024,6 +79766,9 @@ HDZ-480
 315
 </td>
 <td style="text-align:left;">
+W315
+</td>
+<td style="text-align:left;">
 2024-09-04
 </td>
 <td style="text-align:left;">
@@ -78205,6 +79950,9 @@ HDZ-517
 </td>
 <td style="text-align:right;">
 315
+</td>
+<td style="text-align:left;">
+W315
 </td>
 <td style="text-align:left;">
 2024-09-04
@@ -78390,6 +80138,9 @@ HDZ-499
 316
 </td>
 <td style="text-align:left;">
+W316
+</td>
+<td style="text-align:left;">
 2024-09-05
 </td>
 <td style="text-align:left;">
@@ -78571,6 +80322,9 @@ HDZ-493
 </td>
 <td style="text-align:right;">
 317
+</td>
+<td style="text-align:left;">
+W317
 </td>
 <td style="text-align:left;">
 2024-09-06
@@ -78756,6 +80510,9 @@ HDZ-487
 318
 </td>
 <td style="text-align:left;">
+W318
+</td>
+<td style="text-align:left;">
 2024-09-07
 </td>
 <td style="text-align:left;">
@@ -78937,6 +80694,9 @@ HDZ-481
 </td>
 <td style="text-align:right;">
 319
+</td>
+<td style="text-align:left;">
+W319
 </td>
 <td style="text-align:left;">
 2024-09-08
@@ -79122,6 +80882,9 @@ HDZ-486
 324
 </td>
 <td style="text-align:left;">
+W324
+</td>
+<td style="text-align:left;">
 2024-09-13
 </td>
 <td style="text-align:left;">
@@ -79303,6 +81066,9 @@ HDZ-525
 </td>
 <td style="text-align:right;">
 325
+</td>
+<td style="text-align:left;">
+W325
 </td>
 <td style="text-align:left;">
 2024-09-14
@@ -79488,6 +81254,9 @@ HDZ-522
 326
 </td>
 <td style="text-align:left;">
+W326
+</td>
+<td style="text-align:left;">
 2024-09-15
 </td>
 <td style="text-align:left;">
@@ -79671,6 +81440,9 @@ HDZ-311
 NA
 </td>
 <td style="text-align:left;">
+CNA
+</td>
+<td style="text-align:left;">
 2024-12-14
 </td>
 <td style="text-align:left;">
@@ -79852,6 +81624,9 @@ HDZ-055
 </td>
 <td style="text-align:right;">
 NA
+</td>
+<td style="text-align:left;">
+UNA
 </td>
 <td style="text-align:left;">
 NA
@@ -80038,6 +81813,9 @@ HDZ-496
 NA
 </td>
 <td style="text-align:left;">
+WNA
+</td>
+<td style="text-align:left;">
 NA
 </td>
 <td style="text-align:left;">
@@ -80209,6 +81987,255 @@ HDZ Keepers
 </tr>
 </tbody>
 </table>
+</div>
+<div id="key-for-metadata-variables" class="section level3">
+<h3>Key for Metadata Variables</h3>
+<p>I also create a separate R script with a list of every metadata
+variable and its description. The code below is an easy way to generate
+a list of all column headers from this very large table that you can
+copy and paste for writing the list.</p>
+<pre class="r"><code>print(names(metadata))</code></pre>
+<pre><code>##  [1] &quot;SequenceID&quot;         &quot;ExtractID&quot;          &quot;SampleID&quot;          
+##  [4] &quot;study_day&quot;          &quot;subj_day&quot;           &quot;CollectionDate&quot;    
+##  [7] &quot;Subject&quot;            &quot;Subj_Certainty&quot;     &quot;steroid&quot;           
+## [10] &quot;probiotic&quot;          &quot;oatgel&quot;             &quot;tomatoes&quot;          
+## [13] &quot;cauliflower&quot;        &quot;broccoli&quot;           &quot;med_type&quot;          
+## [16] &quot;med_name&quot;           &quot;med_dose&quot;           &quot;dose_units&quot;        
+## [19] &quot;enclosure&quot;          &quot;access&quot;             &quot;estrus&quot;            
+## [22] &quot;pregnant&quot;           &quot;repro_note&quot;         &quot;bristol_min&quot;       
+## [25] &quot;bristol_mean&quot;       &quot;bristol_max&quot;        &quot;health_note&quot;       
+## [28] &quot;LibraryCode&quot;        &quot;LibraryTube&quot;        &quot;LibraryBarcode&quot;    
+## [31] &quot;SampVolPool&quot;        &quot;TotalPoolVol&quot;       &quot;BeadVol&quot;           
+## [34] &quot;Conc_QC2&quot;           &quot;reads_unclassified&quot; &quot;FlowCellSerial&quot;    
+## [37] &quot;protocol_group_id&quot;  &quot;SeqRunID&quot;           &quot;SeqDate&quot;           
+## [40] &quot;SeqDateTime&quot;        &quot;SampleSet&quot;          &quot;LibPrepDate&quot;       
+## [43] &quot;LibPrepWorkflow&quot;    &quot;LibPrepKit&quot;         &quot;FlowCellType&quot;      
+## [46] &quot;FlongleAdapter&quot;     &quot;SeqDevice&quot;          &quot;strands&quot;           
+## [49] &quot;fragment_type&quot;      &quot;Length&quot;             &quot;InputMassStart&quot;    
+## [52] &quot;TemplateVolPrep&quot;    &quot;PoolSamples&quot;        &quot;InputMassFinal&quot;    
+## [55] &quot;ExtractDate&quot;        &quot;ExtractedBy&quot;        &quot;ExtractKit&quot;        
+## [58] &quot;ExtractBox&quot;         &quot;ExtractNotes&quot;       &quot;ExtractConc&quot;       
+## [61] &quot;SampleCollectedBy&quot;  &quot;SampleNotes&quot;</code></pre>
+<p>Now I will bring in the key that I previously created and print.</p>
+<pre class="r"><code>source(path$metadata$key)
+
+tagList(
+  tags$h2(&quot;Metadata Variables:&quot;),
+imap(metadata_key, ~ {
+  var_name  &lt;- .y
+  var_descr &lt;- .x
+  tags$p(
+    tags$strong(var_name),
+    tags$br(),
+      var_descr
+  )
+}))</code></pre>
+<h2>Metadata Variables:</h2>
+<p>
+<strong>LibraryCode</strong>
+<br />
+unique id for each pooled library
+</p>
+<p>
+<strong>SequenceID</strong>
+<br />
+unique id for each sequencing run per sample
+</p>
+<p>
+<strong>SampleID</strong>
+<br />
+unique id for each sample collected
+</p>
+<p>
+<strong>ExtractID</strong>
+<br />
+unique id for each (DNA) extract
+</p>
+<p>
+<strong>study_day</strong>
+<br />
+day of sample collection relative to collection start
+</p>
+<p>
+<strong>subj_day</strong>
+<br />
+first initial of subject name with collection day for cleaner ids in visualization
+</p>
+<p>
+<strong>CollectionDate</strong>
+<br />
+date of sample collection (yyyy-mm-dd)
+</p>
+<p>
+<strong>Subject</strong>
+<br />
+name of subject sample collected from
+</p>
+<p>
+<strong>Subj_Certainty</strong>
+<br />
+whether subject identity is confirmed, unknown, suspected
+</p>
+<p>
+<strong>probiotic</strong>
+<br />
+was subject currently administered standard probiotic dose for trial?
+</p>
+<p>
+<strong>oatgel</strong>
+<br />
+was subject currently administered special oatgel for trial?
+</p>
+<p>
+<strong>steroid</strong>
+<br />
+daily dose of Budesonide in mg administered for trial phase
+</p>
+<p>
+<strong>cauliflower</strong>
+<br />
+was cauliflower still included as a rotating diet option?
+</p>
+<p>
+<strong>tomatoes</strong>
+<br />
+was tomato still included as a rotating diet option?
+</p>
+<p>
+<strong>broccoli</strong>
+<br />
+was broccoli still included as a rotating diet option?
+</p>
+<p>
+<strong>med_type</strong>
+<br />
+medication type being administered (other than steroid for diet trial)
+</p>
+<p>
+<strong>med_name</strong>
+<br />
+medication name being administered
+</p>
+<p>
+<strong>med_dose</strong>
+<br />
+daily dose of medication being administered
+</p>
+<p>
+<strong>dose_units</strong>
+<br />
+units for dose of medication
+</p>
+<p>
+<strong>enclosure</strong>
+<br />
+was subject still in the old enclosure or had they transferred to new enclosure?
+</p>
+<p>
+<strong>access</strong>
+<br />
+did subjects have physical access to each other or was shift door closed?
+</p>
+<p>
+<strong>estrus</strong>
+<br />
+was subject showing signs of estrus?
+</p>
+<p>
+<strong>pregnant</strong>
+<br />
+was subject pregnant?
+</p>
+<p>
+<strong>bristol_mean</strong>
+<br />
+mean bristol fecal score on collection day
+</p>
+<p>
+<strong>bristol_min</strong>
+<br />
+minimum bristol fecal score on collection day
+</p>
+<p>
+<strong>bristol_max</strong>
+<br />
+maximum bristol fecal score on collection day
+</p>
+<p>
+<strong>health_note</strong>
+<br />
+ad lib notes related to subject health recorded on collection day
+</p>
+<p>
+<strong>repro_note</strong>
+<br />
+ad lib notes related to subject reproductive status recorded on collection day
+</p>
+<p>
+<strong>SampleNotes</strong>
+<br />
+ad lib notes recorded for sample collection
+</p>
+<p>
+<strong>ExtractDate</strong>
+<br />
+date of DNA extraction/purification
+</p>
+<p>
+<strong>ExtractKit</strong>
+<br />
+kit used in DNA extraction/purification
+</p>
+<p>
+<strong>ExtractedBy</strong>
+<br />
+person performing DNA extraction/purification
+</p>
+<p>
+<strong>ExtractNotes</strong>
+<br />
+ad lib notes recorded for DNA extraction/purification
+</p>
+<p>
+<strong>LibPrepDate</strong>
+<br />
+date of library preparation
+</p>
+<p>
+<strong>LibPrepWorkflow</strong>
+<br />
+lab workflow used for library preparation
+</p>
+<p>
+<strong>LibPrepKit</strong>
+<br />
+ONT kit used for library prep
+</p>
+<p>
+<strong>LibraryBarcode</strong>
+<br />
+ONT barcode attached to library before pooling and multiplex sequencing
+</p>
+<p>
+<strong>SeqDate</strong>
+<br />
+date of library sequencing run
+</p>
+<p>
+<strong>FlowCellType</strong>
+<br />
+type of Flow Cell library was sequenced with
+</p>
+<p>
+<strong>FlongleAdapter</strong>
+<br />
+ID of adapter if Flongle Flow Cell was used for sequencing
+</p>
+<p>
+<strong>SeqDevice</strong>
+<br />
+MinION device used for sequencing (Angel or Spike)
+</p>
 </div>
 </div>
 </div>

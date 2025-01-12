@@ -13,6 +13,7 @@ output:
     fig_caption: true
 params:
   sampleset: "loris"
+  seqrun: "hdz18"
   
 ---
 
@@ -25,6 +26,7 @@ source(paste0(swan$options))
 source(paste0(micro$packages))
 source(paste0(micro$functions))
 source(paste0(micro$inputs))
+source(path$metadata$key)
 
 knitr::knit_engines$set(terminal = function(options) {
   code <- paste(options$code, collapse = "\n")
@@ -101,7 +103,43 @@ I am writing this script with a version of our lab's pygmy loris microbiome data
 You should have already completed the [SampleInventory](SampleInventory.html) and [MetadataSetup](MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
 
 ```{r}
-samples <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
+source(path$metadata$key)
+```
+
+```{r}
+metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
+  select(all_of(names(metadata_key.list))) %>%
+  mutate(across(all_of(date.vars), ~ ymd(.)),
+         across(all_of(binary.vars), ~ as.character(.)),
+         across(all_of(ids),         ~ str_to_lower(.))) %>%
+  mutate(across(all_of(binary.vars), ~ case_when(. == "1" ~ "yes",
+                                         . == "0" ~ "no",
+                                         .default = .))) %>%
+  filter(!is.na(CollectionDate)) %>%
+  arrange(study_day, Subject)
+
+samples   <- metadata %>% select(SampleID) %>% distinct()
+```
+
+```{r}
+libraries <- metadata %>%
+  arrange(LibPrepDate) %>%
+  select(LibraryCode, SequenceID) %>%
+  group_by(LibraryCode) %>%
+  group_map(~ {
+    setNames(list(as.list(.x$SequenceID)), .y$LibraryCode)
+  }, .keep = TRUE) %>%
+  flatten()
+
+working_libraries <- libraries %>%
+  keep_at(paste0(params$seqrun)) %>%
+  list_c()
+```
+
+
+
+```{r}
+metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
                 mutate(collection = ymd(CollectionDate)) %>%
                 filter(!is.na(CollectionDate)) %>%
                 mutate(subject    = factor(subject,      subj.levels,    labels = subj.labels),
@@ -174,7 +212,7 @@ We are going to read all current versions of abundance tables produced by wf-16s
 
 For this step, make sure you have all abundance tables and only your abundance files in the subdirectory path identified in your config.yml file. They should also be named beginning with the sequencing run id or LibraryCode followed by "_abundance_table_species.tsv".  
 
-```{r}
+```{r, message = FALSE}
 abundance.files <- list.files(path = path$abundance_wf16s,
   pattern = "*_abundance_table_species.tsv$", full.names = TRUE)
 
@@ -200,15 +238,17 @@ if (length(abundance.files) > 0) {
   stop("No abundance files found")
 }
 
+
 ```
 
 ### Read Alignment Tables
 
 This step is pretty annoying, but until the developers update this gap I use the following workaround to import the raw alignment data for each sample and process it directly here in R.  
 
-First, we will use the list of IDs that we just generated from the abundance tables to create a table for renaming the csv files we download from the Wf-16S Report.  
+First, we will use the list of IDs that we just generated from the abundance tables and the metadata table as well as the seqrun id from the yaml header to create a table for renaming the csv files we download from the Wf-16S Report.  
 
 #### Generate Filenames
+
 
 ```{r}
 filenames <- abundance %>% 
@@ -218,6 +258,7 @@ filenames <- abundance %>%
               values_to = "abundance") %>%
   select(alias) %>% distinct() %>% 
   arrange(alias) %>%
+  filter(alias %in% working_libraries) %>%
   mutate(file_append = (row_number() - 1)) %>%
   mutate(old_name    = if_else(file_append == 0,
                                "wf-metagenomics-alignment.csv",
@@ -277,8 +318,9 @@ Now we will go ahead and read in those new tables as well as any others to updat
 
 ```{r, warning = FALSE}
 alignment.files.list <- list.files(path = path$read_alignments, pattern = "*_wf-metagenomics-alignment.csv$", full.names = TRUE)
+alignment.filenames <- list.files(path = path$read_alignments, pattern = "*_wf-metagenomics-alignment.csv$", full.names = FALSE)
 alignment.files      <- lapply(alignment.files.list, read_alignment_file)
-sampleID             <- str_extract(alignment.files.list, "(?<=//).+(?=_wf-metagenomics-alignment.csv$)")
+alias                <- str_remove(alignment.filenames, "_wf-metagenomics-alignment.csv")
 
 alignment.files <- Map(function(df, id) {
   if (nrow(df) > 0) {
@@ -305,14 +347,17 @@ alignments.long     <- bind_rows(alignment.files) %>%
                                superkingdom,
                                alias,
                                coverage,
-                               n_reads = number.of.reads)
+                               n_reads = number.of.reads)    %>%
+                        filter(coverage >= methods_16s$min_cov & !is.na(alias)) %>%
+                        mutate(SequenceID = alias, .keep = "unused")  %>%
+                        left_join(select(metadata, 
+                                         SequenceID,
+                                         subj_day), by = join_by(SequenceID))
 ```
 
 
 ```{r, warning = FALSE}
-   %>%
-                        filter(coverage >= 80 & !is.na(alias)) %>%
-                        mutate(sampleID = str_sub(alias, 1L, 7L)) %>%
+ %>%
                         semi_join(samples.list, by=join_by(sampleID)) %>%
                         left_join(select(samples, sampleID, subj_day), by = join_by(sampleID)) %>%
                         group_by(ref,

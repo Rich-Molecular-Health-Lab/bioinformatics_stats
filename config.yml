@@ -84,6 +84,7 @@ loris:
   metadata: 
     bristol: "../bioinformatics_stats/metadata/loris/bristols.R"
     summary: "../bioinformatics_stats/metadata/loris/samples_metadata.tsv"
+    key: "../bioinformatics_stats/metadata/loris/metadata_key.R"
   extracts: "../bioinformatics_stats/dataframes/sample_inventories/extracts_loris.tsv"
   libraries: "../bioinformatics_stats/dataframes/sample_inventories/libraries_loris.tsv"
   samples: "../bioinformatics_stats/dataframes/sample_inventories/samples_loris.tsv"

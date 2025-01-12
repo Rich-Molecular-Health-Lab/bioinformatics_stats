@@ -32,6 +32,7 @@ subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(nam
 path               <- config::get(config = params$sampleset)
 
 source(path$metadata$bristol)
+source(path$metadata$key)
 
 opts_chunk$set(message = FALSE, warning = FALSE)
 ```
@@ -233,6 +234,46 @@ culi.schedule <- culi.trials %>%
          Trial_Phase = diet) %>%
   left_join(optionals.culi, by = join_by(Date)) %>%
   unnest(c(Trial_Phase, Foods_included))
+```
+
+```{r}
+culi.diet.schedule <- list(
+baseline = tibble(start_day = ymd(loris$day1)  , last_day = ymd("2023-11-01"), diet = diet_trials$baseline),
+phase1   = tibble(start_day = ymd("2023-11-02"), last_day = ymd("2023-11-22"), diet = diet_trials$option1),
+phase2   = tibble(start_day = ymd("2023-11-23"), last_day = ymd("2023-12-13"), diet = diet_trials$option2),
+phase3   = tibble(start_day = ymd("2023-12-14"), last_day = ymd("2024-01-03"), diet = diet_trials$option3),
+phase4   = tibble(start_day = ymd("2024-01-04"), last_day = ymd("2024-01-24"), diet = diet_trials$option4),
+phase5   = tibble(start_day = ymd("2024-01-25"), last_day = ymd("2024-02-19"), diet = diet_trials$option5),
+phase6   = tibble(start_day = ymd("2024-02-20"), last_day = ymd("2024-02-22"), diet = diet_trials$option6),
+phase7   = tibble(start_day = ymd("2024-02-23"), last_day = ymd("2024-05-14"), diet = diet_trials$option7),
+phase8   = tibble(start_day = ymd("2024-05-15"), last_day = ymd(path$last)   , diet = diet_trials$option8)
+)
+```
+
+```{r}
+culi.diet.schedule %>%
+  list_rbind() %>%
+  mutate(Probiotic   = if_else(diet$probiotic == 1, "check", "minus"),
+         Oatgel      = if_else(diet$oatgel == 1, "check", "minus"),
+         Steroid     = if_else(diet$steroid == 0.00, "minus", as.character(diet$steroid))) %>%
+  select(start_day,
+         Steroid,
+         Probiotic,
+         Oatgel) %>%
+  gt() %>%
+    fmt_date(columns = ends_with("_day"), date_style = "m_day_year") %>%
+    cols_label(start_day = "Begin") %>%
+    fmt_icon( columns = Steroid, rows = Steroid == "minus") %>%
+    fmt_icon( columns = c("Probiotic", "Oatgel")) %>%
+    cols_align("center") %>%
+    tab_header("Summary of Trial Phases for Culi") %>%
+    tab_footnote("Phase ends on the date the next row begins.", 
+                 locations = cells_column_labels(start_day)) %>%
+    tab_footnote("Steroid (Budesonide) dose reported as mg/day", 
+                 locations = cells_column_labels(Steroid)) %>%
+    tab_footnote("Warble stayed at baseline for duration of the study.", 
+                 locations = cells_title()) %>%
+    opt_stylize(style = 3, color = "gray")
 ```
 
 
@@ -440,7 +481,7 @@ Now I am going to populate metadata tables for each subject by day.
 
 ### Culi
 
-```{r}
+```{r, message = FALSE}
 culi.samples   <- samples %>% filter(Subject == "Culi")
 
 culi.metadata <- study_days %>%
@@ -457,7 +498,7 @@ culi.metadata <- study_days %>%
 
 ### Warble
 
-```{r}
+```{r, message = FALSE}
 warble.samples <- samples %>% filter(Subject == "Warble")
 
 warble.metadata <- study_days %>%
@@ -475,16 +516,20 @@ warble.metadata <- study_days %>%
 ## Merge and Export Complete Metadata Table
 
 
-```{r}
+```{r, message = FALSE}
 metadata <- samples %>%
   filter(Subject != "Warble" & Subject != "Culi") %>%
   full_join(warble.metadata) %>%
   full_join(culi.metadata) %>%
+  mutate(subj_letter = str_sub(Subject, 1L, 1L)) %>%
+  mutate(subj_day    = str_glue("{subj_letter}{study_day}")) %>%
+  select(-subj_letter) %>%
   relocate(
     SequenceID,
     ExtractID,
     SampleID,
     study_day,
+    subj_day,
     CollectionDate:health_note
   ) %>%
   arrange(CollectionDate, Subject)
@@ -495,9 +540,7 @@ write.table(metadata,
             path$metadata$summary,
             row.names = F,
             sep = "\t")
-```
 
-```{r}
 metadata %>%
   kbl() %>%
   kable_styling(full_width = T,
@@ -506,9 +549,39 @@ metadata %>%
                 position = "center") %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1, valign = "top") %>%
-  scroll_box(width = "800px", height = "400px")
+  scroll_box(width = "800px", height = "800px")
 
 ```
+
+
+### Key for Metadata Variables
+
+I also create a separate R script with a list of every metadata variable and its description. The code below is an easy way to generate a list of all column headers from this very large table that you can copy and paste for writing the list.  
+
+```{r}
+print(names(metadata))
+```
+
+
+Now I will bring in the key that I previously created and print.  
+
+```{r}
+source(path$metadata$key)
+
+tagList(
+  tags$h2("Metadata Variables:"),
+imap(metadata_key, ~ {
+  var_name  <- .y
+  var_descr <- .x
+  tags$p(
+    tags$strong(var_name),
+    tags$br(),
+      var_descr
+  )
+}))
+```
+
+
 
 # Next Steps
 
