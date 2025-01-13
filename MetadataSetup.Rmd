@@ -146,6 +146,17 @@ path               <- config::get(config = params$sampleset)
 source(path$metadata$bristol)
 ```
 
+## Subject Info
+
+First I will read in some useful info about each subject from their AZA studbook.
+
+```{r}
+studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
+  select(
+    
+  )
+```
+
 ## Sample Inventory
 
 First I will read in the sample inventory, which is actually already a metadata table itself. We just want to match some more interesting variables to it.
@@ -160,7 +171,9 @@ samples <- read.table(path$compilation, header = T, sep = "\t") %>%
 The toughest variables to match and wrange in R are often dates, especially when you are dealing with both states (start and end dates for intervals) and events (single dates). For studies like this one based around daily sample collection, I find it easiest to start by populating a blank dataframe with one row per sample collection day. Then I match date-based variables to this dataframe and join my SampleIDs to it.
 
 ```{r}
-study_days <- tibble(Date = seq.Date(from = ymd(path$day1), to = ymd(path$last), by = "day")) %>%
+study_days <- tibble(Date = seq.Date(from = ymd(path$day1), 
+                                     to   = ymd(path$last), 
+                                     by = "day")) %>%
   mutate(study_day = row_number())
 ```
 
@@ -481,7 +494,7 @@ culi.health <- tribble(
   summarise(health_note = str_c(health_note, collapse = "; "), .groups = "drop")
 ```
 
-## Metadata by Subject and Date
+## Metadata by Subject
 
 Now I am going to populate metadata tables for each subject by day.
 

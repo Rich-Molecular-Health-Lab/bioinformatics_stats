@@ -1,0 +1,75 @@
+---
+title: "ProjectNotes_LorisMicrobiome"
+author: "Alicia Rich"
+output:
+  html_document:
+    toc: true
+    toc_location: "before"
+    toc_depth: 4
+    number_sections: false
+    toc_float: true
+    code_folding: "hide"
+    fig_caption: true
+editor_options: 
+  chunk_output_type: inline
+params:
+  sampleset: "loris"
+                     
+---
+
+```{r, include = F}
+
+global      <- config::get(config = "default")
+path        <- config::get(config = paste0(params$sampleset))
+
+source(paste0(global$setup))
+source(paste0(micro$packages))
+source(paste0(micro$functions))
+source(paste0(micro$inputs))
+source(global$knit_engines)
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+
+seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
+
+source(path$metadata$bristol)
+source(path$metadata$key)
+
+```
+
+# Current Totals
+
+```{r}
+study_days <- tibble(Date = seq.Date(from = ymd(path$day1), 
+                                     to   = ymd(path$last), 
+                                     by = "day")) %>%
+  mutate(study_day = row_number())
+```
+
+
+```{r}
+metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
+  select(all_of(names(metadata_key))) %>%
+  mutate(across(all_of(date.vars), ~ ymd(.)),
+         across(all_of(binary.vars), ~ as.character(.)),
+         across(all_of(ids),         ~ str_to_lower(.))) %>%
+  mutate(across(all_of(binary.vars), ~ case_when(. == "1" ~ "yes",
+                                         . == "0" ~ "no",
+                                         .default = .))) %>%
+  filter(!is.na(CollectionDate)) %>%
+  mutate(across(any_of(replace.unknowns), ~ 
+                  if_else(is.na(.), replace_na("unknown"), .))) %>%
+  arrange(study_day, Subject)
+```
+
+```{r}
+collection.schedule <- study_days %>% left_join(select(metadata, ))
+```
+
+

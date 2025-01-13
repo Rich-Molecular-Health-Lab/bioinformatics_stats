@@ -42,6 +42,38 @@ metadata_key <- list(
   SeqDevice       =  "MinION device used for sequencing (Angel or Spike)"       
 )
 
+metadata.cols <- list(
+  IDs = c(
+    "LibraryCode",
+    "SequenceID", 
+    "SampleID",   
+    "ExtractID"
+  ),
+  Extractions = c(
+    "ExtractDate",
+    "ExtractKit",
+    "ExtractedBy",
+    "ExtractNotes"
+  ),
+  LibraryPrep = c(
+    "LibPrepDate",
+    "LibPrepWorkflow",
+    "LibPrepKit",
+    "LibraryBarcode"
+  ),
+  Sequencing = c(
+    "SeqDate",
+    "FlowCellType",
+    "FlongleAdapter",
+    "SeqDevice"
+  ),
+  SubjectInfo = c(
+    "Subject",
+    "Subj_Certainty",
+    
+  )
+)
+
 tech_vars <- c(
   "LibraryCode",
   "ExtractDate",
