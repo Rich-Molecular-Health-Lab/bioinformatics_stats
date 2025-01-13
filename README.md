@@ -46,6 +46,7 @@ R Markdown File                                      |Knitted HTML Link         
 [SampleInventory.Rmd](SampleInventory.Rmd)           |[SampleInventory.html](SampleInventory.html)           |  Maintain records of all Rich Lab samples and export samplesheets for Dorado.
 [MetadataSetup.Rmd](MetadataSetup.Rmd)               |[MetadataSetup.html](MetadataSetup.html)               |  Create predictor variables, code them, and then match to samples.
 [MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) |[MinIONReadProcessing.html](MinIONReadProcessing.html) |  Basecall, demultiplex, filter, clean, and organize raw ONT sequence data.
+[MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd)         |[MicroEcoDataPrep.html](MicroEcoDataPrep.html)         |  Prepare aligned reads and other wf-16s outputs for analysis using MicroEco.
 [Data_Notes.Rmd](Data_Notes.Rmd)                     |[Data_Notes.html](Data_Notes.html)                     |  Review basic statistical options available for some of our main datasets.
 [dummy_samples.Rmd](dummy_samples.Rmd)               |[dummy_samples.Rmd](dummy_samples.html)                |  Export formatted tables with dummy data for samples to test different pipelines.
 
