@@ -13,7 +13,7 @@ output:
     fig_caption: true
 params:
   taxon: "loris"
-  seqrun: "hdz9"
+  seqrun: "hdz1"
   
 ---
 
@@ -24,6 +24,7 @@ path        <- config::get(config = paste0(params$taxon))
 source(paste0(global$setup))
 source(paste0(swan$functions))
 source(paste0(swan$options))
+source(global$knit_engines)
 ```
 
 
@@ -35,7 +36,10 @@ opts_chunk$set(
                include = TRUE,
                eval    = TRUE,
                comment = "")
+```
 
+
+```{r, message=FALSE}
 knitr::knit_engines$set(terminal = function(options) {
   code <- paste(options$code, collapse = "\n")
   
@@ -236,7 +240,7 @@ module purge
 module load dorado-gpu/0.7
 
 pod5="swan$raw_loris_mb/params$seqrun/"
-basecalled="swan$basecalled_loris_mb/params$seqrun/"
+basecalled="swan$basecalled_loris_mb/params$seqrun"
 mkdir -p $basecalled
 
 algo="swan$dorado_model"
@@ -291,9 +295,9 @@ module load dorado/0.7
 
 cd swan$bioinformatics_stats
 
-basecalled="swan$basecalled_loris_mb/params$seqrun/"
+basecalled="swan$basecalled_loris_mb/params$seqrun"
 sample_sheet="swan$samplesheets/params$sampleset/params$seqrun_sample_sheet.csv"
-trimmed="swan$trimmed_loris_mb/params$seqrun/"
+trimmed="swan$trimmed_loris_mb/params$seqrun"
 
 mkdir -p $trimmed
 
@@ -447,11 +451,11 @@ srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=wf16s_params$seq
 module purge
 module load dorado/0.7
 
-filtered="swan$filtered_loris_mb/params$seqrun/"
+filtered="swan$filtered_loris_mb/params$seqrun"
 
 cd "swan$bioinformatics_stats/"
 
-processed="path$outputs_wf16sparams$seqrun/"
+processed="path$outputs_wf16sparams$seqrun"
 
 mkdir -p $processed
 

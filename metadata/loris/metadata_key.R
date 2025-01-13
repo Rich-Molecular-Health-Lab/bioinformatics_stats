@@ -129,3 +129,7 @@ qualitative.vars <- c(
   "SampleNotes",
   "ExtractNotes"
 )
+
+
+yes.no.factors <- c("yes", "no", "unknown")
+subject.factor <- c("culi", "warble", "unknown")

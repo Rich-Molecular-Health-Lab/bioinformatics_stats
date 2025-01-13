@@ -1,5 +1,6 @@
 default:
   setup: "../bioinformatics_stats/setup/global/setup.R"
+  knit_engines: "../bioinformatics_stats/setup/global/knit_engines.R"
   conflicts: "../bioinformatics_stats/setup/global/conflicts.R"
   functions: "../bioinformatics_stats/setup/global/functions.R"
   packages: "../bioinformatics_stats/setup/global/packages.R"
@@ -54,7 +55,6 @@ loris:
   samples_csv: "../data/samples_loris.csv"
   outputs_wf16s: "../bioinformatics_stats/data/loris/outputs_wf16s/"
   barcodes_output: "../bioinformatics_stats/dataframes/barcodes/loris/"
-  barcode_alignments: "../labwork/minion_data/barcode_alignments/hdz/"
   read_alignments: "../bioinformatics_stats/data/loris/read_alignments"
   sample_sheet: "../bioinformatics_stats/loris/dataframes/sample_sheet/"
   taxa_reps:
@@ -62,6 +62,8 @@ loris:
     tree: "../bioinformatics_stats/data/loris/taxonomy/refseqs_tree.newick"
     table: "../bioinformatics_stats/data/loris/taxonomy/tax_table.tsv"
   abundance_wf16s: "../bioinformatics_stats/data/loris/wf16s_abundance/"
+  abund_wf16s_tbls: 
+    hdz1:
   microeco: 
     abund:
       main:
@@ -514,6 +516,37 @@ barcode_alignments:
   cm009: "../labwork/minion_data/barcode_alignments/marmoset/cm009_barcode_alignment.tsv"
   cm010: "../labwork/minion_data/barcode_alignments/marmoset/cm010_barcode_alignment.tsv"
   cm011: "../labwork/minion_data/barcode_alignments/marmoset/cm011_barcode_alignment.tsv"
+
+abund_wf16s_files:
+  hdz1:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz1_abundance_table_species.tsv"
+  hdz2:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz2_abundance_table_species.tsv"
+  hdz3:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz3_abundance_table_species.tsv"
+  hdz4:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz4_abundance_table_species.tsv"
+  hdz5:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz5_abundance_table_species.tsv"
+  hdz6:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz6_abundance_table_species.tsv"
+  hdz7:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz7_abundance_table_species.tsv"
+  hdz8:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz8_abundance_table_species.tsv"
+  hdz9:  "../bioinformatics_stats/data/loris/wf16s_abundance/hdz9_abundance_table_species.tsv"
+  hdz10: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz10_abundance_table_species.tsv"
+  hdz11: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz11_abundance_table_species.tsv"
+  hdz12: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz12_abundance_table_species.tsv"
+  hdz13: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz13_abundance_table_species.tsv"
+  hdz14: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz14_abundance_table_species.tsv"
+  hdz15: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz15_abundance_table_species.tsv"
+  hdz16: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz16_abundance_table_species.tsv"
+  hdz17: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz17_abundance_table_species.tsv"
+  hdz18: "../bioinformatics_stats/data/loris/wf16s_abundance/hdz18_abundance_table_species.tsv"
+  cm001: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm001_abundance_table_species.tsv"
+  cm002: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm002_abundance_table_species.tsv"
+  cm003: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm003_abundance_table_species.tsv"
+  cm004: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm004_abundance_table_species.tsv"
+  cm005: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm005_abundance_table_species.tsv"
+  cm006: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm006_abundance_table_species.tsv"
+  cm007: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm007_abundance_table_species.tsv"
+  cm008: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm008_abundance_table_species.tsv"
+  cm009: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm009_abundance_table_species.tsv"
+  cm010: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm010_abundance_table_species.tsv"
+  cm011: "../bioinformatics_stats/data/marmoset/wf16s_abundance/cm011_abundance_table_species.tsv"
 
   
 microbiome:

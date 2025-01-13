@@ -89,6 +89,13 @@ read.recent.version.tsv <- function(directory, pattern) {
   return(data)
 }
 
+read_abundance_file  <- function(file) {
+  read.table(file, 
+             stringsAsFactors = FALSE, 
+             header = T,
+             sep = "\t")
+}
+
 
 read.tables <- function(file) {
   data <- read.table(file, 

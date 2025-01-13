@@ -1580,7 +1580,8 @@ path        &lt;- config::get(config = paste0(params$taxon))
 
 source(paste0(global$setup))
 source(paste0(swan$functions))
-source(paste0(swan$options))</code></pre>
+source(paste0(swan$options))
+source(global$knit_engines)</code></pre>
 <div id="intro" class="section level1 tabset">
 <h1 class="tabset">Intro</h1>
 <div id="this-workflow" class="section level2">
@@ -1659,20 +1660,20 @@ parameters, and tell the HCC when/how to run it for you.</li>
 subdirectories into a parent directory labeled with the name of your
 run. Here is what you should do with some of the main files you need to
 carry forward:</p>
-<div id="wzfskbtgrf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wzfskbtgrf table {
+<div id="nlyxyzoowz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nlyxyzoowz table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#wzfskbtgrf thead, #wzfskbtgrf tbody, #wzfskbtgrf tfoot, #wzfskbtgrf tr, #wzfskbtgrf td, #wzfskbtgrf th {
+#nlyxyzoowz thead, #nlyxyzoowz tbody, #nlyxyzoowz tfoot, #nlyxyzoowz tr, #nlyxyzoowz td, #nlyxyzoowz th {
 border-style: none;
 }
-#wzfskbtgrf p {
+#nlyxyzoowz p {
 margin: 0;
 padding: 0;
 }
-#wzfskbtgrf .gt_table {
+#nlyxyzoowz .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -1697,11 +1698,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#wzfskbtgrf .gt_caption {
+#nlyxyzoowz .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#wzfskbtgrf .gt_title {
+#nlyxyzoowz .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -1712,7 +1713,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#wzfskbtgrf .gt_subtitle {
+#nlyxyzoowz .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -1723,7 +1724,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#wzfskbtgrf .gt_heading {
+#nlyxyzoowz .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -1734,12 +1735,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#wzfskbtgrf .gt_bottom_border {
+#nlyxyzoowz .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#wzfskbtgrf .gt_col_headings {
+#nlyxyzoowz .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #929292;
@@ -1753,7 +1754,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#wzfskbtgrf .gt_col_heading {
+#nlyxyzoowz .gt_col_heading {
 color: #FFFFFF;
 background-color: #016763;
 font-size: 100%;
@@ -1772,7 +1773,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#wzfskbtgrf .gt_column_spanner_outer {
+#nlyxyzoowz .gt_column_spanner_outer {
 color: #FFFFFF;
 background-color: #016763;
 font-size: 100%;
@@ -1783,13 +1784,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#wzfskbtgrf .gt_column_spanner_outer:first-child {
+#nlyxyzoowz .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#wzfskbtgrf .gt_column_spanner_outer:last-child {
+#nlyxyzoowz .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#wzfskbtgrf .gt_column_spanner {
+#nlyxyzoowz .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
@@ -1800,10 +1801,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#wzfskbtgrf .gt_spanner_row {
+#nlyxyzoowz .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#wzfskbtgrf .gt_group_heading {
+#nlyxyzoowz .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1828,7 +1829,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#wzfskbtgrf .gt_empty_group_heading {
+#nlyxyzoowz .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -1842,13 +1843,13 @@ border-bottom-width: 2px;
 border-bottom-color: #929292;
 vertical-align: middle;
 }
-#wzfskbtgrf .gt_from_md > :first-child {
+#nlyxyzoowz .gt_from_md > :first-child {
 margin-top: 0;
 }
-#wzfskbtgrf .gt_from_md > :last-child {
+#nlyxyzoowz .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#wzfskbtgrf .gt_row {
+#nlyxyzoowz .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1866,7 +1867,7 @@ border-right-color: #929292;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#wzfskbtgrf .gt_stub {
+#nlyxyzoowz .gt_stub {
 color: #333333;
 background-color: #D5D5D5;
 font-size: 100%;
@@ -1878,7 +1879,7 @@ border-right-color: #FFFFFF;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wzfskbtgrf .gt_stub_row_group {
+#nlyxyzoowz .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -1891,13 +1892,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#wzfskbtgrf .gt_row_group_first td {
+#nlyxyzoowz .gt_row_group_first td {
 border-top-width: 2px;
 }
-#wzfskbtgrf .gt_row_group_first th {
+#nlyxyzoowz .gt_row_group_first th {
 border-top-width: 2px;
 }
-#wzfskbtgrf .gt_summary_row {
+#nlyxyzoowz .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -1906,14 +1907,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wzfskbtgrf .gt_first_summary_row {
+#nlyxyzoowz .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #929292;
 }
-#wzfskbtgrf .gt_first_summary_row.thick {
+#nlyxyzoowz .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#wzfskbtgrf .gt_last_summary_row {
+#nlyxyzoowz .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1922,7 +1923,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#wzfskbtgrf .gt_grand_summary_row {
+#nlyxyzoowz .gt_grand_summary_row {
 color: #333333;
 background-color: #D5D5D5;
 text-transform: inherit;
@@ -1931,7 +1932,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wzfskbtgrf .gt_first_grand_summary_row {
+#nlyxyzoowz .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1940,7 +1941,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #929292;
 }
-#wzfskbtgrf .gt_last_grand_summary_row_top {
+#nlyxyzoowz .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -1949,10 +1950,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #929292;
 }
-#wzfskbtgrf .gt_striped {
+#nlyxyzoowz .gt_striped {
 background-color: #F4F4F4;
 }
-#wzfskbtgrf .gt_table_body {
+#nlyxyzoowz .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #929292;
@@ -1960,7 +1961,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #929292;
 }
-#wzfskbtgrf .gt_footnotes {
+#nlyxyzoowz .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1973,7 +1974,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#wzfskbtgrf .gt_footnote {
+#nlyxyzoowz .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -1981,7 +1982,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wzfskbtgrf .gt_sourcenotes {
+#nlyxyzoowz .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -1994,64 +1995,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#wzfskbtgrf .gt_sourcenote {
+#nlyxyzoowz .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#wzfskbtgrf .gt_left {
+#nlyxyzoowz .gt_left {
 text-align: left;
 }
-#wzfskbtgrf .gt_center {
+#nlyxyzoowz .gt_center {
 text-align: center;
 }
-#wzfskbtgrf .gt_right {
+#nlyxyzoowz .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#wzfskbtgrf .gt_font_normal {
+#nlyxyzoowz .gt_font_normal {
 font-weight: normal;
 }
-#wzfskbtgrf .gt_font_bold {
+#nlyxyzoowz .gt_font_bold {
 font-weight: bold;
 }
-#wzfskbtgrf .gt_font_italic {
+#nlyxyzoowz .gt_font_italic {
 font-style: italic;
 }
-#wzfskbtgrf .gt_super {
+#nlyxyzoowz .gt_super {
 font-size: 65%;
 }
-#wzfskbtgrf .gt_footnote_marks {
+#nlyxyzoowz .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#wzfskbtgrf .gt_asterisk {
+#nlyxyzoowz .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#wzfskbtgrf .gt_indent_1 {
+#nlyxyzoowz .gt_indent_1 {
 text-indent: 5px;
 }
-#wzfskbtgrf .gt_indent_2 {
+#nlyxyzoowz .gt_indent_2 {
 text-indent: 10px;
 }
-#wzfskbtgrf .gt_indent_3 {
+#nlyxyzoowz .gt_indent_3 {
 text-indent: 15px;
 }
-#wzfskbtgrf .gt_indent_4 {
+#nlyxyzoowz .gt_indent_4 {
 text-indent: 20px;
 }
-#wzfskbtgrf .gt_indent_5 {
+#nlyxyzoowz .gt_indent_5 {
 text-indent: 25px;
 }
-#wzfskbtgrf .katex-display {
+#nlyxyzoowz .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#wzfskbtgrf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nlyxyzoowz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -2201,9 +2202,9 @@ package provided by the HCC team.</p>
 <h4>Batch Script Header</h4>
 <pre><code>#!/bin/bash
 #SBATCH --time=2:00:00
-#SBATCH --job-name=basecall_hdz9
-#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/basecall_hdz9_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/basecall_hdz9_%A_%a.out
+#SBATCH --job-name=basecall_hdz1
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/basecall_hdz1_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/basecall_hdz1_%A_%a.out
 #SBATCH --partition=gpu,guest_gpu
 #SBATCH --constraint=&#39;gpu_v100|gpu_t4&#39;
 #SBATCH --nodes=1
@@ -2214,15 +2215,15 @@ package provided by the HCC team.</p>
 </div>
 <div id="open-interactive-job" class="section level4">
 <h4>Open Interactive Job</h4>
-<pre><code>srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=basecall_hdz9 --pty $SHELL</code></pre>
+<pre><code>srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=basecall_hdz1 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use" class="section level4">
 <h4>Code to Use</h4>
 <pre><code>module purge
 module load dorado-gpu/0.7
 
-pod5=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/hdz_raw/hdz9/&quot;
-basecalled=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/basecalled/hdz9/&quot;
+pod5=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/hdz_raw/hdz1/&quot;
+basecalled=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/basecalled/hdz1&quot;
 mkdir -p $basecalled
 
 algo=&quot;/work/richlab/aliciarich/ont_reads/dna_r10.4.1_e8.2_400bps_sup@v5.0.0/&quot;
@@ -2231,13 +2232,13 @@ dorado basecaller &quot;$algo&quot; \
     &quot;$pod5&quot; \
     --recursive \
     --no-trim \
-    &gt; &quot;$basecalled/hdz9.bam&quot; &amp;&amp; \
-dorado summary &quot;$basecalled/hdz9.bam&quot; &gt; &quot;$basecalled/hdz9_basecall_summary.tsv&quot;</code></pre>
+    &gt; &quot;$basecalled/hdz1.bam&quot; &amp;&amp; \
+dorado summary &quot;$basecalled/hdz1.bam&quot; &gt; &quot;$basecalled/hdz1_basecall_summary.tsv&quot;</code></pre>
 </div>
 <div id="submit-batch-script" class="section level4">
 <h4>Submit Batch Script</h4>
 <pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
-sbatch basecall_hdz9.sh</code></pre>
+sbatch basecall_hdz1.sh</code></pre>
 </div>
 </div>
 <div id="demultiplex-and-trim" class="section level3 tabset">
@@ -2257,9 +2258,9 @@ instead.</p>
 <h4>Batch Script Header</h4>
 <pre><code>#!/bin/bash
 #SBATCH --time=00:45:00
-#SBATCH --job-name=demux_trim_hdz9
-#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/demux_trim_hdz9_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/demux_trim_hdz9_%A_%a.out
+#SBATCH --job-name=demux_trim_hdz1
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/demux_trim_hdz1_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/demux_trim_hdz1_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -2267,7 +2268,7 @@ instead.</p>
 </div>
 <div id="open-interactive-job-1" class="section level4">
 <h4>Open Interactive Job</h4>
-<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=hdz9demux_trim --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
+<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=hdz1demux_trim --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use-1" class="section level4">
 <h4>Code to Use</h4>
@@ -2276,9 +2277,9 @@ module load dorado/0.7
 
 cd /work/richlab/aliciarich/bioinformatics_stats
 
-basecalled=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/basecalled/hdz9/&quot;
-sample_sheet=&quot;/work/richlab/aliciarich/bioinformatics_stats/dataframes/sample_sheet/loris/params$sampleset/hdz9_sample_sheet.csv&quot;
-trimmed=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/trimmed/hdz9/&quot;
+basecalled=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/basecalled/hdz1&quot;
+sample_sheet=&quot;/work/richlab/aliciarich/bioinformatics_stats/dataframes/sample_sheet/loris/params$sampleset/hdz1_sample_sheet.csv&quot;
+trimmed=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/trimmed/hdz1&quot;
 
 mkdir -p $trimmed
 
@@ -2291,7 +2292,7 @@ dorado demux &quot;$basecalled&quot; \
 <div id="submit-batch-script-1" class="section level4">
 <h4>Submit Batch Script</h4>
 <pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
-sbatch demux_trim_hdz9.sh</code></pre>
+sbatch demux_trim_hdz1.sh</code></pre>
 </div>
 </div>
 <div id="quality-control" class="section level3 tabset">
@@ -2307,9 +2308,9 @@ below.</p>
 <h4>Batch Script Header</h4>
 <pre><code>#!/bin/bash
 #SBATCH --time=00:45:00
-#SBATCH --job-name=qc_hdz9
-#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/qc_hdz9_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/qc_hdz9_%A_%a.out
+#SBATCH --job-name=qc_hdz1
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/qc_hdz1_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/qc_hdz1_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -2317,7 +2318,7 @@ below.</p>
 </div>
 <div id="open-interactive-job-2" class="section level4">
 <h4>Open Interactive Job</h4>
-<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=qc_hdz9 --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
+<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=qc_hdz1 --mem=100GB --time=0:45:00 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use-2" class="section level4">
 <h4>Code to Use</h4>
@@ -2334,8 +2335,8 @@ module load anaconda
 
 conda activate filter
 
-trimmed=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/trimmed/hdz9&quot;
-filtered=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz9&quot;
+trimmed=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/trimmed/hdz1&quot;
+filtered=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz1&quot;
 
 mkdir -p $filtered
 
@@ -2383,7 +2384,7 @@ done</code></pre>
 <div id="submit-batch-script-2" class="section level4">
 <h4>Submit Batch Script</h4>
 <pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
-sbatch qc_hdz9.sh</code></pre>
+sbatch qc_hdz1.sh</code></pre>
 </div>
 </div>
 </div>
@@ -2431,9 +2432,9 @@ reads.</p>
 </blockquote>
 <pre><code>#!/bin/bash
 #SBATCH --time=03:00:00
-#SBATCH --job-name=wf16s_hdz9
-#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/wf16s_hdz9_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/wf16s_hdz9_%A_%a.out
+#SBATCH --job-name=wf16s_hdz1
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/wf16s_hdz1_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/wf16s_hdz1_%A_%a.out
 #SBATCH --partition=guest
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -2442,18 +2443,18 @@ reads.</p>
 </div>
 <div id="open-interactive-job-3" class="section level3">
 <h3>Open Interactive Job</h3>
-<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=wf16s_hdz9 --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL</code></pre>
+<pre><code>srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=wf16s_hdz1 --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL</code></pre>
 </div>
 <div id="code-to-use-3" class="section level3">
 <h3>Code to Use</h3>
 <pre><code>module purge
 module load dorado/0.7
 
-filtered=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz9/&quot;
+filtered=&quot;/work/richlab/aliciarich/ont_reads/loris_microbiome/filtered/hdz1&quot;
 
 cd &quot;/work/richlab/aliciarich/bioinformatics_stats/&quot;
 
-processed=&quot;../bioinformatics_stats/data/loris/outputs_wf16s/hdz9/&quot;
+processed=&quot;../bioinformatics_stats/data/loris/outputs_wf16s/hdz1&quot;
 
 mkdir -p $processed
 
@@ -2478,7 +2479,7 @@ nextflow run epi2me-labs/wf-16s \
 <div id="submit-batch-script-3" class="section level3">
 <h3>Submit Batch Script</h3>
 <pre><code>cd /work/richlab/aliciarich/bioinformatics_stats/batch_scripts/
-sbatch wf16s_hdz9.sh</code></pre>
+sbatch wf16s_hdz1.sh</code></pre>
 </div>
 </div>
 </div>
