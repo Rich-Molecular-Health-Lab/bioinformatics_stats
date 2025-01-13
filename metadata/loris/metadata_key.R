@@ -69,7 +69,7 @@ metadata.cols <- list(
   ),
   SubjectInfo = c(
     "Subject",
-    "Subj_Certainty",
+    "Subj_Certainty"
     
   )
 )

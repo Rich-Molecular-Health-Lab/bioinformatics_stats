@@ -23,18 +23,19 @@ global             <- config::get(config = "default")
 source(paste0(global$setup))
 source(paste0(swan$functions))
 
-seqruns <- list(
-  loris     = as.list(paste0("hdz", 1:18)),
-  marmoset  = as.list(sprintf("cm%03d", 1:10))
-)
-
+seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 path         <- config::get(config = params$sampleset)
 
 source(path$metadata$bristol)
 source(path$metadata$key)
 
-opts_chunk$set(message = FALSE, warning = FALSE)
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
 ```
 
 
@@ -57,11 +58,7 @@ You can use the sampleset setting under params in the header of this script to s
 Below is a chunk to generate a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date. The next chunk will format a list of all subject names for whichever taxon you identified in the header.
 
 ```{r}
-seqruns <- list(
-  loris     = as.list(paste0("hdz", 1:18)),
-  marmoset  = as.list(sprintf("cm%03d", 1:10))
-)
-
+seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 ```
 
@@ -135,25 +132,42 @@ global             <- config::get(config = "default")
 source(paste0(global$setup))
 source(paste0(swan$functions))
 
-seqruns <- list(
-  loris     = as.list(paste0("hdz", 1:18)),
-  marmoset  = as.list(sprintf("cm%03d", 1:10))
-)
-
+seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
-path               <- config::get(config = params$sampleset)
+path         <- config::get(config = params$sampleset)
 
 source(path$metadata$bristol)
+source(path$metadata$key)
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
 ```
 
 ## Subject Info
 
 First I will read in some useful info about each subject from their AZA studbook.
 
-```{r}
+```{r, warning = FALSE}
 studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
+  mutate(
+          Subject    = factor(str_to_lower(Name), levels = unique()),
+          StudbookID = factor(ID, levels = unique()),
+          MotherID = factor(Mother, levels = unique()),
+          FatherID = factor(Father, levels = unique()),
+          FatherID = factor(Father, levels = unique())
+          )
   select(
-    
+    Subject       = Name,
+    StudbookID    = ID,
+    Sex,
+    MotherID      = Mother,
+    FatherID      = Father,
+    BirthYear     = Born,
+    BirthLocation = Birth.Location
   )
 ```
 
