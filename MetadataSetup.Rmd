@@ -29,7 +29,7 @@ seqruns <- list(
 )
 
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
-path               <- config::get(config = params$sampleset)
+path         <- config::get(config = params$sampleset)
 
 source(path$metadata$bristol)
 source(path$metadata$key)
@@ -401,7 +401,7 @@ repro.log    <- list(
     ~value,     ~start_day,  ~last_day,
     1     , ymd(path$day1)   , ymd("2023-10-29"),
     0     , ymd("2023-10-30"), ymd("2024-03-21"),
-    1     , ymd("2024-03-21"), ymd("2024-04-05"),
+    1     , ymd("2024-03-22"), ymd("2024-04-05"),
     0     , ymd("2024-04-06"), ymd(path$last)
   ),
   pregnant = tribble(

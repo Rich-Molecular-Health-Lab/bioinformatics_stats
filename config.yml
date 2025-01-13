@@ -11,8 +11,8 @@ default:
   tmp_tsv: "../bioinformatics_stats/tmp/tmp_table.tsv"
   tmp_downloads: "../bioinformatics_stats/tmp/downloads/"
   tmp_fetch: "../bioinformatics_stats/tmp/fetch_references.txt"
-  tmp_fasta3: "./bioinformatics_stats/tmp/tmp3.fasta"
-  tmp_fasta4: "./bioinformatics_stats/tmp/tmp4.fasta"
+  tmp_fasta3: "../bioinformatics_stats/tmp/tmp3.fasta"
+  tmp_fasta4: "../bioinformatics_stats/tmp/tmp4.fasta"
   
 swan:
   functions: "../bioinformatics_stats/setup/read_processing/functions.R"
@@ -65,8 +65,42 @@ loris:
   abund_wf16s_tbls: 
     hdz1:
   microeco: 
+    dataset:
+      main:
+        kegg: "../bioinformatics_stats/microeco/loris/datasets/main/keg_dataset_main"
+        njc: "../bioinformatics_stats/microeco/loris/datasets/main/njc_dataset_main"
+        fpt: "../bioinformatics_stats/microeco/loris/datasets/main/fpt_dataset_main"
+        phylum: "../bioinformatics_stats/microeco/loris/datasets/main/phy_dataset_main"
+        class: "../bioinformatics_stats/microeco/loris/datasets/main/cla_dataset_main"
+        order: "../bioinformatics_stats/microeco/loris/datasets/main/ord_dataset_main"
+        family: "../bioinformatics_stats/microeco/loris/datasets/main/fam_dataset_main"
+        genus: "../bioinformatics_stats/microeco/loris/datasets/main/gen_dataset_main"
+        species: "../bioinformatics_stats/microeco/loris/datasets/main/spe_dataset_main"
+      culi:
+        kegg: "../bioinformatics_stats/microeco/loris/datasets/culi/keg_dataset_culi"
+        njc: "../bioinformatics_stats/microeco/loris/datasets/culi/njc_dataset_culi"
+        fpt: "../bioinformatics_stats/microeco/loris/datasets/culi/fpt_dataset_culi"
+        phylum: "../bioinformatics_stats/microeco/loris/datasets/culi/phy_dataset_culi"
+        class: "../bioinformatics_stats/microeco/loris/datasets/culi/cla_dataset_culi"
+        order: "../bioinformatics_stats/microeco/loris/datasets/culi/ord_dataset_culi"
+        family: "../bioinformatics_stats/microeco/loris/datasets/culi/fam_dataset_culi"
+        genus: "../bioinformatics_stats/microeco/loris/datasets/culi/gen_dataset_culi"
+        species: "../bioinformatics_stats/microeco/loris/datasets/culi/spe_dataset_culi"
+      warb:
+        kegg: "../bioinformatics_stats/microeco/loris/datasets/warble/keg_dataset_warb"
+        njc: "../bioinformatics_stats/microeco/loris/datasets/warble/njc_dataset_warb"
+        fpt: "../bioinformatics_stats/microeco/loris/datasets/warble/fpt_dataset_warb"
+        phylum: "../bioinformatics_stats/microeco/loris/datasets/warble/phy_dataset_warb"
+        class: "../bioinformatics_stats/microeco/loris/datasets/warble/cla_dataset_warb"
+        order: "../bioinformatics_stats/microeco/loris/datasets/warble/ord_dataset_warb"
+        family: "../bioinformatics_stats/microeco/loris/datasets/warble/fam_dataset_warb"
+        genus: "../bioinformatics_stats/microeco/loris/datasets/warble/gen_dataset_warb"
+        species: "../bioinformatics_stats/microeco/loris/datasets/warble/spe_dataset_warb"
     abund:
       main:
+        kegg: "../bioinformatics_stats/microeco/loris/abundance/main/keg_abund_main"
+        fpt: "../bioinformatics_stats/microeco/loris/abundance/main/fpt_abund_main"
+        njc: "../bioinformatics_stats/microeco/loris/abundance/main/njc_abund_main"
         phylum:  "../bioinformatics_stats/microeco/loris/abundance/main/phy_abund_main/Phylum_abund.tsv"
         class:   "../bioinformatics_stats/microeco/loris/abundance/main/cla_abund_main/Class_abund.tsv"
         order:   "../bioinformatics_stats/microeco/loris/abundance/main/ord_abund_main/Order_abund.tsv"
@@ -74,6 +108,9 @@ loris:
         genus:   "../bioinformatics_stats/microeco/loris/abundance/main/gen_abund_main/Genus_abund.tsv"
         species: "../bioinformatics_stats/microeco/loris/abundance/main/spe_abund_main/Species_abund.tsv"
       culi:
+        kegg: "../bioinformatics_stats/microeco/loris/abundance/culi/keg_abund_culi"
+        fpt: "../bioinformatics_stats/microeco/loris/abundance/culi/fpt_abund_culi"
+        njc: "../bioinformatics_stats/microeco/loris/abundance/culi/njc_abund_culi"
         phylum:  "../bioinformatics_stats/microeco/loris/abundance/culi/phy_abund_culi/Phylum_abund.tsv"
         class:   "../bioinformatics_stats/microeco/loris/abundance/culi/cla_abund_culi/Class_abund.tsv"
         order:   "../bioinformatics_stats/microeco/loris/abundance/culi/ord_abund_culi/Order_abund.tsv"
@@ -81,14 +118,20 @@ loris:
         genus:   "../bioinformatics_stats/microeco/loris/abundance/culi/gen_abund_culi/Genus_abund.tsv"
         species: "../bioinformatics_stats/microeco/loris/abundance/culi/spe_abund_culi/Species_abund.tsv"
       warb:
-        phylum:  "../bioinformatics_stats/microeco/loris/abundance/warb/phy_abund_warb/Phylum_abund.tsv"
-        class:   "../bioinformatics_stats/microeco/loris/abundance/warb/cla_abund_warb/Class_abund.tsv"
-        order:   "../bioinformatics_stats/microeco/loris/abundance/warb/ord_abund_warb/Order_abund.tsv"
-        family:  "../bioinformatics_stats/microeco/loris/abundance/warb/fam_abund_warb/Family_abund.tsv"
-        genus:   "../bioinformatics_stats/microeco/loris/abundance/warb/gen_abund_warb/Genus_abund.tsv"
-        species: "../bioinformatics_stats/microeco/loris/abundance/warb/spe_abund_warb/Species_abund.tsv"
+        kegg: "../bioinformatics_stats/microeco/loris/abundance/warble/keg_abund_warb"
+        fpt: "../bioinformatics_stats/microeco/loris/abundance/warble/fpt_abund_warb"
+        njc: "../bioinformatics_stats/microeco/loris/abundance/warble/njc_abund_warb"
+        phylum:  "../bioinformatics_stats/microeco/loris/abundance/warble/phy_abund_warb/Phylum_abund.tsv"
+        class:   "../bioinformatics_stats/microeco/loris/abundance/warble/cla_abund_warb/Class_abund.tsv"
+        order:   "../bioinformatics_stats/microeco/loris/abundance/warble/ord_abund_warb/Order_abund.tsv"
+        family:  "../bioinformatics_stats/microeco/loris/abundance/warble/fam_abund_warb/Family_abund.tsv"
+        genus:   "../bioinformatics_stats/microeco/loris/abundance/warble/gen_abund_warb/Genus_abund.tsv"
+        species: "../bioinformatics_stats/microeco/loris/abundance/warble/spe_abund_warb/Species_abund.tsv"
     alpha:
       main:
+        kegg: "../bioinformatics_stats/microeco/loris/alphadiversity/main/keg_alphadiv_main"
+        fpt: "../bioinformatics_stats/microeco/loris/alphadiversity/main/fpt_alphadiv_main"
+        njc: "../bioinformatics_stats/microeco/loris/alphadiversity/main/njc_alphadiv_main"
         phylum:  "../bioinformatics_stats/microeco/loris/alphadiversity/main/phy_alphadiv_main/alpha_diversity.csv"
         class:   "../bioinformatics_stats/microeco/loris/alphadiversity/main/cla_alphadiv_main/alpha_diversity.csv"
         order:   "../bioinformatics_stats/microeco/loris/alphadiversity/main/ord_alphadiv_main/alpha_diversity.csv"
@@ -96,6 +139,9 @@ loris:
         genus:   "../bioinformatics_stats/microeco/loris/alphadiversity/main/gen_alphadiv_main/alpha_diversity.csv"
         species: "../bioinformatics_stats/microeco/loris/alphadiversity/main/spe_alphadiv_main/alpha_diversity.csv"
       culi:
+        kegg: "../bioinformatics_stats/microeco/loris/alphadiversity/culi/keg_alphadiv_culi"
+        fpt: "../bioinformatics_stats/microeco/loris/alphadiversity/culi/fpt_alphadiv_culi"
+        njc: "../bioinformatics_stats/microeco/loris/alphadiversity/culi/njc_alphadiv_culi"
         phylum:  "../bioinformatics_stats/microeco/loris/alphadiversity/culi/phy_alphadiv_culi/alpha_diversity.csv"
         class:   "../bioinformatics_stats/microeco/loris/alphadiversity/culi/cla_alphadiv_culi/alpha_diversity.csv"
         order:   "../bioinformatics_stats/microeco/loris/alphadiversity/culi/ord_alphadiv_culi/alpha_diversity.csv"
@@ -103,6 +149,9 @@ loris:
         genus:   "../bioinformatics_stats/microeco/loris/alphadiversity/culi/gen_alphadiv_culi/alpha_diversity.csv"
         species: "../bioinformatics_stats/microeco/loris/alphadiversity/culi/spe_alphadiv_culi/alpha_diversity.csv"
       warb:
+        kegg: "../bioinformatics_stats/microeco/loris/alphadiversity/warble/keg_alphadiv_warb"
+        fpt: "../bioinformatics_stats/microeco/loris/alphadiversity/warble/fpt_alphadiv_warb"
+        njc: "../bioinformatics_stats/microeco/loris/alphadiversity/warble/njc_alphadiv_warb"
         phylum:  "../bioinformatics_stats/microeco/loris/alphadiversity/warble/phy_alphadiv_warb/alpha_diversity.csv"
         class:   "../bioinformatics_stats/microeco/loris/alphadiversity/warble/cla_alphadiv_warb/alpha_diversity.csv"
         order:   "../bioinformatics_stats/microeco/loris/alphadiversity/warble/ord_alphadiv_warb/alpha_diversity.csv"
@@ -111,6 +160,9 @@ loris:
         species: "../bioinformatics_stats/microeco/loris/alphadiversity/warble/spe_alphadiv_warb/alpha_diversity.csv"
     beta:
       main:
+        kegg: "../bioinformatics_stats/microeco/loris/betadiversity/main/keg_betadiv_main"
+        fpt: "../bioinformatics_stats/microeco/loris/betadiversity/main/fpt_betadiv_main"
+        njc: "../bioinformatics_stats/microeco/loris/betadiversity/main/njc_betadiv_main"
         phylum: 
           canber:    "../bioinformatics_stats/microeco/loris/betadiversity/main/phy_betadiv_main/canberra.csv"
           unifrac_u: "../bioinformatics_stats/microeco/loris/betadiversity/main/phy_betadiv_main/unwei_unifrac.csv"
@@ -136,6 +188,9 @@ loris:
           unifrac_u: "../bioinformatics_stats/microeco/loris/betadiversity/main/spe_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "../bioinformatics_stats/microeco/loris/betadiversity/main/spe_betadiv_main/wei_unifrac.csv"
       culi:
+        kegg: "../bioinformatics_stats/microeco/loris/betadiversity/culi/keg_betadiv_culi"
+        fpt:  "../bioinformatics_stats/microeco/loris/betadiversity/culi/fpt_betadiv_culi"
+        njc:  "../bioinformatics_stats/microeco/loris/betadiversity/culi/njc_betadiv_culi"
         phylum: 
           canber:    "../bioinformatics_stats/microeco/loris/betadiversity/culi/phy_betadiv_culi/canberra.csv"
           unifrac_u: "../bioinformatics_stats/microeco/loris/betadiversity/culi/phy_betadiv_culi/unwei_unifrac.csv"
@@ -161,6 +216,9 @@ loris:
           unifrac_u: "../bioinformatics_stats/microeco/loris/betadiversity/culi/spe_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "../bioinformatics_stats/microeco/loris/betadiversity/culi/spe_betadiv_culi/wei_unifrac.csv"
       warb:
+        kegg: "../bioinformatics_stats/microeco/loris/betadiversity/warble/keg_betadiv_warb"
+        fpt:  "../bioinformatics_stats/microeco/loris/betadiversity/warble/fpt_betadiv_warb"
+        njc:  "../bioinformatics_stats/microeco/loris/betadiversity/warble/njc_betadiv_warb"
         phylum: 
           canber:    "../bioinformatics_stats/microeco/loris/betadiversity/warb/phy_betadiv_warb/canberra.csv"
           unifrac_u: "../bioinformatics_stats/microeco/loris/betadiversity/warb/phy_betadiv_warb/unwei_unifrac.csv"
@@ -550,12 +608,14 @@ abund_wf16s_files:
 
   
 microbiome:
+  setup_dir: "../bioinformatics_stats/setup/microbiome"
   inputs: "../bioinformatics_stats/setup/microbiome/inputs.R"
   packages: "../bioinformatics_stats/setup/microbiome/packages.R"
   first_use_packages: "../bioinformatics_stats/setup/microbiome/packages_first_use.R"
   functions: "../bioinformatics_stats/setup/microbiome/functions.R"
   tax4fun: "../bioinformatics_stats/setup/microbiome/Tax4Fun2_ReferenceData_v2/"
-  blast: "../bioinformatics_stats/setup/microbiome/ncbi-blast-2.16.0+/"
+  Ref99NR: "../bioinformatics_stats/setup/microbiome/Tax4Fun2_ReferenceData_v2/Ref99NR/"
+  blast: "../bioinformatics_stats/setup/microbiome/ncbi-blast-2.16.0+/bin"
   test_prediction: "../bioinformatics_stats/setup/microbiome/test_prediction/"
 
 methods_16s:
@@ -570,6 +630,22 @@ methods_16s:
   tax_rank: "S"
   n_taxa_barplot: 12
   abund_threshold: 0
+  loris:
+    rarefy: 6000
+    norm: "SRS"
+    min_abund: 0.0001
+    min_freq: 0.02
+    inlcude_lowest: TRUE
+    unifrac: TRUE
+    betadiv: "canberra"
+    tax4fun_db: "Ref99NR"
+    loris_rarefy: 6000
+    keg_minID: 97
+  loris_norm: "SRS"
+  loris_filter:
+    rel_abund: 0.0001
+    freq: 0.02
+    inlcude_lowest: TRUE
     
 notebooks:
   AMR: "../Notebooks/Rich/"

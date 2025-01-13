@@ -1,68 +1,102 @@
-"ID"	"seqrun"	"subject"	"collection"	"study_day"	"study_week"	"diet"	"location"	"estrus"	"pregnant"	"together"	"steroid_dose"	"diet_steroid"	"diet_week"	"diet.num"	"subj.num"	"loc.num"	"est.num"	"pre.num"	"acc.num"
-"W1"	"hdz14"	"W"	2023-10-26	1	1	"Base"	"old"	"Y"	NA	"Y"	0	"Base.0"	"Base.1"	1	1	1	1	NA	1
-"W2"	"hdz1"	"W"	2023-10-27	2	1	"Base"	"old"	"Y"	NA	"Y"	0	"Base.0"	"Base.1"	1	1	1	1	NA	1
-"W4"	"hdz1"	"W"	2023-10-29	4	1	"Base"	"old"	"Y"	NA	"Y"	0	"Base.0"	"Base.1"	1	1	1	1	NA	1
-"W6"	"hdz1"	"W"	2023-10-31	6	1	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.1"	1	1	1	NA	2	2
-"W7"	"hdz5"	"W"	2023-11-01	7	1	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.1"	1	1	1	NA	2	2
-"W9"	"hdz1"	"W"	2023-11-03	9	2	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.2"	1	1	1	NA	2	2
-"W10"	"hdz11"	"W"	2023-11-04	10	2	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.2"	1	1	1	NA	2	2
-"W33"	"hdz1"	"W"	2023-11-27	33	5	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.5"	1	1	1	NA	2	2
-"W42"	"hdz4"	"W"	2023-12-06	42	6	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.6"	1	1	1	NA	2	2
-"W43"	"hdz4"	"W"	2023-12-07	43	7	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.7"	1	1	1	NA	2	2
-"W52"	"hdz4"	"W"	2023-12-16	52	8	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.8"	1	1	1	NA	2	2
-"W54"	"hdz11"	"W"	2023-12-18	54	8	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.8"	1	1	1	NA	2	2
-"W57"	"hdz4"	"W"	2023-12-21	57	9	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.9"	1	1	1	NA	2	2
-"W60"	"hdz3"	"W"	2023-12-24	60	9	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.9"	1	1	1	NA	2	2
-"W63"	"hdz5"	"W"	2023-12-27	63	9	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.9"	1	1	1	NA	2	2
-"W68"	"hdz4"	"W"	2024-01-01	68	10	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.10"	1	1	1	NA	2	2
-"W73"	"hdz4"	"W"	2024-01-06	73	11	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.11"	1	1	1	NA	2	2
-"W83"	"hdz7"	"W"	2024-01-16	83	12	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.12"	1	1	1	NA	2	2
-"W84"	"hdz6"	"W"	2024-01-17	84	12	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.12"	1	1	1	NA	2	2
-"W85"	"hdz7"	"W"	2024-01-18	85	13	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.13"	1	1	1	NA	2	2
-"W87"	"hdz7"	"W"	2024-01-20	87	13	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.13"	1	1	1	NA	2	2
-"W93"	"hdz5"	"W"	2024-01-26	93	14	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.14"	1	1	1	NA	2	2
-"W94"	"hdz5"	"W"	2024-01-27	94	14	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.14"	1	1	1	NA	2	2
-"W95"	"hdz8"	"W"	2024-01-28	95	14	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.14"	1	1	1	NA	2	2
-"W96"	"hdz5"	"W"	2024-01-29	96	14	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.14"	1	1	1	NA	2	2
-"W97"	"hdz5"	"W"	2024-01-30	97	14	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.14"	1	1	1	NA	2	2
-"W100"	"hdz4"	"W"	2024-02-02	100	15	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.15"	1	1	1	NA	2	2
-"W101"	"hdz5"	"W"	2024-02-03	101	15	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.15"	1	1	1	NA	2	2
-"W104"	"hdz4"	"W"	2024-02-06	104	15	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.15"	1	1	1	NA	2	2
-"W107"	"hdz6"	"W"	2024-02-09	107	16	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.16"	1	1	1	NA	2	2
-"W108"	"hdz6"	"W"	2024-02-10	108	16	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.16"	1	1	1	NA	2	2
-"W109"	"hdz5"	"W"	2024-02-11	109	16	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.16"	1	1	1	NA	2	2
-"W111"	"hdz5"	"W"	2024-02-13	111	16	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.16"	1	1	1	NA	2	2
-"W112"	"hdz6"	"W"	2024-02-14	112	16	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.16"	1	1	1	NA	2	2
-"W114"	"hdz6"	"W"	2024-02-16	114	17	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.17"	1	1	1	NA	2	2
-"W120"	"hdz6"	"W"	2024-02-22	120	18	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.18"	1	1	1	NA	2	2
-"W121"	"hdz7"	"W"	2024-02-23	121	18	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.18"	1	1	1	NA	2	2
-"W122"	"hdz15"	"W"	2024-02-24	122	18	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.18"	1	1	1	NA	2	2
-"W123"	"hdz5"	"W"	2024-02-25	123	18	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.18"	1	1	1	NA	2	2
-"W126"	"hdz13"	"W"	2024-02-28	126	18	"Base"	"old"	NA	"N"	"N"	0	"Base.0"	"Base.18"	1	1	1	NA	2	2
-"W127"	"hdz6"	"W"	2024-02-29	127	19	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.19"	1	1	2	NA	2	2
-"W139"	"hdz15"	"W"	2024-03-12	139	20	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.20"	1	1	2	NA	2	2
-"W140"	"hdz14"	"W"	2024-03-13	140	20	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.20"	1	1	2	NA	2	2
-"W144"	"hdz12"	"W"	2024-03-17	144	21	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.21"	1	1	2	NA	2	2
-"W150"	"hdz12"	"W"	2024-03-23	150	22	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.22"	1	1	2	NA	2	2
-"W152"	"hdz6"	"W"	2024-03-25	152	22	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.22"	1	1	2	NA	2	2
-"W153"	"hdz4"	"W"	2024-03-26	153	22	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.22"	1	1	2	NA	2	2
-"W154"	"hdz11"	"W"	2024-03-27	154	22	"Base"	"new"	NA	"N"	"N"	0	"Base.0"	"Base.22"	1	1	2	NA	2	2
-"W164"	"hdz13"	"W"	2024-04-06	164	24	"Base"	"new"	NA	"Y"	"Y"	0	"Base.0"	"Base.24"	1	1	2	NA	1	1
-"W170"	"hdz13"	"W"	2024-04-12	170	25	"Base"	"new"	NA	"Y"	"Y"	0	"Base.0"	"Base.25"	1	1	2	NA	1	1
-"W181"	"hdz13"	"W"	2024-04-23	181	26	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.26"	1	1	2	NA	1	NA
-"W185"	"hdz15"	"W"	2024-04-27	185	27	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.27"	1	1	2	NA	1	NA
-"W187"	"hdz15"	"W"	2024-04-29	187	27	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.27"	1	1	2	NA	1	NA
-"W188"	"hdz13"	"W"	2024-04-30	188	27	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.27"	1	1	2	NA	1	NA
-"W189"	"hdz13"	"W"	2024-05-01	189	27	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.27"	1	1	2	NA	1	NA
-"W197"	"hdz13"	"W"	2024-05-09	197	29	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.29"	1	1	2	NA	1	NA
-"W221"	"hdz11"	"W"	2024-06-02	221	32	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.32"	1	1	2	NA	1	NA
-"W227"	"hdz17"	"W"	2024-06-08	227	33	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.33"	1	1	2	NA	1	NA
-"W228"	"hdz15"	"W"	2024-06-09	228	33	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.33"	1	1	2	NA	1	NA
-"W247"	"hdz14"	"W"	2024-06-28	247	36	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.36"	1	1	2	NA	1	NA
-"W251"	"hdz14"	"W"	2024-07-02	251	36	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.36"	1	1	2	NA	1	NA
-"W262"	"hdz17"	"W"	2024-07-13	262	38	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.38"	1	1	2	NA	1	NA
-"W265"	"hdz14"	"W"	2024-07-16	265	38	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.38"	1	1	2	NA	1	NA
-"W269"	"hdz17"	"W"	2024-07-20	269	39	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.39"	1	1	2	NA	1	NA
-"W280"	"hdz17"	"W"	2024-07-31	280	40	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.40"	1	1	2	NA	1	NA
-"W282"	"hdz17"	"W"	2024-08-02	282	41	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.41"	1	1	2	NA	1	NA
-"W318"	"hdz17"	"W"	2024-09-07	318	46	"Base"	"new"	NA	"Y"	NA	0	"Base.0"	"Base.46"	1	1	2	NA	1	NA
+"ID"	"study_day"	"subj_day"	"CollectionDate"	"Subject"	"Subj_Certainty"	"probiotic"	"oatgel"	"steroid"	"cauliflower"	"tomatoes"	"broccoli"	"med_type"	"med_name"	"med_dose"	"dose_units"	"enclosure"	"access"	"estrus"	"pregnant"	"health_note"	"repro_note"	"SampleNotes"
+"hdz-095"	1	"W1"	2023-10-26	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"yes"	"yes"	"no"	NA	NA	""
+"hdz-005"	2	"W2"	2023-10-27	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"yes"	"yes"	"no"	NA	NA	"Suspected date of conception"
+"hdz-004"	3	"W3"	2023-10-28	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"yes"	"yes"	"no"	NA	NA	"Vaginal closure began"
+"hdz-019"	4	"W4"	2023-10-29	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"yes"	"yes"	"no"	NA	NA	"Complete vaginal closure"
+"hdz-025"	6	"W6"	2023-10-31	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-002"	7	"W7"	2023-11-01	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-023"	9	"W9"	2023-11-03	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-001"	10	"W10"	2023-11-04	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-050"	14	"W14"	2023-11-08	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-036"	15	"W15"	2023-11-09	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-067"	33	"W33"	2023-11-27	"warble"	"no"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-186"	42	"W42"	2023-12-06	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-183"	43	"W43"	2023-12-07	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-195"	45	"W45"	2023-12-09	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-161"	52	"W52"	2023-12-16	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-162"	53	"W53"	2023-12-17	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-170"	54	"W54"	2023-12-18	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-099"	57	"W57"	2023-12-21	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-101"	60	"W60"	2023-12-24	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	"Very little stabilizer in the tube"
+"hdz-096"	63	"W63"	2023-12-27	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-106"	68	"W68"	2024-01-01	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-193"	73	"W73"	2024-01-06	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-259"	80	"W80"	2024-01-13	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-251"	83	"W83"	2024-01-16	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-323"	84	"W84"	2024-01-17	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-246"	85	"W85"	2024-01-18	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-247"	87	"W87"	2024-01-20	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-209"	93	"W93"	2024-01-26	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-207"	94	"W94"	2024-01-27	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-260"	95	"W95"	2024-01-28	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-205"	96	"W96"	2024-01-29	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-208"	97	"W97"	2024-01-30	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-194"	100	"W100"	2024-02-02	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-200"	101	"W101"	2024-02-03	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-239"	103	"W103"	2024-02-05	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-199"	104	"W104"	2024-02-06	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-307"	107	"W107"	2024-02-09	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-315"	108	"W108"	2024-02-10	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-306"	109	"W109"	2024-02-11	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-331"	110	"W110"	2024-02-12	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-303"	111	"W111"	2024-02-13	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-312"	112	"W112"	2024-02-14	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-313"	114	"W114"	2024-02-16	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-333"	117	"W117"	2024-02-19	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-332"	119	"W119"	2024-02-21	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-325"	120	"W120"	2024-02-22	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-242"	121	"W121"	2024-02-23	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-334"	122	"W122"	2024-02-24	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-302"	123	"W123"	2024-02-25	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-232"	126	"W126"	2024-02-28	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"old"	"no"	"no"	"no"	NA	NA	""
+"hdz-309"	127	"W127"	2024-02-29	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-344"	136	"W136"	2024-03-09	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-409"	139	"W139"	2024-03-12	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-346"	140	"W140"	2024-03-13	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-210"	141	"W141"	2024-03-14	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-393"	144	"W144"	2024-03-17	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-340"	145	"W145"	2024-03-18	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-349"	147	"W147"	2024-03-20	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"no"	NA	NA	""
+"hdz-406"	149	"W149"	2024-03-22	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-391"	150	"W150"	2024-03-23	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-316"	151	"W151"	2024-03-24	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-223"	152	"W152"	2024-03-25	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-217"	153	"W153"	2024-03-26	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-228"	154	"W154"	2024-03-27	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-403"	157	"W157"	2024-03-30	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-402"	158	"W158"	2024-03-31	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	""
+"hdz-387"	159	"W159"	2024-04-01	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"yes"	"no"	NA	NA	"Warble vulva swollen"
+"hdz-378"	164	"W164"	2024-04-06	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"yes"	"no"	"yes"	NA	NA	""
+"hdz-379"	170	"W170"	2024-04-12	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"yes"	"no"	"yes"	NA	NA	""
+"hdz-359"	173	"W173"	2024-04-15	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"yes"	"no"	"yes"	NA	NA	""
+"hdz-355"	178	"W178"	2024-04-20	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-360"	180	"W180"	2024-04-22	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-380"	181	"W181"	2024-04-23	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-451"	185	"W185"	2024-04-27	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-453"	187	"W187"	2024-04-29	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-449"	188	"W188"	2024-04-30	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-448"	189	"W189"	2024-05-01	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-439"	191	"W191"	2024-05-03	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-432"	192	"W192"	2024-05-04	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-440"	197	"W197"	2024-05-09	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-443"	200	"W200"	2024-05-12	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-165"	202	"W202"	2024-05-14	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-214"	221	"W221"	2024-06-02	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-446"	222	"W222"	2024-06-03	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-447"	224	"W224"	2024-06-05	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-475"	227	"W227"	2024-06-08	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-441"	228	"W228"	2024-06-09	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-464"	230	"W230"	2024-06-11	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-164"	232	"W232"	2024-06-13	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-474"	234	"W234"	2024-06-15	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-415"	243	"W243"	2024-06-24	"warble"	"no"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-171"	247	"W247"	2024-06-28	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-159"	251	"W251"	2024-07-02	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-463"	262	"W262"	2024-07-13	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-158"	265	"W265"	2024-07-16	"warble"	"no"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-461"	269	"W269"	2024-07-20	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-466"	272	"W272"	2024-07-23	"warble"	"no"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-488"	280	"W280"	2024-07-31	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-483"	282	"W282"	2024-08-02	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-479"	308	"W308"	2024-08-28	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""
+"hdz-487"	318	"W318"	2024-09-07	"warble"	"yes"	"no"	"no"	0	"yes"	"yes"	"yes"	"none"	"none"	0	"mg/day"	"new"	"no"	"no"	"yes"	NA	NA	""

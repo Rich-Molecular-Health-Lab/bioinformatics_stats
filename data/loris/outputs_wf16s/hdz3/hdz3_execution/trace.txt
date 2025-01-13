@@ -1,0 +1,159 @@
+task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
+3	7a/db161e	153551	minimap_pipeline:run_common:getParams	COMPLETED	0	2025-01-12 18:50:56.089	484ms	6ms	37.4%	0	0	75.9 KB	3.4 KB
+19	53/369017	153419	fastcat (15)	COMPLETED	0	2025-01-12 18:50:56.022	675ms	156ms	34.5%	85.3 MB	382.5 MB	276.2 KB	101.7 KB
+26	0a/bd7f4d	153410	fastcat (22)	COMPLETED	0	2025-01-12 18:50:56.007	701ms	174ms	73.3%	88.1 MB	512.3 MB	6.2 MB	4.2 MB
+21	25/e7c5f9	153476	fastcat (17)	COMPLETED	0	2025-01-12 18:50:56.053	664ms	191ms	168.3%	88.8 MB	511.4 MB	16.8 MB	11.7 MB
+5	ed/6068da	153438	fastcat (1)	COMPLETED	0	2025-01-12 18:50:56.033	683ms	181ms	162.3%	89.8 MB	512.3 MB	15.3 MB	10.7 MB
+6	b6/eed54b	153458	fastcat (2)	COMPLETED	0	2025-01-12 18:50:56.043	692ms	208ms	159.8%	86.2 MB	511.4 MB	18 MB	12.6 MB
+20	3f/4a1b07	153495	fastcat (16)	COMPLETED	0	2025-01-12 18:50:56.062	680ms	206ms	192.8%	89.7 MB	512.3 MB	23.9 MB	16.4 MB
+28	04/a45fe2	153532	fastcat (24)	COMPLETED	0	2025-01-12 18:50:56.078	667ms	228ms	184.4%	87.4 MB	512.3 MB	23.1 MB	16.1 MB
+29	b2/0ee477	155342	minimap_pipeline:output_results (1)	COMPLETED	0	2025-01-12 18:50:56.717	340ms	4ms	53.3%	0	0	72.7 KB	259 B
+11	da/44e6e7	155402	fastcat (7)	COMPLETED	0	2025-01-12 18:50:56.736	478ms	186ms	177.0%	89 MB	511.8 MB	17.5 MB	12.2 MB
+27	76/0d7e20	155493	fastcat (23)	COMPLETED	0	2025-01-12 18:50:56.756	475ms	203ms	162.6%	89.1 MB	511.8 MB	17.5 MB	12.1 MB
+23	78/e40e88	155321	fastcat (19)	COMPLETED	0	2025-01-12 18:50:56.707	537ms	220ms	165.2%	85.9 MB	510 MB	20.3 MB	14.1 MB
+14	4c/1cabe5	155621	fastcat (10)	COMPLETED	0	2025-01-12 18:50:56.778	523ms	226ms	130.3%	90.4 MB	511.8 MB	15.8 MB	11 MB
+12	2a/f6f1e8	155538	fastcat (8)	COMPLETED	0	2025-01-12 18:50:56.764	527ms	243ms	192.9%	84.5 MB	382 MB	27.1 MB	18.9 MB
+16	ce/86fe1f	155439	fastcat (12)	COMPLETED	0	2025-01-12 18:50:56.745	575ms	243ms	176.8%	86.9 MB	575.3 MB	23.3 MB	16.3 MB
+18	4b/117678	157142	fastcat (14)	COMPLETED	0	2025-01-12 18:50:57.225	439ms	169ms	166.0%	89.2 MB	511.8 MB	14.3 MB	10 MB
+15	94/5d1c2e	155372	fastcat (11)	COMPLETED	0	2025-01-12 18:50:56.726	946ms	662ms	338.5%	86.3 MB	510.9 MB	122.7 MB	86 MB
+24	a8/b49ddc	157169	fastcat (20)	COMPLETED	0	2025-01-12 18:50:57.239	475ms	206ms	252.9%	89 MB	510.9 MB	28.2 MB	19.7 MB
+22	24/80ae16	157317	fastcat (18)	COMPLETED	0	2025-01-12 18:50:57.298	477ms	202ms	243.0%	90.3 MB	512.3 MB	27.5 MB	19.2 MB
+9	41/4a7914	157352	fastcat (5)	COMPLETED	0	2025-01-12 18:50:57.308	473ms	167ms	179.2%	82.9 MB	511.8 MB	17.6 MB	12.2 MB
+25	a0/10a7ac	157406	fastcat (21)	COMPLETED	0	2025-01-12 18:50:57.328	476ms	206ms	250.9%	80.1 MB	511.8 MB	30.3 MB	21.1 MB
+8	c0/fd8aa6	157196	fastcat (4)	COMPLETED	0	2025-01-12 18:50:57.253	652ms	279ms	117.4%	81.7 MB	511.8 MB	16.9 MB	11.8 MB
+10	6b/e136e7	158570	fastcat (6)	COMPLETED	0	2025-01-12 18:50:57.672	413ms	148ms	173.1%	81.7 MB	511.8 MB	12.7 MB	8.9 MB
+13	0b/b91d84	158586	fastcat (9)	COMPLETED	0	2025-01-12 18:50:57.683	426ms	158ms	192.4%	87 MB	511.8 MB	16.3 MB	11.4 MB
+17	d6/4abd14	158706	fastcat (13)	COMPLETED	0	2025-01-12 18:50:57.721	447ms	172ms	225.5%	88.6 MB	511.4 MB	21.1 MB	14.8 MB
+7	9b/8bfcd1	158866	fastcat (3)	COMPLETED	0	2025-01-12 18:50:57.782	433ms	166ms	204.7%	82.5 MB	510 MB	19.7 MB	13.7 MB
+4	e5/9e3e24	153513	minimap_pipeline:run_common:getVersions	COMPLETED	0	2025-01-12 18:50:56.069	3.4s	3s	142.0%	62.9 MB	4 GB	12.3 MB	3.1 KB
+30	fa/783d85	159744	minimap_pipeline:minimap (pl-ntc-003-ctrl)	COMPLETED	0	2025-01-12 18:50:59.489	5.5s	5.3s	259.5%	437.6 MB	4.4 GB	446.4 MB	4.5 MB
+33	a4/041049	160691	minimap_pipeline:minimap (hdz-155-s67)	COMPLETED	0	2025-01-12 18:51:05.017	7.7s	7.4s	1694.9%	816.1 MB	6.8 GB	482.8 MB	37.7 MB
+32	da/1dc7ff	161625	minimap_pipeline:minimap (hdz-093-s65)	COMPLETED	0	2025-01-12 18:51:12.720	8.3s	8s	1782.4%	796 MB	6.8 GB	486.3 MB	41.1 MB
+35	7b/f9c1e1	162553	minimap_pipeline:minimap (hdz-089-s64)	COMPLETED	0	2025-01-12 18:51:20.982	20.5s	20.3s	2629.0%	926.3 MB	6.9 GB	502.1 MB	55.7 MB
+36	63/3bc57f	163625	minimap_pipeline:minimap (hdz-052-s50)	COMPLETED	0	2025-01-12 18:51:41.512	10.1s	9.8s	1988.3%	857.2 MB	6.8 GB	501.3 MB	54.7 MB
+31	a9/037909	164562	minimap_pipeline:minimap (hdz-046-s48)	COMPLETED	0	2025-01-12 18:51:51.589	5.1s	4.8s	819.0%	823.3 MB	6.8 GB	461 MB	17.9 MB
+34	cb/cbf609	165501	minimap_pipeline:minimap (hdz-190-s59)	COMPLETED	0	2025-01-12 18:51:56.668	8.6s	8.4s	1788.3%	838.4 MB	6.8 GB	489.3 MB	43.7 MB
+37	7b/786b38	166430	minimap_pipeline:minimap (hdz-175-s61)	COMPLETED	0	2025-01-12 18:52:05.315	8.4s	8.1s	1818.7%	876.6 MB	6.8 GB	487.6 MB	42.1 MB
+38	97/d13fff	167365	minimap_pipeline:minimap (hdz-094-s66)	COMPLETED	0	2025-01-12 18:52:13.675	8s	7.8s	1799.8%	799.5 MB	6.7 GB	487.4 MB	42 MB
+39	58/1cfca6	168298	minimap_pipeline:minimap (hdz-108-s60)	COMPLETED	0	2025-01-12 18:52:21.737	9.1s	8.8s	1947.7%	808.6 MB	6.7 GB	494.4 MB	48.4 MB
+40	c3/79a691	169229	minimap_pipeline:minimap (hdz-188-s62)	COMPLETED	0	2025-01-12 18:52:30.794	7.7s	7.4s	1776.7%	888.4 MB	6.8 GB	483.6 MB	38.5 MB
+41	de/bf5be6	170167	minimap_pipeline:minimap (hdz-051-s54)	COMPLETED	0	2025-01-12 18:52:38.523	10.4s	10.1s	2096.9%	747.6 MB	6.7 GB	511.1 MB	63.7 MB
+42	3a/3c677f	171125	minimap_pipeline:minimap (hdz-182-s52)	COMPLETED	0	2025-01-12 18:52:48.894	10.2s	9.9s	2046.3%	862.9 MB	6.8 GB	502.1 MB	55.5 MB
+43	c5/e2b6f6	172060	minimap_pipeline:minimap (hdz-191-s56)	COMPLETED	0	2025-01-12 18:52:59.118	7.4s	7.2s	1755.8%	436 MB	6.3 GB	480.3 MB	35.5 MB
+44	19/a0a6a2	172864	minimap_pipeline:minimap (hdz-101-s57)	COMPLETED	0	2025-01-12 18:53:06.572	37.8s	37.5s	2723.7%	1004 MB	6.9 GB	741.9 MB	274.9 MB
+45	ca/fe0521	174852	minimap_pipeline:minimap (hdz-177-s47)	COMPLETED	0	2025-01-12 18:53:44.393	11.3s	11s	2150.9%	882.4 MB	6.8 GB	513.5 MB	65.9 MB
+46	26/8801f0	175930	minimap_pipeline:minimap (hdz-058-s63)	COMPLETED	0	2025-01-12 18:53:55.677	11s	10.7s	2151.6%	898.6 MB	6.8 GB	511.7 MB	64.2 MB
+47	df/4c3b58	176865	minimap_pipeline:minimap (hdz-104-s69)	COMPLETED	0	2025-01-12 18:54:06.657	8.4s	8.1s	1823.5%	701.6 MB	6.6 GB	488.1 MB	42.7 MB
+48	95/285c2c	177803	minimap_pipeline:minimap (hdz-107-s55)	COMPLETED	0	2025-01-12 18:54:15.046	11.4s	11.1s	2202.8%	923.4 MB	6.8 GB	518.5 MB	70.5 MB
+49	67/9c2161	178865	minimap_pipeline:minimap (hdz-156-s68)	COMPLETED	0	2025-01-12 18:54:26.487	7.9s	7.6s	1823.2%	879 MB	6.8 GB	486.2 MB	40.9 MB
+50	d2/cd7fa6	179805	minimap_pipeline:minimap (hdz-176-s51)	COMPLETED	0	2025-01-12 18:54:34.361	8.4s	8.2s	1830.4%	919 MB	6.9 GB	475.5 MB	31.1 MB
+51	ce/1524f4	180739	minimap_pipeline:minimap (hdz-168-s58)	COMPLETED	0	2025-01-12 18:54:42.802	7.9s	7.6s	1808.5%	806.2 MB	6.7 GB	484.8 MB	39.6 MB
+52	03/419713	181675	minimap_pipeline:minimap (hdz-045-s49)	COMPLETED	0	2025-01-12 18:54:50.663	11.1s	10.8s	2115.1%	925.6 MB	6.9 GB	496 MB	49.8 MB
+53	1e/d08082	182748	minimap_pipeline:minimap (hdz-041-s53)	COMPLETED	0	2025-01-12 18:55:01.771	9.1s	8.9s	1929.1%	916.7 MB	6.9 GB	493.8 MB	47.9 MB
+54	1c/bb7e8f	183683	minimap_pipeline:output_results (2)	COMPLETED	0	2025-01-12 18:55:10.927	344ms	6ms	72.1%	0	0	72.7 KB	259 B
+57	60/484814	183689	minimap_pipeline:output_results (4)	COMPLETED	0	2025-01-12 18:55:10.934	338ms	6ms	39.2%	0	0	72.7 KB	259 B
+62	b0/de13e6	183758	minimap_pipeline:output_results (8)	COMPLETED	0	2025-01-12 18:55:10.957	331ms	7ms	33.9%	0	0	72.7 KB	259 B
+56	82/b471ec	183704	minimap_pipeline:output_results (3)	COMPLETED	0	2025-01-12 18:55:10.943	350ms	7ms	34.8%	0	0	72.7 KB	259 B
+65	c5/3bc359	183875	minimap_pipeline:output_results (10)	COMPLETED	0	2025-01-12 18:55:10.979	324ms	5ms	23.0%	0	0	72.7 KB	259 B
+58	e6/f7e89d	183731	minimap_pipeline:output_results (5)	COMPLETED	0	2025-01-12 18:55:10.950	370ms	12ms	24.8%	0	0	72.7 KB	259 B
+64	00/a984d2	183979	minimap_pipeline:output_results (9)	COMPLETED	0	2025-01-12 18:55:10.993	336ms	14ms	41.9%	0	0	72.7 KB	259 B
+61	37/e73bb5	183831	minimap_pipeline:output_results (7)	COMPLETED	0	2025-01-12 18:55:10.971	367ms	14ms	22.0%	0	0	72.7 KB	259 B
+59	9b/787840	183793	minimap_pipeline:output_results (6)	COMPLETED	0	2025-01-12 18:55:10.964	363ms	4ms	55.2%	0	0	72.7 KB	259 B
+66	10/68e016	183928	minimap_pipeline:output_results (11)	COMPLETED	0	2025-01-12 18:55:10.985	354ms	6ms	72.1%	0	0	72.7 KB	259 B
+67	c7/00544f	184043	minimap_pipeline:output_results (12)	COMPLETED	0	2025-01-12 18:55:11.000	348ms	5ms	80.8%	0	0	72.7 KB	259 B
+73	aa/c028fd	184238	minimap_pipeline:output_results (16)	COMPLETED	0	2025-01-12 18:55:11.025	332ms	8ms	34.5%	0	0	72.7 KB	259 B
+70	ab/3afdc9	184172	minimap_pipeline:output_results (14)	COMPLETED	0	2025-01-12 18:55:11.016	374ms	6ms	30.8%	0	0	72.7 KB	259 B
+74	cd/fc18e1	184284	minimap_pipeline:output_results (17)	COMPLETED	0	2025-01-12 18:55:11.033	373ms	5ms	79.2%	0	0	72.7 KB	259 B
+69	cd/94a58b	184113	minimap_pipeline:output_results (13)	COMPLETED	0	2025-01-12 18:55:11.007	398ms	7ms	70.2%	0	0	72.7 KB	259 B
+78	03/9954c4	184424	minimap_pipeline:output_results (20)	COMPLETED	0	2025-01-12 18:55:11.049	368ms	14ms	53.0%	0	0	72.7 KB	259 B
+77	7d/bacca4	184535	minimap_pipeline:output_results (19)	COMPLETED	0	2025-01-12 18:55:11.065	374ms	7ms	65.0%	0	0	72.7 KB	259 B
+82	d3/2c1a24	184693	minimap_pipeline:output_results (23)	COMPLETED	0	2025-01-12 18:55:11.084	366ms	8ms	53.3%	0	0	72.7 KB	259 B
+76	86/9bc14b	184486	minimap_pipeline:output_results (18)	COMPLETED	0	2025-01-12 18:55:11.058	392ms	13ms	60.2%	0	0	72.7 KB	259 B
+71	0a/5d24bd	184365	minimap_pipeline:output_results (15)	COMPLETED	0	2025-01-12 18:55:11.042	424ms	8ms	53.3%	0	0	72.7 KB	259 B
+80	ac/6f652c	184617	minimap_pipeline:output_results (21)	COMPLETED	0	2025-01-12 18:55:11.075	395ms	6ms	34.5%	0	0	72.7 KB	259 B
+86	ef/24df28	184863	minimap_pipeline:output_results (26)	COMPLETED	0	2025-01-12 18:55:11.106	371ms	27ms	17.3%	0	0	72.7 KB	259 B
+85	49/3166de	184993	minimap_pipeline:output_results (25)	COMPLETED	0	2025-01-12 18:55:11.124	360ms	7ms	65.0%	0	0	72.7 KB	259 B
+94	a0/9df694	185401	minimap_pipeline:output_results (32)	COMPLETED	0	2025-01-12 18:55:11.167	324ms	5ms	80.0%	0	0	72.7 KB	259 B
+81	32/c37ab6	184794	minimap_pipeline:output_results (22)	COMPLETED	0	2025-01-12 18:55:11.094	401ms	5ms	0.0%	0	0	72.7 KB	257 B
+87	90/0071cc	185191	minimap_pipeline:output_results (27)	COMPLETED	0	2025-01-12 18:55:11.147	348ms	5ms	49.4%	0	0	72.7 KB	259 B
+88	fc/74dbf7	185097	minimap_pipeline:output_results (28)	COMPLETED	0	2025-01-12 18:55:11.137	381ms	12ms	0.0%	0	0	72.7 KB	257 B
+91	09/46eb5e	185509	minimap_pipeline:output_results (30)	COMPLETED	0	2025-01-12 18:55:11.177	345ms	4ms	67.8%	0	0	72.7 KB	259 B
+84	68/d9d21b	184950	minimap_pipeline:output_results (24)	COMPLETED	0	2025-01-12 18:55:11.116	409ms	5ms	86.0%	0	0	72.7 KB	259 B
+89	b7/689ede	185280	minimap_pipeline:output_results (29)	COMPLETED	0	2025-01-12 18:55:11.156	373ms	6ms	0.0%	0	0	72.7 KB	257 B
+93	3d/055b4b	185637	minimap_pipeline:output_results (31)	COMPLETED	0	2025-01-12 18:55:11.187	347ms	6ms	77.7%	0	0	72.7 KB	259 B
+96	5d/444bdb	185721	minimap_pipeline:output_results (33)	COMPLETED	0	2025-01-12 18:55:11.196	392ms	7ms	70.2%	0	0	72.7 KB	259 B
+100	aa/e9c4ff	186937	minimap_pipeline:output_results (36)	COMPLETED	0	2025-01-12 18:55:11.313	354ms	7ms	23.8%	0	0	72.7 KB	259 B
+97	25/51072e	186704	minimap_pipeline:output_results (34)	COMPLETED	0	2025-01-12 18:55:11.284	415ms	16ms	42.6%	0	0	72.7 KB	259 B
+98	d1/d0ef98	186771	minimap_pipeline:output_results (35)	COMPLETED	0	2025-01-12 18:55:11.293	407ms	4ms	79.2%	0	0	72.7 KB	259 B
+102	bb/79841d	186849	minimap_pipeline:output_results (38)	COMPLETED	0	2025-01-12 18:55:11.302	426ms	11ms	19.7%	0	0	72.7 KB	259 B
+101	be/998fdf	187040	minimap_pipeline:output_results (37)	COMPLETED	0	2025-01-12 18:55:11.322	415ms	9ms	67.2%	0	0	72.7 KB	259 B
+103	85/a3ffa1	187345	minimap_pipeline:output_results (39)	COMPLETED	0	2025-01-12 18:55:11.357	386ms	6ms	33.1%	0	0	72.7 KB	259 B
+109	bb/740db6	187594	minimap_pipeline:output_results (43)	COMPLETED	0	2025-01-12 18:55:11.378	378ms	7ms	29.0%	0	0	72.7 KB	259 B
+107	48/19c03d	187727	minimap_pipeline:output_results (42)	COMPLETED	0	2025-01-12 18:55:11.388	369ms	6ms	83.3%	0	0	72.7 KB	259 B
+106	72/cca352	187120	minimap_pipeline:output_results (41)	COMPLETED	0	2025-01-12 18:55:11.333	428ms	5ms	36.7%	0	0	72.7 KB	259 B
+113	1d/aaca29	188103	minimap_pipeline:output_results (46)	COMPLETED	0	2025-01-12 18:55:11.417	345ms	4ms	57.6%	0	0	72.7 KB	259 B
+114	ec/ace700	188212	minimap_pipeline:output_results (47)	COMPLETED	0	2025-01-12 18:55:11.426	356ms	4ms	92.0%	0	0	72.7 KB	259 B
+105	49/439d3b	187237	minimap_pipeline:output_results (40)	COMPLETED	0	2025-01-12 18:55:11.345	437ms	8ms	53.0%	0	0	72.7 KB	259 B
+110	a5/4a2001	187849	minimap_pipeline:output_results (44)	COMPLETED	0	2025-01-12 18:55:11.397	424ms	7ms	55.9%	0	0	72.7 KB	259 B
+117	e1/4dc1e8	188676	minimap_pipeline:output_results (49)	COMPLETED	0	2025-01-12 18:55:11.476	345ms	5ms	86.0%	0	0	72.7 KB	259 B
+112	04/822ca2	187997	minimap_pipeline:output_results (45)	COMPLETED	0	2025-01-12 18:55:11.409	412ms	8ms	69.0%	0	0	72.7 KB	259 B
+116	d8/9869bd	188594	minimap_pipeline:output_results (48)	COMPLETED	0	2025-01-12 18:55:11.464	377ms	4ms	87.9%	0	0	72.7 KB	259 B
+118	a9/e7149c	188517	minimap_pipeline:output_results (50)	COMPLETED	0	2025-01-12 18:55:11.455	397ms	5ms	72.1%	0	0	72.7 KB	259 B
+124	24/cd4b87	188902	minimap_pipeline:output_results (54)	COMPLETED	0	2025-01-12 18:55:11.510	375ms	16ms	49.4%	0	0	72.7 KB	259 B
+121	20/1cc88f	188850	minimap_pipeline:output_results (52)	COMPLETED	0	2025-01-12 18:55:11.503	388ms	5ms	77.7%	0	0	72.7 KB	259 B
+126	12/a9be86	189023	minimap_pipeline:output_results (56)	COMPLETED	0	2025-01-12 18:55:11.527	369ms	4ms	58.0%	0	0	72.7 KB	259 B
+122	8c/6b69bd	188916	minimap_pipeline:output_results (53)	COMPLETED	0	2025-01-12 18:55:11.494	405ms	9ms	21.9%	0	0	72.7 KB	259 B
+125	7e/4f243e	188948	minimap_pipeline:output_results (55)	COMPLETED	0	2025-01-12 18:55:11.518	385ms	6ms	61.5%	0	0	72.7 KB	259 B
+120	15/54d2a4	188761	minimap_pipeline:output_results (51)	COMPLETED	0	2025-01-12 18:55:11.484	420ms	9ms	60.2%	0	0	72.7 KB	259 B
+129	a5/5183e0	189204	minimap_pipeline:output_results (58)	COMPLETED	0	2025-01-12 18:55:11.547	370ms	8ms	63.5%	0	0	72.7 KB	259 B
+130	0a/270491	189115	minimap_pipeline:output_results (59)	COMPLETED	0	2025-01-12 18:55:11.536	385ms	7ms	33.9%	0	0	72.7 KB	259 B
+132	f6/12a55a	189432	minimap_pipeline:output_results (60)	COMPLETED	0	2025-01-12 18:55:11.574	353ms	5ms	37.7%	0	0	72.7 KB	259 B
+128	bf/e1b5cc	189276	minimap_pipeline:output_results (57)	COMPLETED	0	2025-01-12 18:55:11.555	384ms	5ms	66.1%	0	0	72.7 KB	259 B
+133	5b/298f82	189551	minimap_pipeline:output_results (61)	COMPLETED	0	2025-01-12 18:55:11.584	364ms	7ms	65.0%	0	0	72.7 KB	259 B
+134	d9/2e6f5d	189646	minimap_pipeline:output_results (62)	COMPLETED	0	2025-01-12 18:55:11.595	358ms	6ms	73.4%	0	0	72.7 KB	259 B
+138	78/3c9388	189854	minimap_pipeline:output_results (65)	COMPLETED	0	2025-01-12 18:55:11.612	346ms	6ms	88.9%	0	0	72.7 KB	259 B
+135	12/2fbd31	189797	minimap_pipeline:output_results (63)	COMPLETED	0	2025-01-12 18:55:11.603	356ms	5ms	82.5%	0	0	72.7 KB	259 B
+137	ff/2f4b61	189941	minimap_pipeline:output_results (64)	COMPLETED	0	2025-01-12 18:55:11.619	348ms	7ms	36.7%	0	0	72.7 KB	259 B
+141	1d/3af243	190710	minimap_pipeline:output_results (67)	COMPLETED	0	2025-01-12 18:55:11.682	339ms	5ms	51.3%	0	0	72.7 KB	259 B
+140	ec/01fe8d	190956	minimap_pipeline:output_results (66)	COMPLETED	0	2025-01-12 18:55:11.708	327ms	4ms	97.6%	0	0	72.7 KB	259 B
+142	1e/d29d7b	191047	minimap_pipeline:output_results (68)	COMPLETED	0	2025-01-12 18:55:11.719	330ms	4ms	97.6%	0	0	72.7 KB	259 B
+145	ea/295f8c	191188	minimap_pipeline:output_results (70)	COMPLETED	0	2025-01-12 18:55:11.737	321ms	5ms	49.4%	0	0	72.7 KB	259 B
+150	5b/59fc03	191433	minimap_pipeline:output_results (74)	COMPLETED	0	2025-01-12 18:55:11.766	310ms	4ms	101.3%	0	0	72.7 KB	260 B
+146	84/b80577	191341	minimap_pipeline:output_results (71)	COMPLETED	0	2025-01-12 18:55:11.757	322ms	4ms	88.9%	0	0	72.7 KB	259 B
+144	bb/7fbddb	191308	minimap_pipeline:output_results (69)	COMPLETED	0	2025-01-12 18:55:11.748	331ms	4ms	98.8%	0	0	72.7 KB	259 B
+148	1b/b79f78	191551	minimap_pipeline:output_results (72)	COMPLETED	0	2025-01-12 18:55:11.775	337ms	4ms	51.3%	0	0	72.7 KB	259 B
+149	42/a75b7d	191617	minimap_pipeline:output_results (73)	COMPLETED	0	2025-01-12 18:55:11.783	331ms	4ms	0.0%	0	0	72.7 KB	257 B
+151	91/2b20a8	191719	minimap_pipeline:createAbundanceTables	COMPLETED	0	2025-01-12 18:55:11.797	2.4s	2s	217.9%	51.7 MB	4 GB	11.7 MB	84.8 KB
+55	9f/c2a0ac	193722	minimap_pipeline:getAlignmentStats (pl-ntc-003-ctrl)	COMPLETED	0	2025-01-12 18:55:14.173	2.1s	1.8s	199.3%	539.6 MB	1.7 GB	386.9 MB	1.3 MB
+60	40/5f2f9e	194079	minimap_pipeline:getAlignmentStats (hdz-155-s67)	COMPLETED	0	2025-01-12 18:55:16.269	2.1s	1.8s	189.2%	491.1 MB	1.7 GB	395.6 MB	4.4 MB
+63	5c/e5f0f2	194441	minimap_pipeline:getAlignmentStats (hdz-093-s65)	COMPLETED	0	2025-01-12 18:55:18.373	2.2s	2s	206.4%	388 MB	1.5 GB	396 MB	4.3 MB
+68	29/2faee4	194801	minimap_pipeline:getAlignmentStats (hdz-089-s64)	COMPLETED	0	2025-01-12 18:55:20.612	2.2s	1.9s	187.9%	414.6 MB	1.6 GB	401.3 MB	7.4 MB
+72	b2/7578ed	195159	minimap_pipeline:getAlignmentStats (hdz-052-s50)	COMPLETED	0	2025-01-12 18:55:22.780	2.2s	2s	196.1%	436 MB	1.6 GB	399.1 MB	5.1 MB
+75	a9/52ca09	195519	minimap_pipeline:getAlignmentStats (hdz-046-s48)	COMPLETED	0	2025-01-12 18:55:25.017	2s	1.8s	192.8%	530.7 MB	1.7 GB	390.9 MB	3 MB
+79	74/8b9bc9	195879	minimap_pipeline:getAlignmentStats (hdz-190-s59)	COMPLETED	0	2025-01-12 18:55:27.055	2.2s	2s	198.9%	403.3 MB	1.5 GB	396.7 MB	4.5 MB
+83	05/417ed5	196236	minimap_pipeline:getAlignmentStats (hdz-175-s61)	COMPLETED	0	2025-01-12 18:55:29.312	2.4s	2.2s	186.3%	355.6 MB	1.5 GB	396.6 MB	4.5 MB
+90	11/fbbd88	196645	minimap_pipeline:getAlignmentStats (hdz-094-s66)	COMPLETED	0	2025-01-12 18:55:31.734	2.3s	2s	198.1%	379.2 MB	1.5 GB	396 MB	3.9 MB
+92	28/2f6f97	197004	minimap_pipeline:getAlignmentStats (hdz-108-s60)	COMPLETED	0	2025-01-12 18:55:34.050	2.2s	2s	188.1%	396.8 MB	1.5 GB	397.6 MB	4.6 MB
+95	c3/457e85	197366	minimap_pipeline:getAlignmentStats (hdz-188-s62)	COMPLETED	0	2025-01-12 18:55:36.304	2.2s	1.9s	193.2%	414.4 MB	1.6 GB	395.1 MB	3.7 MB
+99	18/9e495a	197723	minimap_pipeline:getAlignmentStats (hdz-051-s54)	COMPLETED	0	2025-01-12 18:55:38.509	2.3s	2s	190.5%	379.2 MB	1.5 GB	399.7 MB	4 MB
+104	19/1d1d5c	198079	minimap_pipeline:getAlignmentStats (hdz-182-s52)	COMPLETED	0	2025-01-12 18:55:40.817	2.5s	2.2s	182.7%	761.7 MB	1.9 GB	399.3 MB	5.2 MB
+108	70/265ba2	198570	minimap_pipeline:getAlignmentStats (hdz-191-s56)	COMPLETED	0	2025-01-12 18:55:43.284	2.1s	1.9s	192.1%	478.6 MB	1.7 GB	395.4 MB	4.5 MB
+111	84/46c168	198930	minimap_pipeline:getAlignmentStats (hdz-101-s57)	COMPLETED	0	2025-01-12 18:55:45.394	3s	2.7s	163.1%	622.3 MB	1.9 GB	438.2 MB	8 MB
+115	8b/350526	199344	minimap_pipeline:getAlignmentStats (hdz-177-s47)	COMPLETED	0	2025-01-12 18:55:48.359	2.3s	2s	194.3%	422.5 MB	1.6 GB	401.5 MB	5.7 MB
+119	d3/0c0631	199704	minimap_pipeline:getAlignmentStats (hdz-058-s63)	COMPLETED	0	2025-01-12 18:55:50.638	2.2s	2s	191.8%	411.4 MB	1.6 GB	400.9 MB	5.2 MB
+123	8b/45c6e7	200064	minimap_pipeline:getAlignmentStats (hdz-104-s69)	COMPLETED	0	2025-01-12 18:55:52.862	2.4s	2.1s	205.5%	404.9 MB	1.5 GB	396.1 MB	4 MB
+127	bb/e11b2a	200424	minimap_pipeline:getAlignmentStats (hdz-107-s55)	COMPLETED	0	2025-01-12 18:55:55.224	2.4s	2.1s	190.4%	355 MB	1.5 GB	401.6 MB	4.9 MB
+131	52/1ea95d	200816	minimap_pipeline:getAlignmentStats (hdz-156-s68)	COMPLETED	0	2025-01-12 18:55:57.640	2.1s	1.8s	195.4%	473.6 MB	1.7 GB	396.2 MB	4.4 MB
+136	79/b546b6	201175	minimap_pipeline:getAlignmentStats (hdz-176-s51)	COMPLETED	0	2025-01-12 18:55:59.760	2.1s	1.8s	189.9%	499.4 MB	1.7 GB	394.8 MB	4.6 MB
+139	7c/cd2b9a	201531	minimap_pipeline:getAlignmentStats (hdz-168-s58)	COMPLETED	0	2025-01-12 18:56:01.904	2.3s	2s	191.4%	399.4 MB	1.5 GB	396.7 MB	5.2 MB
+143	e3/47d531	201892	minimap_pipeline:getAlignmentStats (hdz-045-s49)	COMPLETED	0	2025-01-12 18:56:04.249	2.3s	2s	195.1%	379.3 MB	1.5 GB	398.9 MB	5.7 MB
+147	b5/705498	202252	minimap_pipeline:getAlignmentStats (hdz-041-s53)	COMPLETED	0	2025-01-12 18:56:06.608	2.2s	1.9s	191.5%	414.2 MB	1.6 GB	398 MB	5.2 MB
+152	d1/fd25e2	202611	minimap_pipeline:filter_references	COMPLETED	0	2025-01-12 18:56:08.816	627ms	302ms	114.3%	10.9 MB	1.3 GB	75.4 MB	1.3 MB
+153	1b/7fe995	202978	minimap_pipeline:output_results (75)	COMPLETED	0	2025-01-12 18:56:09.451	309ms	5ms	0.0%	0	0	72.7 KB	257 B
+155	a6/e88d31	203016	minimap_pipeline:output_results (76)	COMPLETED	0	2025-01-12 18:56:09.480	316ms	4ms	59.7%	0	0	72.7 KB	259 B
+157	a4/908fa3	203006	minimap_pipeline:output_results (78)	COMPLETED	0	2025-01-12 18:56:09.474	347ms	4ms	54.1%	0	0	72.7 KB	259 B
+156	f5/3adcc7	203090	minimap_pipeline:output_results (77)	COMPLETED	0	2025-01-12 18:56:09.505	324ms	4ms	105.3%	0	0	72.7 KB	260 B
+158	8a/3922b9	203115	minimap_pipeline:configure_igv (1)	COMPLETED	0	2025-01-12 18:56:09.513	537ms	269ms	56.8%	4.4 MB	11.4 MB	1.2 MB	8.4 KB
+159	98/e764ab	204068	minimap_pipeline:output_results (79)	COMPLETED	0	2025-01-12 18:56:10.061	265ms	4ms	60.6%	0	0	72.7 KB	259 B
+154	3a/e6d535	202995	minimap_pipeline:makeReport (1)	COMPLETED	0	2025-01-12 18:56:09.467	1m 22s	1m 21s	100.1%	583.4 MB	4.6 GB	92.3 MB	14.8 MB
+160	8d/2d3ef9	205558	minimap_pipeline:output_results (80)	COMPLETED	0	2025-01-12 18:57:31.101	256ms	4ms	61.5%	0	0	72.7 KB	259 B
