@@ -119,3 +119,24 @@ read.csvs <- function(file) {
     tibble()
   return(data)
 }
+
+yes.no.aggregated <- function(col) {
+  JS("
+  function(cellInfo) {
+        const values = cellInfo.subRows.map(function(row) { 
+        return row['col'] === 'no' ? '\u274c No' : '\u2714\ufe0f Yes' 
+        })
+      
+      // Count occurrences of each value
+      const counts = values.reduce(function(acc, v) {
+        acc[v] = (acc[v] || 0) + 1;
+        return acc;
+      }, {});
+      
+      // Format the counts as a string
+      return Object.entries(counts)
+        .map(([key, count]) => `${key}: ${count}`)
+        .join(', ');
+  }
+  ")
+}

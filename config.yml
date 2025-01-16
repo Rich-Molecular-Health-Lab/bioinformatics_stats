@@ -42,6 +42,11 @@ loris:
   last: "2024-10-25"
   metadata: 
     bristol: "../bioinformatics_stats/metadata/loris/bristols.R"
+    diet: "../bioinformatics_stats/metadata/loris/diet_schedule.R"
+    meds: "../bioinformatics_stats/metadata/loris/meds_schedule.R"
+    housing: "../bioinformatics_stats/metadata/loris/housing.R"
+    repro: "../bioinformatics_stats/metadata/loris/repro_log.R"
+    health: "../bioinformatics_stats/metadata/loris/health_log.R"
     summary: "../bioinformatics_stats/metadata/loris/samples_metadata.tsv"
     key: "../bioinformatics_stats/metadata/loris/metadata_key.R"
     studbook: "../data/subjects_loris.csv"

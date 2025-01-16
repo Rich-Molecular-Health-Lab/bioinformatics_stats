@@ -29,6 +29,11 @@ path         <- config::get(config = params$sampleset)
 
 source(path$metadata$bristol)
 source(path$metadata$key)
+source(path$metadata$diet)
+source(path$metadata$meds)
+source(path$metadata$housing)
+source(path$metadata$repro)
+source(path$metadata$health)
 
 opts_chunk$set(message = FALSE,
                warning = FALSE,
@@ -57,7 +62,7 @@ You can use the sampleset setting under params in the header of this script to s
 
 Below is a chunk to generate a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date. The next chunk will format a list of all subject names for whichever taxon you identified in the header.
 
-```{r}
+```
 seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 ```
@@ -109,7 +114,7 @@ marmoset:
 
 Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
 
-```{r, message = FALSE}
+```
 path               <- config::get(config = params$sampleset)
 ```
 
@@ -117,35 +122,12 @@ path               <- config::get(config = params$sampleset)
 
 I also create some of the tables and lists used here in some scripts that the chunk below will run. This just keeps this script a bit tidier by modularizing some of the parts.
 
-```{r, message = FALSE}
+```
 source(path$metadata$bristol)
 ```
 
 
 # Script
-
-The chunk below is duplicated above. I am adding it here to run the full setup chunk again in case you skipped past the intro material:
-
-```{r, message = FALSE}
-global             <- config::get(config = "default")
-
-source(paste0(global$setup))
-source(paste0(swan$functions))
-
-seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
-subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
-path         <- config::get(config = params$sampleset)
-
-source(path$metadata$bristol)
-source(path$metadata$key)
-
-opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = TRUE,
-               include = TRUE,
-               eval    = TRUE,
-               comment = "")
-```
 
 ## Subject Info
 
@@ -154,30 +136,35 @@ First I will read in some useful info about each subject from their AZA studbook
 ```{r, warning = FALSE}
 studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
   mutate(
-          Subject    = factor(str_to_lower(Name), levels = unique()),
-          StudbookID = factor(ID, levels = unique()),
-          MotherID = factor(Mother, levels = unique()),
-          FatherID = factor(Father, levels = unique()),
-          FatherID = factor(Father, levels = unique())
-          )
+          Subject       = factor(str_to_lower(Name), levels = unique(str_to_lower(Name))),
+          StudbookID    = factor(ID, levels = unique(ID)),
+          Sex           = factor(Sex, levels = unique(Sex)),
+          MotherID      = factor(Mother, levels = unique(Mother)),
+          FatherID      = factor(Father, levels = unique(Father)),
+          BirthLocation = factor(Birth.Location, levels = unique(Birth.Location)),
+          BirthYear     = year(make_date(year = Born))
+          ) %>%
   select(
-    Subject       = Name,
-    StudbookID    = ID,
+    Subject,
+    StudbookID,
     Sex,
-    MotherID      = Mother,
-    FatherID      = Father,
-    BirthYear     = Born,
-    BirthLocation = Birth.Location
+    MotherID,
+    FatherID,
+    BirthYear,
+    BirthLocation
   )
 ```
 
 ## Sample Inventory
 
-First I will read in the sample inventory, which is actually already a metadata table itself. We just want to match some more interesting variables to it.
+First I will read in the sample inventory, which is actually already a metadata table itself. We just want to match some more interesting variables to it, beginning with the studbook summary we just built.
 
 ```{r}
 samples <- read.table(path$compilation, header = T, sep = "\t") %>%
-            mutate(CollectionDate = ymd(CollectionDate))
+            mutate(CollectionDate = ymd(CollectionDate),
+                   Subject       = factor(str_to_lower(Subject), levels = unique(str_to_lower(Subject)))) %>%
+  left_join(studbook.info, by = join_by(Subject)) %>%
+  mutate(SubjectAge = year(CollectionDate) - BirthYear)
 ```
 
 ## Organizing Dates
@@ -197,30 +184,10 @@ study_days <- tibble(Date = seq.Date(from = ymd(path$day1),
 
 We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.
 
-```{r}
-# steroid doses are calculated as mg/day while probiotic and oatgel values are binary (included = 1, none = 0)
-diet_trials   <- list(
-baseline      = tibble(steroid = 0.00, probiotic = 0, oatgel = 0),
-option1       = tibble(steroid = 0.00, probiotic = 1, oatgel = 0),
-option2       = tibble(steroid = 0.00, probiotic = 1, oatgel = 1),
-option3       = tibble(steroid = 0.10, probiotic = 0, oatgel = 0),
-option4       = tibble(steroid = 0.20, probiotic = 0, oatgel = 0),
-option5       = tibble(steroid = 0.20, probiotic = 1, oatgel = 1),
-option6       = tibble(steroid = 0.20, probiotic = 0, oatgel = 1),
-option7       = tibble(steroid = 0.10, probiotic = 1, oatgel = 1),
-option8       = tibble(steroid = 0.05, probiotic = 1, oatgel = 1)
-)
-```
-
 ```{r, message = FALSE}
 # optionals are foods that are routinely cycled in and out of daily diets to maximize variety. here I am only noting those optionals which were permanently removed from culi's diet at a certain date in an attempt to reduce GI inflammation.
-optionals.culi <- list(
-  tomatoes    = tibble(start_day = ymd(path$day1), last_day = ymd("2024-02-19")),
-  cauliflower = tibble(start_day = ymd(path$day1), last_day = ymd("2024-01-22")),
-  broccoli    = tibble(start_day = ymd(path$day1), last_day = ymd("2024-01-22"))
-) 
   
-optionals.culi <-   imodify(optionals.culi, ~ {
+optionals.culi <-   imodify(optionals$culi, ~ {
   food <- .y
   tbl  <- .x
   rowwise(tbl) %>%
@@ -240,19 +207,6 @@ optionals.culi <-   imodify(optionals.culi, ~ {
 ```
 
 ```{r}
-culi.trials <- tribble(
-~start_day,        ~last_day        , ~diet,
-ymd(loris$day1)  , ymd("2023-11-01"), diet_trials$baseline,
-ymd("2023-11-02"), ymd("2023-11-22"), diet_trials$option1,
-ymd("2023-11-23"), ymd("2023-12-13"), diet_trials$option2,
-ymd("2023-12-14"), ymd("2024-01-03"), diet_trials$option3,
-ymd("2024-01-04"), ymd("2024-01-24"), diet_trials$option4,
-ymd("2024-01-25"), ymd("2024-02-19"), diet_trials$option5,
-ymd("2024-02-20"), ymd("2024-02-22"), diet_trials$option6,
-ymd("2024-02-23"), ymd("2024-05-14"), diet_trials$option7,
-ymd("2024-05-15"), ymd(path$last)   , diet_trials$option8
-)
-
 culi.schedule <- culi.trials %>%
   rowwise() %>%
   mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
@@ -261,28 +215,18 @@ culi.schedule <- culi.trials %>%
          Trial_Phase = diet) %>%
   left_join(optionals.culi, by = join_by(Date)) %>%
   unnest(c(Trial_Phase, Foods_included))
-```
 
-```{r}
-culi.diet.schedule <- list(
-baseline = tibble(start_day = ymd(loris$day1)  , last_day = ymd("2023-11-01"), diet = diet_trials$baseline),
-phase1   = tibble(start_day = ymd("2023-11-02"), last_day = ymd("2023-11-22"), diet = diet_trials$option1),
-phase2   = tibble(start_day = ymd("2023-11-23"), last_day = ymd("2023-12-13"), diet = diet_trials$option2),
-phase3   = tibble(start_day = ymd("2023-12-14"), last_day = ymd("2024-01-03"), diet = diet_trials$option3),
-phase4   = tibble(start_day = ymd("2024-01-04"), last_day = ymd("2024-01-24"), diet = diet_trials$option4),
-phase5   = tibble(start_day = ymd("2024-01-25"), last_day = ymd("2024-02-19"), diet = diet_trials$option5),
-phase6   = tibble(start_day = ymd("2024-02-20"), last_day = ymd("2024-02-22"), diet = diet_trials$option6),
-phase7   = tibble(start_day = ymd("2024-02-23"), last_day = ymd("2024-05-14"), diet = diet_trials$option7),
-phase8   = tibble(start_day = ymd("2024-05-15"), last_day = ymd(path$last)   , diet = diet_trials$option8)
-)
-```
-
-```{r}
 culi.diet.schedule %>%
   list_rbind() %>%
-  mutate(Probiotic   = if_else(diet$probiotic == 1, "check", "minus"),
-         Oatgel      = if_else(diet$oatgel == 1, "check", "minus"),
-         Steroid     = if_else(diet$steroid == 0.00, "minus", as.character(diet$steroid))) %>%
+  mutate(Probiotic   = case_when(diet$probiotic == 1   ~ "check", 
+                                 diet$probiotic == 0   ~ "minus",
+                                 is.na(diet$probiotic) ~ "question"),
+         Oatgel      = case_when(diet$oatgel == 1   ~ "check", 
+                                 diet$oatgel == 0   ~ "minus",
+                                 is.na(diet$oatgel) ~ "question"),
+         Steroid     = case_when(diet$steroid == 0.00 ~ "minus",
+                                 diet$steroid > 0.00  ~ as.character(diet$steroid),
+                                 is.na(diet$steroid)  ~ "question")) %>%
   select(start_day,
          Steroid,
          Probiotic,
@@ -290,7 +234,7 @@ culi.diet.schedule %>%
   gt() %>%
     fmt_date(columns = ends_with("_day"), date_style = "m_day_year") %>%
     cols_label(start_day = "Begin") %>%
-    fmt_icon( columns = Steroid, rows = Steroid == "minus") %>%
+    fmt_icon( columns = Steroid, rows = Steroid == "minus" | Steroid == "question") %>%
     fmt_icon( columns = c("Probiotic", "Oatgel")) %>%
     cols_align("center") %>%
     tab_header("Summary of Trial Phases for Culi") %>%
@@ -322,19 +266,6 @@ warble.schedule <- study_days %>%
 In addition to the steroids included in trials, Culi recieved antibiotics for a stint during our collections. We definitely want to keep something like antibiotics factored into our microbiome data analysis, so I will create a table for that.
 
 ```{r}
-meds <- list(
-  culi = tribble(
-~start_day,        ~last_day        , ~med_type,  ~med_name,  ~med_dose, ~dose_units,
-ymd(path$day1), ymd("2024-04-28"), "none", "none", 0, "mg/day",
-ymd("2024-04-29"), ymd("2024-05-06"), "antibiotic", "Metronidazole", 12.5, "mg/day",
-ymd("2024-05-06"), ymd(path$last), "none", "none", 0, "mg/day"
-  ),
-  warble = tribble(
-~start_day,        ~last_day        , ~med_type,  ~med_name,  ~med_dose, ~dose_units,
-ymd(path$day1), ymd(path$last), "none", "none", 0, "mg/day"
-  )
-)
-
 culi.meds <- meds$culi %>%
   rowwise() %>%
   mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
@@ -365,19 +296,6 @@ warble.meds <- meds$warble %>%
 Over the course of the study, both lorises moved from neighboring enclosures in one building to a much more expansive set of enclosures with more variable shifting capabilities in another building. They moved at different dates, so I want to score each sample based on those different date ranges.
 
 ```{r}
-housing <- list(
-  warble = tribble(
-~start_day,        ~last_day        , ~enclosure,
-ymd(loris$day1)    , ymd("2024-02-28"), "old",
-ymd("2024-02-29")  , ymd(loris$last)  , "new"
-  ),
-  culi = tribble(
-~start_day,        ~last_day        , ~enclosure,
-ymd(loris$day1)    , ymd("2024-02-27"), "old",
-ymd("2024-02-28")  , ymd(loris$last)  , "new"
-  )
-)
-
 warble.housing <- housing$warble %>%
   rowwise() %>%
   mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
@@ -414,43 +332,6 @@ culi.bristol <- bristol %>%
 ```
 
 ### Repro
-
-```{r}
-repro.log    <- list(
-  access = tribble(
-    ~value,     ~start_day,  ~last_day,
-    1     , ymd(path$day1)   , ymd("2023-10-29"),
-    0     , ymd("2023-10-30"), ymd("2024-04-01"),
-    1     , ymd("2024-04-02"), ymd("2024-04-15"),
-    0     , ymd("2024-04-16"), ymd(path$last)
-  ),
-  estrus = tribble(
-    ~value,     ~start_day,  ~last_day,
-    1     , ymd(path$day1)   , ymd("2023-10-29"),
-    0     , ymd("2023-10-30"), ymd("2024-03-21"),
-    1     , ymd("2024-03-22"), ymd("2024-04-05"),
-    0     , ymd("2024-04-06"), ymd(path$last)
-  ),
-  pregnant = tribble(
-    ~value,     ~start_day,  ~last_day,
-    0     , ymd(path$day1)   , ymd("2024-04-05"),
-    1     , ymd("2024-04-06"), ymd("2024-10-08"),
-    0     , ymd("2024-10-09"), ymd(path$last)
-  ),
-  notes = tribble(
-    ~repro_note          , ~subject  ,  ~Date,
-    "swollen_testicles"  , "culi"    , ymd("2024-02-29"),
-    "swollen_vulva"      , "warble"  , ymd("2024-03-21"),
-    "whistling"          , "culi"    , ymd("2024-03-21"),
-    "whistling"          , "warble"  , ymd("2024-04-04"),
-    "copulation_observed", "both"    , ymd("2024-04-03"),
-    "copulation_observed", "both"    , ymd("2024-04-04"),
-    "sperm_plug_observed", "warble"  , ymd("2024-04-05"),
-    "birth"              , "warble"  , ymd("2024-10-09"),
-    "double infanticide" , "warble"  , ymd("2024-10-10")
-  )
-) 
-```
 
 ```{r, warning = FALSE}
 access.schedule <- repro.log$access %>%
@@ -497,13 +378,7 @@ culi.repro.notes <- repro.log$notes %>%
 Now I will score the misc. notes provided by staff on health observations as variables. 
 
 ```{r}
-culi.health <- tribble(
-  ~health_note                   , ~Date,
-  "dried blood around anus/tail" , ymd("2023-11-16"),
-  "coprophagy observed"          , ymd("2023-12-17"),
-  "weight - 451 g"               , ymd("2024-04-14"),
-  "left biscuit/gum behind"      , ymd("2024-02-10")
-) %>%
+culi.health <- health.log$culi %>%
   group_by(Date) %>%
   summarise(health_note = str_c(health_note, collapse = "; "), .groups = "drop")
 ```
@@ -515,7 +390,7 @@ Now I am going to populate metadata tables for each subject by day.
 ### Culi
 
 ```{r, message = FALSE}
-culi.samples   <- samples %>% filter(Subject == "Culi")
+culi.samples   <- samples %>% filter(Subject == "culi")
 
 culi.metadata <- study_days %>%
   left_join(culi.schedule) %>%
@@ -532,7 +407,7 @@ culi.metadata <- study_days %>%
 ### Warble
 
 ```{r, message = FALSE, warning = FALSE}
-warble.samples <- samples %>% filter(Subject == "Warble")
+warble.samples <- samples %>% filter(Subject == "warble")
 
 warble.metadata <- study_days %>%
   left_join(warble.schedule) %>%
@@ -551,10 +426,10 @@ warble.metadata <- study_days %>%
 
 ```{r, message = FALSE}
 metadata <- samples %>%
-  filter(Subject != "Warble" & Subject != "Culi") %>%
+  filter(Subject != "warble" & Subject != "culi") %>%
   full_join(warble.metadata) %>%
   full_join(culi.metadata) %>%
-  mutate(subj_letter = str_sub(Subject, 1L, 1L)) %>%
+  mutate(subj_letter = str_to_upper(str_sub(Subject, 1L, 1L))) %>%
   mutate(subj_day    = str_glue("{subj_letter}{study_day}")) %>%
   select(-subj_letter) %>%
   relocate(
@@ -599,8 +474,6 @@ print(names(metadata))
 Now I will bring in the key that I previously created and print.  
 
 ```{r}
-source(path$metadata$key)
-
 tagList(
   tags$h2("Metadata Variables:"),
 imap(metadata_key, ~ {

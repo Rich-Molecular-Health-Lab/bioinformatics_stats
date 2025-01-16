@@ -30,6 +30,7 @@ required_packages <- c(
   "gtExtras",
   "gtable",
   "htmltools",
+  "htmlwidgets",
   "kableExtra",
   "MASS",
   "lmerTest",
@@ -79,6 +80,7 @@ library(gt)
 library(gtExtras)
 library(gtable)
 library(htmltools)
+library(htmlwidgets)
 library(kableExtra)
 library(MASS)
 library(lmerTest)
