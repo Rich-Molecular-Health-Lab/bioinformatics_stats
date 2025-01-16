@@ -68,8 +68,6 @@ loris:
     tree: "../bioinformatics_stats/data/loris/taxonomy/refseqs_tree.newick"
     table: "../bioinformatics_stats/data/loris/taxonomy/tax_table.tsv"
   abundance_wf16s: "../bioinformatics_stats/data/loris/wf16s_abundance/"
-  abund_wf16s_tbls: 
-    hdz1:
   microeco: 
     dataset:
       main:
@@ -373,7 +371,7 @@ marmoset:
   extracts_csv: "../data/extracts_marmoset.csv"
   samples_csv: "../data/samples_marmoset.csv"
   barcodes_output: "../bioinformatics_stats/dataframes/barcodes/marmoset/"
-  barcode_alignments: "../labwork/minion_data/barcode_alignments/hdz/"
+  barcode_alignments: "../labwork/minion_data/barcode_alignments/marmoset/"
   sample_sheet: "../bioinformatics_stats/marmoset/dataframes/sample_sheet/"
   taxonomy_list: "../bioinformatics_stats/marmoset/dataframes/taxonomy_list/"
   microeco: 
@@ -549,7 +547,7 @@ sample_sheets:
 
 barcode_alignments:
   compilations:
-    loris: "../labwork/minion_data/barcode_alignments/loris/hdz_combined_barcode_alignment.tsv"
+    loris:    "../labwork/minion_data/barcode_alignments/loris/hdz_combined_barcode_alignment.tsv"
     marmoset: "../labwork/minion_data/barcode_alignments/marmoset/cm_combined_barcode_alignment.tsv"
   hdz1:  "../labwork/minion_data/barcode_alignments/loris/hdz1_barcode_alignment.tsv"
   hdz2:  "../labwork/minion_data/barcode_alignments/loris/hdz2_barcode_alignment.tsv"

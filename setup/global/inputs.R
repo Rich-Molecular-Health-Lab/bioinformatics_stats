@@ -1,4 +1,4 @@
-# /GlobalScripts/inputs.R
+# /setup/global/inputs.R
 
 lab.members <- list(
   "Azadmanesh, Shayda"      = "Shayda Azadmanesh (SA)", 
@@ -158,7 +158,6 @@ seqruns <- list(
   loris     = as.list(paste0("hdz", 1:18)),
   marmoset  = as.list(sprintf("cm%03d", 1:10))
 )
-
 
 
 

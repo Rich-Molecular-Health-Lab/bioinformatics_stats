@@ -5,29 +5,42 @@ output:
   html_document:
     toc: true
     toc_location: "before"
-    toc_depth: 4
-    number_sections: false
+    toc_depth: 6
+    number_sections: true
     toc_float: true
     code_folding: "hide"
     fig_caption: true
 editor_options: 
   chunk_output_type: inline
 params:
-  taxon: "loris"
+  sampleset: "loris"
                      
 ---
 
-```{r setup, echo = FALSE, message=FALSE, warning=FALSE}
+```{r, include = F}
 global             <- config::get(config = "default")
-micro              <- config::get(config = "microbiome")
-swan               <- config::get(config = "swan")
-notebooks          <- config::get(config = "notebooks")
 
-source(paste0(global$functions))
-source(paste0(global$packages))
-source(paste0(global$conflicts))
-source(paste0(global$inputs))
+source(paste0(global$setup))
 source(paste0(swan$functions))
+
+seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
+path         <- config::get(config = params$sampleset)
+
+source(path$metadata$bristol)
+source(path$metadata$key)
+source(path$metadata$diet)
+source(path$metadata$meds)
+source(path$metadata$housing)
+source(path$metadata$repro)
+source(path$metadata$health)
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
 ```
 
 
@@ -79,21 +92,21 @@ To start, you should have four categories of csv files (I download the first thr
   
 ## Other Configuration Settings
 
-### Taxon in Params
+### Sampleset in Params
 
-You can use the taxon setting under params in the header of this script to select which taxon you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
+You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
 
 ### Sequencing Run Lists
 
-Below is a chunk to generate a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date. The next chunk will format a list of all subject names for whichever taxon you identified in the header.
+Below is a chunk to generate a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date. The next chunk will format a list of all subject names for whichever sampleset you identified in the header.
 
-```{r, message=FALSE, warning=FALSE}
+```
 seqruns <- list(
   loris     = as.list(paste0("hdz", 1:18)),
   marmoset  = as.list(sprintf("cm%03d", 1:10))
 )
 
-subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 ```
 
 ### File Paths
@@ -142,53 +155,23 @@ marmoset:
 ```
 
 
-Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working taxon you identified in the header:
+Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
 
-```{r}
+```
 loris              <- config::get(config = "loris")
 marm               <- config::get(config = "marmoset")
-path               <- config::get(config = params$taxon)
+path               <- config::get(config = params$sampleset)
 barcode_alignments <- config::get(config = "barcode_alignments")
 sample_sheets      <- config::get(config = "sample_sheets")
 ```
 
 # Script
 
-The chunk below is duplicated above. I am adding it here to run the full setup chunk again in case you skipped past the intro material:
-
-```{r, include = F}
-global             <- config::get(config = "default")
-micro              <- config::get(config = "microbiome")
-read_processing    <- config::get(config = "read_processing")
-notebooks          <- config::get(config = "notebooks")
-
-source(paste0(global$functions))
-source(paste0(global$packages))
-source(paste0(global$conflicts))
-source(paste0(global$inputs))
-source(paste0(read_processing$functions))
-
-seqruns <- list(
-  loris     = as.list(paste0("hdz", 1:18)),
-  marmoset  = as.list(sprintf("cm%03d", 1:10))
-)
-
-subject_list <- keep_at(subjects, paste0(params$taxon)) %>% list_flatten(name_spec = "{inner}")
-
-
-loris              <- config::get(config = "loris")
-marm               <- config::get(config = "marmoset")
-path               <- config::get(config = params$taxon)
-barcode_alignments <- config::get(config = "barcode_alignments")
-sample_sheets      <- config::get(config = "sample_sheets")
-```
-
-
 ## Barcode Alignments
 
 
 ```{r, message=FALSE, warning=FALSE}
-barcodes <- imap(seqruns[[paste0(params$taxon)]], ~ {
+barcodes <- imap(seqruns, ~ {
   map(.x, ~ read.table(barcode_alignments[[.x]], header = T) %>% mutate(seqrun = .x)) 
 }) %>%
     bind_rows() %>%
@@ -210,7 +193,7 @@ barcodes <- imap(seqruns[[paste0(params$taxon)]], ~ {
                                SeqDate,
                                SeqDateTime)
 
-write.table(barcodes, barcode_alignments$compilations[[paste0(params$taxon)]],
+write.table(barcodes, barcode_alignments$compilations[[paste0(params$sampleset)]],
             row.names = F,
             sep = "\t")
 ```
@@ -258,7 +241,7 @@ seqrun.tbl <- read.csv(path$seqruns_csv, header = T) %>%
 
 ## Sample Records
 
-```{r}
+```{r, warning = FALSE}
 samples     <- read.csv(path$samples_csv, header = T) %>% 
                       filter(str_starts(SampleID, "\\w+")) %>% 
                       select(-SampleBox)  %>%
@@ -288,7 +271,7 @@ extracts <- read.csv(path$extracts_csv, header = T) %>%
          ExtractConc = if_else(ExtractConc == "", NA, ExtractConc)) %>%
   mutate(ExtractConc = round(as.numeric(ExtractConc), 1))  %>% filter(ExtractType == "DNA") %>%
   select(-ExtractType) %>%
-  left_join(samples) %>% distinct()
+  right_join(samples) %>% distinct()
 ```
 
 ## Libraries and Combining all Records
@@ -313,11 +296,19 @@ compilation <- read.csv(path$libraries_csv, header = T)  %>%
          Conc_QC2    = Final.Library.Concentration) %>%
   left_join(barcodes, by = join_by(LibraryCode, LibraryBarcode)) %>%
   left_join(seqrun.tbl, by = join_by(LibraryCode, FlowCellSerial)) %>%
-  left_join(extracts, by = join_by(ExtractID)) %>% distinct() %>%
-  arrange(LibraryCode, LibraryBarcode)
+  right_join(extracts, by = join_by(ExtractID)) %>% distinct() %>%
+  mutate(steps_remaining = case_when(
+    is.na(ExtractID) ~ "sample not extracted",
+    is.na(SequenceID) ~ "extract not sequenced",
+    !is.na(ExtractID) & !is.na(SequenceID) & !is.na(SampleID) ~ "sample extracted and sequenced"
+  )) %>%
+  relocate(SampleID, ExtractID, SequenceID, steps_remaining) %>%
+  arrange(CollectionDate, Subject)
 ```
 
 ### Exporting a Spreadsheet with Records
+
+We will use this spreadsheet for building the metadata table but also for calling up sample info in our protocol apps.
 
 ```{r, message=FALSE, warning=FALSE}
 write.table(compilation,
@@ -343,6 +334,7 @@ count.libraries <- compilation %>% select(SequenceID, ExtractID, SampleID) %>% d
 
 ```{r, message=FALSE, warning=FALSE}
 samplesheet <- compilation %>%
+  filter(steps_remaining == "sample extracted and sequenced") %>%
                       mutate(barcode = if_else(LibraryBarcode < 10, 
                                                str_glue("barcode0", "{LibraryBarcode}"),
                                                str_glue("barcode" , "{LibraryBarcode}"))) %>%
@@ -354,7 +346,7 @@ samplesheet <- compilation %>%
                              seqrun        = LibraryCode)
 
 write.table(samplesheet, 
-          sample_sheets$compilations[[paste0(params$taxon)]],
+          sample_sheets$compilations[[paste0(params$sampleset)]],
           row.names = F,
           quote     = F,
           sep       = ",")
@@ -363,7 +355,7 @@ write.table(samplesheet,
 ### Splitting Samplesheet to Individual Files for Each Run
 
 
-```{r, echo = FALSE, comment=FALSE, warning=FALSE}
+```{r, echo = FALSE, comment = "", warning=FALSE}
 samplesheet.nested <- samplesheet %>% nest(.by = seqrun) %>%
   deframe()
 
