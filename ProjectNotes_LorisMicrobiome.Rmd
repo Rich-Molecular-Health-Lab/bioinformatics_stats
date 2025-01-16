@@ -6,7 +6,7 @@ output:
     toc: true
     toc_location: "before"
     toc_depth: 4
-    number_sections: false
+    number_sections: true
     toc_float: true
     code_folding: "hide"
     fig_caption: true
