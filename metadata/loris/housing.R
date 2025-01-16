@@ -10,3 +10,8 @@ housing <- list(
     ymd("2024-02-28")  , ymd(loris$last)  , "new"
   )
 )
+
+transfer.dates <- list(
+  Warble = ymd("2024-02-29"),
+  Culi   = ymd("2024-02-28")
+)

@@ -1,5 +1,5 @@
 ---
-title: "Loris Microbiome Project Update"
+title: "Loris Microbiome Project Records Check"
 author: "Alicia Rich"
 output:
   html_document:
@@ -264,8 +264,80 @@ meds$culi %>%
   
 ```
 
+# Environment
+
+We currently have records of the dates when each loris was transferred to their new enclosure, but any other available records on changing environmental conditions (e.g., lighting, temperature, humidiy, enrichment items) could be useful variables to include.
+
+```{r}
+tagList(
+  tags$h2("Dates of transfer to new enclosures:"),
+imap(transfer.dates, ~ {
+  subject  <- .y
+  date  <- .x
+  header  <- paste0(subject, "'s date of transfer:")
+  tags$p(
+    tags$strong(header),
+    tags$br(),
+      tags$em(date)
+  )
+}))
+```
 
 
+# Reproduction-related Events
+
+```{r}
+repro.notes <- repro.log$notes %>%
+  mutate(End   = ymd(" "),
+         event = case_when(
+    repro_note == "swollen_testicles" ~ "Enlarged testicles observed on Culi",
+    repro_note == "swollen_vulva"     ~ "Swollen vulva observed on Warble",
+    repro_note == "whistling" & subject == "culi" ~ "Culi observed whistling",
+    repro_note == "whistling" & subject == "warble" ~ "Warble observed whistling",
+    repro_note == "copulation_observed" ~ "Copulation event observed",
+    repro_note == "sperm_plug_observed" ~ "Sperm plug observed on Warble",
+    repro_note == "birth" ~ "Warble gave birth to twins",
+    repro_note == "double infanticide" ~ "Warble kills/consumes both infants"
+         )) %>% select(event, Date, End)
+
+imap(discard_at(repro.log, "notes"), ~ {
+  title <- .y
+  tbl   <- .x
+  tbl %>% filter(value == 1) %>%
+          arrange(start_day) %>%
+          mutate(title = factor(title, levels = c("access", 
+                                                  "estrus", 
+                                                  "pregnant"))) %>%
+    select(title, Date = start_day, End = last_day)
+}) %>% bind_rows() %>%
+  mutate(event = case_when(
+    title == "access"   ~ "Subjects have full access to each other",
+    title == "estrus"   ~ "Warble is in estrus",
+    title == "pregnant" ~ "Warble is pregnant"
+  )) %>%
+  select(event, Date, End) %>%
+  bind_rows(repro.notes) %>%
+  arrange(Date) %>%
+  mutate(start = as.character(Date), end = as.character(End)) %>%
+  mutate(event = if_else(row_number() > 1 & event == lag(event), "", event),
+         dates = if_else(!is.na(End),
+           str_glue("{start}", " - ", "{end}"),
+           start)) %>%
+  select(Date, dates, event) %>%
+  gt(groupname_col       = "dates",
+     row_group_as_column = TRUE) %>%
+  cols_hide(Date) %>%
+  cols_label(event = "") %>%
+  tab_header("Reproduction-Related Records") %>%
+  tab_style(style = list(
+              cell_text(weight = "bold"),
+              cell_borders(sides = "right", style = "hidden")),
+            locations = cells_row_groups()) %>%
+  tab_options(column_labels.hidden = TRUE, 
+              heading.align = "left") %>%
+  opt_stylize(style = 2, color = "pink", add_row_striping = FALSE)
+  
+```
 
 # Sampling Snapshot
 
