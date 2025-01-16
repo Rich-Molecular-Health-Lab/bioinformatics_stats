@@ -637,7 +637,7 @@ methods_16s:
   n_taxa_barplot: 12
   abund_threshold: 0
   loris:
-    rarefy: 6000
+    rarefy: 5000
     norm: "SRS"
     min_abund: 0.0001
     min_freq: 0.02
@@ -645,7 +645,7 @@ methods_16s:
     unifrac: TRUE
     betadiv: "canberra"
     tax4fun_db: "Ref99NR"
-    loris_rarefy: 6000
+    loris_rarefy: 5000
     keg_minID: 97
   loris_norm: "SRS"
   loris_filter:

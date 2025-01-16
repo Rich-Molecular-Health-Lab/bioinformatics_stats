@@ -169,6 +169,7 @@ qualitative.vars <- c(
   "ExtractNotes"
 )
 
+studbook.factors <- c()
 
 yes.no.factors <- c("yes", "no", "unknown")
 subject.factor <- c("culi", "warble", "unknown")
