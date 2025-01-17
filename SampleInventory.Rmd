@@ -13,7 +13,7 @@ output:
 editor_options: 
   chunk_output_type: inline
 params:
-  sampleset: "loris"
+  sampleset: "marmoset"
                      
 ---
 
@@ -27,13 +27,6 @@ seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 path         <- config::get(config = params$sampleset)
 
-source(path$metadata$bristol)
-source(path$metadata$key)
-source(path$metadata$diet)
-source(path$metadata$meds)
-source(path$metadata$housing)
-source(path$metadata$repro)
-source(path$metadata$health)
 
 opts_chunk$set(message = FALSE,
                warning = FALSE,
