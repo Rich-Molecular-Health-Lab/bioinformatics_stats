@@ -35,12 +35,6 @@ source(path$metadata$housing)
 source(path$metadata$repro)
 source(path$metadata$health)
 
-opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = TRUE,
-               include = TRUE,
-               eval    = TRUE,
-               comment = "")
 ```
 
 

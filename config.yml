@@ -6,6 +6,8 @@ default:
   packages: "../bioinformatics_stats/setup/global/packages.R"
   inputs: "../bioinformatics_stats/setup/global/inputs.R"
   fonts: "../bioinformatics_stats/setup/global/fonts/FA6_Free-Solid-900.otf"
+  test_prediction: "../bioinformatics_stats/setup/microbiome/test_prediction/"
+  set_paths: "../bioinformatics_stats/setup/global/set_paths.R"
   summaries:
     metadata: "../summaries/metadata/"
   tmp_tsv: "../bioinformatics_stats/tmp/tmp_table.tsv"
@@ -620,7 +622,6 @@ microbiome:
   tax4fun: "../bioinformatics_stats/setup/microbiome/Tax4Fun2_ReferenceData_v2/"
   Ref99NR: "../bioinformatics_stats/setup/microbiome/Tax4Fun2_ReferenceData_v2/Ref99NR/"
   blast: "../bioinformatics_stats/setup/microbiome/ncbi-blast-2.16.0+/bin"
-  test_prediction: "../bioinformatics_stats/setup/microbiome/test_prediction/"
 
 methods_16s:
   libprep_workflow: "'rapid16s'"

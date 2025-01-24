@@ -47,3 +47,16 @@ source(path$metadata$repro)
 source(path$metadata$health)
 
 ```
+
+# Technical Analysis
+
+## Sequencing Depth
+
+```{r}
+depth_table
+```
+
+```{r}
+depth.plot
+```
+

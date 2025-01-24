@@ -14,3 +14,13 @@ source(paste0(global$conflicts))
 source(paste0(global$functions))
 source(paste0(global$inputs))
 source(global$knit_engines)
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+
+
+

@@ -36,14 +36,7 @@ source(path$metadata$housing)
 source(path$metadata$repro)
 source(path$metadata$health)
 
-opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = TRUE,
-               include = TRUE,
-               eval    = TRUE,
-               comment = "")
-
-seqruns <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
+seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 ```
 
@@ -466,6 +459,7 @@ depth <- alignments.long %>%
          steroid = if_else(steroid == 0.0, "\u2718", as.character(steroid)),
          med_dose= if_else(med_dose    == 0.0, "", as.character(med_dose))
          ) %>%
+  filter((Subject == "warble" | Subject == "culi") & !is.na(CollectionDate)) %>%
   arrange(CollectionDate, Subject)
 
 reactable(
@@ -635,45 +629,29 @@ depth.plot
 ```
 
 ```{r}
-depth.summary <- depth %>%
-  filter((Subject == "warble" | Subject == "culi") & !is.na(CollectionDate)) %>%
-  mutate(depth_bin = case_when(
-    depth >= 15000                 ~ "15K",
-    depth < 15000 & depth >= 10000 ~ "10K",
-    depth < 10000 & depth >= 9000 ~ "9K",
-    depth < 9000  & depth >= 8000 ~ "8K",
-    depth < 8000  & depth >= 7000 ~ "7K",
-    depth < 7000  & depth >= 6000 ~ "6K", 
-    depth < 6000  & depth >= 5000 ~ "5K",
-    depth < 5000  & depth >= 4000 ~ "4K",
-    depth < 4000  & depth >= 3000 ~ "3K",
-    depth < 3000                  ~ "0K"
-  )) %>%
-  mutate(depth_bin = factor(depth_bin, levels = c("0K",
-                                                  "3K",
-                                                  "4K",
-                                                  "5K",
-                                                  "6K",
-                                                  "7K",
-                                                  "8K",
-                                                  "9K",
-                                                  "10K",
-                                                  "15K"))) %>%
-  group_by(depth_bin, study_day) %>%
-  summarize(n_samples = n()) %>%
-  select()
-  mutate(across(ends_with("K"), ~ replace_na(., 0))) %>%
-  arrange(study_day)
+depth_list <- as.list(depth.summary$depth) %>% set_names(depth.summary$SampleID)
+
+thresholds <- list(
+  "3000" = keep(depth_list, \(x) all(x < 3000)),
+  "4000" = keep(depth_list, \(x) all(x < 4000)),
+  "5000" = keep(depth_list, \(x) all(x < 5000)),
+  "6000" = keep(depth_list, \(x) all(x < 6000)),
+  "7000" = keep(depth_list, \(x) all(x < 7000)),
+  "8000" = keep(depth_list, \(x) all(x < 8000)),
+  "9000" = keep(depth_list, \(x) all(x < 9000)),
+  "all"  = depth_list
+)
+
+total <- c(as.numeric(length(thresholds$all)))
 ```
 
 
 ```{r}
-samples.lost <- depth.summary %>%
-  summarize(
-    baseline  = sum("0K"),
-    rarefy_3K = sum("3K", "0K"))
+depth_summary <- map(thresholds, \(x) length(x)) %>% set_names(names(thresholds)) %>%
+  discard_at("all") %>%
+  enframe(name = "Threshold", value = "Samples_Lost") %>%
+  mutate(Prop_Lost = Samples_Lost/total)
 ```
-
 
 
 # Update References and Fetch Representative Sequences
