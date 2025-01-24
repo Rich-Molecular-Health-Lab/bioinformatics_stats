@@ -21,6 +21,7 @@ required_packages <- c(
   "bslib",
   "config",
   "conflicted",
+  "crosstalk",
   "data.table",
   "devtools",
   "fontawesome",
@@ -51,6 +52,7 @@ required_packages <- c(
   "shinyMatrix",
   "shinyTime",
   "showtext",
+  "thematic",
   "tidyverse",
   "usethis",
   "utf8",
@@ -71,6 +73,7 @@ library(bsicons)
 library(bslib)
 library(config)
 library(conflicted)
+library(crosstalk)
 library(data.table)
 library(devtools)
 library(fontawesome)
@@ -101,6 +104,7 @@ library(shinyjs)
 library(shinyMatrix)
 library(shinyTime)
 library(showtext)
+library(thematic)
 library(tidyverse)
 library(usethis)
 library(utf8)

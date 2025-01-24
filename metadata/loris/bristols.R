@@ -278,3 +278,8 @@ bristol <- tribble(
   4        ,   ymd("2024-05-25")   ,
   3        ,   ymd("2024-05-26")   ,
   6        ,   ymd("2024-05-26")   )
+
+bristol_warble <- tibble(
+  date  = seq.Date(from = ymd("2023-10-26"), to = ymd("2024-5-26"), by = "day"),
+  score = rep(1, length.out = length(seq.Date(from = ymd("2023-10-26"), to = ymd("2024-5-26"), by = "day")))
+)

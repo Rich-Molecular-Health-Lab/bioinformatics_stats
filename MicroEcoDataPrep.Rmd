@@ -4,11 +4,12 @@ author: "Alicia M. Rich, Ph.D."
 date: "`r Sys.Date()`"
 output:
   html_document:
+    theme: "lumen"
     toc: true
     toc_location: "before"
     toc_depth: 6
     number_sections: true
-    toc_float: true
+    toc_float: false
     code_folding: "hide"
     fig_caption: true
 params:
@@ -20,7 +21,6 @@ params:
 
 ```{r, message=FALSE}
 global      <- config::get(config = "default")
-path        <- config::get(config = paste0(params$sampleset))
 
 source(paste0(global$setup))
 source(paste0(swan$options))
@@ -28,6 +28,15 @@ source(paste0(micro$packages))
 source(paste0(micro$functions))
 source(paste0(micro$inputs))
 source(global$knit_engines)
+```
+
+
+```{r, message=FALSE}
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+source(modules$reactable_functions)
+source(modules$reactable_columns)
 source(path$metadata$bristol)
 source(path$metadata$key)
 source(path$metadata$diet)
@@ -36,8 +45,6 @@ source(path$metadata$housing)
 source(path$metadata$repro)
 source(path$metadata$health)
 
-seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
-subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
 ```
 
 # Intro
@@ -462,196 +469,33 @@ depth <- alignments.long %>%
   filter((Subject == "warble" | Subject == "culi") & !is.na(CollectionDate)) %>%
   arrange(CollectionDate, Subject)
 
-reactable(
-  depth,
-  groupBy = c("CollectionDate"),
-  defaultPageSize = 25,
-  sortable = TRUE,
-  resizable = TRUE,
-  height = 900,
-  fullWidth = TRUE,
-  compact = TRUE, 
-  showPagination = TRUE,
-  showPageSizeOptions = TRUE,
-  columns = list(
-    CollectionDate = colDef(name = "Date Collected", 
-                            format = colFormat(date = TRUE), sticky = "left"),
-    Subject        = colDef(name = "Subject", aggregate = "frequency", filterable = TRUE),
-    SampleID       = colDef(name = "Sample", aggregate = "count"),
-    depth          = colDef(name = "Read Count", aggregate = "frequency", 
-  filterable = TRUE, html = TRUE,
-                            style= function(value) {
-      if (value >= 10000) {
-        color <- "#3A488AFF"
-      } else if (value >= 7000 & value < 10000) {
-        color <- "#8785B2FF"
-      } else if (value >= 5000 & value < 7000) {
-        color <- "#DABD61FF"
-      } else if (value >= 1000 & value < 5000) {
-        color <- "#D95F30FF"
-      } else {
-        color <- "#BE3428FF"
-      }
-      list(color = color, fontWeight = "bold")
-    },
-                            format = colFormat(separators = TRUE),
-  aggregated = JS("
-    function(cellInfo) {
-      let values = cellInfo.subRows.map(row => row['depth']);
-      let uniqueValues = [...new Set(values)];
-
-      // Function to determine color based on value
-      function getColor(value) {
-        if (value >= 10000) {
-          return '#3A488AFF';
-        } else if (value >= 7000 && value < 10000) {
-          return '#8785B2FF';
-        } else if (value >= 5000 && value < 7000) {
-          return '#DABD61FF';
-        } else if (value >= 1000 && value < 5000) {
-          return '#D95F30FF';
-        } else {
-          return '#BE3428FF';
-        }
-      }
-
-      // Format unique values with their respective colors
-      return uniqueValues
-        .map(v => {
-          let color = getColor(v);
-          return `<span style='color: ${color}; font-weight: bold;'>${Number(v).toLocaleString()}</span>`;
-        })
-        .join('; ');
-    }
-  ")
-  ),
-    mean_coverage  = colDef(name = "Mean Taxonomic Coverage", aggregate = "frequency", html = TRUE,
-                            format = colFormat(percent = TRUE, digits = 1),
-                            style= function(value) {
-      if (value >= .98) {
-        color <- "#3A488AFF"
-      } else if (value >= .97 & value < .98) {
-        color <- "#8785B2FF"
-      } else if (value >= .96 & value < .97) {
-        color <- "#DABD61FF"
-      } else if (value >= .95 & value < .96) {
-        color <- "#D95F30FF"
-      } else {
-        color <- "#BE3428FF"
-      }
-      list(color = color, fontWeight = "bold")
-    },
-                            aggregated = JS("
-    function(cellInfo) {
-      let values = cellInfo.subRows.map(row => row['mean_coverage']);
-      let uniqueValues = [...new Set(values)];
-      // Function to determine color based on value
-      function getColor(value) {
-        if (value >= .98) {
-          return '#3A488AFF';
-        } else if (value >= .97 & value < .98) {
-          return '#8785B2FF';
-        } else if (value >= .96 & value < .97) {
-          return '#DABD61FF';
-        } else if (value >= .95 & value < .96) {
-          return '#D95F30FF';
-        } else {
-          return '#BE3428FF';
-        }
-      }
-      // Format unique values as percentages with 1 decimal place and style them
-      return uniqueValues
-        .map(v => {
-          let color = getColor(v);
-          return `<span style='color: ${color}; font-weight: bold;'>${(v * 100).toFixed(1)}%</span>`;
-        })
-        .join('; ');
-    
-    } 
-  ")),
-    probiotic      = colDef(name = "Probiotic", aggregate = "unique", filterable = TRUE),
-    oatgel         = colDef(name = "Oat Gel", aggregate = "unique", filterable = TRUE),
-    steroid        = colDef(name = "Steroid (mg/day)", aggregate = "unique", filterable = TRUE),
-    cauliflower    = colDef(name = "Cauliflower", aggregate = "unique", filterable = TRUE),
-    tomatoes       = colDef(name = "Tomatoes", aggregate = "unique", filterable = TRUE),
-    broccoli       = colDef(name = "Broccoli", aggregate = "unique", filterable = TRUE),
-    med_type       = colDef(name = "Type", aggregate = "unique", filterable = TRUE),
-    med_name       = colDef(name = "Name", aggregate = "unique"),
-    med_dose       = colDef(name = "Dose (mg/day)", aggregate = "unique"),
-    enclosure      = colDef(name = "Old or New Enclosure", aggregate = "unique", filterable = TRUE),
-    access         = colDef(name = "Breeding Access", aggregate = "unique", filterable = TRUE),
-    estrus         = colDef(name = "In Estrus", aggregate = "unique", filterable = TRUE),
-    pregnant       = colDef(name = "Pregnant", aggregate = "unique", filterable = TRUE),
-    bristol_mean   = colDef(name = "Mean Bristol Score", aggregate = "mean"),
-    health_note    = colDef(name = "Health", aggregate = "unique"),
-    repro_note     = colDef(name = "Reproduction", aggregate = "unique"),
-    SampleNotes    = colDef(name = "Sample Collection", aggregate = "unique"),
-    study_day      = colDef(show = FALSE)
-  ),
-  columnGroups = list(
-    colGroup(name = "Diet Trial", columns = c("probiotic", "oatgel", "steroid")),
-    colGroup(name = "Foods in Rotation", columns = c("cauliflower", "tomatoes", "broccoli")),
-    colGroup(name = "Medication Administered", columns = c("med_type", "med_name", "med_dose")),
-    colGroup(name = "Misc. Notes", columns = c("health_note", "repro_note", "SampleNotes"))
-  )
-)
-```
-
-```{r, warning = FALSE}
-depth.plot <- depth %>% filter(Subject == "warble" | Subject == "culi") %>%
-    ggplot(aes(depth, after_stat(count))) +
-    geom_histogram(binwidth = 1000, fill = "#8785B2FF", color = "black") +
-  geom_text(
-    stat = "bin",
-    binwidth = 1000,
-    aes(label = after_stat(count), fontface = "bold"),
-    vjust = -0.5,
-    color = "black",
-    size = 4
-  ) +
-  theme_classic() +
-  scale_x_continuous(
-    breaks = seq(0, max(depth$depth, na.rm = TRUE), by = 1000),  
-    labels = scales::comma,
-    limits = c(0, 15000)
-  ) +
-  labs(
-    title = "Frequency of Read Counts",
-    x = "Depth (Read Count)",
-    y = "Frequency"
-  ) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for clarity
-  )
-
-
-depth.plot
 ```
 
 ```{r}
-depth_list <- as.list(depth.summary$depth) %>% set_names(depth.summary$SampleID)
-
-thresholds <- list(
-  "3000" = keep(depth_list, \(x) all(x < 3000)),
-  "4000" = keep(depth_list, \(x) all(x < 4000)),
-  "5000" = keep(depth_list, \(x) all(x < 5000)),
-  "6000" = keep(depth_list, \(x) all(x < 6000)),
-  "7000" = keep(depth_list, \(x) all(x < 7000)),
-  "8000" = keep(depth_list, \(x) all(x < 8000)),
-  "9000" = keep(depth_list, \(x) all(x < 9000)),
-  "all"  = depth_list
-)
-
-total <- c(as.numeric(length(thresholds$all)))
+source(modules$generate_alignment_stats)
 ```
-
 
 ```{r}
-depth_summary <- map(thresholds, \(x) length(x)) %>% set_names(names(thresholds)) %>%
-  discard_at("all") %>%
-  enframe(name = "Threshold", value = "Samples_Lost") %>%
-  mutate(Prop_Lost = Samples_Lost/total)
+  page_fluid(
+    accordion(
+      open = TRUE,
+      accordion_panel(
+        title = "Summary of Rarefaction Thresholds",
+        icon = bsicons::bs_icon("bar-chart"),
+        layout_column_wrap(
+          gt_depth_summary,
+          depth_plot
+        )
+      ),
+      accordion_panel(
+        title = "Sequencing Depth Across All Samples",
+        icon = bsicons::bs_icon("calendar-date"),
+        depth_table
+      )
+    )
+  )
 ```
+
 
 
 # Update References and Fetch Representative Sequences

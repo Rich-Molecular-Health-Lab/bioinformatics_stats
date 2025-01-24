@@ -7,6 +7,7 @@ default:
   inputs: "../bioinformatics_stats/setup/global/inputs.R"
   fonts: "../bioinformatics_stats/setup/global/fonts/FA6_Free-Solid-900.otf"
   test_prediction: "../bioinformatics_stats/setup/microbiome/test_prediction/"
+  visuals: "../bioinformatics_stats/visuals/"
   set_paths: "../bioinformatics_stats/setup/global/set_paths.R"
   summaries:
     metadata: "../summaries/metadata/"
@@ -15,6 +16,14 @@ default:
   tmp_fetch: "../bioinformatics_stats/tmp/fetch_references.txt"
   tmp_fasta3: "../bioinformatics_stats/tmp/tmp3.fasta"
   tmp_fasta4: "../bioinformatics_stats/tmp/tmp4.fasta"
+  
+modules:
+  generate_alignment_stats: "../bioinformatics_stats/modules/generate_alignment_stats.R"
+  reactable_functions: "../bioinformatics_stats/modules/reactable_functions.R"
+  reactable_columns: "../bioinformatics_stats/modules/reactable_columns.R"
+  
+widgets:
+  depth_summary: "../bioinformatics_stats/widgets/depth_summary.R"
   
 swan:
   functions: "../bioinformatics_stats/setup/read_processing/functions.R"

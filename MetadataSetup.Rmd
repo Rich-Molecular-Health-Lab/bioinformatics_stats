@@ -23,9 +23,6 @@ global             <- config::get(config = "default")
 source(paste0(global$setup))
 source(paste0(swan$functions))
 
-seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
-subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
-path         <- config::get(config = params$sampleset)
 
 source(path$metadata$bristol)
 source(path$metadata$key)
@@ -308,7 +305,7 @@ culi.housing <- housing$culi %>%
 
 ### Bristol Fecal Scores
 
-I only have scores available for Culi, and scores were recorded anywhere from 0 to 3x per day.
+I only have scores for Culi recorded by keepers, and scores were recorded anywhere from 0 to 3x per day. For Warble, keepers indicated that daily scores should be recorded as "1".
 
 ```{r}
 culi.bristol <- bristol %>%
@@ -323,6 +320,20 @@ culi.bristol <- bristol %>%
          bristol_mean,
          bristol_max) %>%
   arrange(Date)
+
+warble.bristol <- bristol_warble %>%
+  group_by(date) %>%
+  summarize(bristol_min  = min(score),
+            bristol_mean = round(mean(score), digits = 0),
+            bristol_max  = max(score)) %>%
+  ungroup() %>%
+  full_join(study_days, by = join_by(date == Date)) %>%
+  select(Date = date, 
+         bristol_min,
+         bristol_mean,
+         bristol_max) %>%
+  arrange(Date)
+  
 ```
 
 ### Repro
@@ -407,6 +418,7 @@ warble.metadata <- study_days %>%
   left_join(warble.schedule) %>%
   left_join(warble.meds) %>%
   left_join(warble.housing) %>%
+  left_join(warble.bristol) %>%
   left_join(access.schedule) %>%
   left_join(estrus.schedule) %>%
   left_join(preg.schedule) %>%
