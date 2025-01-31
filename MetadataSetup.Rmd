@@ -23,8 +23,6 @@ global             <- config::get(config = "default")
 source(paste0(global$setup))
 source(paste0(swan$functions))
 
-
-source(path$metadata$bristol)
 source(path$metadata$key)
 source(path$metadata$diet)
 source(path$metadata$meds)
@@ -175,40 +173,41 @@ study_days <- tibble(Date = seq.Date(from = ymd(path$day1),
 
 We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.
 
-```{r, message = FALSE}
-# optionals are foods that are routinely cycled in and out of daily diets to maximize variety. here I am only noting those optionals which were permanently removed from culi's diet at a certain date in an attempt to reduce GI inflammation.
-  
-optionals.culi <-   imodify(optionals$culi, ~ {
-  food <- .y
-  tbl  <- .x
-  rowwise(tbl) %>%
-    mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
-  unnest(Date) %>% mutate(food = food) %>% select(Date, food) 
-}) %>%
-  list_rbind() %>%
-  mutate(value = 1) %>%
-  pivot_wider(
-    id_cols     = Date,
-    names_from  = food,
-    values_fill = 0
-  ) %>%
-  right_join(select(study_days, Date)) %>%
-  mutate(across(!Date, ~ replace_na(.x, 0))) %>%
-  nest(.by = Date, .key = "Foods_included")
+```{r}
+trial_schedule <- culi.diet.schedule %>%
+  mutate(across(all_of(binary_cols), ~ fct_recode(as.character(.x), 
+                                                  "check" = "1", 
+                                                  "minus" = "0")),
+         across(all_of(ord_cols), ~ fct_recode(as.character(.x), 
+                                          "arrow-trend-up"   = "1.5", 
+                                          "arrow-trend-down" = "0.5",
+                                          "grip-lines"       = "1"))) %>%
+  gt() %>%
+    fmt_date(columns = starts_with("day"), date_style = "m_day_year") %>%
+    cols_label(day_start = "Begin") %>%
+    cols_hide(day_last) %>%
+    fmt_icon(columns = c(probiotic:biscuit, "sweet potato":antidiar),
+             fill_color = c("check" = colors$binary$yes, "minus" = colors$binary$no)) %>%
+    fmt_icon(columns = c("egg", "bug", "lectin"),
+             fill_color = c("arrow-trend-up" = colors$gradient$high, 
+                            "arrow-trend-down" = colors$gradient$low, 
+                            "grip-lines" = colors$gradient$med)) %>%
+    cols_align("center") %>%
+    tab_header("Summary of Trial Phases for Culi") %>%
+    tab_footnote("Phase ends on the date the next row begins.", 
+                 locations = cells_column_labels(day_start)) %>%
+    tab_footnote("Steroid (Budesonide) dose reported as mg/day", 
+                 locations = cells_column_labels(steroid)) %>%
+    tab_footnote("Warble stayed at baseline for duration of the study.", 
+                 locations = cells_title()) %>%
+    opt_stylize(style = 3, color = "gray")
+
+gtsave(trial_schedule, here("visuals/loris_diet_schedule.html"))
 ```
 
-```{r}
-culi.schedule <- culi.trials %>%
-  rowwise() %>%
-  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
-  unnest(Date) %>%
-  select(Date, 
-         Trial_Phase = diet) %>%
-  left_join(optionals.culi, by = join_by(Date)) %>%
-  unnest(c(Trial_Phase, Foods_included))
 
+```{r}
 culi.diet.schedule %>%
-  list_rbind() %>%
   mutate(Probiotic   = case_when(diet$probiotic == 1   ~ "check", 
                                  diet$probiotic == 0   ~ "minus",
                                  is.na(diet$probiotic) ~ "question"),
@@ -306,6 +305,12 @@ culi.housing <- housing$culi %>%
 ### Bristol Fecal Scores
 
 I only have scores for Culi recorded by keepers, and scores were recorded anywhere from 0 to 3x per day. For Warble, keepers indicated that daily scores should be recorded as "1".
+
+```{r}
+bristol <- read.table(here("metadata/loris/bristols.tsv"), sep = "\t", header = T) %>%
+  mutate(Date = ymd(date), .keep = "unused")
+```
+
 
 ```{r}
 culi.bristol <- bristol %>%

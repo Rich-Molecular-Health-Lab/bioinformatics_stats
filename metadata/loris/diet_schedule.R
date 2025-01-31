@@ -1,53 +1,445 @@
 # steroid doses are calculated as mg/day while probiotic and oatgel values are binary (included = 1, none = 0)
-diet_trials   <- list(
-  baseline      = tibble(steroid = 0.00, probiotic = 0, oatgel = 0),
-  option1       = tibble(steroid = 0.00, probiotic = 1, oatgel = 0),
-  option2       = tibble(steroid = 0.00, probiotic = 1, oatgel = 1),
-  option3       = tibble(steroid = 0.10, probiotic = 0, oatgel = 0),
-  option4       = tibble(steroid = 0.20, probiotic = 0, oatgel = 0),
-  option5       = tibble(steroid = 0.20, probiotic = 1, oatgel = 1),
-  option6       = tibble(steroid = 0.20, probiotic = 0, oatgel = 1),
-  option7       = tibble(steroid = 0.10, probiotic = 1, oatgel = 1),
-  option8       = tibble(steroid = 0.05, probiotic = 1, oatgel = 1)
+diet_key <- list(
+   baseline = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 1,
+     "broccoli"     = 1,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option1  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 1, 
+     "oatgel"       = 0,
+     "cauliflower"  = 1,
+     "broccoli"     = 1,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option2  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 1,
+     "broccoli"     = 1,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option3  = list(
+     "steroid"      = 0.10, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 1,
+     "broccoli"     = 1,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option4  = list(
+     "steroid"      = 0.20, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 1,
+     "broccoli"     = 1,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option5  = list(
+     "steroid"      = 0.20, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option6  = list(
+     "steroid"      = 0.20, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 1,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option7  = list(
+     "steroid"      = 0.20, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option8  = list(
+     "steroid"      = 0.20, 
+     "probiotic"    = 0, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 1,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option9  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 1,
+     "bug"          = 1,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option10  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 0,
+     "green bean"   = 0,
+     "carrot"       = 0,
+     "pumpkin"      = 0,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option11  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 0,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option12  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 0, 
+     "oatgel"       = 0,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option13  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 0, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option14  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 0,
+     "lectin"       = 1
+   ),
+   option15  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 1,
+     "lectin"       = 1
+   ),
+   option16  = list(
+     "steroid"      = 0.00, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 1,
+     "lectin"       = 0.5
+   ),
+   option17  = list(
+     "steroid"      = 0.20, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 1,
+     "lectin"       = 0.5
+   ),
+   option18  = list(
+     "steroid"      = 0.10, 
+     "probiotic"    = 1, 
+     "oatgel"       = 1,
+     "cauliflower"  = 0,
+     "broccoli"     = 0,
+     "tomato"       = 0,
+     "biscuit"      = 0,
+     "egg"          = 0.5,
+     "bug"          = 1.5,
+     "sweet potato" = 1,
+     "green bean"   = 1,
+     "carrot"       = 1,
+     "pumpkin"      = 1,
+     "metamucil"    = 1,
+     "antidiar"     = 1,
+     "lectin"       = 0.5
+   )
 )
 
-optionals <- list(
-  culi = list(
-  tomatoes    = tibble(start_day = ymd(path$day1), last_day = ymd("2024-02-19")),
-  cauliflower = tibble(start_day = ymd(path$day1), last_day = ymd("2024-01-22")),
-  broccoli    = tibble(start_day = ymd(path$day1), last_day = ymd("2024-01-22"))
-) )
 
-foods.removed  <- list(
-  culi = list(
-    tomatoes    = ymd("2024-02-19"),
-    cauliflower = ymd("2024-01-22"),
-    broccoli    = ymd("2024-01-22")
-  ) 
+diet_switches <- list(
+  list(ymd(path$day1)   , ymd("2023-11-01")),
+  list(ymd("2023-11-02"), ymd("2023-11-22")),
+  list(ymd("2023-11-23"), ymd("2023-12-13")),
+  list(ymd("2023-12-14"), ymd("2024-01-03")),
+  list(ymd("2024-01-04"), ymd("2024-01-21")),
+  list(ymd("2024-01-22"), ymd("2024-01-24")),
+  list(ymd("2024-01-25"), ymd("2024-02-19")),
+  list(ymd("2024-02-20"), ymd("2024-02-22")),
+  list(ymd("2024-02-23"), ymd("2024-05-28")),
+  list(ymd("2024-05-29"), ymd("2024-06-14")),
+  list(ymd("2024-06-15"), ymd("2024-06-28")),
+  list(ymd("2024-06-29"), ymd("2024-07-12")),
+  list(ymd("2024-07-13"), ymd("2024-07-26")),
+  list(ymd("2024-07-27"), ymd("2024-08-09")),
+  list(ymd("2024-08-10"), ymd("2024-08-23")),
+  list(ymd("2024-08-24"), ymd("2024-09-06")),
+  list(ymd("2024-09-07"), ymd("2024-09-20")),
+  list(ymd("2024-09-21"), ymd("2024-10-18")),
+  list(ymd("2024-10-19"), ymd("2024-11-15")),
+  list(ymd("2024-11-16"), ymd("2024-12-27")),
+  list(ymd("2024-12-28"), ymd("2025-01-02"))
+) %>% set_names(seq_len(length(.)))
+
+trial_order <- list(
+  diet_key$baseline,
+  diet_key$option1,
+  diet_key$option2,
+  diet_key$option3,
+  diet_key$option4,
+  diet_key$option5,
+  diet_key$option6,
+  diet_key$option8,
+  diet_key$option7,
+  diet_key$baseline,
+  diet_key$option9,
+  diet_key$option10,
+  diet_key$option11,
+  diet_key$option12,
+  diet_key$option13,
+  diet_key$option14,
+  diet_key$option15,
+  diet_key$option16,
+  diet_key$option17,
+  diet_key$option18,
+  diet_key$baseline
+) %>% set_names(seq_len(length(.)))
+  
+trial_schedule <- map2(diet_switches, trial_order, ~ list(dates = .x, diet = .y))
+
+culi.diet.schedule <- enframe(trial_schedule) %>% 
+  unnest_wider(col = "value") %>%
+  unnest_wider(col = "dates", names_sep = "_") %>%
+  mutate(day_start = dates_1, 
+         day_last  = dates_2, 
+         .keep = "unused") %>%
+  unnest_wider(col = "diet") %>%
+  select(day_start,
+         day_last,
+         steroid:lectin)
+
+warble_schedule <- list(
+  list(
+    dates = list(ymd(path$day1), ymd("2025-01-02")),
+    diet  = diet_key$baseline)
+) %>% set_names(seq_len(length(.)))
+
+warble.diet.schedule <- enframe(warble_schedule) %>% 
+  unnest_wider(col = "value") %>%
+  unnest_wider(col = "dates", names_sep = "_") %>%
+  mutate(day_start = dates_1, 
+         day_last  = dates_2, 
+         .keep = "unused") %>%
+  unnest_wider(col = "diet") %>%
+  select(day_start,
+         day_last,
+         steroid:lectin)
+
+binary_cols <- c(
+  "probiotic"   ,
+  "oatgel"      ,
+  "cauliflower" ,
+  "broccoli"    ,
+  "tomato"      ,
+  "biscuit"     ,
+  "sweet potato",
+  "green bean"  ,
+  "carrot"      ,
+  "pumpkin"     ,
+  "metamucil"   ,
+  "antidiar"    
 )
 
-
-culi.diet.schedule <- list(
-  baseline = tibble(start_day = ymd(loris$day1)  , last_day = ymd("2023-11-01"), diet = diet_trials$baseline),
-  phase1   = tibble(start_day = ymd("2023-11-02"), last_day = ymd("2023-11-22"), diet = diet_trials$option1),
-  phase2   = tibble(start_day = ymd("2023-11-23"), last_day = ymd("2023-12-13"), diet = diet_trials$option2),
-  phase3   = tibble(start_day = ymd("2023-12-14"), last_day = ymd("2024-01-03"), diet = diet_trials$option3),
-  phase4   = tibble(start_day = ymd("2024-01-04"), last_day = ymd("2024-01-24"), diet = diet_trials$option4),
-  phase5   = tibble(start_day = ymd("2024-01-25"), last_day = ymd("2024-02-19"), diet = diet_trials$option5),
-  phase6   = tibble(start_day = ymd("2024-02-20"), last_day = ymd("2024-02-22"), diet = diet_trials$option6),
-  phase7   = tibble(start_day = ymd("2024-02-23"), last_day = ymd("2024-05-14"), diet = diet_trials$option7),
-  phase8   = tibble(start_day = ymd("2024-05-15"), last_day = ymd("2024-05-16"), diet = diet_trials$option8)
-)
-
-culi.trials <- tribble(
-  ~start_day,        ~last_day        , ~diet,
-  ymd(loris$day1)  , ymd("2023-11-01"), diet_trials$baseline,
-  ymd("2023-11-02"), ymd("2023-11-22"), diet_trials$option1,
-  ymd("2023-11-23"), ymd("2023-12-13"), diet_trials$option2,
-  ymd("2023-12-14"), ymd("2024-01-03"), diet_trials$option3,
-  ymd("2024-01-04"), ymd("2024-01-24"), diet_trials$option4,
-  ymd("2024-01-25"), ymd("2024-02-19"), diet_trials$option5,
-  ymd("2024-02-20"), ymd("2024-02-22"), diet_trials$option6,
-  ymd("2024-02-23"), ymd("2024-05-14"), diet_trials$option7,
-  ymd("2024-05-15"), ymd("2024-05-16"), diet_trials$option8
+ord_cols <- c(
+  "egg"         ,
+  "bug"         ,
+  "lectin"      
 )

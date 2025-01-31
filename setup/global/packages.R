@@ -30,6 +30,7 @@ required_packages <- c(
   "gt",
   "gtExtras",
   "gtable",
+  "here",
   "htmltools",
   "htmlwidgets",
   "kableExtra",
@@ -82,6 +83,7 @@ library(ggtext)
 library(gt)
 library(gtExtras)
 library(gtable)
+library(here)
 library(htmltools)
 library(htmlwidgets)
 library(kableExtra)
