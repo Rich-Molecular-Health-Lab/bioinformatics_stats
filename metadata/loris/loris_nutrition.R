@@ -431,7 +431,8 @@ supplements <- list(
   fiber         = list(brand = "metamucil"  , units = "capsules per day", dose = list(low = 0.5, high = 1.0) , route = "in gum or on biscuits"),
   probiotic     = list(brand = "unknown"    , units = "drops per day"   , dose = list(low = 5.0, high = 10.0), route = "in gum or on biscuits"),
   antidiarrheal = list(NULL),
-  steroid       = list(brand = "metadiamine", units = "mg per day"      , dose = list(low = 0.1, high = 0.2) , route = "syringe injection?")
+  steroid       = list(brand = "budesonide"   , units = "mg per day"      , dose = list(low = 0.1, high = 0.2) , route = "in gum or on biscuits"),
+  antibiotic    = list(brand = "metronidazole", units = "mg per day"      , dose = list(default = 12.5)        , route = "in gum or on biscuits")
 )
 
 diet_footnotes <- list(

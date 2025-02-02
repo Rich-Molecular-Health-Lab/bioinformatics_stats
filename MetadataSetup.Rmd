@@ -23,12 +23,9 @@ global             <- config::get(config = "default")
 source(paste0(global$setup))
 source(paste0(swan$functions))
 
-source(path$metadata$key)
-source(path$metadata$diet)
-source(path$metadata$meds)
-source(path$metadata$housing)
-source(path$metadata$repro)
-source(path$metadata$health)
+for (file in path$metadata$scripts) {
+  source(here(file))
+}
 
 ```
 
@@ -123,7 +120,8 @@ source(path$metadata$bristol)
 First I will read in some useful info about each subject from their AZA studbook.
 
 ```{r, warning = FALSE}
-studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
+studbook.info <- read.csv(here(path$metadata$studbook), 
+                          header = TRUE) %>%
   mutate(
           Subject       = factor(str_to_lower(Name), levels = unique(str_to_lower(Name))),
           StudbookID    = factor(ID, levels = unique(ID)),
@@ -149,7 +147,9 @@ studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
 First I will read in the sample inventory, which is actually already a metadata table itself. We just want to match some more interesting variables to it, beginning with the studbook summary we just built.
 
 ```{r}
-samples <- read.table(path$compilation, header = T, sep = "\t") %>%
+samples <- read.table(here(path$compilation), 
+                      header = T, 
+                      sep = "\t") %>%
             mutate(CollectionDate = ymd(CollectionDate),
                    Subject       = factor(str_to_lower(Subject), levels = unique(str_to_lower(Subject)))) %>%
   left_join(studbook.info, by = join_by(Subject)) %>%

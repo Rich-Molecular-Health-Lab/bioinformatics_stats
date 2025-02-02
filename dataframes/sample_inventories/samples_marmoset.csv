@@ -1,0 +1,1961 @@
+SampleID,SampleSubject,SampleDate,SampleCollectedBy,SampleNotes,SampleBox,Bristol,SampleTime,SampleStabilizer
+HAM-1-DRS,Hamlet,3/10/2023,SA,,1,1,800,DNA/RNA Shield
+HAM-1-MGE,Hamlet,3/10/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+HER-1-DRS,Hera,3/10/2023,SA,,1,1,800,DNA/RNA Shield
+HER-1-MGE,Hera,3/10/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+JAR-1-DRS,JarJar BINKS,3/10/2023,SA,,1,3,800,DNA/RNA Shield
+JAR-1-MGE,JarJar BINKS,3/10/2023,SA,,1,3,800,Molecular Grade (96%) Ethanol
+WOL-1-DRS,Wolverine,3/10/2023,SA,,1,1,800,DNA/RNA Shield
+WOL-1-MGE,Wolverine,3/10/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+IRI-1-DRS,Iris,3/10/2023,SA,,1,2,800,DNA/RNA Shield
+IRI-1-MGE,Iris,3/10/2023,SA,,1,2,800,Molecular Grade (96%) Ethanol
+GOO-1-DRS,Goose,3/10/2023,SA,,1,2,730,DNA/RNA Shield
+GOO-1-MGE,Goose,3/10/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+LAM-1-DRS,Lambchop,3/10/2023,SA,,1,2,730,DNA/RNA Shield
+LAM-1-MGE,Lambchop,3/10/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+IVY-1-DRS,Ivy,3/10/2023,SA,,1,1,730,DNA/RNA Shield
+IVY-1-MGE,Ivy,3/10/2023,SA,,1,1,730,Molecular Grade (96%) Ethanol
+PAD-1-DRS,Padme,3/10/2023,SA,,1,4,730,DNA/RNA Shield
+PAD-1-MGE,Padme,3/10/2023,SA,,1,4,730,Molecular Grade (96%) Ethanol
+JOA-1-DRS,Joans,3/10/2023,SA,,1,1,730,DNA/RNA Shield
+JOA-1-MGE,Joans,3/10/2023,SA,,1,1,730,Molecular Grade (96%) Ethanol
+GIN-1-DRS,Ginger,3/10/2023,SA,,1,2,730,DNA/RNA Shield
+GIN-1-MGE,Ginger,3/10/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+HAM-2-DRS,Hamlet,3/11/2023,SA,,1,1,800,DNA/RNA Shield
+HAM-2-MGE,Hamlet,3/11/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+HER-2-DRS,Hera,3/11/2023,SA,,1,2,800,DNA/RNA Shield
+HER-2-MGE,Hera,3/11/2023,SA,,1,2,800,Molecular Grade (96%) Ethanol
+JAR-2-DRS,JarJar BINKS,3/11/2023,SA,,1,3,800,DNA/RNA Shield
+JAR-2-MGE,JarJar BINKS,3/11/2023,SA,,1,3,800,Molecular Grade (96%) Ethanol
+OPH-2-DRS,Ophelia,3/11/2023,SA,,1,1,800,DNA/RNA Shield
+OPH-2-MGE,Ophelia,3/11/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+WOL-2-DRS,Wolverine,3/11/2023,SA,,1,1,800,DNA/RNA Shield
+WOL-2-MGE,Wolverine,3/11/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+IRI-2-DRS,Iris,3/11/2023,SA,,1,1,800,DNA/RNA Shield
+IRI-2-MGE,Iris,3/11/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+GOO-2-DRS,Goose,3/11/2023,SA,,1,1,730,DNA/RNA Shield
+GOO-2-MGE,Goose,3/11/2023,SA,,1,1,730,Molecular Grade (96%) Ethanol
+LAM-2-DRS,Lambchop,3/11/2023,SA,,1,2,730,DNA/RNA Shield
+LAM-2-MGE,Lambchop,3/11/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+IVY-2-DRS,Ivy,3/11/2023,SA,,1,2,730,DNA/RNA Shield
+IVY-2-MGE,Ivy,3/11/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+JOA-2-DRS,Joans,3/11/2023,SA,,1,1,730,DNA/RNA Shield
+JOA-2-MGE,Joans,3/11/2023,SA,,1,1,730,Molecular Grade (96%) Ethanol
+HEN-2-DRS,Henry,3/11/2023,SA,,1,3,730,DNA/RNA Shield
+HEN-2-MGE,Henry,3/11/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+GIN-2-DRS,Ginger,3/11/2023,SA,,1,3,730,DNA/RNA Shield
+GIN-2-MGE,Ginger,3/11/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+HAM-3-DRS,Hamlet,3/12/2023,SA,,1,1,800,DNA/RNA Shield
+HAM-3-MGE,Hamlet,3/12/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+JAR-3-DRS,JarJar BINKS,3/12/2023,SA,,1,1,800,DNA/RNA Shield
+JAR-3-MGE,JarJar BINKS,3/12/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+OPH-3-DRS,Ophelia,3/12/2023,SA,,1,1,800,DNA/RNA Shield
+OPH-3-MGE,Ophelia,3/12/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+KUB-3-DRS,Kubo,3/12/2023,SA,,1,1,800,DNA/RNA Shield
+KUB-3-MGE,Kubo,3/12/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+KOR-3-DRS,Korra,3/12/2023,SA,,1,2,800,DNA/RNA Shield
+KOR-3-MGE,Korra,3/12/2023,SA,,1,2,800,Molecular Grade (96%) Ethanol
+WOL-3-DRS,Wolverine,3/12/2023,SA,,1,1,800,DNA/RNA Shield
+WOL-3-MGE,Wolverine,3/12/2023,SA,,1,1,800,Molecular Grade (96%) Ethanol
+IRI-3-DRS,Iris,3/12/2023,SA,,1,2,800,DNA/RNA Shield
+IRI-3-MGE,Iris,3/12/2023,SA,,1,2,800,Molecular Grade (96%) Ethanol
+GOO-3-DRS,Goose,3/12/2023,SA,,1,2,730,DNA/RNA Shield
+GOO-3-MGE,Goose,3/12/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+LAM-3-DRS,Lambchop,3/12/2023,SA,,1,3,730,DNA/RNA Shield
+LAM-3-MGE,Lambchop,3/12/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+FRA-3-DRS,Franc,3/12/2023,SA,,1,2,730,DNA/RNA Shield
+FRA-3-MGE,Franc,3/12/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+IVY-3-DRS,Ivy,3/12/2023,SA,,1,1,730,DNA/RNA Shield
+IVY-3-MGE,Ivy,3/12/2023,SA,,1,1,730,Molecular Grade (96%) Ethanol
+PAD-3-DRS,Padme,3/12/2023,SA,,1,3,730,DNA/RNA Shield
+PAD-3-MGE,Padme,3/12/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+GRO-3-DRS,Grogu,3/12/2023,SA,,1,2,730,DNA/RNA Shield
+GRO-3-MGE,Grogu,3/12/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+MAR-3-DRS,Marshmallow,3/12/2023,SA,,1,3,730,DNA/RNA Shield
+MAR-3-MGE,Marshmallow,3/12/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+BUD-3-DRS,Buddy,3/12/2023,SA,,1,3,730,DNA/RNA Shield
+BUD-3-MGE,Buddy,3/12/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+JOA-3-DRS,Joans,3/12/2023,SA,,1,2,730,DNA/RNA Shield
+JOA-3-MGE,Joans,3/12/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+HEN-3-DRS,Henry,3/12/2023,SA,,1,2,730,DNA/RNA Shield
+HEN-3-MGE,Henry,3/12/2023,SA,,1,2,730,Molecular Grade (96%) Ethanol
+GIN-3-DRS,Ginger,3/12/2023,SA,,1,3,730,DNA/RNA Shield
+GIN-3-MGE,Ginger,3/12/2023,SA,,1,3,730,Molecular Grade (96%) Ethanol
+HAM-4-DRS,Hamlet,3/13/23,SA,,1,1,800,DNA/RNA Shield
+HAM-4-MGE,Hamlet,3/13/23,SA,,1,1,800,Molecular Grade (96%) Ethanol
+HER-4-DRS,Hera,3/13/23,SA,,1,1,800,DNA/RNA Shield
+HER-4-MGE,Hera,3/13/23,SA,,1,1,800,Molecular Grade (96%) Ethanol
+JAR-4-DRS,JarJar BINKS,3/13/23,SA,,1,2,800,DNA/RNA Shield
+JAR-4-MGE,JarJar BINKS,3/13/23,SA,,1,2,800,Molecular Grade (96%) Ethanol
+OPH-4-DRS,Ophelia,3/13/23,SA,,1,1,800,DNA/RNA Shield
+OPH-4-MGE,Ophelia,3/13/23,SA,,1,1,800,Molecular Grade (96%) Ethanol
+KUB-4-DRS,Kubo,3/13/23,SA,,1,1,800,DNA/RNA Shield
+KUB-4-MGE,Kubo,3/13/23,SA,,1,1,800,Molecular Grade (96%) Ethanol
+KOR-4-DRS,Korra,3/13/23,SA,,1,2,800,DNA/RNA Shield
+KOR-4-MGE,Korra,3/13/23,SA,,1,2,800,Molecular Grade (96%) Ethanol
+WOL-4-DRS,Wolverine,3/13/23,SA,,1,1,800,DNA/RNA Shield
+WOL-4-MGE,Wolverine,3/13/23,SA,,1,1,800,Molecular Grade (96%) Ethanol
+IRI-4-DRS,Iris,3/13/23,SA,,1,2,800,DNA/RNA Shield
+IRI-4-MGE,Iris,3/13/23,SA,,1,2,800,Molecular Grade (96%) Ethanol
+GOO-4-DRS,Goose,3/13/23,SA,,1,2,730,DNA/RNA Shield
+GOO-4-MGE,Goose,3/13/23,SA,,1,2,730,Molecular Grade (96%) Ethanol
+LAM-4-DRS,Lambchop,3/13/23,SA,,2,2,730,DNA/RNA Shield
+LAM-4-MGE,Lambchop,3/13/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+FRA-4-DRS,Franc,3/13/23,SA,,2,2,730,DNA/RNA Shield
+FRA-4-MGE,Franc,3/13/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+IVY-4-DRS,Ivy,3/13/23,SA,,2,2,730,DNA/RNA Shield
+IVY-4-MGE,Ivy,3/13/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+BUD-4-DRS,Buddy,3/13/23,SA,,2,2,730,DNA/RNA Shield
+BUD-4-MGE,Buddy,3/13/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+JOA-4-DRS,Joans,3/13/23,SA,,2,2,730,DNA/RNA Shield
+JOA-4-MGE,Joans,3/13/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+HEN-4-DRS,Henry,3/13/23,SA,,2,3,730,DNA/RNA Shield
+HEN-4-MGE,Henry,3/13/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+GIN-4-DRS,Ginger,3/13/23,SA,,2,2,730,DNA/RNA Shield
+GIN-4-MGE,Ginger,3/13/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+HAM-5-DRS,Hamlet,3/14/23,SA,,2,1,830,DNA/RNA Shield
+HAM-5-MGE,Hamlet,3/14/23,SA,,2,1,830,Molecular Grade (96%) Ethanol
+PAD-5-DRS,Padme,3/14/23,SA,,2,4,800,DNA/RNA Shield
+PAD-5-MGE,Padme,3/14/23,SA,,2,4,800,Molecular Grade (96%) Ethanol
+HAM-6-DRS,Hamlet,3/15/23,SA,,2,2,800,DNA/RNA Shield
+HAM-6-MGE,Hamlet,3/15/23,SA,,2,2,800,Molecular Grade (96%) Ethanol
+OPH-6-DRS,Ophelia,3/15/23,SA,,2,1,800,DNA/RNA Shield
+OPH-6-MGE,Ophelia,3/15/23,SA,,2,1,800,Molecular Grade (96%) Ethanol
+KOR-6-DRS,Korra,3/15/23,SA,,2,4,800,DNA/RNA Shield
+KOR-6-MGE,Korra,3/15/23,SA,,2,4,800,Molecular Grade (96%) Ethanol
+WOL-6-DRS,Wolverine,3/15/23,SA,,2,3,800,DNA/RNA Shield
+WOL-6-MGE,Wolverine,3/15/23,SA,,2,3,800,Molecular Grade (96%) Ethanol
+LAM-6-DRS,Lambchop,3/15/23,SA,,2,2,730,DNA/RNA Shield
+LAM-6-MGE,Lambchop,3/15/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+IVY-6-DRS,Ivy,3/15/23,SA,,2,2,730,DNA/RNA Shield
+IVY-6-MGE,Ivy,3/15/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+PAD-6-DRS,Padme,3/15/23,SA,,2,4,730,DNA/RNA Shield
+PAD-6-MGE,Padme,3/15/23,SA,,2,4,730,Molecular Grade (96%) Ethanol
+MAR-6-DRS,Marshmallow,3/15/23,SA,,2,4,730,DNA/RNA Shield
+MAR-6-MGE,Marshmallow,3/15/23,SA,,2,4,730,Molecular Grade (96%) Ethanol
+JOA-6-DRS,Joans,3/15/23,SA,,2,1,730,DNA/RNA Shield
+JOA-6-MGE,Joans,3/15/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+HEN-6-DRS,Henry,3/15/23,SA,,2,3,730,DNA/RNA Shield
+HEN-6-MGE,Henry,3/15/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+HAM-7-DRS,Hamlet,3/16/23,SA,,2,1,800,DNA/RNA Shield
+HAM-7-MGE,Hamlet,3/16/23,SA,,2,1,800,Molecular Grade (96%) Ethanol
+HER-7-DRS,Hera,3/16/23,SA,,2,2,800,DNA/RNA Shield
+HER-7-MGE,Hera,3/16/23,SA,,2,2,800,Molecular Grade (96%) Ethanol
+JAR-7-DRS,JarJar BINKS,3/16/23,SA,,2,3,800,DNA/RNA Shield
+JAR-7-MGE,JarJar BINKS,3/16/23,SA,,2,3,800,Molecular Grade (96%) Ethanol
+OPH-7-DRS,Ophelia,3/16/23,SA,,2,1,800,DNA/RNA Shield
+OPH-7-MGE,Ophelia,3/16/23,SA,,2,1,800,Molecular Grade (96%) Ethanol
+IRI-7-DRS,Iris,3/16/23,SA,,2,2,800,DNA/RNA Shield
+IRI-7-MGE,Iris,3/16/23,SA,,2,2,800,Molecular Grade (96%) Ethanol
+GOO-7-DRS,Goose,3/16/23,SA,,2,2,730,DNA/RNA Shield
+GOO-7-MGE,Goose,3/16/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+LAM-7-DRS,Lambchop,3/16/23,SA,,2,3,730,DNA/RNA Shield
+LAM-7-MGE,Lambchop,3/16/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+FRA-7-DRS,Franc,3/16/23,SA,,2,1,730,DNA/RNA Shield
+FRA-7-MGE,Franc,3/16/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+IVY-7-DRS,Ivy,3/16/23,SA,,2,1,730,DNA/RNA Shield
+IVY-7-MGE,Ivy,3/16/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+CHA-7-DRS,Charles,3/16/23,SA,,2,2,730,DNA/RNA Shield
+CHA-7-MGE,Charles,3/16/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+PAD-7-DRS,Padme,3/16/23,SA,,2,4,730,DNA/RNA Shield
+PAD-7-MGE,Padme,3/16/23,SA,,2,4,730,Molecular Grade (96%) Ethanol
+GRO-7-DRS,Grogu,3/16/23,SA,,2,3,730,DNA/RNA Shield
+GRO-7-MGE,Grogu,3/16/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+MAR-7-DRS,Marshmallow,3/16/23,SA,,2,3,730,DNA/RNA Shield
+MAR-7-MGE,Marshmallow,3/16/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+BUD-7-DRS,Buddy,3/16/23,SA,,2,5,730,DNA/RNA Shield
+BUD-7-MGE,Buddy,3/16/23,SA,,2,5,730,Molecular Grade (96%) Ethanol
+JOA-7-DRS,Joans,3/16/23,SA,,2,1,730,DNA/RNA Shield
+JOA-7-MGE,Joans,3/16/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+HEN-7-DRS,Henry,3/16/23,SA,,2,3,730,DNA/RNA Shield
+HEN-7-MGE,Henry,3/16/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+GIN-7-DRS,Ginger,3/16/23,SA,,2,3,730,DNA/RNA Shield
+GIN-7-MGE,Ginger,3/16/23,SA,,2,3,730,Molecular Grade (96%) Ethanol
+HAM-9-DRS,Hamlet,3/18/13,SA,,2,2,730,DNA/RNA Shield
+HAM-9-MGE,Hamlet,3/18/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+HER-9-DRS,Hera,3/18/23,SA,,2,2,730,DNA/RNA Shield
+HER-9-MGE,Hera,3/18/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+JAR-9-DRS,JarJar BINKS,3/18/23,SA,,2,1,730,DNA/RNA Shield
+JAR-9-MGE,JarJar BINKS,3/18/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+OPH-9-DRS,Ophelia,3/18/23,SA,,2,1,730,DNA/RNA Shield
+OPH-9-MGE,Ophelia,3/18/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+KUB-9-DRS,Kubo,3/18/23,SA,,2,1,730,DNA/RNA Shield
+KUB-9-MGE,Kubo,3/18/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+KOR-9-DRS,Korra,3/18/23,SA,,2,2,730,DNA/RNA Shield
+KOR-9-MGE,Korra,3/18/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+WOL-9-DRS,Wolverine,3/18/23,SA,,2,1,730,DNA/RNA Shield
+WOL-9-MGE,Wolverine,3/18/23,SA,,2,1,730,Molecular Grade (96%) Ethanol
+IRI-9-DRS,Iris,3/18/23,SA,,2,2,730,DNA/RNA Shield
+IRI-9-MGE,Iris,3/18/23,SA,,2,2,730,Molecular Grade (96%) Ethanol
+GOO-9-DRS,Goose,3/18/23,SA,,2,3,800,DNA/RNA Shield
+GOO-9-MGE,Goose,3/18/23,SA,,2,3,800,Molecular Grade (96%) Ethanol
+LAM-9-DRS,Lambchop,3/18/23,SA,,2,3,800,DNA/RNA Shield
+LAM-9-MGE,Lambchop,3/18/23,SA,,2,3,800,Molecular Grade (96%) Ethanol
+FRA-9-DRS,Franc,3/18/23,SA,,2,2,800,DNA/RNA Shield
+FRA-9-MGE,Franc,3/18/23,SA,,2,2,800,Molecular Grade (96%) Ethanol
+IVY-9-DRS,Ivy,3/18/23,SA,,2,1,800,DNA/RNA Shield
+IVY-9-MGE,Ivy,3/18/23,SA,,2,1,800,Molecular Grade (96%) Ethanol
+CHA-9-DRS,Charles,3/18/23,SA,,2,2,800,DNA/RNA Shield
+CHA-9-MGE,Charles,3/18/23,SA,,2,2,800,Molecular Grade (96%) Ethanol
+PAD-9-DRS,Padme,3/18/23,SA,,2,3,800,DNA/RNA Shield
+PAD-9-MGE,Padme,3/18/23,SA,,2,3,800,Molecular Grade (96%) Ethanol
+GRO-9-DRS,Grogu,3/18/23,SA,,3,3,800,DNA/RNA Shield
+GRO-9-MGE,Grogu,3/18/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+MAR-9-DRS,Marshmallow,3/18/23,SA,,3,2,800,DNA/RNA Shield
+MAR-9-MGE,Marshmallow,3/18/23,SA,,3,2,800,Molecular Grade (96%) Ethanol
+BUD-9-DRS,Buddy,3/18/23,SA,,3,3,800,DNA/RNA Shield
+BUD-9-MGE,Buddy,3/18/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+JOA-9-DRS,Joans,3/18/23,SA,,3,2,800,DNA/RNA Shield
+JOA-9-MGE,Joans,3/18/23,SA,,3,2,800,Molecular Grade (96%) Ethanol
+HEN-9-DRS,Henry,3/18/23,SA,,3,3,800,DNA/RNA Shield
+HEN-9-MGE,Henry,3/18/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+GIN-9-DRS,Ginger,3/18/23,SA,,3,3,800,DNA/RNA Shield
+GIN-9-MGE,Ginger,3/18/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+HAM-11-DRS,Hamlet,3/20/23,SA,,3,2,730,DNA/RNA Shield
+HAM-11-MGE,Hamlet,3/20/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+HER-11-DRS,Hera,3/20/23,SA,,3,2,730,DNA/RNA Shield
+HER-11-MGE,Hera,3/20/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+JAR-11-DRS,JarJar BINKS,3/20/23,SA,,3,1,730,DNA/RNA Shield
+JAR-11-MGE,JarJar BINKS,3/20/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+OPH-11-DRS,Ophelia,3/20/23,SA,,3,2,730,DNA/RNA Shield
+OPH-11-MGE,Ophelia,3/20/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+KUB-11-DRS,Kubo,3/20/23,SA,,3,1,730,DNA/RNA Shield
+KUB-11-MGE,Kubo,3/20/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+KOR-11-DRS,Korra,3/20/23,SA,,3,1,730,DNA/RNA Shield
+KOR-11-MGE,Korra,3/20/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+WOL-11-DRS,Wolverine,3/20/23,SA,,3,1,730,DNA/RNA Shield
+WOL-11-MGE,Wolverine,3/20/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+IRI-11-DRS,Iris,3/20/23,SA,,3,1,730,DNA/RNA Shield
+IRI-11-MGE,Iris,3/20/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+GOO-11-DRS,Goose,3/20/23,SA,,3,3,800,DNA/RNA Shield
+GOO-11-MGE,Goose,3/20/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+LAM-11-DRS,Lambchop,3/20/23,SA,,3,3,800,DNA/RNA Shield
+LAM-11-MGE,Lambchop,3/20/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+FRA-11-DRS,Franc,3/20/23,SA,,3,2,800,DNA/RNA Shield
+FRA-11-MGE,Franc,3/20/23,SA,,3,2,800,Molecular Grade (96%) Ethanol
+PAD-11-DRS,Padme,3/20/23,SA,,3,1,800,DNA/RNA Shield
+PAD-11-MGE,Padme,3/20/23,SA,,3,1,800,Molecular Grade (96%) Ethanol
+BUD-11-DRS,Buddy,3/20/23,SA,,3,3,800,DNA/RNA Shield
+BUD-11-MGE,Buddy,3/20/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+JOA-11-DRS,Joans,3/20/23,SA,,3,2,800,DNA/RNA Shield
+JOA-11-MGE,Joans,3/20/23,SA,,3,2,800,Molecular Grade (96%) Ethanol
+HAM-14-DRS,Hamlet,3/23/23,SA/GR,,3,1,730,DNA/RNA Shield
+HAM-14-MGE,Hamlet,3/23/23,SA/GR,,3,1,730,Molecular Grade (96%) Ethanol
+HER-14-DRS,Hera,3/23/23,SA/GR,,3,1,730,DNA/RNA Shield
+HER-14-MGE,Hera,3/23/23,SA/GR,,3,1,730,Molecular Grade (96%) Ethanol
+JAR-14-DRS,JarJar BINKS,3/23/23,SA/GR,,3,1,730,DNA/RNA Shield
+JAR-14-MGE,JarJar BINKS,3/23/23,SA/GR,,3,1,730,Molecular Grade (96%) Ethanol
+OPH-14-DRS,Ophelia,3/23/23,SA/GR,,3,2,730,DNA/RNA Shield
+OPH-14-MGE,Ophelia,3/23/23,SA/GR,,3,2,730,Molecular Grade (96%) Ethanol
+KUB-14-DRS,Kubo,3/23/23,SA/GR,,3,2,730,DNA/RNA Shield
+KUB-14-MGE,Kubo,3/23/23,SA/GR,,3,2,730,Molecular Grade (96%) Ethanol
+KOR-14-DRS,Korra,3/23/23,SA/GR,,3,1,730,DNA/RNA Shield
+KOR-14-MGE,Korra,3/23/23,SA/GR,,3,1,730,Molecular Grade (96%) Ethanol
+WOL-14-DRS,Wolverine,3/23/23,SA/GR,,3,2,730,DNA/RNA Shield
+WOL-14-MGE,Wolverine,3/23/23,SA/GR,,3,2,730,Molecular Grade (96%) Ethanol
+IRI-14-DRS,Iris,3/23/23,SA/GR,,3,2,730,DNA/RNA Shield
+IRI-14-MGE,Iris,3/23/23,SA/GR,,3,2,730,Molecular Grade (96%) Ethanol
+LAM-14-DRS,Lambchop,3/23/23,SA/GR,,3,3,800,DNA/RNA Shield
+LAM-14-MGE,Lambchop,3/23/23,SA/GR,,3,3,800,Molecular Grade (96%) Ethanol
+BUD-14-DRS,Buddy,3/23/23,SA/GR,,3,3,800,DNA/RNA Shield
+BUD-14-MGE,Buddy,3/23/23,SA/GR,,3,3,800,Molecular Grade (96%) Ethanol
+JOA-14-DRS,Joans,3/23/23,SA/GR,,3,4,800,DNA/RNA Shield
+JOA-14-MGE,Joans,3/23/23,SA/GR,,3,4,800,Molecular Grade (96%) Ethanol
+HEN-14-DRS,Henry,3/23/23,SA/GR,,3,1,800,DNA/RNA Shield
+HEN-14-MGE,Henry,3/23/23,SA/GR,,3,1,800,Molecular Grade (96%) Ethanol
+GIN-14-DRS,Ginger,3/23/23,SA/GR,,3,1,800,DNA/RNA Shield
+GIN-14-MGE,Ginger,3/23/23,SA/GR,,3,1,800,Molecular Grade (96%) Ethanol
+HAM-15-DRS,Hamlet,3/24/23,SA,,3,1,730,DNA/RNA Shield
+HAM-15-MGE,Hamlet,3/24/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+HER-15-MGE,Hera,3/24/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+JAR-15-MGE,JarJar BINKS,3/24/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+OPH-15-MGE,Ophelia,3/24/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+KUB-15-MGE,Kubo,3/24/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+KOR-15-MGE,Korra,3/24/23,SA,,3,3,730,Molecular Grade (96%) Ethanol
+WOL-15-MGE,Wolverine,3/24/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+IRI-15-MGE,Iris,3/24/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+LAM-15-MGE,Lambchop,3/24/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+PAD-15-DRS,Padme,3/24/23,SA,,3,3,800,DNA/RNA Shield
+PAD-15-MGE,Padme,3/24/23,SA,,3,3,800,Molecular Grade (96%) Ethanol
+HAM-16-DRS,Hamlet,3/25/23,SA,,3,2,730,DNA/RNA Shield
+HAM-16-MGE,Hamlet,3/25/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+HER-16-DRS,Hera,3/25/23,SA,,3,2,730,DNA/RNA Shield
+HER-16-MGE,Hera,3/25/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+JAR-16-DRS,JarJar BINKS,3/25/23,SA,,3,2,730,DNA/RNA Shield
+JAR-16-MGE,JarJar BINKS,3/25/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+OPH-16-DRS,Ophelia,3/25/23,SA,,3,1,730,DNA/RNA Shield
+OPH-16-MGE,Ophelia,3/25/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+KUB-16-DRS,Kubo,3/25/23,SA,,3,3,730,DNA/RNA Shield
+KUB-16-MGE,Kubo,3/25/23,SA,,3,3,730,Molecular Grade (96%) Ethanol
+KOR-16-DRS,Korra,3/25/23,SA,,3,3,730,DNA/RNA Shield
+KOR-16-MGE,Korra,3/25/23,SA,,3,3,730,Molecular Grade (96%) Ethanol
+WOL-16-DRS,Wolverine,3/25/23,SA,,3,1,730,DNA/RNA Shield
+WOL-16-MGE,Wolverine ,3/25/23,SA,,3,1,730,Molecular Grade (96%) Ethanol
+IRI-16-DRS,Iris,3/25/23,SA,,3,2,730,DNA/RNA Shield
+IRI-16-MGE,Iris,3/25/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+BUD-16-DRS,Buddy,3/25/23,SA,,3,4,800,DNA/RNA Shield
+BUD-16-MGE,Buddy,3/25/23,SA,,3,4,800,Molecular Grade (96%) Ethanol
+HAM-17-DRS,Hamlet,3/26/23,SA,,3,3,730,DNA/RNA Shield
+HAM-17-MGE,Hamlet,3/26/23,SA,,3,3,730,Molecular Grade (96%) Ethanol
+HER-17-DRS,Hera,3/26/23,SA,,3,2,730,DNA/RNA Shield
+HER-17-MGE,Hera,3/26/23,SA,,3,2,730,Molecular Grade (96%) Ethanol
+JAR-17-DRS,JarJar BINKS,3/26/23,SA,,4,1,730,DNA/RNA Shield
+JAR-17-MGE,JarJar BINKS,3/26/23,SA,,4,1,730,Molecular Grade (96%) Ethanol
+OPH-17-DRS,Ophelia,3/26/23,SA,,4,2,730,DNA/RNA Shield
+OPH-17-MGE,Ophelia,3/26/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+KUB-17-DRS,Kubo,3/26/23,SA,,4,1,730,DNA/RNA Shield
+KUB-17-MGE,Kubo,3/26/23,SA,,4,1,730,Molecular Grade (96%) Ethanol
+KOR-17-DRS,Korra,3/26/23,SA,,4,2,730,DNA/RNA Shield
+KOR-17-MGE,Korra,3/26/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+WOL-17-DRS,Wolverine,3/26/23,SA,,4,2,730,DNA/RNA Shield
+WOL-17-MGE,Wolverine,3/26/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+IRI-17-DRS,Iris,3/26/23,SA,,4,3,730,DNA/RNA Shield
+IRI-17-MGE,Iris,3/26/23,SA,,4,3,730,Molecular Grade (96%) Ethanol
+GOO-17-DRS,Goose,3/26/23,SA,,4,1,800,DNA/RNA Shield
+GOO-17-MGE,Goose,3/26/23,SA,,4,1,800,Molecular Grade (96%) Ethanol
+LAM-17-DRS,Lambchop,3/26/23,SA,,4,3,800,DNA/RNA Shield
+LAM-17-MGE,Lambchop,3/26/23,SA,,4,3,800,Molecular Grade (96%) Ethanol
+FRA-17-DRS,Franc,3/26/23,SA,,4,2,800,DNA/RNA Shield
+FRA-17-MGE,Franc,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+IVY-17-DRS,Ivy,3/26/23,SA,,4,2,800,DNA/RNA Shield
+IVY-17-MGE,Ivy,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+CHA-17-DRS,Charles,3/26/23,SA,,4,2,800,DNA/RNA Shield
+CHA-17-MGE,Charles,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+PAD-17-DRS,Padme,3/26/23,SA,,4,5,800,DNA/RNA Shield
+PAD-17-MGE,Padme,3/26/23,SA,,4,5,800,Molecular Grade (96%) Ethanol
+GRO-17-DRS,Grogu,3/26/23,SA,,4,2,800,DNA/RNA Shield
+GRO-17-MGE,Grogu ,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+MAR-17-DRS,Marshmallow,3/26/23,SA,,4,2,800,DNA/RNA Shield
+MAR-17-MGE,Marshmallow ,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+BUD-17-DRS,Buddy,3/26/23,SA,,4,2,800,DNA/RNA Shield
+BUD-17-MGE,Buddy,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+JOA-17-DRS,Joans,3/26/23,SA,,4,3,800,DNA/RNA Shield
+JOA-17-MGE,Joans,3/26/23,SA,,4,3,800,Molecular Grade (96%) Ethanol
+HEN-17-DRS,Henry,3/26/23,SA,,4,2,800,DNA/RNA Shield
+HEN-17-MGE,Henry,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+GIN-17-DRS,Ginger,3/26/23,SA,,4,2,800,DNA/RNA Shield
+GIN-17-MGE,Ginger,3/26/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+HAM-18-DRS,Hamlet,3/27/23,SA/GR,,4,2,800,DNA/RNA Shield
+HAM-18-MGE,Hamlet,3/27/23,SA/GR,,4,2,800,Molecular Grade (96%) Ethanol
+HER-18-DRS,Hera,3/27/23,SA/GR,,4,3,800,DNA/RNA Shield
+HER-18-MGE,Hera,3/27/23,SA/GR,,4,3,800,Molecular Grade (96%) Ethanol
+JAR-18-DRS,JarJar BINKS,3/27/23,SA/GR,,4,3,800,DNA/RNA Shield
+JAR-18-MGE,JarJar BINKS,3/27/23,SA/GR,,4,3,800,Molecular Grade (96%) Ethanol
+OPH-18-DRS,Ophelia,3/27/23,SA/GR,,4,2,800,DNA/RNA Shield
+OPH-18-MGE,Ophelia,3/27/23,SA/GR,,4,2,800,Molecular Grade (96%) Ethanol
+KUB-18-DRS,Kubo,3/27/23,SA/GR,,4,2,800,DNA/RNA Shield
+KUB-18-MGE,Kubo,3/27/23,SA/GR,,4,2,800,Molecular Grade (96%) Ethanol
+KOR-18-DRS,Korra,3/27/23,SA/GR,,4,3,800,DNA/RNA Shield
+KOR-18-MGE,Korra,3/27/23,SA/GR,,4,3,800,Molecular Grade (96%) Ethanol
+WOL-18-DRS,Wolverine,3/27/23,SA/GR,,4,2,800,DNA/RNA Shield
+WOL-18-MGE,Wolverine,3/27/23,SA/GR,,4,2,800,Molecular Grade (96%) Ethanol
+IRI-18-DRS,Iris,3/27/23,SA/GR,,4,2,800,DNA/RNA Shield
+IRI-18-MGE,Iris,3/27/23,SA/GR,,4,2,800,Molecular Grade (96%) Ethanol
+LAM-18-DRS,Lambchop,3/27/23,SA/GR,,4,3,730,DNA/RNA Shield
+LAM-18-MGE,Lambchop,3/27/23,SA/GR,,4,3,730,Molecular Grade (96%) Ethanol
+IVY-18-DRS,Ivy,3/27/23,SA/GR,,4,4,730,DNA/RNA Shield
+IVY-18-MGE,Ivy,3/27/23,SA/GR,,4,4,730,Molecular Grade (96%) Ethanol
+GRO-18-DRS,Grogu,3/27/23,SA/GR,,4,3,730,DNA/RNA Shield
+GRO-18-MGE,Grogu,3/27/23,SA/GR,,4,3,730,Molecular Grade (96%) Ethanol
+BUD-18-DRS,Buddy,3/27/23,SA/GR,,4,2,730,DNA/RNA Shield
+BUD-18-MGE,Buddy,3/27/23,SA/GR,,4,2,730,Molecular Grade (96%) Ethanol
+GIN-18-DRS,Ginger,3/27/23,SA/GR,,4,2,730,DNA/RNA Shield
+GIN-18-MGE,Ginger,3/27/23,SA/GR,,4,2,730,Molecular Grade (96%) Ethanol
+HER-19-DRS,Hera,3/28/23,SA,,4,2,800,DNA/RNA Shield
+HER-19-MGE,Hera,3/28/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+OPH-19-DRS,Ophelia,3/28/23,SA,,4,2,800,DNA/RNA Shield
+OPH-19-MGE,Ophelia,3/28/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+WOL-19-DRS,Wolverine,3/28/23,SA,,4,2,800,DNA/RNA Shield
+WOL-19-MGE,Wolverine,3/28/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+IRI-18-DRS,Iris,3/28/23,SA,,4,3,800,DNA/RNA Shield
+IRI-18-MGE,Iris,3/28/23,SA,,4,3,800,Molecular Grade (96%) Ethanol
+FRA-19-DRS,Franc,3/28/23,SA,,4,2,730,DNA/RNA Shield
+FRA-19-MGE,Franc,3/28/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+IVY-19-DRS,Ivy,3/28/23,SA,,4,4,730,DNA/RNA Shield
+IVY-19-MGE,Ivy,3/28/23,SA,,4,4,730,Molecular Grade (96%) Ethanol
+BUD-19-DRS,Buddy,3/28/23,SA,,4,3,730,DNA/RNA Shield
+BUD-19-DRS,Buddy,3/28/23,SA,,4,3,730,Molecular Grade (96%) Ethanol
+HAM-20-DRS,Hamlet,3/29/23,SA,,4,1,730,DNA/RNA Shield
+HAM-20-MGE,Hamlet,3/29/23,SA,,4,1,730,Molecular Grade (96%) Ethanol
+HER-20-DRS,Hera,3/29/23,SA,,4,2,730,DNA/RNA Shield
+HER-20-MGE,Hera,3/29/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+JAR-20-DRS,JarJar BINKS,3/29/23,SA,,4,1,730,DNA/RNA Shield
+JAR-20-MGE,JarJar BINKS,3/29/23,SA,,4,1,730,Molecular Grade (96%) Ethanol
+OPH-20-DRS,Ophelia,3/29/23,SA,,4,1,730,DNA/RNA Shield
+OPH-20-MGE,Ophelia,3/29/23,SA,,4,1,730,Molecular Grade (96%) Ethanol
+KUB-20-DRS,Kubo,3/29/23,SA,,4,2,730,DNA/RNA Shield
+KUB-20-MGE,Kubo,3/29/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+KOR-20-DRS,Korra,3/29/23,SA,,4,3,730,DNA/RNA Shield
+KOR-20-MGE,Korra,3/29/23,SA,,4,3,730,Molecular Grade (96%) Ethanol
+WOL-20-DRS,Wolverine,3/29/23,SA,,4,2,730,DNA/RNA Shield
+WOL-20-MGE,Wolverine,3/29/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+IRI-20-DRS,Iris,3/29/23,SA,,4,2,730,DNA/RNA Shield
+IRI-20-MGE,Iris,3/29/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+GOO-20-DRS,Goose,3/29/23,SA,,4,2,730,DNA/RNA Shield
+GOO-20-MGE,Goose,3/29/23,SA,,4,2,730,Molecular Grade (96%) Ethanol
+LAM-20-DRS,Lambchop,3/29/23,SA,,4,3,730,DNA/RNA Shield
+LAM-20-MGE,Lambchop,3/29/23,SA,,4,3,730,Molecular Grade (96%) Ethanol
+CHA-20-DRS,Charles,3/29/23,SA,,4,2,800,DNA/RNA Shield
+CHA-20-MGE,Charles,3/29/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+PAD-20-DRS,Padme,3/29/23,SA,Euthanized (renal failure),4,4,800,DNA/RNA Shield
+PAD-20-MGE,Padme,3/29/23,SA,Euthanized (renal failure),4,4,800,Molecular Grade (96%) Ethanol
+BUD-20-DRS,Buddy,3/29/23,SA,,4,2,800,DNA/RNA Shield
+BUD-20-MGE,Buddy,3/29/23,SA,,4,2,800,Molecular Grade (96%) Ethanol
+GIN-20-DRS,Ginger,3/29/23,SA,,5,2,800,DNA/RNA Shield
+GIN-20-MGE,Ginger,3/29/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+HAM-21-DRS,Hamlet,3/30/23,SA,,5,2,800,DNA/RNA Shield
+HAM-21-MGE,Hamlet,3/30/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+HER-21-DRS,Hera,3/30/23,SA,,5,2,800,DNA/RNA Shield
+HER-21-MGE,Hera,3/30/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+JAR-21-DRS,JarJar BINKS,3/30/23,SA,,5,2,800,DNA/RNA Shield
+JAR-21-MGE,JarJar BINKS,3/30/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+OPH-21-DRS,Ophelia,3/30/23,SA,,5,1,800,DNA/RNA Shield
+OPH-21-MGE,Ophelia,3/30/23,SA,,5,1,800,Molecular Grade (96%) Ethanol
+KUB-21-DRS,Kubo,3/30/23,SA,,5,2,800,DNA/RNA Shield
+KUB-21-MGE,Kubo,3/30/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+KOR-21-DRS,Korra,3/30/23,SA,,5,2,800,DNA/RNA Shield
+KOR-21-MGE,Korra,3/30/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+WOL-21-DRS,Wolverine,3/30/23,SA,,5,3,800,DNA/RNA Shield
+WOL-21-MGE,Wolverine,3/30/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+IRI-21-DRS,Iris,3/30/23,SA,,5,3,800,DNA/RNA Shield
+IRI-21-MGE,Iris,3/30/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+BUD-21-DRS,Buddy,3/30/23,SA,,5,3,730,DNA/RNA Shield
+BUD-21-MGE,Buddy,3/30/23,SA,,5,3,730,Molecular Grade (96%) Ethanol
+JOA-21-DRS,Joans,3/30/23,SA,,5,3,730,DNA/RNA Shield
+JOA-21-MGE,Joans,3/30/23,SA,,5,3,730,Molecular Grade (96%) Ethanol
+HAM-22-DRS,Hamlet,3/31/23,SA/GR,,5,2,800,DNA/RNA Shield
+HAM-22-MGE,Hamlet,3/31/23,SA/GR,,5,2,800,Molecular Grade (96%) Ethanol
+HER-22-DRS,Hera,3/31/23,SA/GR,,5,2,800,DNA/RNA Shield
+HER-22-MGE,Hera,3/31/23,SA/GR,,5,2,800,Molecular Grade (96%) Ethanol
+JAR-22-DRS,JarJar BINKS,3/31/23,SA/GR,,5,2,800,DNA/RNA Shield
+JAR-22-MGE,JarJar BINKS,3/31/23,SA/GR,,5,2,800,Molecular Grade (96%) Ethanol
+OPH-22-DRS,Ophelia,3/31/23,SA/GR,,5,1,800,DNA/RNA Shield
+OPH-22-MGE,Ophelia,3/31/23,SA/GR,,5,1,800,Molecular Grade (96%) Ethanol
+KUB-22-DRS,Kubo,3/31/23,SA/GR,,5,2,800,DNA/RNA Shield
+KUB-22-MGE,Kubo,3/31/23,SA/GR,,5,2,800,Molecular Grade (96%) Ethanol
+KOR-22-DRS,Korra,3/31/23,SA/GR,,5,3,800,DNA/RNA Shield
+KOR-22-MGE,Korra,3/31/23,SA/GR,,5,3,800,Molecular Grade (96%) Ethanol
+WOL-22-DRS,Wolverine,3/31/23,SA/GR,,5,2,800,DNA/RNA Shield
+WOL-22-MGE,Wolverine,3/31/23,SA/GR,,5,2,800,Molecular Grade (96%) Ethanol
+IRI-22-DRS,Iris,3/31/23,SA/GR,,5,3,800,DNA/RNA Shield
+IRI-22-MGE,Iris,3/31/23,SA/GR,,5,3,800,Molecular Grade (96%) Ethanol
+GOO-22-DRS,Goose,3/31/23,SA/GR,,5,2,730,DNA/RNA Shield
+GOO-22-MGE,Goose,3/31/23,SA/GR,,5,2,730,Molecular Grade (96%) Ethanol
+LAM-22-DRS,Lambchop,3/31/23,SA/GR,,5,3,730,DNA/RNA Shield
+LAM-22-MGE,Lambchop,3/31/23,SA/GR,,5,3,730,Molecular Grade (96%) Ethanol
+FRA-22-DRS,Franc,3/31/23,SA/GR,,5,3,730,DNA/RNA Shield
+FRA-22-MGE,Franc,3/31/23,SA/GR,,5,3,730,Molecular Grade (96%) Ethanol
+IVY-22-DRS,Ivy,3/31/23,SA/GR,,5,2,730,DNA/RNA Shield
+IVY-22-MGE,Ivy,3/31/23,SA/GR,,5,2,730,Molecular Grade (96%) Ethanol
+GRO-22-DRS,Grogu,3/31/23,SA/GR,,5,2,730,DNA/RNA Shield
+GRO-22-MGE,Grogu,3/31/23,SA/GR,,5,2,730,Molecular Grade (96%) Ethanol
+MAR-22-DRS,Marshmallow,3/31/23,SA/GR,,5,2,730,DNA/RNA Shield
+MAR-22-MGE,Marshmallow,3/31/23,SA/GR,,5,2,730,Molecular Grade (96%) Ethanol
+BUD-22-DRS,Buddy,3/31/23,SA/GR,,5,1,730,DNA/RNA Shield
+BUD-22-MGE,Buddy,3/31/23,SA/GR,,5,1,730,Molecular Grade (96%) Ethanol
+JOA-22-DRS,Joans,3/31/23,SA/GR,,5,1,730,DNA/RNA Shield
+JOA-22-MGE,Joans,3/31/23,SA/GR,,5,1,730,Molecular Grade (96%) Ethanol
+HEN-22-DRS,Henry,3/31/23,SA/GR,,5,2,730,DNA/RNA Shield
+HEN-22-MGE,Henry,3/31/23,SA/GR,,5,2,730,Molecular Grade (96%) Ethanol
+GIN-22-DRS,Ginger,3/31/23,SA/GR,,5,2,730,DNA/RNA Shield
+GIN-22-MGE,Ginger,3/31/23,SA/GR,,5,2,730,Molecular Grade (96%) Ethanol
+HAM-23-DRS,Hamlet,4/1/23,SA,,5,5,800,DNA/RNA Shield
+HAM-23-MGE,Hamlet,4/1/23,SA,,5,5,800,Molecular Grade (96%) Ethanol
+HER-23-DRS,Hera,4/1/23,SA,,5,2,800,DNA/RNA Shield
+HER-23-MGE,Hera,4/1/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+JAR-23-DRS,JarJar BINKS,4/1/23,SA,,5,2,800,DNA/RNA Shield
+JAR-23-MGE,JarJar BINKS,4/1/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+KOR-23-DRS,Korra,4/1/23,SA,,5,3,800,DNA/RNA Shield
+KOR-23-MGE,Korra,4/1/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+WOL-23-DRS,Wolverine,4/1/23,SA,,5,2,800,DNA/RNA Shield
+WOL-23-MGE,Wolverine,4/1/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+IRI-23-DRS,Iris,4/1/23,SA,,5,3,800,DNA/RNA Shield
+IRI-23-MGE,Iris,4/1/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+HAM-24-DRS,Hamlet,4/2/23,SA,,5,2,800,DNA/RNA Shield
+HAM-24-MGE,Hamlet,4/2/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+HER-24-DRS,Hera,4/2/23,SA,,5,3,800,DNA/RNA Shield
+HER-24-MGE,Hera,4/2/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+JAR-24-DRS,JarJar BINKS,4/2/23,SA,,5,3,800,DNA/RNA Shield
+JAR-24-MGE,JarJar BINKS,4/2/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+OPH-24-DRS,Ophelia,4/2/23,SA,,5,1,800,DNA/RNA Shield
+OPH-24-MGE,Ophelia,4/2/23,SA,,5,1,800,Molecular Grade (96%) Ethanol
+KUB-24-DRS,Kubo,4/2/23,SA,,5,3,800,DNA/RNA Shield
+KUB-24-MGE,Kubo,4/2/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+KOR-24-DRS,Korra,4/2/23,SA,,5,1,800,DNA/RNA Shield
+KOR-24-MGE,Korra,4/2/23,SA,,5,1,800,Molecular Grade (96%) Ethanol
+WOL-24-DRS,Wolverine,4/2/23,SA,,5,2,800,DNA/RNA Shield
+WOL-24-MGE,Wolverine,4/2/23,SA,,5,2,800,Molecular Grade (96%) Ethanol
+IRI-24-DRS,Iris,4/2/23,SA,,5,3,800,DNA/RNA Shield
+IRI-24-MGE,Iris,4/2/23,SA,,5,3,800,Molecular Grade (96%) Ethanol
+GOO-24-DRS,Goose,4/2/23,SA,,5,2,730,DNA/RNA Shield
+GOO-24-MGE,Goose,4/2/23,SA,,5,2,730,Molecular Grade (96%) Ethanol
+LAM-24-DRS,Lambchop,4/2/23,SA,,5,3,730,DNA/RNA Shield
+LAM-24-MGE,Lambchop,4/2/23,SA,,5,3,730,Molecular Grade (96%) Ethanol
+FRA-24-DRS,Franc,4/2/23,SA,,5,2,730,DNA/RNA Shield
+FRA-24-MGE,Franc,4/2/23,SA,,5,2,730,Molecular Grade (96%) Ethanol
+IVY-24-DRS,Ivy,4/2/23,SA,,5,2,730,DNA/RNA Shield
+IVY-24-MGE,Ivy,4/2/23,SA,,5,2,730,Molecular Grade (96%) Ethanol
+GRO-24-DRS,Grogu,4/2/23,SA,,5,2,730,DNA/RNA Shield
+GRO-24-MGE,Grogu,4/2/23,SA,,5,2,730,Molecular Grade (96%) Ethanol
+MAR-24-DRS,Marshmallow,4/2/23,SA,,5,2,730,DNA/RNA Shield
+MAR-24-MGE,Marshmallow,4/2/23,SA,,5,2,730,Molecular Grade (96%) Ethanol
+BUD-24-DRS,Buddy,4/2/23,SA,,5,3,730,DNA/RNA Shield
+BUD-24-MGE,Buddy,4/2/23,SA,,5,3,730,Molecular Grade (96%) Ethanol
+JOA-24-DRS,Joans,4/2/23,SA,,6,3,730,DNA/RNA Shield
+JOA-24-MGE,Joans,4/2/23,SA,,6,3,730,Molecular Grade (96%) Ethanol
+HEN-24-DRS,Henry,4/2/23,SA,,6,2,730,DNA/RNA Shield
+HEN-24-MGE,Henry,4/2/23,SA,,6,2,730,Molecular Grade (96%) Ethanol
+GIN-24-DRS,Ginger,4/2/23,SA,,6,2,730,DNA/RNA Shield
+GIN-24-MGE,Ginger,4/2/23,SA,,6,2,730,Molecular Grade (96%) Ethanol
+HAM-25-DRS,Hamlet,4/3/23,SA/GR,,6,2,800,DNA/RNA Shield
+HAM-25-MGE,Hamlet,4/3/23,SA/GR,,6,2,800,Molecular Grade (96%) Ethanol
+HER-25-DRS,Hera,4/3/23,SA/GR,,6,3,800,DNA/RNA Shield
+HER-25-MGE,Hera,4/3/23,SA/GR,,6,3,800,Molecular Grade (96%) Ethanol
+JAR-25-DRS,JarJar BINKS,4/3/23,SA/GR,,6,2,800,DNA/RNA Shield
+JAR-25-MGE,JarJar BINKS,4/3/23,SA/GR,,6,2,800,Molecular Grade (96%) Ethanol
+OPH-25-DRS,Ophelia,4/3/23,SA/GR,,6,1,800,DNA/RNA Shield
+OPH-25-MGE,Ophelia,4/3/23,SA/GR,,6,1,800,Molecular Grade (96%) Ethanol
+KUB-25-DRS,Kubo,4/3/23,SA/GR,,6,2,800,DNA/RNA Shield
+KUB-25-MGE,Kubo,4/3/23,SA/GR,,6,2,800,Molecular Grade (96%) Ethanol
+KOR-25-DRS,Korra,4/3/23,SA/GR,,6,2,800,DNA/RNA Shield
+KOR-25-MGE,Korra,4/3/23,SA/GR,,6,2,800,Molecular Grade (96%) Ethanol
+WOL-25-DRS,Wolverine,4/3/23,SA/GR,,6,1,800,DNA/RNA Shield
+WOL-25-MGE,Wolverine,4/3/23,SA/GR,,6,1,800,Molecular Grade (96%) Ethanol
+IRI-25-DRS,Iris,4/3/23,SA/GR,,6,3,800,DNA/RNA Shield
+IRI-25-MGE,Iris,4/3/23,SA/GR,,6,3,800,Molecular Grade (96%) Ethanol
+GOO-25-DRS,Goose,4/3/23,SA/GR,,6,3,730,DNA/RNA Shield
+GOO-25-MGE,Goose,4/3/23,SA/GR,,6,3,730,Molecular Grade (96%) Ethanol
+LAM-25-DRS,Lambchop,4/3/23,SA/GR,,6,3,730,DNA/RNA Shield
+LAM-25-MGE,Lambchop,4/3/23,SA/GR,,6,3,730,Molecular Grade (96%) Ethanol
+FRA-25-DRS,Franc,4/3/23,SA/GR,,6,1,730,DNA/RNA Shield
+FRA-25-MGE,Franc,4/3/23,SA/GR,,6,1,730,Molecular Grade (96%) Ethanol
+IVY-25-DRS,Ivy,4/3/23,SA/GR,,6,2,730,DNA/RNA Shield
+IVY-25-MGE,Ivy,4/3/23,SA/GR,,6,2,730,Molecular Grade (96%) Ethanol
+GRO-25-DRS,Grogu,4/3/23,SA/GR,,6,2,730,DNA/RNA Shield
+GRO-25-MGE,Grogu,4/3/23,SA/GR,,6,2,730,Molecular Grade (96%) Ethanol
+MAR-25-DRS,Marshmallow,4/3/23,SA/GR,,6,2,730,DNA/RNA Shield
+MAR-25-MGE,Marshmallow,4/3/23,SA/GR,,6,2,730,Molecular Grade (96%) Ethanol
+BUD-25-DRS,Buddy,4/3/23,SA/GR,,6,3,730,DNA/RNA Shield
+BUD-25-MGE,Buddy,4/3/23,SA/GR,,6,3,730,Molecular Grade (96%) Ethanol
+JOA-25-DRS,Joans,4/3/23,SA/GR,,6,3,730,DNA/RNA Shield
+JOA-25-MGE,Joans,4/3/23,SA/GR,,6,3,730,Molecular Grade (96%) Ethanol
+HEN-25-DRS,Henry,4/3/23,SA/GR,,6,2,730,DNA/RNA Shield
+HEN-25-MGE,Henry,4/3/23,SA/GR,,6,2,730,Molecular Grade (96%) Ethanol
+GIN-25-DRS,Ginger,4/3/23,SA/GR,,6,2,730,DNA/RNA Shield
+GIN-25-MGE,Ginger,4/3/23,SA/GR,,6,2,730,Molecular Grade (96%) Ethanol
+HAM-27-DRS,Hamlet,4/5/23,SA/GR,,6,1,800,DNA/RNA Shield
+HAM-27-MGE,Hamlet,4/5/23,SA/GR,,6,1,800,Molecular Grade (96%) Ethanol
+HER-27-DRS,Hera,4/5/23,SA/GR,,6,1,800,DNA/RNA Shield
+HER-27-MGE,Hera,4/5/23,SA/GR,,6,1,800,Molecular Grade (96%) Ethanol
+JAR-27-DRS,JarJar BINKS,4/5/23,SA/GR,,6,3,800,DNA/RNA Shield
+JAR-27-MGE,JarJar BINKS,4/5/23,SA/GR,,6,3,800,Molecular Grade (96%) Ethanol
+OPH-27-DRS,Ophelia,4/5/23,SA/GR,,6,3,800,DNA/RNA Shield
+OPH-27-MGE,Ophelia,4/5/23,SA/GR,,6,3,800,Molecular Grade (96%) Ethanol
+KUB-27-DRS,Kubo,4/5/23,SA/GR,,6,3,800,DNA/RNA Shield
+KUB-27-MGE,Kubo,4/5/23,SA/GR,,6,3,800,Molecular Grade (96%) Ethanol
+KOR-27-DRS,Korra,4/5/23,SA/GR,,6,2,800,DNA/RNA Shield
+KOR-27-MGE,Korra,4/5/23,SA/GR,,6,2,800,Molecular Grade (96%) Ethanol
+WOL-27-DRS,Wolverine,4/5/23,SA/GR,,6,1,800,DNA/RNA Shield
+WOL-27-MGE,Wolverine,4/5/23,SA/GR,,6,1,800,Molecular Grade (96%) Ethanol
+IRI-27-DRS,Iris,4/5/23,SA/GR,,6,3,800,DNA/RNA Shield
+IRI-27-MGE,Iris,4/5/23,SA/GR,,6,3,800,Molecular Grade (96%) Ethanol
+GOO-27-DRS,Goose,4/5/23,SA/GR,,6,3,730,DNA/RNA Shield
+GOO-27-MGE,Goose,4/5/23,SA/GR,,6,3,730,Molecular Grade (96%) Ethanol
+LAM-27-DRS,Lambchop,4/5/23,SA/GR,,6,2,730,DNA/RNA Shield
+LAM-27-MGE,Lambchop,4/5/23,SA/GR,,6,2,730,Molecular Grade (96%) Ethanol
+FRA-27-DRS,Franc,4/5/23,SA/GR,,7,2,730,DNA/RNA Shield
+FRA-27-MGE,Franc,4/5/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+IVY-27-DRS,Ivy,4/5/23,SA/GR,,7,1,730,DNA/RNA Shield
+IVY-27-MGE,Ivy,4/5/23,SA/GR,,7,1,730,Molecular Grade (96%) Ethanol
+GRO-27-DRS,Grogu,4/5/23,SA/GR,,7,2,730,DNA/RNA Shield
+GRO-27-MGE,Grogu,4/5/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+MAR-27-DRS,Marshmallow,4/5/23,SA/GR,,7,2,730,DNA/RNA Shield
+MAR-27-MGE,Marshmallow,4/5/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+BUD-27-DRS,Buddy,4/5/23,SA/GR,,7,2,730,DNA/RNA Shield
+BUD-27-MGE,Buddy,4/5/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+JOA-27-DRS,Joans,4/5/23,SA/GR,,7,2,730,DNA/RNA Shield
+JOA-27-MGE,Joans,4/5/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+HEN-27-DRS,Henry,4/5/23,SA/GR,,7,2,730,DNA/RNA Shield
+HEN-27-MGE,Henry,4/5/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+GIN-27-DRS,Ginger,4/5/23,SA/GR,,7,1,730,DNA/RNA Shield
+GIN-27-MGE,Ginger,4/5/23,SA/GR,,7,1,730,Molecular Grade (96%) Ethanol
+HAM-28-DRS,Hamlet,4/6/23,SA,,7,2,730,DNA/RNA Shield
+HAM-28-MGE,Hamlet,4/6/23,SA,,7,2,730,Molecular Grade (96%) Ethanol
+HER-28-DRS,Hera,4/6/23,SA,,7,2,730,DNA/RNA Shield
+HER-28-MGE,Hera,4/6/23,SA,,7,2,730,Molecular Grade (96%) Ethanol
+JAR-28-DRS,JarJar BINKS,4/6/23,SA,,7,3,730,DNA/RNA Shield
+JAR-28-MGE,JarJar BINKS,4/6/23,SA,,7,3,730,Molecular Grade (96%) Ethanol
+OPH-28-DRS,Ophelia,4/6/23,SA,,7,2,730,DNA/RNA Shield
+OPH-28-MGE,Ophelia,4/6/23,SA,,7,2,730,Molecular Grade (96%) Ethanol
+KUB-28-DRS,Kubo,4/6/23,SA,,7,1,730,DNA/RNA Shield
+KUB-28-MGE,Kubo,4/6/23,SA,,7,1,730,Molecular Grade (96%) Ethanol
+KOR-28-DRS,Korra,4/6/23,SA,,7,3,730,DNA/RNA Shield
+KOR-28-MGE,Korra,4/6/23,SA,,7,3,730,Molecular Grade (96%) Ethanol
+WOL-28-DRS,Wolverine,4/6/23,SA,,7,1,730,DNA/RNA Shield
+WOL-28-MGE,Wolverine,4/6/23,SA,,7,1,730,Molecular Grade (96%) Ethanol
+IRI-28-DRS,Iris,4/6/23,SA,,7,3,730,DNA/RNA Shield
+IRI-28-MGE,Iris,4/6/23,SA,,7,3,730,Molecular Grade (96%) Ethanol
+GRO-28-DRS,Grogu,4/6/23,SA,,7,2,800,DNA/RNA Shield
+GRO-28-MGE,Grogu,4/6/23,SA,,7,2,800,Molecular Grade (96%) Ethanol
+MAR-28-DRS,Marshmallow,4/6/23,SA,,7,3,800,DNA/RNA Shield
+MAR-28-MGE,Marshmallow,4/6/23,SA,,7,3,800,Molecular Grade (96%) Ethanol
+BUD-28-DRS,Buddy,4/6/23,SA,,7,3,800,DNA/RNA Shield
+BUD-28-MGE,Buddy,4/6/23,SA,,7,3,800,Molecular Grade (96%) Ethanol
+JOA-28-DRS,Joans,4/6/23,SA,,7,3,800,DNA/RNA Shield
+JOA-28-MGE,Joans,4/6/23,SA,,7,3,800,Molecular Grade (96%) Ethanol
+HAM-29-DRS,Hamlet,4/7/23,SA/GR,,7,1,800,DNA/RNA Shield
+HAM-29-MGE,Hamlet,4/7/23,SA/GR,,7,1,800,Molecular Grade (96%) Ethanol
+HER-29-DRS,Hera,4/7/23,SA/GR,,7,3,800,DNA/RNA Shield
+HER-29-MGE,Hera,4/7/23,SA/GR,,7,3,800,Molecular Grade (96%) Ethanol
+JAR-29-DRS,JarJar BINKS,4/7/23,SA/GR,,7,3,800,DNA/RNA Shield
+JAR-29-MGE,JarJar BINKS,4/7/23,SA/GR,,7,3,800,Molecular Grade (96%) Ethanol
+OPH-29-DRS,Ophelia,4/7/23,SA/GR,,7,1,800,DNA/RNA Shield
+OPH-29-MGE,Ophelia,4/7/23,SA/GR,,7,1,800,Molecular Grade (96%) Ethanol
+KUB-29-DRS,Kubo,4/7/23,SA/GR,,7,2,800,DNA/RNA Shield
+KUB-29-MGE,Kubo,4/7/23,SA/GR,,7,2,800,Molecular Grade (96%) Ethanol
+KOR-29-DRS,Korra,4/7/23,SA/GR,,7,3,800,DNA/RNA Shield
+KOR-29-MGE,Korra,4/7/23,SA/GR,,7,3,800,Molecular Grade (96%) Ethanol
+WOL-29-DRS,Wolverine,4/7/23,SA/GR,,7,1,800,DNA/RNA Shield
+WOL-29-MGE,Wolverine,4/7/23,SA/GR,,7,1,800,Molecular Grade (96%) Ethanol
+IRI-29-DRS,Iris,4/7/23,SA/GR,,7,3,800,DNA/RNA Shield
+IRI-29-MGE,Iris,4/7/23,SA/GR,,7,3,800,Molecular Grade (96%) Ethanol
+GOO-29-DRS,Goose,4/7/23,SA/GR,,7,2,730,DNA/RNA Shield
+GOO-29-MGE,Goose,4/7/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+LAM-29-DRS,Lambchop,4/7/23,SA/GR,,7,3,730,DNA/RNA Shield
+LAM-29-MGE,Lambchop,4/7/23,SA/GR,,7,3,730,Molecular Grade (96%) Ethanol
+FRA-29-DRS,Franc,4/7/23,SA/GR,,7,2,730,DNA/RNA Shield
+FRA-29-MGE,Franc,4/7/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+IVY-29-DRS,Ivy,4/7/23,SA/GR,,7,2,730,DNA/RNA Shield
+IVY-29-MGE,Ivy,4/7/23,SA/GR,,7,2,730,Molecular Grade (96%) Ethanol
+GRO-29-DRS,Grogu,4/7/23,SA/GR,,8,2,730,DNA/RNA Shield
+GRO-29-MGE,Grogu,4/7/23,SA/GR,,8,2,730,Molecular Grade (96%) Ethanol
+MAR-29-DRS,Marshmallow,4/7/23,SA/GR,,8,2,730,DNA/RNA Shield
+MAR-29-MGE,Marshmallow,4/7/23,SA/GR,,8,2,730,Molecular Grade (96%) Ethanol
+BUD-29-DRS,Buddy,4/7/23,SA/GR,,8,2,730,DNA/RNA Shield
+BUD-29-MGE,Buddy,4/7/23,SA/GR,,8,2,730,Molecular Grade (96%) Ethanol
+JOA-29-DRS,Joans,4/7/23,SA/GR,,8,3,730,DNA/RNA Shield
+JOA-29-MGE,Joans,4/7/23,SA/GR,,8,3,730,Molecular Grade (96%) Ethanol
+HEN-29-DRS,Henry,4/7/23,SA/GR,,8,3,730,DNA/RNA Shield
+HEN-29-MGE,Henry,4/7/23,SA/GR,,8,3,730,Molecular Grade (96%) Ethanol
+GIN-29-DRS,Ginger,4/7/23,SA/GR,,8,2,730,DNA/RNA Shield
+GIN-29-MGE,Ginger,4/7/23,SA/GR,,8,2,730,Molecular Grade (96%) Ethanol
+HAM-30-DRS,Hamlet,4/8/23,SA,,8,1,730,DNA/RNA Shield
+HAM-30-MGE,Hamlet,4/8/23,SA,,8,1,730,Molecular Grade (96%) Ethanol
+HER-30-DRS,Hera,4/8/23,SA,,8,1,730,DNA/RNA Shield
+HER-30-MGE,Hera,4/8/23,SA,,8,1,730,Molecular Grade (96%) Ethanol
+JAR-30-DRS,JarJar BINKS,4/8/23,SA,,8,3,730,DNA/RNA Shield
+JAR-30-MGE,JarJar BINKS,4/8/23,SA,,8,3,730,Molecular Grade (96%) Ethanol
+OPH-30-DRS,Ophelia,4/8/23,SA,,8,1,730,DNA/RNA Shield
+OPH-30-MGE,Ophelia,4/8/23,SA,,8,1,730,Molecular Grade (96%) Ethanol
+KUB-30-DRS,Kubo,4/8/23,SA,,8,2,730,DNA/RNA Shield
+KUB-30-MGE,Kubo,4/8/23,SA,,8,2,730,Molecular Grade (96%) Ethanol
+KOR-30-DRS,Korra,4/8/23,SA,,8,3,730,DNA/RNA Shield
+KOR-30-MGE,Korra,4/8/23,SA,,8,3,730,Molecular Grade (96%) Ethanol
+WOL-30-DRS,Wolverine,4/8/23,SA,,8,1,730,DNA/RNA Shield
+WOL-30-MGE,Wolverine,4/8/23,SA,,8,1,730,Molecular Grade (96%) Ethanol
+IRI-30-DRS,Iris,4/8/23,SA,,8,3,730,DNA/RNA Shield
+IRI-30-MGE,Iris,4/8/23,SA,,8,3,730,Molecular Grade (96%) Ethanol
+GOO-30-DRS,Goose,4/8/23,SA,,8,2,800,DNA/RNA Shield
+GOO-30-MGE,Goose,4/8/23,SA,,8,2,800,Molecular Grade (96%) Ethanol
+LAM-30-DRS,Lambchop,4/8/23,SA,,8,3,800,DNA/RNA Shield
+LAM-30-MGE,Lambchop,4/8/23,SA,,8,3,800,Molecular Grade (96%) Ethanol
+FRA-30-DRS,Franc,4/8/23,SA,,8,2,800,DNA/RNA Shield
+FRA-30-MGE,Franc,4/8/23,SA,,8,2,800,Molecular Grade (96%) Ethanol
+IVY-30-DRS,Ivy,4/8/23,SA,,8,4,800,DNA/RNA Shield
+IVY-30-MGE,Ivy,4/8/23,SA,,8,4,800,Molecular Grade (96%) Ethanol
+CHA-30-DRS,Charles,4/8/23,SA,,8,2,800,DNA/RNA Shield
+CHA-30-MGE,Charles,4/8/23,SA,,8,2,800,Molecular Grade (96%) Ethanol
+BUB-30-DRS,Bubblegum,4/8/23,SA,,8,1,800,DNA/RNA Shield
+BUB-30-MGE,Bubblegum,4/8/23,SA,,8,1,800,Molecular Grade (96%) Ethanol
+GRO-30-DRS,Grogu,4/8/23,SA,,8,3,800,DNA/RNA Shield
+GRO-30-MGE,Grogu,4/8/23,SA,,8,3,800,Molecular Grade (96%) Ethanol
+MAR-30-DRS,Marshmallow,4/8/23,SA,,8,2,800,DNA/RNA Shield
+MAR-30-MGE,Marshmallow,4/8/23,SA,,8,2,800,Molecular Grade (96%) Ethanol
+BUD-30-DRS,Buddy,4/8/23,SA,,8,3,800,DNA/RNA Shield
+BUD-30-MGE,Buddy,4/8/23,SA,,8,3,800,Molecular Grade (96%) Ethanol
+JOA-30-DRS,Joans,4/8/23,SA,,8,2,800,DNA/RNA Shield
+JOA-30-MGE,Joans,4/8/23,SA,,8,2,800,Molecular Grade (96%) Ethanol
+HEN-30-DRS,Henry,4/8/23,SA,,8,2,800,DNA/RNA Shield
+HEN-30-MGE,Henry,4/8/23,SA,,8,2,800,Molecular Grade (96%) Ethanol
+GIN-30-DRS,Ginger,4/8/23,SA,,9,3,800,DNA/RNA Shield
+GIN-30-MGE,Ginger,4/8/23,SA,,9,3,800,Molecular Grade (96%) Ethanol
+HAM-31-DRS,Hamlet,4/9/23,SA,,9,2,700,DNA/RNA Shield
+HAM-31-MGE,Hamlet,4/9/23,SA,,9,2,700,Molecular Grade (96%) Ethanol
+HER-31-DRS,Hera,4/9/23,SA,,9,2,700,DNA/RNA Shield
+HER-31-MGE,Hera,4/9/23,SA,,9,2,700,Molecular Grade (96%) Ethanol
+JAR-31-DRS,JarJar BINKS,4/9/23,SA,,9,2,700,DNA/RNA Shield
+JAR-31-MGE,JarJar BINKS,4/9/23,SA,,9,2,700,Molecular Grade (96%) Ethanol
+OPH-31-DRS,Ophelia,4/9/23,SA,,9,1,700,DNA/RNA Shield
+OPH-31-MGE,Ophelia,4/9/23,SA,,9,1,700,Molecular Grade (96%) Ethanol
+KUB-31-DRS,Kubo,4/9/23,SA,,9,2,700,DNA/RNA Shield
+KUB-31-MGE,Kubo,4/9/23,SA,,9,2,700,Molecular Grade (96%) Ethanol
+KOR-31-DRS,Korra,4/9/23,SA,,9,3,700,DNA/RNA Shield
+KOR-31-MGE,Korra,4/9/23,SA,,9,3,700,Molecular Grade (96%) Ethanol
+WOL-31-DRS,Wolverine,4/9/23,SA,,9,2,700,DNA/RNA Shield
+WOL-31-MGE,Wolverine,4/9/23,SA,,9,2,700,Molecular Grade (96%) Ethanol
+IRI-31-DRS,Iris,4/9/23,SA,,9,2,700,DNA/RNA Shield
+IRI-31-MGE,Iris,4/9/23,SA,,9,2,700,Molecular Grade (96%) Ethanol
+GOO-31-DRS,Goose,4/9/23,SA,See notes on Notion for Room F,9,3,730,DNA/RNA Shield
+GOO-31-MGE,Goose,4/9/23,SA,See notes on Notion for Room F,9,3,730,Molecular Grade (96%) Ethanol
+LAM-31-DRS,Lambchop,4/9/23,SA,See notes on Notion for Room F,9,3,730,DNA/RNA Shield
+LAM-31-MGE,Lambchop,4/9/23,SA,See notes on Notion for Room F,9,3,730,Molecular Grade (96%) Ethanol
+FRA-31-DRS,Franc,4/9/23,SA,See notes on Notion for Room F,9,2,730,DNA/RNA Shield
+FRA-31-MGE,Franc,4/9/23,SA,See notes on Notion for Room F,9,2,730,Molecular Grade (96%) Ethanol
+IVY-31-DRS,Ivy,4/9/23,SA,See notes on Notion for Room F,9,4,730,DNA/RNA Shield
+IVY-31-MGE,Ivy,4/9/23,SA,See notes on Notion for Room F,9,4,730,Molecular Grade (96%) Ethanol
+CHA-31-DRS,Charles,4/9/23,SA,See notes on Notion for Room F,9,2,730,DNA/RNA Shield
+CHA-31-MGE,Charles,4/9/23,SA,See notes on Notion for Room F,9,2,730,Molecular Grade (96%) Ethanol
+BUB-31-DRS,Bubblegum,4/9/23,SA,See notes on Notion for Room F,9,2,730,DNA/RNA Shield
+BUB-31-MGE,Bubblegum,4/9/23,SA,See notes on Notion for Room F,9,2,730,Molecular Grade (96%) Ethanol
+GRO-31-DRS,Grogu,4/9/23,SA,See notes on Notion for Room F,9,3,730,DNA/RNA Shield
+GRO-31-MGE,Grogu,4/9/23,SA,See notes on Notion for Room F,9,3,730,Molecular Grade (96%) Ethanol
+MAR-31-DRS,Marshmallow,4/9/23,SA,See notes on Notion for Room F,9,2,730,DNA/RNA Shield
+MAR-31-MGE,Marshmallow,4/9/23,SA,See notes on Notion for Room F,9,2,730,Molecular Grade (96%) Ethanol
+HEN-31-DRS,Henry,4/9/23,SA,See notes on Notion for Room F,9,3,730,DNA/RNA Shield
+HEN-31-MGE,Henry,4/9/23,SA,See notes on Notion for Room F,9,3,730,Molecular Grade (96%) Ethanol
+GIN-31-DRS,Ginger,4/9/23,SA,See notes on Notion for Room F,9,2,730,DNA/RNA Shield
+GIN-31-MGE,Ginger,4/9/23,SA,See notes on Notion for Room F,9,2,730,Molecular Grade (96%) Ethanol
+HAM-32-DRS,Hamlet,4/10/23,SA/GR,,9,2,800,DNA/RNA Shield
+HAM-32-MGE,Hamlet,4/10/23,SA/GR,,9,2,800,Molecular Grade (96%) Ethanol
+HER-32-DRS,Hera,4/10/23,SA/GR,,9,2,800,DNA/RNA Shield
+HER-32-MGE,Hera,4/10/23,SA/GR,,9,2,800,Molecular Grade (96%) Ethanol
+JAR-32-DRS,JarJar BINKS,4/10/23,SA/GR,,9,2,800,DNA/RNA Shield
+JAR-32-MGE,JarJar BINKS,4/10/23,SA/GR,,9,2,800,Molecular Grade (96%) Ethanol
+OPH-32-DRS,Ophelia,4/10/23,SA/GR,,9,1,800,DNA/RNA Shield
+OPH-32-MGE,Ophelia,4/10/23,SA/GR,,9,1,800,Molecular Grade (96%) Ethanol
+KUB-32-DRS,Kubo,4/10/23,SA/GR,,9,2,800,DNA/RNA Shield
+KUB-32-MGE,Kubo,4/10/23,SA/GR,,9,2,800,Molecular Grade (96%) Ethanol
+KOR-32-DRS,Korra,4/10/23,SA/GR,,9,3,800,DNA/RNA Shield
+KOR-32-MGE,Korra,4/10/23,SA/GR,,9,3,800,Molecular Grade (96%) Ethanol
+WOL-32-DRS,Wolverine,4/10/23,SA/GR,,10,1,800,DNA/RNA Shield
+WOL-32-MGE,Wolverine,4/10/23,SA/GR,,10,1,800,Molecular Grade (96%) Ethanol
+IRI-32-DRS,Iris,4/10/23,SA/GR,,10,2,800,DNA/RNA Shield
+IRI-32-MGE,Iris,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+GOO-32-DRS,Goose,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+GOO-32-MGE,Goose,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+LAM-32-DRS,Lambchop,4/10/23,SA/GR,,10,3,730,DNA/RNA Shield
+LAM-32-MGE,Lambchop,4/10/23,SA/GR,,10,3,730,Molecular Grade (96%) Ethanol
+FRA-32-DRS,Franc,4/10/23,SA/GR,,10,3,730,DNA/RNA Shield
+FRA-32-MGE,Franc,4/10/23,SA/GR,,10,3,730,Molecular Grade (96%) Ethanol
+IVY-32-DRS,Ivy,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+IVY-32-MGE,Ivy,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+CHA-32-DRS,Charles,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+CHA-32-MGE,Charles,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+BUB-32-DRS,Bubblegum,4/10/23,SA/GR,,10,1,730,DNA/RNA Shield
+BUB-32-MGE,Bubblegum,4/10/23,SA/GR,,10,1,730,Molecular Grade (96%) Ethanol
+GRO-32-DRS,Grogu,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+GRO-32-MGE,Grogu,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+MAR-32-DRS,Marshmallow,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+MAR-32-MGE,Marshmallow,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+BUD-32-DRS,Buddy,4/10/23,SA/GR,,10,3,730,DNA/RNA Shield
+BUD-32-MGE,Buddy,4/10/23,SA/GR,,10,3,730,Molecular Grade (96%) Ethanol
+JOA-32-DRS,Joans,4/10/23,SA/GR,,10,3,730,DNA/RNA Shield
+JOA-32-MGE,Joans,4/10/23,SA/GR,,10,3,730,Molecular Grade (96%) Ethanol
+HEN-32-DRS,Henry,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+HEN-32-MGE,Henry,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+GIN-32-DRS,Ginger,4/10/23,SA/GR,,10,2,730,DNA/RNA Shield
+GIN-32-MGE,Ginger,4/10/23,SA/GR,,10,2,730,Molecular Grade (96%) Ethanol
+HAM-33-DRS,Hamlet,4/11/23,SA,,10,2,800,DNA/RNA Shield
+HAM-33-MGE,Hamlet,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+HER-33-DRS,Hera,4/11/23,SA,,10,2,800,DNA/RNA Shield
+HER-33-MGE,Hera,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+JAR-33-DRS,JarJar BINKS,4/11/23,SA,,10,2,800,DNA/RNA Shield
+JAR-33-MGE,JarJar BINKS,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+OPH-33-DRS,Ophelia,4/11/23,SA,,10,2,800,DNA/RNA Shield
+OPH-33-MGE,Ophelia,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+KUB-33-DRS,Kubo,4/11/23,SA,,10,3,800,DNA/RNA Shield
+KUB-33-MGE,Kubo,4/11/23,SA,,10,3,800,Molecular Grade (96%) Ethanol
+KOR-33-DRS,Korra,4/11/23,SA,,10,2,800,DNA/RNA Shield
+KOR-33-MGE,Korra,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+WOL-33-DRS,Wolverine,4/11/23,SA,,10,1,800,DNA/RNA Shield
+WOL-33-MGE,Wolverine,4/11/23,SA,,10,1,800,Molecular Grade (96%) Ethanol
+IRI-33-DRS,Iris,4/11/23,SA,,10,2,800,DNA/RNA Shield
+IRI-33-MGE,Iris,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+GOO-33-DRS,Goose,4/11/23,SA,,10,3,800,DNA/RNA Shield
+GOO-33-MGE,Goose,4/11/23,SA,,10,3,800,Molecular Grade (96%) Ethanol
+LAM-33-DRS,Lambchop,4/11/23,SA,,10,4,800,DNA/RNA Shield
+LAM-33-MGE,Lambchop,4/11/23,SA,,10,4,800,Molecular Grade (96%) Ethanol
+CHA-33-DRS,Charles,4/11/23,SA,,10,2,800,DNA/RNA Shield
+CHA-33-MGE,Charles,4/11/23,SA,,10,2,800,Molecular Grade (96%) Ethanol
+HAM-34-DRS,Hamlet,4/12/23,SA/GR,,10,3,800,DNA/RNA Shield
+HAM-34-MGE,Hamlet,4/12/23,SA/GR,,10,3,800,Molecular Grade (96%) Ethanol
+HER-34-DRS,Hera,4/12/23,SA/GR,,10,2,800,DNA/RNA Shield
+HER-34-MGE,Hera,4/12/23,SA/GR,,10,2,800,Molecular Grade (96%) Ethanol
+JAR-34-DRS,JarJar BINKS,4/12/23,SA/GR,,10,3,800,DNA/RNA Shield
+JAR-34-MGE,JarJar BINKS,4/12/23,SA/GR,,10,3,800,Molecular Grade (96%) Ethanol
+OPH-34-DRS,Ophelia,4/12/23,SA/GR,,10,1,800,DNA/RNA Shield
+OPH-34-MGE,Ophelia,4/12/23,SA/GR,,10,1,800,Molecular Grade (96%) Ethanol
+KUB-34-DRS,Kubo,4/12/23,SA/GR,,10,2,800,DNA/RNA Shield
+KUB-34-MGE,Kubo,4/12/23,SA/GR,,10,2,800,Molecular Grade (96%) Ethanol
+KOR-34-DRS,Korra,4/12/23,SA/GR,,10,2,800,DNA/RNA Shield
+KOR-34-MGE,Korra,4/12/23,SA/GR,,10,2,800,Molecular Grade (96%) Ethanol
+WOL-34-DRS,Wolverine,4/12/23,SA/GR,,10,2,800,DNA/RNA Shield
+WOL-34-MGE,Wolverine,4/12/23,SA/GR,,10,2,800,Molecular Grade (96%) Ethanol
+IRI-34-DRS,Iris,4/12/23,SA/GR,,11,2,800,DNA/RNA Shield
+IRI-34-MGE,Iris,4/12/23,SA/GR,,11,2,800,Molecular Grade (96%) Ethanol
+GOO-34-DRS,Goose,4/12/23,SA/GR,,11,3,730,DNA/RNA Shield
+GOO-34-MGE,Goose,4/12/23,SA/GR,,11,3,730,Molecular Grade (96%) Ethanol
+LAM-34-DRS,Lambchop,4/12/23,SA/GR,,11,3,730,DNA/RNA Shield
+LAM-34-MGE,Lambchop,4/12/23,SA/GR,,11,3,730,Molecular Grade (96%) Ethanol
+FRA-34-DRS,Franc,4/12/23,SA/GR,,11,2,730,DNA/RNA Shield
+FRA-34-MGE,Franc,4/12/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+IVY-34-DRS,Ivy,4/12/23,SA/GR,,11,2,730,DNA/RNA Shield
+IVY-34-MGE,Ivy,4/12/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+CHA-34-DRS,Charles,4/12/23,SA/GR,,11,1,730,DNA/RNA Shield
+CHA-34-MGE,Charles,4/12/23,SA/GR,,11,1,730,Molecular Grade (96%) Ethanol
+GRO-34-DRS,Grogu,4/12/23,SA/GR,,11,2,730,DNA/RNA Shield
+GRO-34-MGE,Grogu,4/12/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+MAR-34-DRS,Marshmallow,4/12/23,SA/GR,,11,2,730,DNA/RNA Shield
+MAR-34-MGE,Marshmallow,4/12/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+BUD-34-DRS,Buddy,4/12/23,SA/GR,,11,3,730,DNA/RNA Shield
+BUD-34-MGE,Buddy,4/12/23,SA/GR,,11,3,730,Molecular Grade (96%) Ethanol
+JOA-34-DRS,Joans,4/12/23,SA/GR,,11,3,730,DNA/RNA Shield
+JOA-34-MGE,Joans,4/12/23,SA/GR,,11,3,730,Molecular Grade (96%) Ethanol
+HEN-34-DRS,Henry,4/12/23,SA/GR,,11,2,730,DNA/RNA Shield
+HEN-34-MGE,Henry,4/12/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+GIN-34-DRS,Ginger,4/12/23,SA/GR,,11,2,730,DNA/RNA Shield
+GIN-34-MGE,Ginger,4/12/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+HAM-35-DRS,Hamlet,4/13/23,SA,,11,2,730,DNA/RNA Shield
+HAM-35-MGE,Hamlet,4/13/23,SA,,11,2,730,Molecular Grade (96%) Ethanol
+HER-35-DRS,Hera,4/13/23,SA,,11,1,730,DNA/RNA Shield
+HER-35-MGE,Hera,4/13/23,SA,,11,1,730,Molecular Grade (96%) Ethanol
+JAR-35-DRS,JarJar BINKS,4/13/23,SA,,11,2,730,DNA/RNA Shield
+JAR-35-MGE,JarJar BINKS,4/13/23,SA,,11,2,730,Molecular Grade (96%) Ethanol
+OPH-35-DRS,Ophelia,4/13/23,SA,,11,1,730,DNA/RNA Shield
+OPH-35-MGE,Ophelia,4/13/23,SA,,11,1,730,Molecular Grade (96%) Ethanol
+KUB-35-DRS,Kubo,4/13/23,SA,,11,2,730,DNA/RNA Shield
+KUB-35-MGE,Kubo,4/13/23,SA,,11,2,730,Molecular Grade (96%) Ethanol
+KOR-35-DRS,Korra,4/13/23,SA,,11,2,730,DNA/RNA Shield
+KOR-35-MGE,Korra,4/13/23,SA,,11,2,730,Molecular Grade (96%) Ethanol
+WOL-35-DRS,Wolverine,4/13/23,SA,,11,1,730,DNA/RNA Shield
+WOL-35-MGE,Wolverine,4/13/23,SA,,11,1,730,Molecular Grade (96%) Ethanol
+IRI-35-DRS,Iris,4/13/23,SA,,11,2,730,DNA/RNA Shield
+IRI-35-MGE,Iris,4/13/23,SA,,11,2,730,Molecular Grade (96%) Ethanol
+GOO-35-DRS,Goose,4/13/23,SA,,11,3,800,DNA/RNA Shield
+GOO-35-MGE,Goose,4/13/23,SA,,11,3,800,Molecular Grade (96%) Ethanol
+LAM-35-DRS,Lambchop,4/13/23,SA,,11,3,800,DNA/RNA Shield
+LAM-35-MGE,Lambchop,4/13/23,SA,,11,3,800,Molecular Grade (96%) Ethanol
+FRA-35-DRS,Franc,4/13/23,SA,,11,2,800,DNA/RNA Shield
+FRA-35-MGE,Franc,4/13/23,SA,,11,2,800,Molecular Grade (96%) Ethanol
+IVY-35-DRS,Ivy,4/13/23,SA,,11,3,800,DNA/RNA Shield
+IVY-35-MGE,Ivy,4/13/23,SA,,11,3,800,Molecular Grade (96%) Ethanol
+CHA-35-DRS,Charles,4/13/23,SA,,11,1,800,DNA/RNA Shield
+CHA-35-MGE,Charles,4/13/23,SA,,11,1,800,Molecular Grade (96%) Ethanol
+GRO-35-DRS,Grogu,4/13/23,SA,,11,2,800,DNA/RNA Shield
+GRO-35-MGE,Grogu,4/13/23,SA,,11,2,800,Molecular Grade (96%) Ethanol
+MAR-35-DRS,Marshmallow,4/13/23,SA,,11,3,800,DNA/RNA Shield
+MAR-35-MGE,Marshmallow,4/13/23,SA,,11,3,800,Molecular Grade (96%) Ethanol
+BUD-35-DRS,Buddy,4/13/23,SA,,11,2,800,DNA/RNA Shield
+BUD-35-MGE,Buddy,4/13/23,SA,,11,2,800,Molecular Grade (96%) Ethanol
+JOA-35-DRS,Joans,4/13/23,SA,,11,3,800,DNA/RNA Shield
+JOA-35-MGE,Joans,4/13/23,SA,,11,3,800,Molecular Grade (96%) Ethanol
+HEN-35-DRS,Henry,4/13/23,SA,,11,2,800,DNA/RNA Shield
+HEN-35-MGE,Henry,4/13/23,SA,,11,2,800,Molecular Grade (96%) Ethanol
+GIN-35-DRS,Ginger,4/13/23,SA,,11,2,800,DNA/RNA Shield
+GIN-35-MGE,Ginger,4/13/23,SA,,11,2,800,Molecular Grade (96%) Ethanol
+HAM-36-MGE,Hamlet,4/14/23,SA/GR,,11,3,730,Molecular Grade (96%) Ethanol
+HER-36-MGE,Hera,4/14/23,SA/GR,,11,2,730,Molecular Grade (96%) Ethanol
+JAR-36-MGE,JarJar BINKS,4/14/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+OPH-36-MGE,Ophelia,4/14/23,SA/GR,,12,1,730,Molecular Grade (96%) Ethanol
+KUB-36-MGE,Kubo,4/14/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+KOR-36-MGE,Korra,4/14/23,SA/GR,,12,3,730,Molecular Grade (96%) Ethanol
+WOL-36-MGE,Wolverine,4/14/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+IRI-36-MGE,Iris,4/14/23,SA/GR,,12,3,730,Molecular Grade (96%) Ethanol
+GOO-36-MGE,Goose,4/14/23,SA/GR,,12,3,800,Molecular Grade (96%) Ethanol
+LAM-36-MGE,Lambchop,4/14/23,SA/GR,,12,3,800,Molecular Grade (96%) Ethanol
+FRA-36-MGE,Franc,4/14/23,SA/GR,,12,3,800,Molecular Grade (96%) Ethanol
+IVY-36-MGE,Ivy,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+CHA-36-MGE,Charles,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+GRO-36-MGE,Grogu,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+MAR-36-MGE,Marshmallow,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+BUD-36-MGE,Buddy,4/14/23,SA/GR,,12,3,800,Molecular Grade (96%) Ethanol
+JOA-36-MGE,Joans,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+HEN-36-MGE,Henry,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+GIN-36-MGE,Ginger,4/14/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+HAM-37-MGE,Hamlet,4/15/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+HER-37-MGE,Hera,4/15/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+JAR-37-MGE,JarJar BINKS,4/15/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+OPH-37-MGE,Ophelia,4/15/23,SA,,12,1,730,Molecular Grade (96%) Ethanol
+KUB-37-MGE,Kubo,4/15/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+KOR-37-MGE,Korra,4/15/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+WOL-37-MGE,Wolverine,4/15/23,SA,,12,1,730,Molecular Grade (96%) Ethanol
+IRI-37-MGE,Iris,4/15/23,SA,,12,3,730,Molecular Grade (96%) Ethanol
+GOO-37-MGE,Goose,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+LAM-37-MGE,Lambchop,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+FRA-37-MGE,Franc,4/15/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+IVY-37-MGE,Ivy,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+CHA-37-MGE,Charles,4/15/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+GRO-37-MGE,Grogu,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+MAR-37-MGE,Marshmallow,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+BUD-37-MGE,Buddy,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+JOA-37-MGE,Joans,4/15/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+HEN-37-MGE,Henry,4/15/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+GIN-37-MGE,Ginger,4/15/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+HAM-38-MGE,Hamlet,4/16/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+HER-38-MGE,Hera,4/16/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+JAR-38-MGE,JarJar BINKS,4/16/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+OPH-38-MGE,Ophelia,4/16/23,SA,,12,1,730,Molecular Grade (96%) Ethanol
+KUB-38-MGE,Kubo,4/16/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+KOR-38-MGE,Korra,4/16/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+WOL-38-MGE,Wolverine,4/16/23,SA,,12,2,730,Molecular Grade (96%) Ethanol
+IRI-38-MGE,Iris,4/16/23,SA,,12,3,730,Molecular Grade (96%) Ethanol
+GOO-38-MGE,Goose,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+LAM-38-MGE,Lambchop,4/16/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+FRA-38-MGE,Franc,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+IVY-38-MGE,Ivy,4/16/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+CHA-38-MGE,Charles,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+GRO-38-MGE,Grogu,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+MAR-38-MGE,Marshmallow,4/16/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+BUD-38-MGE,Buddy,4/16/23,SA,,12,3,800,Molecular Grade (96%) Ethanol
+JOA-38-MGE,Joans,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+HEN-38-MGE,Henry,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+GIN-38-MGE,Ginger,4/16/23,SA,,12,2,800,Molecular Grade (96%) Ethanol
+HAM-39-MGE,Hamlet,4/17/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+HER-39-MGE,Hera,4/17/23,SA/GR,,12,3,800,Molecular Grade (96%) Ethanol
+JAR-39-MGE,JarJar BINKS,4/17/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+OPH-39-MGE,Ophelia,4/17/23,SA/GR,,12,1,800,Molecular Grade (96%) Ethanol
+KUB-39-MGE,Kubo,4/17/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+KOR-39-MGE,Korra,4/17/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+WOL-39-MGE,Wolverine,4/17/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+IRI-39-MGE,Iris,4/17/23,SA/GR,,12,2,800,Molecular Grade (96%) Ethanol
+GOO-39-MGE,Goose,4/17/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+LAM-39-MGE,Lambchop,4/17/23,SA/GR,,12,3,730,Molecular Grade (96%) Ethanol
+FRA-39-MGE,Franc,4/17/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+IVY-39-MGE,Ivy,4/17/23,SA/GR,,12,3,730,Molecular Grade (96%) Ethanol
+CHA-39-MGE,Charles,4/17/23,SA/GR,,12,1,730,Molecular Grade (96%) Ethanol
+GRO-39-MGE,Grogu,4/17/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+MAR-39-MGE,Marshmallow,4/17/23,SA/GR,,12,2,730,Molecular Grade (96%) Ethanol
+BUD-39-MGE,Buddy,4/17/23,SA/GR,,12,3,730,Molecular Grade (96%) Ethanol
+JOA-39-MGE,Joans,4/17/23,SA/GR,,13,3,730,Molecular Grade (96%) Ethanol
+HEN-39-MGE,Henry,4/17/23,SA/GR,,13,2,730,Molecular Grade (96%) Ethanol
+GIN-39-MGE,Ginger,4/17/23,SA/GR,,13,2,730,Molecular Grade (96%) Ethanol
+HAM-41-DRS,Hamlet,4/19/23,SA,,13,2,730,DNA/RNA Shield
+HAM-41-MGE,Hamlet,4/19/23,SA,,13,2,730,Molecular Grade (96%) Ethanol
+HER-41-DRS,Hera,4/19/23,SA,,13,2,730,DNA/RNA Shield
+HER-41-MGE,Hera,4/19/23,SA,,13,2,730,Molecular Grade (96%) Ethanol
+JAR-41-DRS,JarJar BINKS,4/19/23,SA,,13,2,730,DNA/RNA Shield
+JAR-41-MGE,JarJar BINKS,4/19/23,SA,,13,2,730,Molecular Grade (96%) Ethanol
+OPH-41-DRS,Ophelia,4/19/23,SA,,13,1,730,DNA/RNA Shield
+OPH-41-MGE,Ophelia,4/19/23,SA,,13,1,730,Molecular Grade (96%) Ethanol
+KUB-41-DRS,Kubo,4/19/23,SA,,13,2,730,DNA/RNA Shield
+KUB-41-MGE,Kubo,4/19/23,SA,,13,2,730,Molecular Grade (96%) Ethanol
+KOR-41-DRS,Korra,4/19/23,SA,,13,3,730,DNA/RNA Shield
+KOR-41-MGE,Korra,4/19/23,SA,,13,3,730,Molecular Grade (96%) Ethanol
+WOL-41-DRS,Wolverine,4/19/23,SA,,13,2,730,DNA/RNA Shield
+WOL-41-MGE,Wolverine,4/19/23,SA,,13,2,730,Molecular Grade (96%) Ethanol
+IRI-41-DRS,Iris,4/19/23,SA,,13,2,730,DNA/RNA Shield
+IRI-41-MGE,Iris,4/19/23,SA,,13,2,730,Molecular Grade (96%) Ethanol
+GOO-41-DRS,Goose,4/19/23,SA,,13,3,800,DNA/RNA Shield
+GOO-41-MGE,Goose,4/19/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+LAM-41-DRS,Lambchop,4/19/23,SA,,13,3,800,DNA/RNA Shield
+LAM-41-MGE,Lambchop,4/19/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+FRA-41-DRS,Franc,4/19/23,SA,,13,2,800,DNA/RNA Shield
+FRA-41-MGE,Franc,4/19/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+IVY-41-DRS,Ivy,4/19/23,SA,,13,3,800,DNA/RNA Shield
+IVY-41-MGE,Ivy,4/19/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+CHA-41-DRS,Charles,4/19/23,SA,,13,2,800,DNA/RNA Shield
+CHA-41-MGE,Charles,4/19/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+GRO-41-DRS,Grogu,4/19/23,SA,,13,2,800,DNA/RNA Shield
+GRO-41-MGE,Grogu,4/19/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+MAR-41-DRS,Marshmallow,4/19/23,SA,,13,3,800,DNA/RNA Shield
+MAR-41-MGE,Marshmallow,4/19/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+BUD-41-DRS,Buddy,4/19/23,SA,,13,3,800,DNA/RNA Shield
+BUD-41-MGE,Buddy,4/19/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+JOA-41-DRS,Joans,4/19/23,SA,,13,2,800,DNA/RNA Shield
+JOA-41-MGE,Joans,4/19/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+HEN-41-DRS,Henry,4/19/23,SA,,13,2,800,DNA/RNA Shield
+HEN-41-MGE,Henry,4/19/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+GIN-41-DRS,Ginger,4/19/23,SA,,13,2,800,DNA/RNA Shield
+GIN-41-MGE,Ginger,4/19/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+GOO-42-DRS,Goose,4/20/23,SA,,13,3,800,DNA/RNA Shield
+GOO-42-MGE,,4/20/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+LAM-42-DRS,Lambchop,4/20/23,SA,,13,3,800,DNA/RNA Shield
+LAM-42-MGE,,4/20/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+FRA-42-DRS,Franc,4/20/23,SA,,13,2,800,DNA/RNA Shield
+FRA-42-MGE,,4/20/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+IVY-42-DRS,Ivy,4/20/23,SA,,13,4,800,DNA/RNA Shield
+IVY-42-MGE,,4/20/23,SA,,13,4,800,Molecular Grade (96%) Ethanol
+GRO-42-DRS,Grogu,4/20/23,SA,,13,2,800,DNA/RNA Shield
+GRO-42-MGE,,4/20/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+MAR-42-DRS,Marshmallow,4/20/23,SA,,13,3,800,DNA/RNA Shield
+MAR-42-MGE,,4/20/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+BUD-42-DRS,Buddy,4/20/23,SA,,13,3,800,DNA/RNA Shield
+BUD-42-MGE,,4/20/23,SA,,13,3,800,Molecular Grade (96%) Ethanol
+JOA-42-DRS,Joans,4/20/23,SA,,13,2,800,DNA/RNA Shield
+JOA-42-MGE,,4/20/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+HEN-42-DRS,Henry,4/20/23,SA,,13,2,800,DNA/RNA Shield
+HEN-42-MGE,,4/20/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+GIN-42-DRS,Ginger,4/20/23,SA,,13,2,800,DNA/RNA Shield
+GIN-42-MGE,,4/20/23,SA,,13,2,800,Molecular Grade (96%) Ethanol
+HAM-43-DRS,Hamlet,4/21/23,SA/GR,,13,2,700,DNA/RNA Shield
+HAM-43-MGE,Hamlet,4/21/23,SA/GR,,13,2,700,Molecular Grade (96%) Ethanol
+HER-43-DRS,Hera,4/21/23,SA/GR,,13,2,700,DNA/RNA Shield
+HER-43-MGE,Hera,4/21/23,SA/GR,,13,2,700,Molecular Grade (96%) Ethanol
+JAR-43-DRS,JarJar BINKS,4/21/23,SA/GR,,13,2,700,DNA/RNA Shield
+JAR-43-MGE,JarJar BINKS,4/21/23,SA/GR,,13,2,700,Molecular Grade (96%) Ethanol
+OPH-43-DRS,Ophelia,4/21/23,SA/GR,,14,2,700,DNA/RNA Shield
+OPH-43-MGE,Ophelia,4/21/23,SA/GR,,14,2,700,Molecular Grade (96%) Ethanol
+KUB-43-DRS,Kubo,4/21/23,SA/GR,,14,2,700,DNA/RNA Shield
+KUB-43-MGE,Kubo,4/21/23,SA/GR,,14,2,700,Molecular Grade (96%) Ethanol
+KOR-43-DRS,Korra,4/21/23,SA/GR,,14,3,700,DNA/RNA Shield
+KOR-43-MGE,Korra,4/21/23,SA/GR,,14,3,700,Molecular Grade (96%) Ethanol
+WOL-43-DRS,Wolverine,4/21/23,SA/GR,,14,2,700,DNA/RNA Shield
+WOL-43-MGE,Wolverine,4/21/23,SA/GR,,14,2,700,Molecular Grade (96%) Ethanol
+IRI-43-DRS,Iris,4/21/23,SA/GR,,14,2,700,DNA/RNA Shield
+IRI-43-MGE,Iris,4/21/23,SA/GR,,14,2,700,Molecular Grade (96%) Ethanol
+GOO-43-DRS,Goose,4/21/23,SA/GR,,14,2,730,DNA/RNA Shield
+GOO-43-MGE,Goose,4/21/23,SA/GR,,14,2,730,Molecular Grade (96%) Ethanol
+LAM-43-DRS,Lambchop,4/21/23,SA/GR,,14,3,730,DNA/RNA Shield
+LAM-43-MGE,Lambchop,4/21/23,SA/GR,,14,3,730,Molecular Grade (96%) Ethanol
+FRA-43-DRS,Franc,4/21/23,SA/GR,,14,2,730,DNA/RNA Shield
+FRA-43-MGE,Franc,4/21/23,SA/GR,,14,2,730,Molecular Grade (96%) Ethanol
+IVY-43-DRS,Ivy,4/21/23,SA/GR,,14,3,730,DNA/RNA Shield
+IVY-43-MGE,Ivy,4/21/23,SA/GR,,14,3,730,Molecular Grade (96%) Ethanol
+CHA-43-DRS,Charles,4/21/23,SA/GR,,14,3,730,DNA/RNA Shield
+CHA-43-MGE,Charles,4/21/23,SA/GR,,14,3,730,Molecular Grade (96%) Ethanol
+GRO-43-DRS,Grogu,4/21/23,SA/GR,,14,2,730,DNA/RNA Shield
+GRO-43-MGE,Grogu,4/21/23,SA/GR,,14,2,730,Molecular Grade (96%) Ethanol
+MAR-43-DRS,Marshmallow,4/21/23,SA/GR,,14,3,730,DNA/RNA Shield
+MAR-43-MGE,Marshmallow,4/21/23,SA/GR,,14,3,730,Molecular Grade (96%) Ethanol
+BUD-43-DRS,Buddy,4/21/23,SA/GR,,14,3,730,DNA/RNA Shield
+BUD-43-MGE,Buddy,4/21/23,SA/GR,,14,3,730,Molecular Grade (96%) Ethanol
+JOA-43-DRS,Joans,4/21/23,SA/GR,,14,2,730,DNA/RNA Shield
+JOA-43-MGE,Joans,4/21/23,SA/GR,,14,2,730,Molecular Grade (96%) Ethanol
+HEN-43-DRS,Henry,4/21/23,SA/GR,,14,2,730,DNA/RNA Shield
+HEN-43-MGE,Henry,4/21/23,SA/GR,,14,2,730,Molecular Grade (96%) Ethanol
+GIN-43-DRS,Ginger,4/21/23,SA/GR,,14,2,730,DNA/RNA Shield
+GIN-43-MGE,Ginger,4/21/23,SA/GR,,14,2,730,Molecular Grade (96%) Ethanol
+HAM-44-DRS,Hamlet,4/22/23,SA,,14,2,730,DNA/RNA Shield
+HAM-44-MGE,Hamlet,4/22/23,SA,,14,2,730,Molecular Grade (96%) Ethanol
+HER-44-DRS,Hera,4/22/23,SA,,14,2,730,DNA/RNA Shield
+HER-44-MGE,Hera,4/22/23,SA,,14,2,730,Molecular Grade (96%) Ethanol
+JAR-44-DRS,JarJar BINKS,4/22/23,SA,,14,2,730,DNA/RNA Shield
+JAR-44-MGE,JarJar BINKS,4/22/23,SA,,14,2,730,Molecular Grade (96%) Ethanol
+OPH-44-DRS,Ophelia,4/22/23,SA,,14,2,730,DNA/RNA Shield
+OPH-44-MGE,Ophelia,4/22/23,SA,,14,2,730,Molecular Grade (96%) Ethanol
+KUB-44-DRS,Kubo,4/22/23,SA,,14,3,730,DNA/RNA Shield
+KUB-44-MGE,Kubo,4/22/23,SA,,14,3,730,Molecular Grade (96%) Ethanol
+KOR-44-DRS,Korra,4/22/23,SA,,14,3,730,DNA/RNA Shield
+KOR-44-MGE,Korra,4/22/23,SA,,14,3,730,Molecular Grade (96%) Ethanol
+WOL-44-DRS,Wolverine,4/22/23,SA,,14,2,730,DNA/RNA Shield
+WOL-44-MGE,Wolverine,4/22/23,SA,,14,2,730,Molecular Grade (96%) Ethanol
+IRI-44-DRS,Iris,4/22/23,SA,,14,2,730,DNA/RNA Shield
+IRI-44-MGE,Iris,4/22/23,SA,,14,2,730,Molecular Grade (96%) Ethanol
+GOO-44-DRS,Goose,4/22/23,SA,,14,3,800,DNA/RNA Shield
+GOO-44-MGE,Goose,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+LAM-44-DRS,Lambchop,4/22/23,SA,,14,3,800,DNA/RNA Shield
+LAM-44-MGE,Lambchop,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+FRA-44-DRS,Franc,4/22/23,SA,,14,3,800,DNA/RNA Shield
+FRA-44-MGE,Franc,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+IVY-44-DRS,Ivy,4/22/23,SA,,14,3,800,DNA/RNA Shield
+IVY-44-MGE,Ivy,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+CHA-44-DRS,Charles,4/22/23,SA,,14,2,800,DNA/RNA Shield
+CHA-44-MGE,Charles,4/22/23,SA,,14,2,800,Molecular Grade (96%) Ethanol
+GRO-44-DRS,Grogu,4/22/23,SA,,14,3,800,DNA/RNA Shield
+GRO-44-MGE,Grogu,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+MAR-44-DRS,Marshmallow,4/22/23,SA,,14,3,800,DNA/RNA Shield
+MAR-44-MGE,Marshmallow,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+BUD-44-DRS,Buddy,4/22/23,SA,,14,3,800,DNA/RNA Shield
+BUD-44-MGE,Buddy,4/22/23,SA,,14,3,800,Molecular Grade (96%) Ethanol
+JOA-44-DRS,Joans,4/22/23,SA,,14,2,800,DNA/RNA Shield
+JOA-44-MGE,Joans,4/22/23,SA,,14,2,800,Molecular Grade (96%) Ethanol
+HEN-44-DRS,Henry,4/22/23,SA,,15,3,800,DNA/RNA Shield
+HEN-44-MGE,Henry,4/22/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+GIN-44-DRS,Ginger,4/22/23,SA,,15,3,800,DNA/RNA Shield
+GIN-44-MGE,Ginger,4/22/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+HAM-45-DRS,Hamlet,4/23/23,SA,,15,2,730,DNA/RNA Shield
+HAM-45-MGE,Hamlet,4/23/23,SA,,15,2,730,Molecular Grade (96%) Ethanol
+HER-45-DRS,Hera,4/23/23,SA,,15,2,730,DNA/RNA Shield
+HER-45-MGE,Hera,4/23/23,SA,,15,2,730,Molecular Grade (96%) Ethanol
+JAR-45-DRS,JarJar BINKS,4/23/23,SA,,15,1,730,DNA/RNA Shield
+JAR-45-MGE,JarJar BINKS,4/23/23,SA,,15,1,730,Molecular Grade (96%) Ethanol
+OPH-45-DRS,Ophelia,4/23/23,SA,,15,2,730,DNA/RNA Shield
+OPH-45-MGE,Ophelia,4/23/23,SA,,15,2,730,Molecular Grade (96%) Ethanol
+KUB-45-DRS,Kubo,4/23/23,SA,,15,1,730,DNA/RNA Shield
+KUB-45-MGE,Kubo,4/23/23,SA,,15,1,730,Molecular Grade (96%) Ethanol
+KOR-45-DRS,Korra,4/23/23,SA,,15,3,730,DNA/RNA Shield
+KOR-45-MGE,Korra,4/23/23,SA,,15,3,730,Molecular Grade (96%) Ethanol
+WOL-45-DRS,Wolverine,4/23/23,SA,,15,2,730,DNA/RNA Shield
+WOL-45-MGE,Wolverine,4/23/23,SA,,15,2,730,Molecular Grade (96%) Ethanol
+IRI-45-DRS,Iris,4/23/23,SA,,15,2,730,DNA/RNA Shield
+IRI-45-MGE,Iris,4/23/23,SA,,15,2,730,Molecular Grade (96%) Ethanol
+GOO-45-DRS,Goose,4/23/23,SA,,15,3,800,DNA/RNA Shield
+GOO-45-MGE,Goose,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+LAM-45-DRS,Lambchop,4/23/23,SA,,15,3,800,DNA/RNA Shield
+LAM-45-MGE,Lambchop,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+FRA-45-DRS,Franc,4/23/23,SA,,15,3,800,DNA/RNA Shield
+FRA-45-MGE,Franc,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+IVY-45-DRS,Ivy,4/23/23,SA,,15,3,800,DNA/RNA Shield
+IVY-45-MGE,Ivy,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+CHA-45-DRS,Charles,4/23/23,SA,,15,3,800,DNA/RNA Shield
+CHA-45-MGE,Charles,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+GRO-45-DRS,Grogu,4/23/23,SA,,15,3,800,DNA/RNA Shield
+GRO-45-MGE,Grogu,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+MAR-45-DRS,Marshmallow,4/23/23,SA,,15,3,800,DNA/RNA Shield
+MAR-45-MGE,Marshmallow,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+BUD-45-DRS,Buddy,4/23/23,SA,,15,3,800,DNA/RNA Shield
+BUD-45-MGE,Buddy,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+JOA-45-DRS,Joans,4/23/23,SA,,15,3,800,DNA/RNA Shield
+JOA-45-MGE,Joans,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+HEN-45-DRS,Henry,4/23/23,SA,,15,3,800,DNA/RNA Shield
+HEN-45-MGE,Henry,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+GIN-45-DRS,Ginger,4/23/23,SA,,15,3,800,DNA/RNA Shield
+GIN-45-MGE,Ginger,4/23/23,SA,,15,3,800,Molecular Grade (96%) Ethanol
+HAM-46-DRS,Hamlet,4/24/23,SA/GR,,15,2,730,DNA/RNA Shield
+HAM-46-MGE,Hamlet,4/24/23,SA/GR,,15,2,730,Molecular Grade (96%) Ethanol
+HER-46-DRS,Hera,4/24/23,SA/GR,,15,2,730,DNA/RNA Shield
+HER-46-MGE,Hera,4/24/23,SA/GR,,15,2,730,Molecular Grade (96%) Ethanol
+JAR-46-DRS,JarJar BINKS,4/24/23,SA/GR,,15,2,730,DNA/RNA Shield
+JAR-46-MGE,JarJar BINKS,4/24/23,SA/GR,,15,2,730,Molecular Grade (96%) Ethanol
+OPH-46-DRS,Ophelia,4/24/23,SA/GR,,15,1,730,DNA/RNA Shield
+OPH-46-MGE,Ophelia,4/24/23,SA/GR,,15,1,730,Molecular Grade (96%) Ethanol
+KUB-46-DRS,Kubo,4/24/23,SA/GR,,15,2,730,DNA/RNA Shield
+KUB-46-MGE,Kubo,4/24/23,SA/GR,,15,2,730,Molecular Grade (96%) Ethanol
+KOR-46-DRS,Korra,4/24/23,SA/GR,,15,3,730,DNA/RNA Shield
+KOR-46-MGE,Korra,4/24/23,SA/GR,,15,3,730,Molecular Grade (96%) Ethanol
+WOL-46-DRS,Wolverine,4/24/23,SA/GR,,15,2,730,DNA/RNA Shield
+WOL-46-MGE,Wolverine,4/24/23,SA/GR,,15,2,730,Molecular Grade (96%) Ethanol
+IRI-46-DRS,Iris,4/24/23,SA/GR,,15,3,730,DNA/RNA Shield
+IRI-46-MGE,Iris,4/24/23,SA/GR,,15,3,730,Molecular Grade (96%) Ethanol
+GOO-46-DRS,Goose,4/24/23,SA/GR,,15,3,800,DNA/RNA Shield
+GOO-46-MGE,Goose,4/24/23,SA/GR,,15,3,800,Molecular Grade (96%) Ethanol
+LAM-46-DRS,Lambchop,4/24/23,SA/GR,,15,3,800,DNA/RNA Shield
+LAM-46-MGE,Lambchop,4/24/23,SA/GR,,15,3,800,Molecular Grade (96%) Ethanol
+FRA-46-DRS,Franc,4/24/23,SA/GR,,15,2,800,DNA/RNA Shield
+FRA-46-MGE,Franc,4/24/23,SA/GR,,15,2,800,Molecular Grade (96%) Ethanol
+IVY-46-DRS,Ivy,4/24/23,SA/GR,,15,3,800,DNA/RNA Shield
+IVY-46-MGE,Ivy,4/24/23,SA/GR,,15,3,800,Molecular Grade (96%) Ethanol
+CHA-46-DRS,Charles,4/24/23,SA/GR,,16,2,800,DNA/RNA Shield
+CHA-46-MGE,Charles,4/24/23,SA/GR,,16,2,800,Molecular Grade (96%) Ethanol
+GRO-46-DRS,Grogu,4/24/23,SA/GR,,16,3,800,DNA/RNA Shield
+GRO-46-MGE,Grogu,4/24/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+MAR-46-DRS,Marshmallow,4/24/23,SA/GR,,16,3,800,DNA/RNA Shield
+MAR-46-MGE,Marshmallow,4/24/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+BUD-46-DRS,Buddy,4/24/23,SA/GR,,16,3,800,DNA/RNA Shield
+BUD-46-MGE,Buddy,4/24/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+JOA-46-DRS,Joans,4/24/23,SA/GR,,16,3,800,DNA/RNA Shield
+JOA-46-MGE,Joans,4/24/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+HEN-46-DRS,Henry,4/24/23,SA/GR,,16,3,800,DNA/RNA Shield
+HEN-46-MGE,Henry,4/24/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+GIN-46-DRS,Ginger,4/24/23,SA/GR,,16,3,800,DNA/RNA Shield
+GIN-46-MGE,Ginger,4/24/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+FRA-47-DRS,Franc,4/25/23,SA,,16,3,730,DNA/RNA Shield
+FRA-47-MGE,Franc,4/25/23,SA,,16,3,730,Molecular Grade (96%) Ethanol
+IVY-47-DRS,Ivy,4/25/23,SA,,16,2,730,DNA/RNA Shield
+IVY-47-MGE,Ivy,4/25/23,SA,,16,2,730,Molecular Grade (96%) Ethanol
+CHA-47-DRS,Charles,4/25/23,SA,,16,3,730,DNA/RNA Shield
+CHA-47-MGE,Charles,4/25/23,SA,,16,3,730,Molecular Grade (96%) Ethanol
+GRO-47-DRS,Grogu,4/25/23,SA,,16,3,730,DNA/RNA Shield
+GRO-47-MGE,Grogu,4/25/23,SA,,16,3,730,Molecular Grade (96%) Ethanol
+MAR-47-DRS,Marshmallow,4/25/23,SA,,16,2,730,DNA/RNA Shield
+MAR-47-MGE,Marshmallow,4/25/23,SA,,16,2,730,Molecular Grade (96%) Ethanol
+BUD-47-DRS,Buddy,4/25/23,SA,,16,3,730,DNA/RNA Shield
+BUD-47-MGE,Buddy,4/25/23,SA,,16,3,730,Molecular Grade (96%) Ethanol
+JOA-47-DRS,Joans,4/25/23,SA,,16,3,730,DNA/RNA Shield
+JOA-47-MGE,Joans,4/25/23,SA,,16,3,730,Molecular Grade (96%) Ethanol
+HEN-47-DRS,Henry,4/25/23,SA,,16,3,730,DNA/RNA Shield
+HEN-47-MGE,Henry,4/25/23,SA,,16,3,730,Molecular Grade (96%) Ethanol
+GIN-47-DRS,Ginger,4/25/23,SA,,16,2,730,DNA/RNA Shield
+GIN-47-MGE,Ginger,4/25/23,SA,,16,2,730,Molecular Grade (96%) Ethanol
+HAM-48-DRS,Hamlet,4/26/23,SA/GR,,16,2,730,DNA/RNA Shield
+HAM-48-MGE,Hamlet,4/26/23,SA/GR,,16,2,730,Molecular Grade (96%) Ethanol
+HER-48-DRS,Hera,4/26/23,SA/GR,,16,2,730,DNA/RNA Shield
+HER-48-MGE,Hera,4/26/23,SA/GR,,16,2,730,Molecular Grade (96%) Ethanol
+JAR-48-DRS,JarJar BINKS,4/26/23,SA/GR,,16,2,730,DNA/RNA Shield
+JAR-48-MGE,JarJar BINKS,4/26/23,SA/GR,,16,2,730,Molecular Grade (96%) Ethanol
+OPH-48-DRS,Ophelia,4/26/23,SA/GR,,16,1,730,DNA/RNA Shield
+OPH-48-MGE,Ophelia,4/26/23,SA/GR,,16,1,730,Molecular Grade (96%) Ethanol
+KUB-48-DRS,Kubo,4/26/23,SA/GR,,16,2,730,DNA/RNA Shield
+KUB-48-MGE,Kubo,4/26/23,SA/GR,,16,2,730,Molecular Grade (96%) Ethanol
+KOR-48-DRS,Korra,4/26/23,SA/GR,,16,3,730,DNA/RNA Shield
+KOR-48-MGE,Korra,4/26/23,SA/GR,,16,3,730,Molecular Grade (96%) Ethanol
+WOL-48-DRS,Wolverine,4/26/23,SA/GR,,16,2,730,DNA/RNA Shield
+WOL-48-MGE,Wolverine,4/26/23,SA/GR,,16,2,730,Molecular Grade (96%) Ethanol
+IRI-48-DRS,Iris,4/26/23,SA/GR,,16,3,730,DNA/RNA Shield
+IRI-48-MGE,Iris,4/26/23,SA/GR,,16,3,730,Molecular Grade (96%) Ethanol
+GOO-48-DRS,Goose,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+GOO-48-MGE,Goose,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+LAM-48-DRS,Lambchop,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+LAM-48-MGE,Lambchop,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+FRA-48-DRS,Franc,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+FRA-48-MGE,Franc,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+IVY-48-DRS,Ivy,4/26/23,SA/GR,,16,4,800,DNA/RNA Shield
+IVY-48-MGE,Ivy,4/26/23,SA/GR,,16,4,800,Molecular Grade (96%) Ethanol
+CHA-48-DRS,Charles,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+CHA-48-MGE,Charles,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+GRO-48-DRS,Grogu,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+GRO-48-MGE,Grogu,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+MAR-48-DRS,Marshmallow,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+MAR-48-MGE,Marshmallow,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+BUD-48-DRS,Buddy,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+BUD-48-MGE,Buddy,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+JOA-48-DRS,Joans,4/26/23,SA/GR,,16,3,800,DNA/RNA Shield
+JOA-48-MGE,Joans,4/26/23,SA/GR,,16,3,800,Molecular Grade (96%) Ethanol
+HEN-48-DRS,Henry,4/26/23,SA/GR,,17,3,800,DNA/RNA Shield
+HEN-48-MGE,Henry,4/26/23,SA/GR,,17,3,800,Molecular Grade (96%) Ethanol
+GIN-48-DRS,Ginger,4/26/23,SA/GR,,17,2,800,DNA/RNA Shield
+GIN-48-MGE,Ginger,4/26/23,SA/GR,,17,2,800,Molecular Grade (96%) Ethanol
+HAM-49-DRS,Hamlet,4/27/23,SA,,17,2,730,DNA/RNA Shield
+HAM-49-MGE,Hamlet,4/27/23,SA,,17,2,730,Molecular Grade (96%) Ethanol
+HER-49-DRS,Hera,4/27/23,SA,,17,2,730,DNA/RNA Shield
+HER-49-MGE,Hera,4/27/23,SA,,17,2,730,Molecular Grade (96%) Ethanol
+JAR-49-DRS,JarJar BINKS,4/27/23,SA,,17,3,730,DNA/RNA Shield
+JAR-49-MGE,JarJar BINKS,4/27/23,SA,,17,3,730,Molecular Grade (96%) Ethanol
+OPH-49-DRS,Ophelia,4/27/23,SA,,17,2,730,DNA/RNA Shield
+OPH-49-MGE,Ophelia,4/27/23,SA,,17,2,730,Molecular Grade (96%) Ethanol
+KUB-49-DRS,Kubo,4/27/23,SA,,17,2,730,DNA/RNA Shield
+KUB-49-MGE,Kubo,4/27/23,SA,,17,2,730,Molecular Grade (96%) Ethanol
+KOR-49-DRS,Korra,4/27/23,SA,,17,3,730,DNA/RNA Shield
+KOR-49-MGE,Korra,4/27/23,SA,,17,3,730,Molecular Grade (96%) Ethanol
+WOL-49-DRS,Wolverine,4/27/23,SA,,17,2,730,DNA/RNA Shield
+WOL-49-MGE,Wolverine,4/27/23,SA,,17,2,730,Molecular Grade (96%) Ethanol
+IRI-49-DRS,Iris,4/27/23,SA,,17,3,730,DNA/RNA Shield
+IRI-49-MGE,Iris,4/27/23,SA,,17,3,730,Molecular Grade (96%) Ethanol
+GOO-49-DRS,Goose,4/27/23,SA,,17,2,800,DNA/RNA Shield
+GOO-49-MGE,Goose,4/27/23,SA,,17,2,800,Molecular Grade (96%) Ethanol
+LAM-49-DRS,Lambchop,4/27/23,SA,,17,3,800,DNA/RNA Shield
+LAM-49-MGE,Lambchop,4/27/23,SA,,17,3,800,Molecular Grade (96%) Ethanol
+FRA-49-DRS,Franc,4/27/23,SA,,17,3,800,DNA/RNA Shield
+FRA-49-MGE,Franc,4/27/23,SA,,17,3,800,Molecular Grade (96%) Ethanol
+IVY-49-DRS,Ivy,4/27/23,SA,,17,3,800,DNA/RNA Shield
+IVY-49-MGE,Ivy,4/27/23,SA,,17,3,800,Molecular Grade (96%) Ethanol
+CHA-49-DRS,Charles,4/27/23,SA,,17,5,800,DNA/RNA Shield
+CHA-49-MGE,Charles,4/27/23,SA,,17,5,800,Molecular Grade (96%) Ethanol
+GRO-49-DRS,Grogu,4/27/23,SA,,17,3,800,DNA/RNA Shield
+GRO-49-MGE,Grogu,4/27/23,SA,,17,3,800,Molecular Grade (96%) Ethanol
+MAR-49-DRS,Marshmallow,4/27/23,SA,,17,2,800,DNA/RNA Shield
+MAR-49-MGE,Marshmallow,4/27/23,SA,,17,2,800,Molecular Grade (96%) Ethanol
+BUD-49-DRS,Buddy,4/27/23,SA,,17,3,800,DNA/RNA Shield
+BUD-49-MGE,Buddy,4/27/23,SA,,17,3,800,Molecular Grade (96%) Ethanol
+JOA-49-DRS,Joans,4/27/23,SA,,17,2,800,DNA/RNA Shield
+JOA-49-MGE,Joans,4/27/23,SA,,17,2,800,Molecular Grade (96%) Ethanol
+HEN-49-DRS,Henry,4/27/23,SA,,17,3,800,DNA/RNA Shield
+HEN-49-MGE,Henry,4/27/23,SA,,17,3,800,Molecular Grade (96%) Ethanol
+GIN-49-DRS,Ginger,4/27/23,SA,,17,2,800,DNA/RNA Shield
+GIN-49-MGE,Ginger,4/27/23,SA,,17,2,800,Molecular Grade (96%) Ethanol
+HAM-50-DRS,Hamlet,4/28/23,SA/GR,,17,2,730,DNA/RNA Shield
+HAM-50-MGE,Hamlet,4/28/23,SA/GR,,17,2,730,Molecular Grade (96%) Ethanol
+HER-50-DRS,Hera,4/28/23,SA/GR,,17,3,730,DNA/RNA Shield
+HER-50-MGE,Hera,4/28/23,SA/GR,,17,3,730,Molecular Grade (96%) Ethanol
+JAR-50-DRS,JarJar BINKS,4/28/23,SA/GR,,17,3,730,DNA/RNA Shield
+JAR-50-MGE,JarJar BINKS,4/28/23,SA/GR,,17,3,730,Molecular Grade (96%) Ethanol
+OPH-50-DRS,Ophelia,4/28/23,SA/GR,,17,1,730,DNA/RNA Shield
+OPH-50-MGE,Ophelia,4/28/23,SA/GR,,17,1,730,Molecular Grade (96%) Ethanol
+KUB-50-DRS,Kubo,4/28/23,SA/GR,,17,2,730,DNA/RNA Shield
+KUB-50-MGE,Kubo,4/28/23,SA/GR,,17,2,730,Molecular Grade (96%) Ethanol
+KOR-50-DRS,Korra,4/28/23,SA/GR,,17,3,730,DNA/RNA Shield
+KOR-50-MGE,Korra,4/28/23,SA/GR,,17,3,730,Molecular Grade (96%) Ethanol
+WOL-50-DRS,Wolverine,4/28/23,SA/GR,,17,2,730,DNA/RNA Shield
+WOL-50-MGE,Wolverine,4/28/23,SA/GR,,17,2,730,Molecular Grade (96%) Ethanol
+IRI-50-DRS,Iris,4/28/23,SA/GR,,17,3,730,DNA/RNA Shield
+IRI-50-MGE,Iris,4/28/23,SA/GR,,17,3,730,Molecular Grade (96%) Ethanol
+GOO-50-DRS,Goose,4/28/23,SA/GR,,17,2,800,DNA/RNA Shield
+GOO-50-MGE,Goose,4/28/23,SA/GR,,17,2,800,Molecular Grade (96%) Ethanol
+LAM-50-DRS,Lambchop,4/28/23,SA/GR,,17,3,800,DNA/RNA Shield
+LAM-50-MGE,Lambchop,4/28/23,SA/GR,,17,3,800,Molecular Grade (96%) Ethanol
+FRA-50-DRS,Franc,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+FRA-50-MGE,Franc,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+IVY-50-DRS,Ivy,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+IVY-50-MGE,Ivy,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+CHA-50-DRS,Charles,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+CHA-50-MGE,Charles,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+GRO-50-DRS,Grogu,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+GRO-50-MGE,Grogu,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+MAR-50-DRS,Marshmallow,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+MAR-50-MGE,Marshmallow,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+BUD-50-DRS,Buddy,4/28/23,SA/GR,,18,2,800,DNA/RNA Shield
+BUD-50-MGE,Buddy,4/28/23,SA/GR,,18,2,800,Molecular Grade (96%) Ethanol
+JOA-50-DRS,Joans,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+JOA-50-MGE,Joans,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+HEN-50-DRS,Henry,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+HEN-50-MGE,Henry,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+GIN-50-DRS,Ginger,4/28/23,SA/GR,,18,3,800,DNA/RNA Shield
+GIN-50-MGE,Ginger,4/28/23,SA/GR,,18,3,800,Molecular Grade (96%) Ethanol
+GOO-51-DRS,Goose,4/29/23,SA,,18,3,800,DNA/RNA Shield
+GOO-51-MGE,Goose,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+LAM-51-DRS,Lambchop,4/29/23,SA,,18,3,800,DNA/RNA Shield
+LAM-51-MGE,Lambchop,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+FRA-51-DRS,Franc,4/29/23,SA,,18,3,800,DNA/RNA Shield
+FRA-51-MGE,Franc,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+IVY-51-DRS,Ivy,4/29/23,SA,,18,5,800,DNA/RNA Shield
+IVY-51-MGE,Ivy,4/29/23,SA,,18,5,800,Molecular Grade (96%) Ethanol
+CHA-51-DRS,Charles,4/29/23,SA,,18,3,800,DNA/RNA Shield
+CHA-51-MGE,Charles,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+GRO-51-DRS,Grogu,4/29/23,SA,,18,3,800,DNA/RNA Shield
+GRO-51-MGE,Grogu,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+MAR-51-DRS,Marshmallow,4/29/23,SA,,18,3,800,DNA/RNA Shield
+MAR-51-MGE,Marshmallow,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+BUD-51-DRS,Buddy,4/29/23,SA,,18,3,800,DNA/RNA Shield
+BUD-51-MGE,Buddy,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+JOA-51-DRS,Joans,4/29/23,SA,,18,3,800,DNA/RNA Shield
+JOA-51-MGE,Joans,4/29/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+HEN-51-DRS,Henry,4/29/23,SA,,18,4,800,DNA/RNA Shield
+HEN-51-MGE,Henry,4/29/23,SA,,18,4,800,Molecular Grade (96%) Ethanol
+GIN-51-DRS,Ginger,4/29/23,SA,,18,2,800,DNA/RNA Shield
+GIN-51-MGE,Ginger,4/29/23,SA,,18,2,800,Molecular Grade (96%) Ethanol
+HAM-52-DRS,Hamlet,4/30/23,SA,,18,2,730,DNA/RNA Shield
+HAM-52-MGE,Hamlet,4/30/23,SA,,18,2,730,Molecular Grade (96%) Ethanol
+HER-52-DRS,Hera,4/30/23,SA,,18,2,730,DNA/RNA Shield
+HER-52-MGE,Hera,4/30/23,SA,,18,2,730,Molecular Grade (96%) Ethanol
+JAR-52-DRS,JarJar BINKS,4/30/23,SA,,18,2,730,DNA/RNA Shield
+JAR-52-MGE,JarJar BINKS,4/30/23,SA,,18,2,730,Molecular Grade (96%) Ethanol
+OPH-52-DRS,Ophelia,4/30/23,SA,,18,1,730,DNA/RNA Shield
+OPH-52-MGE,Ophelia,4/30/23,SA,,18,1,730,Molecular Grade (96%) Ethanol
+KUB-52-DRS,Kubo,4/30/23,SA,,18,2,730,DNA/RNA Shield
+KUB-52-MGE,Kubo,4/30/23,SA,,18,2,730,Molecular Grade (96%) Ethanol
+KOR-52-DRS,Korra,4/30/23,SA,,18,3,730,DNA/RNA Shield
+KOR-52-MGE,Korra,4/30/23,SA,,18,3,730,Molecular Grade (96%) Ethanol
+WOL-52-DRS,Wolverine,4/30/23,SA,,18,3,730,DNA/RNA Shield
+WOL-52-MGE,Wolverine,4/30/23,SA,,18,3,730,Molecular Grade (96%) Ethanol
+IRI-52-DRS,Iris,4/30/23,SA,,18,2,730,DNA/RNA Shield
+IRI-52-MGE,Iris,4/30/23,SA,,18,2,730,Molecular Grade (96%) Ethanol
+GOO-52-DRS,Goose,4/30/23,SA,,18,3,800,DNA/RNA Shield
+GOO-52-MGE,Goose,4/30/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+LAM-52-DRS,Lambchop,4/30/23,SA,,18,3,800,DNA/RNA Shield
+LAM-52-MGE,Lambchop,4/30/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+FRA-52-DRS,Franc,4/30/23,SA,,18,2,800,DNA/RNA Shield
+FRA-52-MGE,Franc,4/30/23,SA,,18,2,800,Molecular Grade (96%) Ethanol
+IVY-52-DRS,Ivy,4/30/23,SA,,18,3,800,DNA/RNA Shield
+IVY-52-MGE,Ivy,4/30/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+CHA-52-DRS,Charles,4/30/23,SA,,18,3,800,DNA/RNA Shield
+CHA-52-MGE,Charles,4/30/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+GRO-52-DRS,Grogu,4/30/23,SA,,18,3,800,DNA/RNA Shield
+GRO-52-MGE,Grogu,4/30/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+MAR-52-DRS,Marshmallow,4/30/23,SA,,18,3,800,DNA/RNA Shield
+MAR-52-MGE,Marshmallow,4/30/23,SA,,18,3,800,Molecular Grade (96%) Ethanol
+BUD-52-DRS,Buddy,4/30/23,SA,,19,4,800,DNA/RNA Shield
+BUD-52-MGE,Buddy,4/30/23,SA,,19,4,800,Molecular Grade (96%) Ethanol
+JOA-52-DRS,Joans,4/30/23,SA,,19,3,800,DNA/RNA Shield
+JOA-52-MGE,Joans,4/30/23,SA,,19,3,800,Molecular Grade (96%) Ethanol
+HEN-52-DRS,Henry,4/30/23,SA,,19,2,800,DNA/RNA Shield
+HEN-52-MGE,Henry,4/30/23,SA,,19,2,800,Molecular Grade (96%) Ethanol
+GIN-52-DRS,Ginger,4/30/23,SA,,19,2,800,DNA/RNA Shield
+GIN-52-MGE,Ginger,4/30/23,SA,,19,2,800,Molecular Grade (96%) Ethanol
+HAM-53-DRS,Hamlet,5/1/23,SA/GR,,19,2,730,DNA/RNA Shield
+HAM-53-MGE,Hamlet,5/1/23,SA/GR,,19,2,730,Molecular Grade (96%) Ethanol
+HER-53-DRS,Hera,5/1/23,SA/GR,,19,3,730,DNA/RNA Shield
+HER-53-MGE,Hera,5/1/23,SA/GR,,19,3,730,Molecular Grade (96%) Ethanol
+JAR-53-DRS,JarJar BINKS,5/1/23,SA/GR,,19,3,730,DNA/RNA Shield
+JAR-53-MGE,JarJar BINKS,5/1/23,SA/GR,,19,3,730,Molecular Grade (96%) Ethanol
+OPH-53-DRS,Ophelia,5/1/23,SA/GR,,19,1,730,DNA/RNA Shield
+OPH-53-MGE,Ophelia,5/1/23,SA/GR,,19,1,730,Molecular Grade (96%) Ethanol
+KUB-53-DRS,Kubo,5/1/23,SA/GR,,19,2,730,DNA/RNA Shield
+KUB-53-MGE,Kubo,5/1/23,SA/GR,,19,2,730,Molecular Grade (96%) Ethanol
+KOR-53-DRS,Korra,5/1/23,SA/GR,,19,3,730,DNA/RNA Shield
+KOR-53-MGE,Korra,5/1/23,SA/GR,,19,3,730,Molecular Grade (96%) Ethanol
+WOL-53-DRS,Wolverine,5/1/23,SA/GR,,19,2,730,DNA/RNA Shield
+WOL-53-MGE,Wolverine,5/1/23,SA/GR,,19,2,730,Molecular Grade (96%) Ethanol
+IRI-53-DRS,Iris,5/1/23,SA/GR,,19,3,730,DNA/RNA Shield
+IRI-53-MGE,Iris,5/1/23,SA/GR,,19,3,730,Molecular Grade (96%) Ethanol
+GOO-53-DRS,Goose,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+GOO-53-MGE,Goose,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+LAM-53-DRS,Lambchop,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+LAM-53-MGE,Lambchop,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+FRA-53-DRS,Franc,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+FRA-53-MGE,Franc,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+IVY-53-DRS,Ivy,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+IVY-53-MGE,Ivy,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+CHA-53-DRS,Charles,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+CHA-53-MGE,Charles ,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+GRO-53-DRS,Grogu,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+GRO-53-MGE,Grogu,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+MAR-53-DRS,Marshmallow,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+MAR-53-MGE,Marshmallow,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+BUD-53-DRS,Buddy,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+BUD-53-MGE,Buddy,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+JOA-53-DRS,Joans,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+JOA-53-MGE,Joans,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+HEN-53-DRS,Henry,5/1/23,SA/GR,,19,3,800,DNA/RNA Shield
+HEN-53-MGE,Henry,5/1/23,SA/GR,,19,3,800,Molecular Grade (96%) Ethanol
+GIN-53-DRS,Ginger,5/1/23,SA/GR,,19,2,800,DNA/RNA Shield
+GIN-53-MGE,Ginger,5/1/23,SA/GR,,19,2,800,Molecular Grade (96%) Ethanol
+FRA-54-DRS,Franc,5/2/23,SA,,19,3,730,DNA/RNA Shield
+FRA-54-MGE,Franc,5/2/23,SA,,19,3,730,Molecular Grade (96%) Ethanol
+IVY-54-DRS,Ivy,5/2/23,SA,,19,2,730,DNA/RNA Shield
+IVY-54-MGE,Ivy,5/2/23,SA,,19,2,730,Molecular Grade (96%) Ethanol
+CHA-54-DRS,Charles,5/2/23,SA,,19,3,730,DNA/RNA Shield
+CHA-54-MGE,Charles,5/2/23,SA,,19,3,730,Molecular Grade (96%) Ethanol
+GRO-54-DRS,Grogu,5/2/23,SA,,19,3,730,DNA/RNA Shield
+GRO-54-MGE,Grogu,5/2/23,SA,,19,3,730,Molecular Grade (96%) Ethanol
+MAR-54-DRS,Marshmallow,5/2/23,SA,,19,3,730,DNA/RNA Shield
+MAR-54-MGE,Marshmallow,5/2/23,SA,,19,3,730,Molecular Grade (96%) Ethanol
+BUD-54-DRS,Buddy,5/2/23,SA,,19,2,730,DNA/RNA Shield
+BUD-54-MGE,Buddy,5/2/23,SA,,19,2,730,Molecular Grade (96%) Ethanol
+JOA-54-DRS,Joans,5/2/23,SA,,19,3,730,DNA/RNA Shield
+JOA-54-MGE,Joans,5/2/23,SA,,19,3,730,Molecular Grade (96%) Ethanol
+HEN-54-DRS,Henry,5/2/23,SA,,19,3,730,DNA/RNA Shield
+HEN-54-MGE,Henry,5/2/23,SA,,19,3,730,Molecular Grade (96%) Ethanol
+GIN-54-DRS,Ginger,5/2/23,SA,,19,2,730,DNA/RNA Shield
+GIN-54-MGE,Ginger,5/2/23,SA,,19,2,730,Molecular Grade (96%) Ethanol
+HAM-55-DRS,Hamlet,5/3/23,SA/GR,,19,1,730,DNA/RNA Shield
+HAM-55-MGE,Hamlet,5/3/23,SA/GR,,19,1,730,Molecular Grade (96%) Ethanol
+HER-55-DRS,Hera,5/3/23,SA/GR,,20,2,730,DNA/RNA Shield
+HER-55-MGE,Hera,5/3/23,SA/GR,,20,2,730,Molecular Grade (96%) Ethanol
+JAR-55-DRS,JarJar BINKS,5/3/23,SA/GR,,20,2,730,DNA/RNA Shield
+JAR-55-MGE,JarJar BINKS,5/3/23,SA/GR,,20,2,730,Molecular Grade (96%) Ethanol
+OPH-55-DRS,Ophelia,5/3/23,SA/GR,,20,1,730,DNA/RNA Shield
+OPH-55-MGE,Ophelia,5/3/23,SA/GR,,20,1,730,Molecular Grade (96%) Ethanol
+KUB-55-DRS,Kubo,5/3/23,SA/GR,,20,2,730,DNA/RNA Shield
+KUB-55-MGE,Kubo,5/3/23,SA/GR,,20,2,730,Molecular Grade (96%) Ethanol
+KOR-55-DRS,Korra,5/3/23,SA/GR,,20,3,730,DNA/RNA Shield
+KOR-55-MGE,Korra,5/3/23,SA/GR,,20,3,730,Molecular Grade (96%) Ethanol
+WOL-55-DRS,Wolverine,5/3/23,SA/GR,,20,2,730,DNA/RNA Shield
+WOL-55-MGE,Wolverine,5/3/23,SA/GR,,20,2,730,Molecular Grade (96%) Ethanol
+IRI-55-DRS,Iris,5/3/23,SA/GR,,20,3,730,DNA/RNA Shield
+IRI-55-MGE,Iris,5/3/23,SA/GR,,20,3,730,Molecular Grade (96%) Ethanol
+GOO-55-DRS,Goose,5/3/23,SA/GR,,20,2,800,DNA/RNA Shield
+GOO-55-MGE,Goose,5/3/23,SA/GR,,20,2,800,Molecular Grade (96%) Ethanol
+LAM-55-DRS,Lambchop,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+LAM-55-MGE,Lambchop,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+FRA-55-DRS,Franc,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+FRA-55-MGE,Franc,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+IVY-55-DRS,Ivy,5/3/23,SA/GR,,20,4,800,DNA/RNA Shield
+IVY-55-MGE,Ivy,5/3/23,SA/GR,,20,4,800,Molecular Grade (96%) Ethanol
+CHA-55-DRS,Charles,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+CHA-55-MGE,Charles,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+GRO-55-DRS,Grogu,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+GRO-55-MGE,Grogu,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+MAR-55-DRS,Marshmallow,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+MAR-55-MGE,Marshmallow,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+BUD-55-DRS,Buddy,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+BUD-55-MGE,Buddy,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+JOA-55-DRS,Joans,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+JOA-55-MGE,Joans,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+HEN-55-DRS,Henry,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+HEN-55-MGE,Henry,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+GIN-55-DRS,Ginger,5/3/23,SA/GR,,20,3,800,DNA/RNA Shield
+GIN-55-MGE,Ginger,5/3/23,SA/GR,,20,3,800,Molecular Grade (96%) Ethanol
+HAM-56-DRS,Hamlet,5/4/23,SA,,20,2,730,DNA/RNA Shield
+HAM-56-MGE,Hamlet,5/4/23,SA,,20,2,730,Molecular Grade (96%) Ethanol
+HER-56-DRS,Hera,5/4/23,SA,,20,2,730,DNA/RNA Shield
+HER-56-MGE,Hera,5/4/23,SA,,20,2,730,Molecular Grade (96%) Ethanol
+JAR-56-DRS,JarJar BINKS,5/4/23,SA,,20,2,730,DNA/RNA Shield
+JAR-56-MGE,JarJar BINKS,5/4/23,SA,,20,2,730,Molecular Grade (96%) Ethanol
+OPH-56-DRS,Ophelia,5/4/23,SA,,20,2,730,DNA/RNA Shield
+OPH-56-MGE,Ophelia,5/4/23,SA,,20,2,730,Molecular Grade (96%) Ethanol
+KUB-56-DRS,Kubo,5/4/23,SA,,20,2,730,DNA/RNA Shield
+KUB-56-MGE,Kubo,5/4/23,SA,,20,2,730,Molecular Grade (96%) Ethanol
+KOR-56-DRS,Korra,5/4/23,SA,,20,3,730,DNA/RNA Shield
+KOR-56-MGE,Korra,5/4/23,SA,,20,3,730,Molecular Grade (96%) Ethanol
+WOL-56-DRS,Wolverine,5/4/23,SA,,20,2,730,DNA/RNA Shield
+WOL-56-MGE,Wolverine,5/4/23,SA,,20,2,730,Molecular Grade (96%) Ethanol
+IRI-56-DRS,Iris,5/4/23,SA,,20,3,730,DNA/RNA Shield
+IRI-56-MGE,Iris,5/4/23,SA,,20,3,730,Molecular Grade (96%) Ethanol
+GOO-56-DRS,Goose,5/4/23,SA,,20,4,800,DNA/RNA Shield
+GOO-56-MGE,Goose,5/4/23,SA,,20,4,800,Molecular Grade (96%) Ethanol
+LAM-56-DRS,Lambchop,5/4/23,SA,,20,3,800,DNA/RNA Shield
+LAM-56-MGE,Lambchop,5/4/23,SA,,20,3,800,Molecular Grade (96%) Ethanol
+FRA-56-DRS,Franc,5/4/23,SA,,20,2,800,DNA/RNA Shield
+FRA-56-MGE,Franc,5/4/23,SA,,20,2,800,Molecular Grade (96%) Ethanol
+IVY-56-DRS,Ivy,5/4/23,SA,,20,3,800,DNA/RNA Shield
+IVY-56-MGE,Ivy,5/4/23,SA,,20,3,800,Molecular Grade (96%) Ethanol
+CHA-56-DRS,Charles,5/4/23,SA,,20,3,800,DNA/RNA Shield
+CHA-56-MGE,Charles,5/4/23,SA,,20,3,800,Molecular Grade (96%) Ethanol
+GRO-56-DRS,Grogu,5/4/23,SA,,20,3,800,DNA/RNA Shield
+GRO-56-MGE,Grogu,5/4/23,SA,,20,3,800,Molecular Grade (96%) Ethanol
+MAR-56-DRS,Marshmallow,5/4/23,SA,,20,3,800,DNA/RNA Shield
+MAR-56-MGE,Marshmallow,5/4/23,SA,,20,3,800,Molecular Grade (96%) Ethanol
+BUD-56-DRS,Buddy,5/4/23,SA,,21,3,800,DNA/RNA Shield
+BUD-56-MGE,Buddy,5/4/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+JOA-56-DRS,Joans,5/4/23,SA,,21,2,800,DNA/RNA Shield
+JOA-56-MGE,Joans,5/4/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+HEN-56-DRS,Henry,5/4/23,SA,,21,4,800,DNA/RNA Shield
+HEN-56-MGE,Henry,5/4/23,SA,,21,4,800,Molecular Grade (96%) Ethanol
+GIN-56-DRS,Ginger,5/4/23,SA,,21,3,800,DNA/RNA Shield
+GIN-56-MGE,Ginger,5/4/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+HAM-57-DRS,Hamlet,5/5/23,SA,,21,2,730,DNA/RNA Shield
+HAM-57-MGE,Hamlet,5/5/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+HER-57-DRS,Hera,5/5/23,SA,,21,2,730,DNA/RNA Shield
+HER-57-MGE,Hera,5/5/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+JAR-57-DRS,JarJar BINKS,5/5/23,SA,,21,2,730,DNA/RNA Shield
+JAR-57-MGE,JarJar BINKS,5/5/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+OPH-57-DRS,Ophelia,5/5/23,SA,,21,2,730,DNA/RNA Shield
+OPH-57-MGE,Ophelia,5/5/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+KUB-57-DRS,Kubo,5/5/23,SA,,21,2,730,DNA/RNA Shield
+KUB-58-MGE,Kubo,5/5/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+KOR-57-DRS,Korra,5/5/23,SA,,21,3,730,DNA/RNA Shield
+KOR-57-MGE,Korra,5/5/23,SA,,21,3,730,Molecular Grade (96%) Ethanol
+WOL-57-DRS,Wolverine,5/5/23,SA,,21,2,730,DNA/RNA Shield
+WOL-57-MGE,Wolverine,5/5/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+IRI-57-DRS,Iris,5/5/23,SA,,21,3,730,DNA/RNA Shield
+IRI-57-MGE,Iris,5/5/23,SA,,21,3,730,Molecular Grade (96%) Ethanol
+GOO-57-DRS,Goose,5/5/23,SA,,21,3,800,DNA/RNA Shield
+GOO-57-MGE,Goose,5/5/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+LAM-57-DRS,Lambchop,5/5/23,SA,,21,3,800,DNA/RNA Shield
+LAM-57-MGE,Lambchop,5/5/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+FRA-57-DRS,Franc,5/5/23,SA,,21,2,800,DNA/RNA Shield
+FRA-57-MGE,Franc,5/5/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+IVY-57-DRS,Ivy,5/5/23,SA,,21,3,800,DNA/RNA Shield
+IVY-57-MGE,Ivy,5/5/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+CHA-57-DRS,Charles,5/5/23,SA,,21,3,800,DNA/RNA Shield
+CHA-57-MGE,Charles,5/5/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+GRO-57-DRS,Grogu,5/5/23,SA,,21,3,800,DNA/RNA Shield
+GRO-57-MGE,Grogu,5/5/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+MAR-57-DRS,Marshmallow,5/5/23,SA,,21,2,800,DNA/RNA Shield
+MAR-57-MGE,Marshmallow,5/5/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+BUD-57-DRS,Buddy,5/5/23,SA,,21,3,800,DNA/RNA Shield
+BUD-57-MGE,Buddy,5/5/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+JOA-57-DRS,Joans,5/5/23,SA,,21,2,800,DNA/RNA Shield
+JOA-57-MGE,Joans,5/5/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+HEN-57-DRS,Henry,5/5/23,SA,,21,6,800,DNA/RNA Shield
+HEN-57-MGE,Henry,5/5/23,SA,,21,6,800,Molecular Grade (96%) Ethanol
+GIN-57-DRS,Ginger,5/5/23,SA,,21,2,800,DNA/RNA Shield
+GIN-57-MGE,Ginger,5/5/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+HAM-58-DRS,Hamlet,5/6/23,SA,,21,2,730,DNA/RNA Shield
+HAM-58-MGE,Hamlet,5/6/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+HER-58-DRS,Hera,5/6/23,SA,,21,2,730,DNA/RNA Shield
+HER-58-MGE,Hera,5/6/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+JAR-58-DRS,JarJar BINKS,5/6/23,SA,,21,3,730,DNA/RNA Shield
+JAR-58-MGE,JarJar BINKS,5/6/23,SA,,21,3,730,Molecular Grade (96%) Ethanol
+OPH-58-DRS,Ophelia,5/6/23,SA,,21,2,730,DNA/RNA Shield
+OPH-58-MGE,Ophelia,5/6/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+KUB-58-DRS,Kubo,5/6/23,SA,,21,2,730,DNA/RNA Shield
+KUB-58-MGE,Kubo,5/6/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+KOR-58-DRS,Korra,5/6/23,SA,,21,3,730,DNA/RNA Shield
+KOR-58-MGE,Korra,5/6/23,SA,,21,3,730,Molecular Grade (96%) Ethanol
+WOL-58-DRS,Wolverine,5/6/23,SA,,21,2,730,DNA/RNA Shield
+WOL-58-MGE,Wolverine,5/6/23,SA,,21,2,730,Molecular Grade (96%) Ethanol
+IRI-58-DRS,Iris,5/6/23,SA,,21,3,730,DNA/RNA Shield
+IRI-58-MGE,Iris,5/6/23,SA,,21,3,730,Molecular Grade (96%) Ethanol
+GOO-58-DRS,Goose,5/6/23,SA,,21,3,800,DNA/RNA Shield
+GOO-58-MGE,Goose,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+LAM-58-DRS,Lambchop,5/6/23,SA,,21,3,800,DNA/RNA Shield
+LAM-58-MGE,Lambchop,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+FRA-58-DRS,Franc,5/6/23,SA,,21,2,800,DNA/RNA Shield
+FRA-58-MGE,Franc,5/6/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+IVY-58-DRS,Ivy,5/6/23,SA,,21,3,800,DNA/RNA Shield
+IVY-58-MGE,Ivy,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+CHA-58-DRS,Charles,5/6/23,SA,,21,3,800,DNA/RNA Shield
+CHA-58-MGE,Charles,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+GRO-58-DRS,Grogu,5/6/23,SA,,21,3,800,DNA/RNA Shield
+GRO-58-MGE,Grogu,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+MAR-58-DRS,Marshmallow,5/6/23,SA,,21,2,800,DNA/RNA Shield
+MAR-58-MGE,Marshmallow,5/6/23,SA,,21,2,800,Molecular Grade (96%) Ethanol
+BUD-58-DRS,Buddy,5/6/23,SA,,21,3,800,DNA/RNA Shield
+BUD-58-MGE,Buddy,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+JOA-58-DRS,Joans,5/6/23,SA,,21,3,800,DNA/RNA Shield
+JOA-58-MGE,Joans,5/6/23,SA,,21,3,800,Molecular Grade (96%) Ethanol
+HEN-58-DRS,Henry,5/6/23,SA,,21,4,800,DNA/RNA Shield
+HEN-58-MGE,Henry,5/6/23,SA,,22,4,800,Molecular Grade (96%) Ethanol
+GIN-58-DRS,Ginger,5/6/23,SA,,22,3,800,DNA/RNA Shield
+GIN-58-MGE,Ginger,5/6/23,SA,,22,3,800,Molecular Grade (96%) Ethanol
+HAM-59-DRS,Hamlet,5/7/23,SA,,22,2,730,DNA/RNA Shield
+HAM-59-MGE,Hamlet,5/7/23,SA,,22,2,730,Molecular Grade (96%) Ethanol
+HER-59-DRS,Hera,5/7/23,SA,,22,2,730,DNA/RNA Shield
+HER-59-MGE,Hera,5/7/23,SA,,22,2,730,Molecular Grade (96%) Ethanol
+JAR-59-DRS,JarJar BINKS,5/7/23,SA,,22,3,730,DNA/RNA Shield
+JAR-59-MGE,JarJar BINKS,5/7/23,SA,,22,3,730,Molecular Grade (96%) Ethanol
+OPH-59-DRS,Ophelia,5/7/23,SA,,22,3,730,DNA/RNA Shield
+OPH-59-MGE,Ophelia,5/7/23,SA,,22,3,730,Molecular Grade (96%) Ethanol
+KUB-59-DRS,Kubo,5/7/23,SA,,22,2,730,DNA/RNA Shield
+KUB-59-MGE,Kubo,5/7/23,SA,,22,2,730,Molecular Grade (96%) Ethanol
+KOR-59-DRS,Korra,5/7/23,SA,,22,3,730,DNA/RNA Shield
+KOR-59-MGE,Korra,5/7/23,SA,,22,3,730,Molecular Grade (96%) Ethanol
+WOL-59-DRS,Wolverine,5/7/23,SA,,22,2,730,DNA/RNA Shield
+WOL-59-MGE,Wolverine,5/7/23,SA,,22,2,730,Molecular Grade (96%) Ethanol
+IRI-59-DRS,Iris,5/7/23,SA,,22,3,730,DNA/RNA Shield
+IRI-59-MGE,Iris,5/7/23,SA,,22,3,730,Molecular Grade (96%) Ethanol
+GOO-59-DRS,Goose,5/7/23,SA,,22,2,800,DNA/RNA Shield
+GOO-59-MGE,Goose,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+LAM-59-DRS,Lambchop,5/7/23,SA,,22,3,800,DNA/RNA Shield
+LAM-59-MGE,Lambchop,5/7/23,SA,,22,3,800,Molecular Grade (96%) Ethanol
+FRA-59-DRS,Franc,5/7/23,SA,,22,3,800,DNA/RNA Shield
+FRA-59-MGE,Franc,5/7/23,SA,,22,3,800,Molecular Grade (96%) Ethanol
+IVY-59-DRS,Ivy,5/7/23,SA,,22,2,800,DNA/RNA Shield
+IVY-59-MGE,Ivy,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+CHA-59-DRS,Charles,5/7/23,SA,,22,2,800,DNA/RNA Shield
+CHA-59-MGE,Charles,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+GRO-59-DRS,Grogu,5/7/23,SA,,22,2,800,DNA/RNA Shield
+GRO-59-MGE,Grogu,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+MAR-59-DRS,Marshmallow,5/7/23,SA,,22,2,800,DNA/RNA Shield
+MAR-59-MGE,Marshmallow,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+BUD-59-DRS,Buddy,5/7/23,SA,,22,2,800,DNA/RNA Shield
+BUD-59-MGE,Buddy,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+JOA-59-DRS,Joans,5/7/23,SA,,22,2,800,DNA/RNA Shield
+JOA-59-MGE,Joans,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+HEN-59-DRS,Henry,5/7/23,SA,,22,2,800,DNA/RNA Shield
+HEN-59-MGE,Henry,5/7/23,SA,,22,2,800,Molecular Grade (96%) Ethanol
+GIN-59-DRS,Ginger,5/7/23,SA,,22,3,800,DNA/RNA Shield
+GIN-59-MGE,Ginger,5/7/23,SA,,22,3,800,Molecular Grade (96%) Ethanol
+HAM-60-DRS,Hamlet,5/8/23,SA/GR,,22,2,730,DNA/RNA Shield
+HAM-60-MGE,Hamlet,5/8/23,SA/GR,,22,2,730,Molecular Grade (96%) Ethanol
+HER-60-DRS,Hera,5/8/23,SA/GR,,22,2,730,DNA/RNA Shield
+HER-60-MGE,Hera,5/8/23,SA/GR,,22,2,730,Molecular Grade (96%) Ethanol
+JAR-60-DRS,JarJar BINKS,5/8/23,SA/GR,,22,2,730,DNA/RNA Shield
+JAR-60-MGE,JarJar BINKS,5/8/23,SA/GR,,22,2,730,Molecular Grade (96%) Ethanol
+OPH-60-DRS,Ophelia,5/8/23,SA/GR,,22,2,730,DNA/RNA Shield
+OPH-60-MGE,Ophelia,5/8/23,SA/GR,,22,2,730,Molecular Grade (96%) Ethanol
+KUB-60-DRS,Kubo,5/8/23,SA/GR,,22,2,730,DNA/RNA Shield
+KUB-60-MGE,Kubo,5/8/23,SA/GR,,22,2,730,Molecular Grade (96%) Ethanol
+KOR-60-DRS,Korra,5/8/23,SA/GR,,22,3,730,DNA/RNA Shield
+KOR-60-MGE,Korra,5/8/23,SA/GR,,22,3,730,Molecular Grade (96%) Ethanol
+WOL-60-DRS,Wolverine,5/8/23,SA/GR,,22,2,730,DNA/RNA Shield
+WOL-60-MGE,Wolverine,5/8/23,SA/GR,,22,2,730,Molecular Grade (96%) Ethanol
+IRI-60-DRS,Iris,5/8/23,SA/GR,,22,3,730,DNA/RNA Shield
+IRI-60-MGE,Iris,5/8/23,SA/GR,,22,3,730,Molecular Grade (96%) Ethanol
+GOO-60-DRS,Goose,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+GOO-60-MGE,Goose,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+LAM-60-DRS,Lambchop,5/8/23,SA/GR,,22,3,800,DNA/RNA Shield
+LAM-60-MGE,Lambchop,5/8/23,SA/GR,,22,3,800,Molecular Grade (96%) Ethanol
+FRA-60-DRS,Franc,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+FRA-60-MGE,Franc,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+IVY-60-DRS,Ivy,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+IVY-60-MGE,Ivy,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+CHA-60-DRS,Charles,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+CHA-60-MGE,Charles,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+GRO-60-DRS,Grogu,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+GRO-60-MGE,Grogu,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+MAR-60-DRS,Marshmallow,5/8/23,SA/GR,,22,3,800,DNA/RNA Shield
+MAR-60-MGE,Marshmallow,5/8/23,SA/GR,,22,3,800,Molecular Grade (96%) Ethanol
+BUD-60-DRS,Buddy,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+BUD-60-MGE,Buddy,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+JOA-60-DRS,Joans,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+JOA-60-MGE,Joans,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+HEN-60-DRS,Henry,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+HEN-60-MGE,Henry,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+GIN-60-DRS,Ginger,5/8/23,SA/GR,,22,2,800,DNA/RNA Shield
+GIN-60-MGE,Ginger,5/8/23,SA/GR,,22,2,800,Molecular Grade (96%) Ethanol
+HAM-61-DRS,Hamlet,5/9/23,SA,,22,2,730,DNA/RNA Shield
+HAM-61-MGE,Hamlet,5/9/23,SA,,22,2,730,Molecular Grade (95%) Ethanol
+HER-61-DRS,Hera,5/9/23,SA,,23,2,730,DNA/RNA Shield
+HER-61-MGE,Hera,5/9/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+JAR-61-DRS,JarJar BINKS,5/9/23,SA,,23,3,730,DNA/RNA Shield
+JAR-61-MGE,JarJar BINKS,5/9/23,SA,,23,3,730,Molecular Grade (95%) Ethanol
+OPH-61-DRS,Ophelia,5/9/23,SA,,23,2,730,DNA/RNA Shield
+OPH-61-MGE,Ophelia,5/9/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+KUB-61-DRS,Kubo,5/9/23,SA,,23,3,730,DNA/RNA Shield
+KUB-61-MGE,Kubo,5/9/23,SA,,23,3,730,Molecular Grade (95%) Ethanol
+KOR-61-DRS,Korra,5/9/23,SA,,23,3,730,DNA/RNA Shield
+KOR-61-MGE,Korra,5/9/23,SA,,23,3,730,Molecular Grade (95%) Ethanol
+WOL-61-DRS,Wolverine,5/9/23,SA,,23,2,730,DNA/RNA Shield
+WOL-61-MGE,Wolverine,5/9/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+IRI-61-DRS,Iris,5/9/23,SA,,23,3,730,DNA/RNA Shield
+IRI-61-MGE,Iris,5/9/23,SA,,23,3,730,Molecular Grade (95%) Ethanol
+GOO-61-DRS,Goose,5/9/23,SA,,23,2,800,DNA/RNA Shield
+GOO-61-MGE,Goose,5/9/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+LAM-61-DRS,Lambchop,5/9/23,SA,,23,3,800,DNA/RNA Shield
+LAM-61-MGE,Lambchop,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+FRA-61-DRS,Franc,5/9/23,SA,,23,2,800,DNA/RNA Shield
+FRA-61-MGE,Franc,5/9/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+IVY-61-DRS,Ivy,5/9/23,SA,,23,3,800,DNA/RNA Shield
+IVY-61-MGE,Ivy,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+CHA-61-DRS,Charles,5/9/23,SA,,23,2,800,DNA/RNA Shield
+CHA-61-MGE,Charles,5/9/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+GRO-61-DRS,Grogu,5/9/23,SA,,23,4,800,DNA/RNA Shield
+GRO-61-MGE,Grogu,5/9/23,SA,,23,4,800,Molecular Grade (95%) Ethanol
+MAR-61-DRS,Marshmallow,5/9/23,SA,,23,3,800,DNA/RNA Shield
+MAR-61-MGE,Marshmallow,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+BUD-61-DRS,Buddy,5/9/23,SA,,23,3,800,DNA/RNA Shield
+BUD-61-MGE,Buddy,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+JOA-61-DRS,Joans,5/9/23,SA,,23,3,800,DNA/RNA Shield
+JOA-61-MGE,Joans,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+HEN-61-DRS,Henry,5/9/23,SA,,23,3,800,DNA/RNA Shield
+HEN-61-MGE,Henry,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+GIN-61-DRS,Ginger,5/9/23,SA,,23,3,800,DNA/RNA Shield
+GIN-61-MGE,Ginger,5/9/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+HAM-62-DRS,Hamlet,5/10/23,SA,,23,2,730,DNA/RNA Shield
+HAM-62-MGE,Hamlet,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+HER-62-DRS,Hera,5/10/23,SA,,23,2,730,DNA/RNA Shield
+HER-62-MGE,Hera,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+JAR-62-DRS,JarJar BINKS,5/10/23,SA,,23,2,730,DNA/RNA Shield
+JAR-62-MGE,JarJar BINKS,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+OPH-62-DRS,Ophelia,5/10/23,SA,,23,2,730,DNA/RNA Shield
+OPH-62-MGE,Ophelia,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+KUB-62-DRS,Kubo,5/10/23,SA,,23,2,730,DNA/RNA Shield
+KUB-62-MGE,Kubo,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+KOR-62-DRS,Korra,5/10/23,SA,,23,3,730,DNA/RNA Shield
+KOR-62-MGE,Korra,5/10/23,SA,,23,3,730,Molecular Grade (95%) Ethanol
+WOL-62-DRS,Wolverine,5/10/23,SA,,23,2,730,DNA/RNA Shield
+WOL-62-MGE,Wolverine,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+IRI-62-DRS,Iris,5/10/23,SA,,23,2,730,DNA/RNA Shield
+IRI-62-MGE,Iris,5/10/23,SA,,23,2,730,Molecular Grade (95%) Ethanol
+GOO-62-DRS,Goose,5/10/23,SA,,23,3,800,DNA/RNA Shield
+GOO-62-MGE,Goose,5/10/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+LAM-62-DRS,Lambchop,5/10/23,SA,,23,3,800,DNA/RNA Shield
+LAM-62-MGE,Lambchop,5/10/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+FRA-62-DRS,Franc,5/10/23,SA,,23,3,800,DNA/RNA Shield
+FRA-62-MGE,Franc,5/10/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+IVY-62-DRS,Ivy,5/10/23,SA,,23,4,800,DNA/RNA Shield
+IVY-62-MGE,Ivy,5/10/23,SA,,23,4,800,Molecular Grade (95%) Ethanol
+CHA-62-DRS,Charles,5/10/23,SA,,23,2,800,DNA/RNA Shield
+CHA-62-MGE,Charles,5/10/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+GRO-62-DRS,Grogu,5/10/23,SA,,23,2,800,DNA/RNA Shield
+GRO-62-MGE,Grogu,5/10/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+MAR-62-DRS,Marshmallow,5/10/23,SA,,23,3,800,DNA/RNA Shield
+MAR-62-MGE,Marshmallow,5/10/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+BUD-62-DRS,Buddy,5/10/23,SA,,23,2,800,DNA/RNA Shield
+BUD-62-MGE,Buddy,5/10/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+JOA-62-DRS,Joans,5/10/23,SA,,23,3,800,DNA/RNA Shield
+JOA-62-MGE,Joans,5/10/23,SA,,23,3,800,Molecular Grade (95%) Ethanol
+HEN-62-DRS,Henry,5/10/23,SA,,23,4,800,DNA/RNA Shield
+HEN-62-MGE,Henry,5/10/23,SA,,23,4,800,Molecular Grade (95%) Ethanol
+GIN-62-DRS,Ginger,5/10/23,SA,,23,2,800,DNA/RNA Shield
+GIN-62-MGE,Ginger,5/10/23,SA,,23,2,800,Molecular Grade (95%) Ethanol
+HAM-63-DRS,Hamlet,5/11/23,SA,,23,2,830,DNA/RNA Shield
+HAM-63-MGE,Hamlet,5/11/23,SA,,23,2,830,Molecular Grade (95%) Ethanol
+HER-63-DRS,Hera,5/11/23,SA,,23,3,830,DNA/RNA Shield
+HER-63-MGE,Hera,5/11/23,SA,,23,3,830,Molecular Grade (95%) Ethanol
+JAR-63-DRS,JarJar BINKS,5/11/23,SA,,23,3,830,DNA/RNA Shield
+JAR-63-MGE,JarJar BINKS,5/11/23,SA,,23,3,830,Molecular Grade (95%) Ethanol
+OPH-63-DRS,Ophelia,5/11/23,SA,,23,2,830,DNA/RNA Shield
+OPH-63-MGE,Ophelia,5/11/23,SA,,24,2,830,Molecular Grade (95%) Ethanol
+KUB-63-DRS,Kubo,5/11/23,SA,,24,2,830,DNA/RNA Shield
+KUB-63-MGE,Kubo,5/11/23,SA,,24,2,830,Molecular Grade (95%) Ethanol
+KOR-63-DRS,Korra,5/11/23,SA,,24,3,830,DNA/RNA Shield
+KOR-63-MGE,Korra,5/11/23,SA,,24,3,830,Molecular Grade (95%) Ethanol
+WOL-63-DRS,Wolverine,5/11/23,SA,,24,2,830,DNA/RNA Shield
+WOL-63-MGE,Wolverine,5/11/23,SA,,24,2,830,Molecular Grade (95%) Ethanol
+IRI-63-DRS,Iris,5/11/23,SA,,24,2,830,DNA/RNA Shield
+IRI-63-MGE,Iris,5/11/23,SA,,24,2,830,Molecular Grade (95%) Ethanol
+HAM-64-DRS,Hamlet,5/12/23,SA/GR,,24,2,800,DNA/RNA Shield
+HAM-64-MGE,Hamlet,5/12/23,SA/GR,,24,2,800,Molecular Grade (95%) Ethanol
+HER-64-DRS,Hera,5/12/23,SA/GR,,24,3,800,DNA/RNA Shield
+HER-64-MGE,Hera,5/12/23,SA/GR,,24,3,800,Molecular Grade (95%) Ethanol
+JAR-64-DRS,JarJar BINKS,5/12/23,SA/GR,,24,2,800,DNA/RNA Shield
+JAR-64-MGE,JarJar BINKS,5/12/23,SA/GR,,24,2,800,Molecular Grade (95%) Ethanol
+OPH-64-DRS,Ophelia,5/12/23,SA/GR,,24,2,800,DNA/RNA Shield
+OPH-64-MGE,Ophelia,5/12/23,SA/GR,,24,2,800,Molecular Grade (95%) Ethanol
+KUB-64-DRS,Kubo,5/12/23,SA/GR,,24,3,800,DNA/RNA Shield
+KUB-64-MGE,Kubo,5/12/23,SA/GR,,24,3,800,Molecular Grade (95%) Ethanol
+KOR-64-DRS,Korra,5/12/23,SA/GR,,24,3,800,DNA/RNA Shield
+KOR-64-MGE,Korra,5/12/23,SA/GR,,24,3,800,Molecular Grade (95%) Ethanol
+WOL-64-DRS,Wolverine,5/12/23,SA/GR,,24,2,800,DNA/RNA Shield
+WOL-64-MGE,Wolverine,5/12/23,SA/GR,,24,2,800,Molecular Grade (95%) Ethanol
+IRI-64-DRS,Iris,5/12/23,SA/GR,,24,3,800,DNA/RNA Shield
+IRI-64-MGE,Iris,5/12/23,SA/GR,,24,3,800,Molecular Grade (95%) Ethanol
+GOO-64-DRS,Goose,5/12/23,SA/GR,,24,3,730,DNA/RNA Shield
+GOO-64-MGE,Goose,5/12/23,SA/GR,,24,3,730,Molecular Grade (95%) Ethanol
+LAM-64-DRS,Lambchop,5/12/23,SA/GR,,24,3,730,DNA/RNA Shield
+LAM-64-MGE,Lambchop,5/12/23,SA/GR,,24,3,730,Molecular Grade (95%) Ethanol
+FRA-64-DRS,Franc,5/12/23,SA/GR,,24,2,730,DNA/RNA Shield
+FRA-64-MGE,Franc,5/12/23,SA/GR,,24,2,730,Molecular Grade (95%) Ethanol
+IVY-64-DRS,Ivy,5/12/23,SA/GR,,24,3,730,DNA/RNA Shield
+IVY-64-MGE,Ivy,5/12/23,SA/GR,,24,3,730,Molecular Grade (95%) Ethanol
+CHA-64-DRS,Charles,5/12/23,SA/GR,,24,3,730,DNA/RNA Shield
+CHA-64-MGE,Charles,5/12/23,SA/GR,,24,3,730,Molecular Grade (95%) Ethanol
+GRO-64-DRS,Grogu,5/12/23,SA/GR,,24,3,730,DNA/RNA Shield
+GRO-64-MGE,Grogu,5/12/23,SA/GR,,24,3,730,Molecular Grade (95%) Ethanol
+MAR-64-DRS,Marshmallow,5/12/23,SA/GR,,24,3,730,DNA/RNA Shield
+MAR-64-MGE,Marshmallow,5/12/23,SA/GR,,24,3,730,Molecular Grade (95%) Ethanol
+HEN-64-DRS,Henry,5/12/23,SA/GR,,24,2,730,DNA/RNA Shield
+HEN-64-MGE,Henry,5/12/23,SA/GR,,24,2,730,Molecular Grade (95%) Ethanol
+GIN-64-DRS,Ginger,5/12/23,SA/GR,,24,2,730,DNA/RNA Shield
+GIN-64-MGE,Ginger,5/12/23,SA/GR,,24,2,730,Molecular Grade (95%) Ethanol
+HAM-65-DRS,Hamlet,5/13/23,SA,,24,2,800,DNA/RNA Shield
+HAM-65-MGE,Hamlet,5/13/23,SA,,24,2,800,Molecular Grade (95%) Ethanol
+HER-65-DRS,Hera,5/13/23,SA,,24,2,800,DNA/RNA Shield
+HER-65-MGE,Hera,5/13/23,SA,,24,2,800,Molecular Grade (95%) Ethanol
+JAR-65-DRS,JarJar BINKS,5/13/23,SA,,24,3,800,DNA/RNA Shield
+JAR-65-MGE,JarJar BINKS,5/13/23,SA,,24,3,800,Molecular Grade (95%) Ethanol
+OPH-65-DRS,Ophelia,5/13/23,SA,,24,2,800,DNA/RNA Shield
+OPH-65-MGE,Ophelia,5/13/23,SA,,24,2,800,Molecular Grade (95%) Ethanol
+KUB-65-DRS,Kubo,5/13/23,SA,,24,2,800,DNA/RNA Shield
+KUB-65-MGE,Kubo,5/13/23,SA,,24,2,800,Molecular Grade (95%) Ethanol
+KOR-65-DRS,Korra,5/13/23,SA,,24,3,800,DNA/RNA Shield
+KOR-65-MGE,Korra,5/13/23,SA,,24,3,800,Molecular Grade (95%) Ethanol
+WOL-65-DRS,Wolverine,5/13/23,SA,,24,3,800,DNA/RNA Shield
+WOL-65-MGE,Wolverine,5/13/23,SA,,24,3,800,Molecular Grade (95%) Ethanol
+IRI-65-DRS,Iris,5/13/23,SA,,24,3,800,DNA/RNA Shield
+IRI-65-MGE,Iris,5/13/23,SA,,24,3,800,Molecular Grade (95%) Ethanol
+GOO-65-DRS,Goose,5/13/23,SA,,24,2,730,DNA/RNA Shield
+GOO-65-MGE,Goose,5/13/23,SA,,24,2,730,Molecular Grade (95%) Ethanol
+LAM-65-DRS,Lambchop,5/13/23,SA,,24,3,730,DNA/RNA Shield
+LAM-65-MGE,Lambchop,5/13/23,SA,,24,3,730,Molecular Grade (95%) Ethanol
+FRA-65-DRS,Franc,5/13/23,SA,,24,2,730,DNA/RNA Shield
+FRA-65-MGE,Franc,5/13/23,SA,,24,2,730,Molecular Grade (95%) Ethanol
+IVY-65-DRS,Ivy,5/13/23,SA,,24,3,730,DNA/RNA Shield
+IVY-65-MGE,Ivy,5/13/23,SA,,24,3,730,Molecular Grade (95%) Ethanol
+GRO-65-DRS,Grogu,5/13/23,SA,,24,2,730,DNA/RNA Shield
+GRO-65-MGE,Grogu,5/13/23,SA,,24,2,730,Molecular Grade (95%) Ethanol
+MAR-65-DRS,Marshmallow,5/13/23,SA,,24,4,730,DNA/RNA Shield
+MAR-65-MGE,Marshmallow,5/13/23,SA,,24,4,730,Molecular Grade (95%) Ethanol
+BUD-65-DRS,Buddy,5/13/23,SA,,24,3,730,DNA/RNA Shield
+BUD-65-MGE,Buddy,5/13/23,SA,,24,3,730,Molecular Grade (95%) Ethanol
+JOA-65-DRS,Joans,5/13/23,SA,,24,3,730,DNA/RNA Shield
+JOA-65-MGE,Joans,5/13/23,SA,,24,3,730,Molecular Grade (95%) Ethanol
+HEN-65-DRS,Henry,5/13/23,SA,,24,2,730,DNA/RNA Shield
+HEN-65-MGE,Henry,5/13/23,SA,,24,2,730,Molecular Grade (95%) Ethanol
+GIN-65-DRS,Ginger,5/13/23,SA,,24,2,730,DNA/RNA Shield
+GIN-65-MGE,Ginger,5/13/23,SA,,24,2,730,Molecular Grade (95%) Ethanol
+HAM-66-DRS,Hamlet,5/14/23,SA,,24,1,730,DNA/RNA Shield
+HAM-66-MGE,Hamlet,5/14/23,SA,,24,1,730,Molecular Grade (95%) Ethanol
+HER-66-DRS,Hera,5/14/23,SA,,25,2,730,DNA/RNA Shield
+HER-66-MGE,Hera,5/14/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+JAR-66-DRS,JarJar BINKS,5/14/23,SA,,25,3,730,DNA/RNA Shield
+JAR-66-MGE,JarJar BINKS,5/14/23,SA,,25,3,730,Molecular Grade (95%) Ethanol
+OPH-66-DRS,Ophelia,5/14/23,SA,,25,2,730,DNA/RNA Shield
+OPH-66-MGE,Ophelia,5/14/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+KUB-66-DRS,Kubo,5/14/23,SA,,25,2,730,DNA/RNA Shield
+KUB-66-MGE,Kubo,5/14/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+KOR-66-DRS,Korra,5/14/23,SA,,25,3,730,DNA/RNA Shield
+KOR-66-MGE,Korra,5/14/23,SA,,25,3,730,Molecular Grade (95%) Ethanol
+WOL-66-DRS,Wolverine,5/14/23,SA,,25,2,730,DNA/RNA Shield
+WOL-66-MGE,Wolverine,5/14/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+IRI-66-DRS,Iris,5/14/23,SA,,25,2,730,DNA/RNA Shield
+IRI-66-MGE,Iris,5/14/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+GOO-66-DRS,Goose,5/14/23,SA,,25,3,800,DNA/RNA Shield
+GOO-66-MGE,Goose,5/14/23,SA,,25,3,800,Molecular Grade (95%) Ethanol
+LAM-66-DRS,Lambchop,5/14/23,SA,,25,3,800,DNA/RNA Shield
+LAM-66-MGE,Lambchop,5/14/23,SA,,25,3,800,Molecular Grade (95%) Ethanol
+FRA-66-DRS,Franc,5/14/23,SA,,25,2,800,DNA/RNA Shield
+FRA-66-MGE,Franc,5/14/23,SA,,25,2,800,Molecular Grade (95%) Ethanol
+IVY-66-DRS,Ivy,5/14/23,SA,,25,3,800,DNA/RNA Shield
+IVY-66-MGE,Ivy,5/14/23,SA,,25,3,800,Molecular Grade (95%) Ethanol
+CHA-66-DRS,Charles,5/14/23,SA,,25,2,800,DNA/RNA Shield
+CHA-66-MGE,Charles,5/14/23,SA,,25,2,800,Molecular Grade (95%) Ethanol
+GRO-66-DRS,Grogu,5/14/23,SA,,25,2,800,DNA/RNA Shield
+GRO-66-MGE,Grogu,5/14/23,SA,,25,2,800,Molecular Grade (95%) Ethanol
+MAR-66-DRS,Marshmallow,5/14/23,SA,,25,3,800,DNA/RNA Shield
+MAR-66-MGE,Marshmallow,5/14/23,SA,,25,3,800,Molecular Grade (95%) Ethanol
+BUD-66-DRS,Buddy,5/14/23,SA,,25,4,800,DNA/RNA Shield
+BUD-66-MGE,Buddy,5/14/23,SA,,25,4,800,Molecular Grade (95%) Ethanol
+JOA-66-DRS,Joans,5/14/23,SA,,25,2,800,DNA/RNA Shield
+JOA-66-MGE,Joans,5/14/23,SA,,25,2,800,Molecular Grade (95%) Ethanol
+HEN-66-DRS,Henry,5/14/23,SA,,25,2,800,DNA/RNA Shield
+HEN-66-MGE,Henry,5/14/23,SA,,25,2,800,Molecular Grade (95%) Ethanol
+GIN-66-DRS,Ginger,5/14/23,SA,,25,2,800,DNA/RNA Shield
+GIN-66-MGE,Ginger,5/14/23,SA,,25,2,800,Molecular Grade (95%) Ethanol
+HAM-67-DRS,Hamlet,5/15/23,SA/GR,,25,2,730,DNA/RNA Shield
+HAM-67-MGE,Hamlet,5/15/23,SA/GR,,25,2,730,Molecular Grade (95%) Ethanol
+HER-67-DRS,Hera,5/15/23,SA/GR,,25,2,730,DNA/RNA Shield
+HER-67-MGE,Hera,5/15/23,SA/GR,,25,2,730,Molecular Grade (95%) Ethanol
+JAR-67-DRS,JarJar BINKS,5/15/23,SA/GR,,25,2,730,DNA/RNA Shield
+JAR-67-MGE,JarJar BINKS,5/15/23,SA/GR,,25,2,730,Molecular Grade (95%) Ethanol
+OPH-67-DRS,Ophelia,5/15/23,SA/GR,,25,1,730,DNA/RNA Shield
+OPH-67-MGE,Ophelia,5/15/23,SA/GR,,25,1,730,Molecular Grade (95%) Ethanol
+KUB-67-DRS,Kubo,5/15/23,SA/GR,,25,2,730,DNA/RNA Shield
+KUB-67-MGE,Kubo,5/15/23,SA/GR,,25,2,730,Molecular Grade (95%) Ethanol
+KOR-67-DRS,Korra,5/15/23,SA/GR,,25,3,730,DNA/RNA Shield
+KOR-67-MGE,Korra,5/15/23,SA/GR,,25,3,730,Molecular Grade (95%) Ethanol
+WOL-67-DRS,Wolverine,5/15/23,SA/GR,,25,2,730,DNA/RNA Shield
+WOL-67-MGE,Wolverine,5/15/23,SA/GR,,25,2,730,Molecular Grade (95%) Ethanol
+IRI-67-DRS,Iris,5/15/23,SA/GR,,25,3,730,DNA/RNA Shield
+IRI-67-MGE,Iris,5/15/23,SA/GR,,25,3,730,Molecular Grade (95%) Ethanol
+GOO-67-DRS,Goose,5/15/23,SA/GR,,25,3,800,DNA/RNA Shield
+GOO-67-MGE,Goose,5/15/23,SA/GR,,25,3,800,Molecular Grade (95%) Ethanol
+LAM-67-DRS,Lambchop,5/15/23,SA/GR,,25,3,800,DNA/RNA Shield
+LAM-67-MGE,Lambchop,5/15/23,SA/GR,,25,3,800,Molecular Grade (95%) Ethanol
+FRA-67-DRS,Franc,5/15/23,SA/GR,,25,2,800,DNA/RNA Shield
+FRA-67-MGE,Franc,5/15/23,SA/GR,,25,2,800,Molecular Grade (95%) Ethanol
+IVY-67-DRS,Ivy,5/15/23,SA/GR,,25,2,800,DNA/RNA Shield
+IVY-67-MGE,Ivy,5/15/23,SA/GR,,25,2,800,Molecular Grade (95%) Ethanol
+CHA-67-DRS,Charles,5/15/23,SA/GR,,25,2,800,DNA/RNA Shield
+CHA-67-MGE,Charles,5/15/23,SA/GR,,25,2,800,Molecular Grade (95%) Ethanol
+GRO-67-DRS,Grogu,5/15/23,SA/GR,,25,2,800,DNA/RNA Shield
+GRO-67-MGE,Grogu,5/15/23,SA/GR,,25,2,800,Molecular Grade (95%) Ethanol
+MAR-67-DRS,Marshmallow,5/15/23,SA/GR,,25,2,800,DNA/RNA Shield
+MAR-67-MGE,Marshmallow,5/15/23,SA/GR,,25,2,800,Molecular Grade (95%) Ethanol
+HEN-67-DRS,Henry,5/15/23,SA/GR,,25,3,800,DNA/RNA Shield
+HEN-67-MGE,Henry,5/15/23,SA/GR,,25,3,800,Molecular Grade (95%) Ethanol
+GIN-67-DRS,Ginger,5/15/23,SA/GR,,25,2,800,DNA/RNA Shield
+GIN-67-MGE,Ginger,5/15/23,SA/GR,,25,2,800,Molecular Grade (95%) Ethanol
+HAM-68-DRS,Hamlet,5/16/23,SA,,25,2,730,DNA/RNA Shield
+HAM-68-MGE,Hamlet,5/16/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+HER-68-DRS,Hera,5/16/23,SA,,25,2,730,DNA/RNA Shield
+HER-68-MGE,Hera,5/16/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+JAR-68-DRS,JarJar BINKS,5/16/23,SA,,25,2,730,DNA/RNA Shield
+JAR-68-MGE,JarJar BINKS,5/16/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+OPH-68-DRS,Ophelia,5/16/23,SA,,25,2,730,DNA/RNA Shield
+OPH-68-MGE,Ophelia,5/16/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+KUB-68-DRS,Kubo,5/16/23,SA,,25,2,730,DNA/RNA Shield
+KUB-68-MGE,Kubo,5/16/23,SA,,25,2,730,Molecular Grade (95%) Ethanol
+KOR-68-DRS,Korra,5/16/23,SA,,25,3,730,DNA/RNA Shield
+KOR-68-MGE,Korra,5/16/23,SA,,26,3,730,Molecular Grade (95%) Ethanol
+WOL-68-DRS,Wolverine,5/16/23,SA,,26,2,730,DNA/RNA Shield
+WOL-68-MGE,Wolverine,5/16/23,SA,,26,2,730,Molecular Grade (95%) Ethanol
+IRI-68-DRS,Iris,5/16/23,SA,,26,2,730,DNA/RNA Shield
+IRI-68-MGE,Iris,5/16/23,SA,,26,2,730,Molecular Grade (95%) Ethanol
+GOO-68-DRS,Goose,5/16/23,SA,,26,3,800,DNA/RNA Shield
+GOO-68-MGE,Goose,5/16/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+LAM-68-DRS,Lambchop,5/16/23,SA,,26,3,800,DNA/RNA Shield
+LAM-68-MGE,Lambchop,5/16/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+FRA-68-DRS,Franc,5/16/23,SA,,26,3,800,DNA/RNA Shield
+FRA-68-MGE,Franc,5/16/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+IVY-68-DRS,Ivy,5/16/23,SA,,26,3,800,DNA/RNA Shield
+IVY-68-MGE,Ivy,5/16/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+CHA-68-DRS,Charles,5/16/23,SA,,26,2,800,DNA/RNA Shield
+CHA-68-MGE,Charles,5/16/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+GRO-68-DRS,Grogu,5/16/23,SA,,26,3,800,DNA/RNA Shield
+GRO-68-MGE,Grogu,5/16/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+MAR-68-DRS,Marshmallow,5/16/23,SA,,26,2,800,DNA/RNA Shield
+MAR-68-MGE,Marshmallow,5/16/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+HEN-68-DRS,Henry,5/16/23,SA,,26,2,800,DNA/RNA Shield
+HEN-68-MGE,Henry,5/16/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+GIN-68-DRS,Ginger,5/16/23,SA,,26,2,800,DNA/RNA Shield
+GIN-68-MGE,Ginger,5/16/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+HAM-69-DRS,Hamlet,5/17/23,SA/GR,,26,2,730,DNA/RNA Shield
+HAM-69-MGE,Hamlet,5/17/23,SA/GR,,26,2,730,Molecular Grade (95%) Ethanol
+HER-69-DRS,Hera,5/17/23,SA/GR,,26,2,730,DNA/RNA Shield
+HER-69-MGE,Hera,5/17/23,SA/GR,,26,2,730,Molecular Grade (95%) Ethanol
+JAR-69-DRS,JarJar BINKS,5/17/23,SA/GR,,26,2,730,DNA/RNA Shield
+JAR-69-MGE,JarJar BINKS,5/17/23,SA/GR,,26,2,730,Molecular Grade (95%) Ethanol
+OPH-69-DRS,Ophelia,5/17/23,SA/GR,,26,2,730,DNA/RNA Shield
+OPH-69-MGE,Ophelia,5/17/23,SA/GR,,26,2,730,Molecular Grade (95%) Ethanol
+KUB-69-DRS,Kubo,5/17/23,SA/GR,,26,2,730,DNA/RNA Shield
+KUB-69-MGE,Kubo,5/17/23,SA/GR,,26,2,730,Molecular Grade (95%) Ethanol
+KOR-69-DRS,Korra,5/17/23,SA/GR,,26,3,730,DNA/RNA Shield
+KOR-69-MGE,Korra,5/17/23,SA/GR,,26,3,730,Molecular Grade (95%) Ethanol
+WOL-69-DRS,Wolverine,5/17/23,SA/GR,,26,2,730,DNA/RNA Shield
+WOL-69-MGE,Wolverine,5/17/23,SA/GR,,26,2,730,Molecular Grade (95%) Ethanol
+IRI-69-DRS,Iris,5/17/23,SA/GR,,26,3,730,DNA/RNA Shield
+IRI-69-MGE,Iris,5/17/23,SA/GR,,26,3,730,Molecular Grade (95%) Ethanol
+GOO-69-DRS,Goose,5/17/23,SA/GR,,26,3,800,DNA/RNA Shield
+GOO-69-MGE,Goose,5/17/23,SA/GR,,26,3,800,Molecular Grade (95%) Ethanol
+LAM-69-DRS,Lambchop,5/17/23,SA/GR,,26,3,800,DNA/RNA Shield
+LAM-69-MGE,Lambchop,5/17/23,SA/GR,,26,3,800,Molecular Grade (95%) Ethanol
+FRA-69-DRS,Franc,5/17/23,SA/GR,,26,5,800,DNA/RNA Shield
+FRA-69-MGE,Franc,5/17/23,SA/GR,,26,5,800,Molecular Grade (95%) Ethanol
+IVY-69-DRS,Ivy,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+IVY-69-MGE,Ivy,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+CHA-69-DRS,Charles,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+CHA-69-MGE,Charles,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+GRO-69-DRS,Grogu,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+GRO-69-MGE,Grogu,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+MAR-69-DRS,Marshmallow,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+MAR-69-MGE,Marshmallow,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+BUD-69-DRS,Buddy,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+BUD-69-MGE,Buddy,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+JOA-69-DRS,Joans,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+JOA-69-MGE,Joans,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+HEN-69-DRS,Henry,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+HEN-69-MGE,Henry,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+GIN-69-DRS,Ginger,5/17/23,SA/GR,,26,2,800,DNA/RNA Shield
+GIN-69-MGE,Ginger,5/17/23,SA/GR,,26,2,800,Molecular Grade (95%) Ethanol
+HAM-70-DRS,Hamlet,5/18/23,SA,,26,2,800,DNA/RNA Shield
+HAM-70-MGE,Hamlet,5/18/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+HER-70-DRS,Hera,5/18/23,SA,,26,2,800,DNA/RNA Shield
+HER-70-MGE,Hera,5/18/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+JAR-70-DRS,JarJar BINKS,5/18/23,SA,,26,3,800,DNA/RNA Shield
+JAR-70-MGE,JarJar BINKS,5/18/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+OPH-70-DRS,Ophelia,5/18/23,SA,,26,1,800,DNA/RNA Shield
+OPH-70-MGE,Ophelia,5/18/23,SA,,26,1,800,Molecular Grade (95%) Ethanol
+KUB-70-DRS,Kubo,5/18/23,SA,,26,2,800,DNA/RNA Shield
+KUB-70-MGE,Kubo,5/18/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+KOR-70-DRS,Korra,5/18/23,SA,,26,3,800,DNA/RNA Shield
+KOR-70-MGE,Korra,5/18/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+WOL-70-DRS,Wolverine,5/18/23,SA,,26,2,800,DNA/RNA Shield
+WOL-70-MGE,Wolverine,5/18/23,SA,,26,2,800,Molecular Grade (95%) Ethanol
+IRI-70-DRS,Iris,5/18/23,SA,,26,3,800,DNA/RNA Shield
+IRI-70-MGE,Iris,5/18/23,SA,,26,3,800,Molecular Grade (95%) Ethanol
+GOO-70-DRS,Goose,5/18/23,SA,,26,3,730,DNA/RNA Shield
+GOO-70-MGE,Goose,5/18/23,SA,,26,3,730,Molecular Grade (95%) Ethanol
+LAM-70-DRS,Lambchop,5/18/23,SA,,26,3,730,DNA/RNA Shield
+LAM-70-MGE,Lambchop,5/18/23,SA,,26,3,730,Molecular Grade (95%) Ethanol
+FRA-70-DRS,Franc,5/18/23,SA,,27,2,730,DNA/RNA Shield
+FRA-70-MGE,Franc,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+IVY-70-DRS,Ivy,5/18/23,SA,,27,2,730,DNA/RNA Shield
+IVY-70-MGE,Ivy,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+CHA-70-DRS,Charles,5/18/23,SA,,27,2,730,DNA/RNA Shield
+CHA-70-MGE,Charles,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+GRO-70-DRS,Grogu,5/18/23,SA,,27,3,730,DNA/RNA Shield
+GRO-70-MGE,Grogu,5/18/23,SA,,27,3,730,Molecular Grade (95%) Ethanol
+MAR-70-DRS,Marshmallow,5/18/23,SA,,27,2,730,DNA/RNA Shield
+MAR-70-MGE,Marshmallow,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+BUD-70-DRS,Buddy,5/18/23,SA,,27,2,730,DNA/RNA Shield
+BUD-70-MGE,Buddy,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+JOA-70-DRS,Joans,5/18/23,SA,,27,2,730,DNA/RNA Shield
+JOA-70-MGE,Joans,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+HEN-70-DRS,Henry,5/18/23,SA,,27,2,730,DNA/RNA Shield
+HEN-70-MGE,Henry,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol
+GIN-70-DRS,Ginger,5/18/23,SA,,27,2,730,DNA/RNA Shield
+GIN-70-MGE,Ginger,5/18/23,SA,,27,2,730,Molecular Grade (95%) Ethanol

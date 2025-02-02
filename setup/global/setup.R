@@ -1,3 +1,5 @@
+here::i_am("setup/global/setup.R")
+
 global            <- config::get(config = "default")
 swan              <- config::get(config = "swan")
 micro             <- config::get(config = "microbiome")
@@ -11,11 +13,11 @@ sample_sheets     <- config::get(config = "sample_sheets")
 abund_wf16s_files <- config::get(config = "abund_wf16s_files")
 barcode_alignments<- config::get(config = "barcode_alignments")
 
-source(paste0(global$packages))
-source(paste0(global$conflicts))
-source(paste0(global$functions))
-source(paste0(global$inputs))
-source(global$knit_engines)
+source(here::here(global$packages))
+source(here::here(global$conflicts))
+source(here::here(global$functions))
+source(here::here(global$inputs))
+source(here::here(global$knit_engines))
 
 opts_chunk$set(message = FALSE,
                warning = FALSE,
@@ -26,4 +28,4 @@ opts_chunk$set(message = FALSE,
 
 seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
 subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
-path         <- config::get(config = params$sampleset)
+path         <- config::get(config = paste0(params$sampleset))

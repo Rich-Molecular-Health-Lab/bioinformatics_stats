@@ -19,6 +19,7 @@ required_packages <- c(
   "bookdown",
   "bsicons",
   "bslib",
+  "bsplus",
   "config",
   "conflicted",
   "crosstalk",
@@ -48,6 +49,7 @@ required_packages <- c(
   "rmarkdown",
   "sass",
   "scales",
+  "shiny",
   "shinydashboard",
   "shinyjs",
   "shinyMatrix",
@@ -72,6 +74,7 @@ library(BiocManager)
 library(bookdown)
 library(bsicons)
 library(bslib)
+library(bsplus)
 library(config)
 library(conflicted)
 library(crosstalk)
@@ -101,6 +104,7 @@ library(reactable)
 library(rmarkdown)
 library(sass)
 library(scales)
+library(shiny)
 library(shinydashboard)
 library(shinyjs)
 library(shinyMatrix)
