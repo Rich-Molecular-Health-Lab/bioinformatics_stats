@@ -3,15 +3,15 @@ title: "Constructing Metadata Files"
 author: "Alicia Rich"
 output:
   html_document:
+    theme:
+      bootswatch: litera
     toc: true
-    toc_location: "before"
-    toc_depth: 4
-    number_sections: false
-    toc_float: true
-    code_folding: "hide"
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
     fig_caption: true
-editor_options: 
-  chunk_output_type: inline
+    df_print: paged
 params:
   sampleset: "loris"
                      
@@ -20,8 +20,9 @@ params:
 ```{r, include = F}
 global             <- config::get(config = "default")
 
-source(paste0(global$setup))
-source(paste0(swan$functions))
+here::i_am("MetadataSetup.Rmd")
+source(global$setup)
+source(swan$functions)
 
 for (file in path$metadata$scripts) {
   source(here(file))
@@ -38,92 +39,267 @@ The purpose of a metadata file is to organize the potential independent or predi
 
 Before this, you should use the SampleInventory script to create the file compilation.tsv.  
 
-## Configurations
+## Other Configuration Settings
 
 ### Sampleset in Params
 
 You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
 
-### Sequencing Run Lists
-
-Below is a chunk to generate a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date. The next chunk will format a list of all subject names for whichever taxon you identified in the header.
-
-```
-seqruns      <- seqruns %>% keep_at(params$sampleset) %>% list_flatten(name_spec = "")
-subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
-```
-
 ### File Paths
 
 Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. 
 
-```
-sample_sheets:
-  compilations:
-    loris:    "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz_combined_sample_sheet.csv"
-    marmoset: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm_combined_sample_sheet.csv"
-  hdz1:  "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz1_sample_sheet.csv"
-  hdz2:  "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz2_sample_sheet.csv"
-  hdz3:  "../bioinformatics_stats/dataframes/sample_sheet/loris/hdz3_sample_sheet.csv"
-  cm001: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm001_sample_sheet.csv"
-  cm002: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm002_sample_sheet.csv"
-  cm003: "../bioinformatics_stats/dataframes/sample_sheet/marmoset/cm003_sample_sheet.csv"
-
-barcode_alignments:
-  compilations:
-    loris: "../labwork/minion_data/barcode_alignments/loris/hdz_combined_barcode_alignment.tsv"
-    marmoset: "../labwork/minion_data/barcode_alignments/marmoset/cm_combined_barcode_alignment.tsv"
-  hdz1:  "../labwork/minion_data/barcode_alignments/loris/hdz1_barcode_alignment.tsv"
-  hdz2:  "../labwork/minion_data/barcode_alignments/loris/hdz2_barcode_alignment.tsv"
-  hdz3:  "../labwork/minion_data/barcode_alignments/loris/hdz3_barcode_alignment.tsv"
-  cm001: "../labwork/minion_data/barcode_alignments/marmoset/cm001_barcode_alignment.tsv"
-  cm002: "../labwork/minion_data/barcode_alignments/marmoset/cm002_barcode_alignment.tsv"
-  cm003: "../labwork/minion_data/barcode_alignments/marmoset/cm003_barcode_alignment.tsv"
-  
-loris:
-  libraries_csv: "../data/libraries_loris.csv"
-  compilation_csv: "../data/compilation_loris.csv"
-  extracts_csv: "../data/extracts_loris.csv"
-  samples_csv: "../data/samples_loris.csv"
-  sample_sheet: "../bioinformatics_stats/loris/dataframes/sample_sheet/"
-  taxonomy_list: "../bioinformatics_stats/loris/dataframes/taxonomy_list/"
-
-marmoset:
-  libraries_csv: "../data/libraries_marmoset.csv"
-  compilation_csv: "../data/compilation_marmoset.csv"
-  extracts_csv: "../data/extracts_marmoset.csv"
-  samples_csv: "../data/samples_marmoset.csv"
-  sample_sheet: "../bioinformatics_stats/marmoset/dataframes/sample_sheet/"
-  taxonomy_list: "../bioinformatics_stats/marmoset/dataframes/taxonomy_list/"
-
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External File",
+        tagList(tags$pre(includeText("config.yml")))
+    )
+  )
+)
 ```
 
 Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
 
-```
-path               <- config::get(config = params$sampleset)
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External Script",
+        tagList(tags$pre(includeText(here(global$setup))))
+    )
+  )
+)
 ```
 
-### Other Scripts
+### Sequencing Run Lists
 
-I also create some of the tables and lists used here in some scripts that the chunk below will run. This just keeps this script a bit tidier by modularizing some of the parts.
+The code in the chunk above also generated a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date.
 
+### Other Setup Scripts
+
+The script that I pasted above sources additional scripts that I run routinely at the start of any work to bring in functions and other inputs with shorter code chunks. You can flip through the text from those scripts below.
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      title = "Other External Setup Scripts",
+      open = FALSE,
+      accordion_panel(
+        "knit_engines.R",
+        tagList(tags$pre(includeText(here(global$knit_engines))))
+    ),
+      accordion_panel(
+        "conflicts.R",
+        tagList(tags$pre(includeText(here(global$conflicts))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(global$functions))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(global$packages))))
+    )
+  )
+)
 ```
-source(path$metadata$bristol)
+
+### External Scripts for Metadata
+
+I also source external scripts to bring in different configurations of metadata to use in this workflow. Again, it just keeps my markdown file tidier while also making it easier for me to run code from those scripts in different files or stages of analysis while ensuring I only need to make changes to the code or data in one location to apply it everywhere. Toggle the panels below if you would like to see the code in those scripts.
+  - *Note: I am including the scripts that I use for loris metadata. These may vary for other datasets we use.*
+
+```{r}
+page_fluid(
+    accordion(
+      title = "External Metadata Scripts",
+      open = FALSE,
+      accordion_panel(
+        "Nutrition Data from HDZ",
+        tagList(tags$pre(includeText(here("metadata/loris/loris_nutrition.R"))))
+    ),
+      accordion_panel(
+        "Dates of Diet Trials and Other States/Events",
+        tagList(tags$pre(includeText(here("metadata/loris/hdz_loris_log.R"))))
+    ),
+      accordion_panel(
+        "Render a Key for Metadata Variables with Descriptions",
+        tagList(tags$pre(includeText(here("metadata/loris/metadata_key.R"))))
+       )
+    )
+  )
+
 ```
 
 
 # Script
 
+## Construct Variables
+
+### Diet
+
+We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.
+
+```{r}
+nutr_protein <- enframe(proteins, name = "nutrient") %>%
+  mutate(nutrient_class = "proteins",
+         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
+  unnest_longer(value, indices_to = "diet_name")  %>%
+  unnest_wider(value) %>%
+  mutate(relative_unit = "proportion",
+         relative_fed  = proportion, .keep = "unused")
+
+nutr_fat <-   enframe(fats, name = "nutrient") %>%
+  mutate(nutrient_class = "fats",
+         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
+  unnest_longer(value, indices_to = "diet_name")  %>%
+  unnest_wider(value) %>%
+  pivot_longer(cols      = c("proportion", "mg_g"),
+               names_to  = "relative_unit",
+               values_to = "relative_fed",
+               values_drop_na = T)
+
+nutr_CHOs <-   enframe(CHOs, name = "nutrient")  %>%
+  mutate(nutrient_class = "CHOs",
+         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
+  unnest_longer(value, indices_to = "diet_name")  %>%
+  unnest_wider(value) %>%
+  mutate(relative_unit = "proportion",
+         relative_fed  = proportion, .keep = "unused")
+
+nutr_Ash <-  enframe(Ash, name = "nutrient")   %>%
+  mutate(nutrient_class = "Ash",
+         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
+  unnest_longer(value, indices_to = "diet_name")  %>%
+  unnest_wider(value) %>%
+  pivot_longer(cols      = c("proportion", "mg_kg"),
+               names_to  = "relative_unit",
+               values_to = "relative_fed",
+               values_drop_na = T) %>% select(-ca_p_ratio)
+
+nutr_vitamins <- enframe(vitamins, name = "nutrient")    %>%
+  mutate(nutrient_class = "vitamins",
+         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
+  unnest_longer(value, indices_to = "diet_name")  %>%
+  unnest_wider(value) %>%
+  pivot_longer(cols      = c("mg_kg", "IU_g", "ug_kg"),
+               names_to  = "relative_unit",
+               values_to = "relative_fed",
+               values_drop_na = T)
+```
+
+
+```{r}
+
+nutrition <- bind_rows(nutr_protein,
+                       nutr_fat,
+                       nutr_CHOs,
+                       nutr_Ash,
+                       nutr_vitamins) %>%
+  mutate(fed      = mg_fed,
+         fed_unit = "mg", .keep = "unused")
+
+food_totals <-  enframe(foods_mg, name = "diet_name") %>%
+  unnest_longer(value, values_to = "mg_fed", indices_to = "food") %>%
+  arrange(diet_name, food) %>%
+  select(diet_name, food, mg_fed)
+
+diet_totals <- enframe(nutrient_totals, name = "diet_name") %>%
+  unnest_wider(value) %>%
+  mutate(nutrient = "total", nutrient_class = "total") %>%
+  pivot_longer(cols = c("mg_fed", "mg_dry", "kcal"),
+               names_to  = "fed_unit",
+               values_to = "fed") %>%
+  mutate(fed_unit      = str_remove_all(fed_unit, "_fed"),
+         relative_fed  = 1,
+         relative_unit = "proportion") %>%
+  bind_rows(nutrition) %>%
+  arrange(diet_name, nutrient_class, nutrient, fed_unit, relative_unit) %>%
+  select(diet_name, 
+         nutrient_class, 
+         nutrient, 
+         fed, 
+         fed_unit, 
+         relative_fed, 
+         relative_unit)
+
+diet_nested <- diet_totals %>%
+  group_by(diet_name, nutrient_class) %>%
+  nest(.key = "nutrients") %>%
+  pivot_wider(id_cols     = "diet_name", 
+              names_from  = "nutrient_class",
+              values_from = "nutrients") %>%
+  unnest(total) %>%
+  pivot_wider(id_cols     = !any_of(
+                              c("nutrient", 
+                              "fed", 
+                              "fed_unit", 
+                              "relative_fed", 
+                              "relative_unit")),
+              names_from  = c("nutrient", "fed_unit"),
+              names_sep   = "_",
+              values_from = "fed") %>%
+  nest_join(food_totals, by = join_by(diet_name), name = "foods") %>%
+  relocate(all_of(c(starts_with("total_"))), .after = diet_name) %>%
+  relocate(foods, .after = total_mg_dry)
+```
+
+
+```{r}
+diet_daily <- enframe(diet_trials, name = NULL) %>%
+  unnest_wider(value) %>%
+  mutate(diet_name = diet, subject = "culi", .keep = "unused") %>%
+  mutate(end = if_else(begin < max(begin), lead(begin) - days(1), today())) %>%
+  bind_rows(warble_trials) %>%
+  left_join(diet_nested, by = join_by(diet_name)) %>%
+  mutate(date = map2(begin, end, seq, by = "day")) %>%  
+  unnest(date) %>%
+  select(-c(begin, end)) %>%
+  relocate(date)
+```
+
+
+```{r}
+supplement_info <- enframe(supplement_details, name = "supplement") %>%
+  unnest_wider(value) %>% 
+  select(supplement, supplement_rx = rx, dose_units = units)
+
+diet_supplements_daily <- enframe(supplements, name = NULL) %>%
+  unnest_wider(value) %>%
+  mutate(end = if_else(
+    begin < max(begin), 
+    lead(begin) - days(1), today()),
+    subject = "culi") %>%
+  bind_rows(warble_supplements) %>%
+  pivot_longer(cols      = c(probiotic:antidiarrheal),
+               names_to  = "supplement",
+               values_to = "dose") %>%
+  left_join(supplement_info, by = join_by(supplement)) %>%
+  select(begin, end, subject, supplement, dose) %>%
+  pivot_wider(id_cols     = c("begin", "end", "subject"),
+              names_from  = "supplement",
+              values_from = "dose") %>%
+  mutate(across(probiotic:antidiarrheal, ~ .x/max(.x))) %>%
+  mutate(date = map2(begin, end, seq, by = "day")) %>%  
+  unnest(date) %>%
+  select(-c(begin, end)) %>%
+  relocate(date) %>%
+  right_join(diet_daily, by = join_by(subject, date))
+```
+
 ## Subject Info
 
-First I will read in some useful info about each subject from their AZA studbook.
+Now I will read in some useful info about each subject from their AZA studbook.
 
 ```{r, warning = FALSE}
 studbook.info <- read.csv(here(path$metadata$studbook), 
                           header = TRUE) %>%
   mutate(
-          Subject       = factor(str_to_lower(Name), levels = unique(str_to_lower(Name))),
+          subject       = factor(str_to_lower(Name), levels = unique(str_to_lower(Name))),
           StudbookID    = factor(ID, levels = unique(ID)),
           Sex           = factor(Sex, levels = unique(Sex)),
           MotherID      = factor(Mother, levels = unique(Mother)),
@@ -132,7 +308,7 @@ studbook.info <- read.csv(here(path$metadata$studbook),
           BirthYear     = year(make_date(year = Born))
           ) %>%
   select(
-    Subject,
+    subject,
     StudbookID,
     Sex,
     MotherID,
@@ -140,38 +316,330 @@ studbook.info <- read.csv(here(path$metadata$studbook),
     BirthYear,
     BirthLocation
   )
+
+reactable(studbook.info, 
+          fullWidth       = F, 
+          defaultPageSize = 5, 
+          defaultColDef   = colDef(align = "left"))
+```
+
+
+
+## Organizing Dates
+
+The toughest variables to match and wrange in R are often dates, especially when you are dealing with both states (start and end dates for intervals) and events (single dates). For studies like this one based around daily sample collection, I find it easiest to start by populating a blank dataframe with one row per sample collection day. Then I match date-based variables to this dataframe and join my SampleIDs to it.  
+  
+Once we combine all the pieces together, we will have a metadata table with one row per day for each subject. Then we can match every sample to subject and day using the same table.
+
+```{r}
+metadata_daily <- tibble(date = seq.Date(from = ymd(path$day1), 
+                                     to   = today(), 
+                                     by = "day")) %>%
+  expand(date, subject_list) %>%
+  mutate(subject = str_to_lower(subject_list), .keep = "unused") %>%
+  group_by(subject) %>%
+  mutate(study_day = row_number()) %>% ungroup()  %>%
+  mutate(holding = case_when(date < new_holding_start$culi   & subject == "culi"   ~ "old",
+                             date < new_holding_start$warble & subject == "warble" ~ "old",
+                             .default = "new")) %>%
+  left_join(studbook.info, by = join_by(subject)) %>%
+  mutate(subject_age = year(date) - BirthYear) %>% select(-BirthYear) %>%
+  left_join(keeper_notes, by = join_by(subject, date)) %>%
+  left_join(cycle_dates , by = join_by(date)) %>%
+  left_join(access_dates, by = join_by(date)) %>%
+  mutate(warb_status = replace_na(warb_status, "anestrus"),
+         pair_access = replace_na(pair_access, "n")) %>%
+  left_join(diet_supplements_daily, by = join_by(subject, date))
 ```
 
 ## Sample Inventory
 
-First I will read in the sample inventory, which is actually already a metadata table itself. We just want to match some more interesting variables to it, beginning with the studbook summary we just built.
+Now I will read in the sample inventory, which is actually already a metadata table itself. We will join this to our daily metadata table to create one large dataframe with all our variable scores matched to a sample.
 
 ```{r}
-samples <- read.table(here(path$compilation), 
+samples <- read.table(here(path$inventories$all_stages), 
                       header = T, 
                       sep = "\t") %>%
             mutate(CollectionDate = ymd(CollectionDate),
-                   Subject       = factor(str_to_lower(Subject), levels = unique(str_to_lower(Subject)))) %>%
-  left_join(studbook.info, by = join_by(Subject)) %>%
-  mutate(SubjectAge = year(CollectionDate) - BirthYear)
+                   subject        = str_to_lower(Subject), .keep = "unused")
+
+metadata <- samples %>% 
+  left_join(metadata_daily,
+            by           = join_by(subject, CollectionDate == date), 
+            relationship = "many-to-many") %>%
+  relocate(ordered_variables)
+
+
+write.table(metadata, path$metadata$summary, row.names = F, sep = "\t")
 ```
-
-## Organizing Dates
-
-The toughest variables to match and wrange in R are often dates, especially when you are dealing with both states (start and end dates for intervals) and events (single dates). For studies like this one based around daily sample collection, I find it easiest to start by populating a blank dataframe with one row per sample collection day. Then I match date-based variables to this dataframe and join my SampleIDs to it.
 
 ```{r}
-study_days <- tibble(Date = seq.Date(from = ymd(path$day1), 
-                                     to   = ymd(path$last), 
-                                     by = "day")) %>%
-  mutate(study_day = row_number())
+metadata_summary <-  reactable(
+              metadata,
+              resizable           = T,
+              filterable          = T,
+              showPageSizeOptions = T,
+              highlight           = T,
+              striped             = T,
+              compact             = T,
+              height              = 600,
+          columns      = list(
+            
+  foods = colDef(name = "Foods", 
+                 details = function(index) {
+    foods_tbl <- metadata$foods[[index]]
+    
+    if (inherits(foods_tbl, "tbl_df") && nrow(foods_tbl) > 0) {
+      return(reactable(foods_tbl, 
+                       columns = list(
+                         food   = nested_colDefs$food   ,
+                         mg_fed = nested_colDefs$mg_fed 
+                       ),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+  proteins = colDef(name = "Proteins",
+                      cell = function(value, index) {
+                        tbl <- metadata$proteins[[index]]
+                        if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
+                          fed_value <- tbl$fed[tbl$nutrient == "total"]
+                          unit <- tbl$fed_unit[tbl$nutrient == "total"]
+                          paste0(fed_value, " ", unit)
+                        } else {
+                          NA
+                        }
+                      },
+                    details = function(index) {
+    proteins_tbl <- metadata$proteins[[index]]
+    
+    if (inherits(proteins_tbl, "tbl_df") && nrow(proteins_tbl) > 0) {
+      return(reactable(proteins_tbl, 
+                       columns = list(
+                         nutrient     = nested_colDefs$nutrient     ,
+                         fed          = nested_colDefs$fed          ,
+                         fed_unit     = nested_colDefs$fed_unit     ,
+                         relative_fed = nested_colDefs$relative_fed ,
+                         relative_unit= nested_colDefs$relative_unit
+                       ),
+                       columnGroups = list(nested_colGroups$amount_day),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+  fats = colDef(name = "Fats",
+                      cell = function(value, index) {
+                        tbl <- metadata$fats[[index]]
+                        if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
+                          fed_value <- tbl$fed[tbl$nutrient == "total"]
+                          unit <- tbl$fed_unit[tbl$nutrient == "total"]
+                          paste0(fed_value, " ", unit)
+                        } else {
+                          NA
+                        }
+                      },
+                details = function(index) {
+    fats_tbl <- metadata$fats[[index]]
+    
+    if (inherits(fats_tbl, "tbl_df") && nrow(fats_tbl) > 0) {
+      return(reactable(fats_tbl, 
+                       columns = list(
+                         nutrient     = nested_colDefs$nutrient     ,
+                         fed          = nested_colDefs$fed          ,
+                         fed_unit     = nested_colDefs$fed_unit     ,
+                         relative_fed = nested_colDefs$relative_fed ,
+                         relative_unit= nested_colDefs$relative_unit
+                       ),
+                       columnGroups = list(nested_colGroups$amount_day),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+  
+  Ash = colDef(name = "Ash",
+                      cell = function(value, index) {
+                        tbl <- metadata$fats[[index]]
+                        if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
+                          fed_value <- tbl$fed[tbl$nutrient == "total"]
+                          unit <- tbl$fed_unit[tbl$nutrient == "total"]
+                          paste0(fed_value, " ", unit)
+                        } else {
+                          NA
+                        }
+                      },
+                details = function(index) {
+    Ash_tbl <- metadata$Ash[[index]]
+    
+    if (inherits(Ash_tbl, "tbl_df") && nrow(Ash_tbl) > 0) {
+      return(reactable(Ash_tbl, 
+                       columns = list(
+                         nutrient     = nested_colDefs$nutrient     ,
+                         fed          = nested_colDefs$fed          ,
+                         fed_unit     = nested_colDefs$fed_unit     ,
+                         relative_fed = nested_colDefs$relative_fed ,
+                         relative_unit= nested_colDefs$relative_unit
+                       ),
+                       columnGroups = list(nested_colGroups$amount_day),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+  CHOs = colDef(name = "Carbohydrates",
+                      cell = function(value, index) {
+                        tbl <- metadata$CHOs[[index]]
+                        if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
+                          fed_value <- tbl$fed[tbl$nutrient == "total"]
+                          unit <- tbl$fed_unit[tbl$nutrient == "total"]
+                          paste0(fed_value, " ", unit)
+                        } else {
+                          NA
+                        }
+                      },
+                details = function(index) {
+    CHOs_tbl <- metadata$CHOs[[index]]
+    
+    if (inherits(CHOs_tbl, "tbl_df") && nrow(CHOs_tbl) > 0) {
+      return(reactable(CHOs_tbl, 
+                       columns = list(
+                         nutrient     = nested_colDefs$nutrient     ,
+                         fed          = nested_colDefs$fed          ,
+                         fed_unit     = nested_colDefs$fed_unit     ,
+                         relative_fed = nested_colDefs$relative_fed ,
+                         relative_unit= nested_colDefs$relative_unit
+                       ),
+                       columnGroups = list(nested_colGroups$amount_day),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+  
+    vitamins = colDef(name = "Vitamins",
+                      cell = function(value, index) {
+                        tbl <- metadata$vitamins[[index]]
+                        if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
+                          fed_value <- tbl$fed[tbl$nutrient == "total"]
+                          unit <- tbl$fed_unit[tbl$nutrient == "total"]
+                          paste0(fed_value, " ", unit)
+                        } else {
+                          NA
+                        }
+                      },
+                      details = function(index) {
+    vitamins_tbl <- metadata$vitamins[[index]]
+    
+    if (inherits(vitamins_tbl, "tbl_df") && nrow(vitamins_tbl) > 0) {
+      return(reactable(vitamins_tbl, 
+                       columns = list(
+                         nutrient     = nested_colDefs$nutrient     ,
+                         fed          = nested_colDefs$fed          ,
+                         fed_unit     = nested_colDefs$fed_unit     ,
+                         relative_fed = nested_colDefs$relative_fed ,
+                         relative_unit= nested_colDefs$relative_unit
+                       ),
+                       columnGroups = list(nested_colGroups$amount_day),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+    study_day         = colDef(name = "Study Day"),
+    subject           = colDef(name = "Subject"),
+    SampleID          = colDef(name = "Sample ID"),
+    steps_remaining   = colDef(name = "Analysis Stage"),
+    diet_name         = colDef(name = "Diet Phase"),
+    total_mg          = colDef(name = "Mass (in mg)"),
+    total_kcal        = colDef(name = "kcal"),
+    total_mg_dry      = colDef(name = "Dry Mass (in mg)"),
+    probiotic         = colDef(name = "Probiotic"),
+    fiber             = colDef(name = "Fiber"),
+    steroid           = colDef(name = "Steroid"),
+    antibiotic        = colDef(name = "Antibiotic"),
+    antidiarrheal     = colDef(name = "Antidiarrheal"),
+    holding           = colDef(name = "Holding Facility"),
+    pair_access       = colDef(name = "Full Pair Access"),
+    warb_status       = colDef(name = "Warble's Repro Status"),
+    keeper_note       = colDef(name = "Keeper Notes"),
+    Subj_Certainty    = colDef(name = "ID Certainty"),
+    Sex               = colDef(name = "Sex"),
+    subject_age       = colDef(name = "Age (years) on Collection Date"),
+    StudbookID        = colDef(name = "AZA Studbook ID"),
+    MotherID          = colDef(name = "Mother's AZA Studbook ID"),
+    FatherID          = colDef(name = "Father's AZA Studbook ID"),
+    BirthLocation     = colDef(name = "Birth Institution (AZA Code)"),
+    CollectionDate    = colDef(name = "Collection Date"),
+    SampleSet         = colDef(name = "Sample Set Code"),
+    SampleCollectedBy = colDef(name = "Collected by"),
+    SampleNotes       = colDef(name = "Collection Notes"),
+    ExtractID         = colDef(name = "ID"),
+    ExtractDate       = colDef(name = "Date"),
+    ExtractConc       = colDef(name = "DNA Concentration (ng/ul)"),
+    ExtractKit        = colDef(name = "Kit"),
+    ExtractBox        = colDef(name = "Storage Box"),
+    ExtractedBy       = colDef(name = "Performed by"),
+    ExtractNotes      = colDef(name = "Notes"),
+    SequenceID        = colDef(name = "Sequenced Profile ID"),
+    LibPrepDate       = colDef(name = "Date"),
+    LibPrepWorkflow   = colDef(name = "Protocol"),
+    LibraryCode       = colDef(name = "Pooled Library ID"),
+    protocol_group_id = colDef(name = "Sequencing Run ID (MinKNOW)"),
+    LibPrepKit        = colDef(name = "Kit"),
+    LibraryTube       = colDef(name = "Tube"),
+    TemplateVolPrep   = colDef(name = "Extract Volume Added (ul)"),
+    LibraryBarcode    = colDef(name = "Barcode ID"),
+    fragment_type     = colDef(name = "Fragment Size Code"),
+    strands           = colDef(name = "ds or ssDNA"),
+    Length            = colDef(name = "Target Length"),
+    InputMassStart    = colDef(name = "Starting Target Mass (ng)"),
+    Conc_QC2          = colDef(name = "Final Library Concentration (ng/ul)"),
+    PoolSamples       = colDef(name = "Samples Pooled?"),
+    SampVolPool       = colDef(name = "Volume added to Pool"),
+    BeadVol           = colDef(name = "Volume AMPure Beads to Pool"),
+    TotalPoolVol      = colDef(name = "Total Pool Volume (ul)"),
+    InputMassFinal    = colDef(name = "Final Target Mass (ng)"),
+    SeqRunID          = colDef(name = "ID"),
+    SeqDate           = colDef(name = "Date"),
+    SeqDateTime       = colDef(name = "Date and Time"),
+    FlowCellType      = colDef(name = "Flow Cell Type"),
+    FlowCellSerial    = colDef(name = "Flow Cell Serial"),
+    FlongleAdapter    = colDef(name = "Flongle Adapter Serial"),
+    SeqDevice         = colDef(name = "MinION Device"),
+    reads_unclassified= colDef(name = "Unclassified Read Count")
+    ),
+          columnGroups = list(
+    colGroups$basics     ,
+    colGroups$diet_totals,
+    colGroups$diet_nested,
+    colGroups$supplements,
+    colGroups$subject    ,
+    colGroups$collection ,
+    colGroups$extraction,
+    colGroups$libraryprep,
+    colGroups$sequencing
+  )
+)
 ```
 
-## Construct Variables
 
-### Diet
 
-We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.
+```{r}
+reactable(study_days, 
+          fullWidth       = F, 
+          defaultPageSize = 5, 
+          defaultColDef   = colDef(align = "left"))
+```
+
+
 
 ```{r}
 trial_schedule <- culi.diet.schedule %>%

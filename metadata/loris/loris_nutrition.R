@@ -46,7 +46,7 @@ diets <- list(
         vit_B1_thiamin         = list(mg_fed = 0.196003    , mg_kg      =	7           ),
         vit_B2_riboflavin      = list(mg_fed = 0.294550    , mg_kg      =	10           ),
         vit_B3_niacin          = list(mg_fed = 1.957192    , mg_kg      =	67             ),
-        choline                = list(mg_fed = 37.545567   , mg_kg      =	1,279         ),
+        choline                = list(mg_fed = 37.545567   , mg_kg      =	1168.97601747296        ),
         vit_B5_pantothenic_acid= list(mg_fed = 1.195088    , mg_kg      =	41             ),
         vit_B6_pyridoxine      = list(mg_fed = 0.260340    , mg_kg      =	9             ),
         vit_B7_biotin          = list(mg_fed = 0.008388    , mg_kg      =	0.29           ),
@@ -67,9 +67,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                     = list(mg_fed = 70000       , mg_dry     = 28243        , kcal     = 90                          ),
-      proteins	                 = list(mg_fed = 4444	       , proportion =	0.2                                                  ),
+      proteins = list(total          = list(mg_fed = 4444	       , proportion =	0.2                                                  ),
       taurine		               = list(mg_fed = 0           , proportion =	0                                                    ),
-      methionine	             = list(mg_fed = 63.79	     , proportion =	0.002258657                                          ),
+      methionine	             = list(mg_fed = 63.79	     , proportion =	0.002258657                                          )),
       fats = list(total          = list(mg_fed = 1861	       , proportion =	0.065905076             ),
                   omega3                   = list(mg_fed = 1513.00     , mg_g       =	0.0054 , composition = list("ALA", "EPA", "DHA")),
                   omega6                   = list(mg_fed = 5440.00     , mg_g       =	0.0193 , composition = list("LA", "GLA", "AA"  ))),
@@ -122,9 +122,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                       = list(mg_fed = 53200.00000     , mg_dry     = 27982.29167 , kcal     = 92                       ),
-      proteins	                   = list(mg_fed = 5692.84375      , proportion =	0.20344                                           ),
+      proteins = list(total          = list(mg_fed = 5692.84375      , proportion =	0.20344                                           ),
       taurine		                   = list(mg_fed = 17.95200        , proportion =	0.00064                                           ),
-      methionine	                 = list(mg_fed = 130.34071       , proportion =	0.00466                                           ),
+      methionine	                 = list(mg_fed = 130.34071       , proportion =	0.00466                                           )),
       fats = list(total            = list(mg_fed = 2655.69415      , proportion =	0.09491                                           ),
                   omega3                       = list(mg_fed = 634.49000       , mg_g       =	2.2675 , composition = list("ALA", "EPA", "DHA") ),
                   omega6                       = list(mg_fed = 3369.20000      , mg_g       =	12.0405 , composition = list("LA", "GLA", "AA"  ))),
@@ -176,9 +176,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                       = list(mg_fed = 61200.00000   , mg_dry     = 28454.50000, kcal     = 90                       ),
-      proteins	                   = list(mg_fed = 5132.76667    , proportion =	0.18039                                      ),
+      proteins = list(total        = list(mg_fed = 5132.76667    , proportion =	0.18039                                      ),
       taurine		                   = list(mg_fed = 17.95200      , proportion =	0.00063                                      ),
-      methionine	                 = list(mg_fed = 101.63000     , proportion =	0.00357                                      ),
+      methionine	                 = list(mg_fed = 101.63000     , proportion =	0.00357                                      )),
       fats = list(total            = list(mg_fed = 1806.97933    , proportion =	0.06350                                      ),
                   omega3                       = list(mg_fed = 634.49000     , mg_g       =	2.22984    , composition = list("ALA", "EPA", "DHA") ),
                   omega6                       = list(mg_fed = 3369.20000    , mg_g       =	11.84066    , composition = list("LA", "GLA", "AA"  ))),
@@ -228,9 +228,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                       = list(mg_fed = 60342.85714  , mg_dry     =  29904.58333, kcal     = 90                       ),
-      proteins	                   = list(mg_fed = 4826.53571   , proportion =	0.16140                                  ),
+      proteins = list(total          = list(mg_fed = 4826.53571   , proportion =	0.16140                                  ),
       taurine		                   = list(mg_fed = 17.95200     , proportion =	0.00060                                  ),
-      methionine	                 = list(mg_fed = 86.58715     , proportion =	0.00290                                  ),
+      methionine	                 = list(mg_fed = 86.58715     , proportion =	0.00290                                  )),
       fats = list(total            = list(mg_fed = 1618.96429   , proportion =	0.05414                                  ),
                   omega3                       = list(mg_fed = 634.49000    , mg_g       =	2.12231   , composition = list("ALA", "EPA", "DHA") ),
                   omega6                       = list(mg_fed = 3369.20000   , mg_g       =	11.26864   , composition = list("LA", "GLA", "AA"  ))),
@@ -282,9 +282,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                       = list(mg_fed = 65000.00000 , mg_dry     = 29799.75000, kcal     = 93                       ),
-      proteins	                   = list(mg_fed = 7375.20417  , proportion =	0.24749                              ),
+      proteins = list(total        = list(mg_fed = 7375.20417  , proportion =	0.24749                              ),
       taurine		                   = list(mg_fed = 0           , proportion =	0                                   ),
-      methionine	                 = list(mg_fed = 198.55000   , proportion =	0.00666                              ),
+      methionine	                 = list(mg_fed = 198.55000   , proportion =	0.00666                              )),
       fats = list(total            = list(mg_fed = 1018.84933  , proportion =	0.03419                              ),
                   omega3                       = list(mg_fed = 634.49000   , mg_g       =	0.00508    , composition = list("ALA", "EPA", "DHA") ),
                   omega6                       = list(mg_fed = 3369.20000  , mg_g       =	0.01826    , composition = list("LA", "GLA", "AA"  ))),
@@ -332,9 +332,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                       = list(mg_fed = 67000.00000 , mg_dry     = 32127.41667, kcal     = 87              ),
-      proteins	                   = list(mg_fed = 3747.03750  , proportion =	0.11663                          ),
+      proteins = list(total          = list(mg_fed = 3747.03750  , proportion =	0.11663                          ),
       taurine		                   = list(mg_fed = 0           , proportion =	0                         ),
-      methionine	                 = list(mg_fed = 50.01429    , proportion =	0.00156                          ),
+      methionine	                 = list(mg_fed = 50.01429    , proportion =	0.00156                          )),
       fats = list(total            = list(mg_fed = 1016.60137  , proportion =	0.03164                          ),
                   omega3                       = list(mg_fed = 634.49000   , mg_g       =	0.00665    , composition = list("ALA", "EPA", "DHA") ),
                   omega6                       = list(mg_fed = 3369.20000  , mg_g       =	0.02390    , composition = list("LA", "GLA", "AA"  ))),
@@ -383,9 +383,9 @@ diets <- list(
     ),
     nutrients = list(
       totals                       = list(mg_fed = 96000.00000 , mg_dry     = 30136.91071       , kcal     = 88              ),
-      proteins	                   = list(mg_fed = 3765.82986  , proportion =	0.12496                      ),
+      proteins = list(total          = list(mg_fed = 3765.82986  , proportion =	0.12496                      ),
       taurine		                   = list(mg_fed = 0           , proportion =	0               ),
-      methionine	                 = list(mg_fed = 70.49786    , proportion =	0.00234                      ),
+      methionine	                 = list(mg_fed = 70.49786    , proportion =	0.00234                      )),
       fats = list(total            = list(mg_fed = 1655.85244  , proportion =	0.05494                      ),
                   omega3                       = list(mg_fed = 634.49000   , mg_g       =	0.00532           , composition = list("ALA", "EPA", "DHA") ),
                   omega6                       = list(mg_fed = 3369.20000  , mg_g       =	0.01911           , composition = list("LA", "GLA", "AA"  ))),
@@ -424,15 +424,16 @@ diets <- list(
         beta_carotene	               = list(mg_fed = 1.02329    , mg_kg      =	 33.95471                        ),
         lycopene	                   = list(mg_fed = 0.05936    , ug_kg      =	 1.96960                         )))
   )
-  )
+  ) %>% map(\(x) modify_at(x, "foods_mg", food_tbl))
+
 
 
 supplements <- list(
-  fiber         = list(brand = "metamucil"  , units = "capsules per day", dose = list(low = 0.5, high = 1.0) , route = "in gum or on biscuits"),
-  probiotic     = list(brand = "unknown"    , units = "drops per day"   , dose = list(low = 5.0, high = 10.0), route = "in gum or on biscuits"),
-  antidiarrheal = list(NULL),
-  steroid       = list(brand = "budesonide"   , units = "mg per day"      , dose = list(low = 0.1, high = 0.2) , route = "in gum or on biscuits"),
-  antibiotic    = list(brand = "metronidazole", units = "mg per day"      , dose = list(default = 12.5)        , route = "in gum or on biscuits")
+  fiber         = list(brand = "metamucil"    , units = "capsules per day", route = "in gum or on biscuits"),
+  probiotic     = list(brand = "unknown"      , units = "drops per day"   , route = "in gum or on biscuits"),
+  steroid       = list(brand = "budesonide"   , units = "mg per day"      , route = "in gum or on biscuits"),
+  antibiotic    = list(brand = "metronidazole", units = "mg per day"      , route = "in gum or on biscuits", dose = 12.5 ),
+  antidiarrheal = list(brand = "unknown"      , units = "unknown"         , route = "unknown", dose = NULL)
 )
 
 diet_footnotes <- list(
