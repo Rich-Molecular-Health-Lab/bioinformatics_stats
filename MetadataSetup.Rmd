@@ -21,8 +21,8 @@ params:
 global             <- config::get(config = "default")
 
 here::i_am("MetadataSetup.Rmd")
-source(global$setup)
-source(swan$functions)
+source(here::here(global$setup))
+source(here(swan$functions))
 
 for (file in path$metadata$scripts) {
   source(here(file))
@@ -120,11 +120,15 @@ page_fluid(
       open = FALSE,
       accordion_panel(
         "Nutrition Data from HDZ",
-        tagList(tags$pre(includeText(here("metadata/loris/loris_nutrition.R"))))
+        tagList(tags$pre(includeText(here("metadata/loris/nutrition.R"))))
     ),
       accordion_panel(
         "Dates of Diet Trials and Other States/Events",
         tagList(tags$pre(includeText(here("metadata/loris/hdz_loris_log.R"))))
+    ),
+      accordion_panel(
+        "Formatting Diet Lists into Tables",
+        tagList(tags$pre(includeText(here("metadata/loris/diet_tables.R"))))
     ),
       accordion_panel(
         "Render a Key for Metadata Variables with Descriptions",
@@ -142,112 +146,11 @@ page_fluid(
 
 ### Diet
 
-We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.
-
-```{r}
-nutr_protein <- enframe(proteins, name = "nutrient") %>%
-  mutate(nutrient_class = "proteins",
-         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
-  unnest_longer(value, indices_to = "diet_name")  %>%
-  unnest_wider(value) %>%
-  mutate(relative_unit = "proportion",
-         relative_fed  = proportion, .keep = "unused")
-
-nutr_fat <-   enframe(fats, name = "nutrient") %>%
-  mutate(nutrient_class = "fats",
-         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
-  unnest_longer(value, indices_to = "diet_name")  %>%
-  unnest_wider(value) %>%
-  pivot_longer(cols      = c("proportion", "mg_g"),
-               names_to  = "relative_unit",
-               values_to = "relative_fed",
-               values_drop_na = T)
-
-nutr_CHOs <-   enframe(CHOs, name = "nutrient")  %>%
-  mutate(nutrient_class = "CHOs",
-         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
-  unnest_longer(value, indices_to = "diet_name")  %>%
-  unnest_wider(value) %>%
-  mutate(relative_unit = "proportion",
-         relative_fed  = proportion, .keep = "unused")
-
-nutr_Ash <-  enframe(Ash, name = "nutrient")   %>%
-  mutate(nutrient_class = "Ash",
-         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
-  unnest_longer(value, indices_to = "diet_name")  %>%
-  unnest_wider(value) %>%
-  pivot_longer(cols      = c("proportion", "mg_kg"),
-               names_to  = "relative_unit",
-               values_to = "relative_fed",
-               values_drop_na = T) %>% select(-ca_p_ratio)
-
-nutr_vitamins <- enframe(vitamins, name = "nutrient")    %>%
-  mutate(nutrient_class = "vitamins",
-         nutrient = str_replace_all(nutrient, "totals", "total")) %>%
-  unnest_longer(value, indices_to = "diet_name")  %>%
-  unnest_wider(value) %>%
-  pivot_longer(cols      = c("mg_kg", "IU_g", "ug_kg"),
-               names_to  = "relative_unit",
-               values_to = "relative_fed",
-               values_drop_na = T)
-```
-
-
-```{r}
-
-nutrition <- bind_rows(nutr_protein,
-                       nutr_fat,
-                       nutr_CHOs,
-                       nutr_Ash,
-                       nutr_vitamins) %>%
-  mutate(fed      = mg_fed,
-         fed_unit = "mg", .keep = "unused")
-
-food_totals <-  enframe(foods_mg, name = "diet_name") %>%
-  unnest_longer(value, values_to = "mg_fed", indices_to = "food") %>%
-  arrange(diet_name, food) %>%
-  select(diet_name, food, mg_fed)
-
-diet_totals <- enframe(nutrient_totals, name = "diet_name") %>%
-  unnest_wider(value) %>%
-  mutate(nutrient = "total", nutrient_class = "total") %>%
-  pivot_longer(cols = c("mg_fed", "mg_dry", "kcal"),
-               names_to  = "fed_unit",
-               values_to = "fed") %>%
-  mutate(fed_unit      = str_remove_all(fed_unit, "_fed"),
-         relative_fed  = 1,
-         relative_unit = "proportion") %>%
-  bind_rows(nutrition) %>%
-  arrange(diet_name, nutrient_class, nutrient, fed_unit, relative_unit) %>%
-  select(diet_name, 
-         nutrient_class, 
-         nutrient, 
-         fed, 
-         fed_unit, 
-         relative_fed, 
-         relative_unit)
-
-diet_nested <- diet_totals %>%
-  group_by(diet_name, nutrient_class) %>%
-  nest(.key = "nutrients") %>%
-  pivot_wider(id_cols     = "diet_name", 
-              names_from  = "nutrient_class",
-              values_from = "nutrients") %>%
-  unnest(total) %>%
-  pivot_wider(id_cols     = !any_of(
-                              c("nutrient", 
-                              "fed", 
-                              "fed_unit", 
-                              "relative_fed", 
-                              "relative_unit")),
-              names_from  = c("nutrient", "fed_unit"),
-              names_sep   = "_",
-              values_from = "fed") %>%
-  nest_join(food_totals, by = join_by(diet_name), name = "foods") %>%
-  relocate(all_of(c(starts_with("total_"))), .after = diet_name) %>%
-  relocate(foods, .after = total_mg_dry)
-```
-
+We have only two subjects in this dataset: Culi and Warble. Culi underwent a series of diet trials that we organized into start and end dates, while Warble maintained a baseline diet throughout our study.  
+  
+I organized the schedule of diet trials into a nested list based on the day that each new diet plan began. We can use some reproducible code to turn that into a table where each trial end date is the day before the next trial's start date, and then expand longer so that we have one row of data for each day of a diet trial. Later we will match those days to a schedule of sample collection so that each sample is matched to this list of dietary context.  
+  
+Note that the script I am drawing from for this table also nested more detailed tables into individual columns. This is a way to organize our multi-level nutritional data into a single source that is easier to manipulate and restructure, depending on the scale or variables we want to include. So each row will represent one day, and each column represents a value for one of our variables. The nested columns contain a single table linking that day to that dataset, and additional rows organized by other variables.  
 
 ```{r}
 diet_daily <- enframe(diet_trials, name = NULL) %>%
@@ -262,6 +165,9 @@ diet_daily <- enframe(diet_trials, name = NULL) %>%
   relocate(date)
 ```
 
+Now we will do the same for the list that I created for each medication or supplement administered. Because these all have different dosage units and relative effects, I will adjust the dose units to represent the proportion of the max dosage administered. This makes the data easier to interpret and relate.
+  
+Finally, I will join the data on nutrition content, diet schedules, and medications/supplements into a single table with one row for each day.
 
 ```{r}
 supplement_info <- enframe(supplement_details, name = "supplement") %>%
@@ -367,10 +273,34 @@ metadata <- samples %>%
   left_join(metadata_daily,
             by           = join_by(subject, CollectionDate == date), 
             relationship = "many-to-many") %>%
-  relocate(ordered_variables)
+  relocate(all_of(ordered_variables))
+```
+
+### Complete Metadata Table
+
+It is a good idea to exporta  backup file with this complete table, but first I need to unnest those nested columns. This makes the table very large, so I will export a version without those nested columns and then export those individual tables as their own spreadsheets in the external script.  
+  
+I am also going to use this version for a visual summary table that we can look at to brainstorm variables. I will replace the nested columns with a summary value for each, and later I can add those subtables back in as an expandable row using reactable.
+
+```{r}
+metadata_summary <- metadata %>% 
+  hoist("foods"   , foods          = list("food"), .transform = ~ str_c(., sep = ", ")) %>% 
+  hoist("fats"    , fat_total      = list("fed", -1)) %>% 
+  hoist("proteins", protein_total  = list("fed", -1)) %>% 
+  hoist("CHOs"    , CHOs_total     = list("fed", -1)) %>% 
+  hoist("Ash"     , protein_total  = list("fed", -1)) %>% 
+  hoist("vitamins", vitamins_total = list("fed", -1)) %>%
+  select(-c(proteins,
+            fats    ,
+            CHOs    ,
+            Ash     ,
+            vitamins,
+            foods     ))
+```
 
 
-write.table(metadata, path$metadata$summary, row.names = F, sep = "\t")
+```{r}
+write.table(metadata_summary, here(path$metadata$summary), row.names = F, sep = "\t")
 ```
 
 ```{r}

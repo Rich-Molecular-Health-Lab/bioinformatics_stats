@@ -488,3 +488,5 @@ vitamins <- list(
 diet_footnotes <- list(
   "Gum supplement is Mazuri Enrich Gum Arabic (5B35)"
 )
+
+

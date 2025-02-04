@@ -8,13 +8,6 @@ food_weights <- list(
     "protein_rotate"   = 2100,
     "seasonal_veggies" = 15000
     ),
-  probiotic = list(
-    "biscuit"          = 13200,
-    "invertebrates"    = 10000,
-    "gum_arabic"       = 12000,
-    "protein_rotate"   = 2100,
-    "seasonal_veggies" = 15000
-  ),
   biscuit_elim = list(
     "biscuit"          = 0,
     "invertebrates"    = 18000,
