@@ -162,7 +162,7 @@ diet_daily <- enframe(diet_trials, name = NULL) %>%
   mutate(date = map2(begin, end, seq, by = "day")) %>%  
   unnest(date) %>%
   select(-c(begin, end)) %>%
-  relocate(date)
+  relocate(date) %>% distinct()
 ```
 
 Now we will do the same for the list that I created for each medication or supplement administered. Because these all have different dosage units and relative effects, I will adjust the dose units to represent the proportion of the max dosage administered. This makes the data easier to interpret and relate.
@@ -194,7 +194,7 @@ diet_supplements_daily <- enframe(supplements, name = NULL) %>%
   unnest(date) %>%
   select(-c(begin, end)) %>%
   relocate(date) %>%
-  right_join(diet_daily, by = join_by(subject, date))
+  right_join(diet_daily, by = join_by(subject, date)) %>% distinct()
 ```
 
 ## Subject Info
@@ -255,7 +255,7 @@ metadata_daily <- tibble(date = seq.Date(from = ymd(path$day1),
   left_join(access_dates, by = join_by(date)) %>%
   mutate(warb_status = replace_na(warb_status, "anestrus"),
          pair_access = replace_na(pair_access, "n")) %>%
-  left_join(diet_supplements_daily, by = join_by(subject, date))
+  left_join(diet_supplements_daily, by = join_by(subject, date)) %>% distinct()
 ```
 
 ## Sample Inventory
@@ -273,38 +273,71 @@ metadata <- samples %>%
   left_join(metadata_daily,
             by           = join_by(subject, CollectionDate == date), 
             relationship = "many-to-many") %>%
-  relocate(all_of(ordered_variables))
+  relocate(all_of(ordered_variables)) %>% 
+  filter(!is.na(study_day) & !is.na(subject)) %>% 
+  distinct() %>%
+  arrange(study_day, subject, SequenceID)
 ```
 
 ### Complete Metadata Table
 
-It is a good idea to exporta  backup file with this complete table, but first I need to unnest those nested columns. This makes the table very large, so I will export a version without those nested columns and then export those individual tables as their own spreadsheets in the external script.  
-  
-I am also going to use this version for a visual summary table that we can look at to brainstorm variables. I will replace the nested columns with a summary value for each, and later I can add those subtables back in as an expandable row using reactable.
+```{r}
+wide_subtables <- function(tbl, class) {
+  tbl %>% select(SampleID, ExtractID, SequenceID, class) %>% 
+  unnest(class) %>% 
+  select(SampleID, ExtractID, SequenceID, nutrient, fed) %>%
+  pivot_wider(id_cols     = c("SampleID", "ExtractID", "SequenceID"), 
+              names_from  = "nutrient", 
+              values_from = "fed")
+}
+```
 
 ```{r}
-metadata_summary <- metadata %>% 
-  hoist("foods"   , foods          = list("food"), .transform = ~ str_c(., sep = ", ")) %>% 
-  hoist("fats"    , fat_total      = list("fed", -1)) %>% 
-  hoist("proteins", protein_total  = list("fed", -1)) %>% 
-  hoist("CHOs"    , CHOs_total     = list("fed", -1)) %>% 
-  hoist("Ash"     , protein_total  = list("fed", -1)) %>% 
-  hoist("vitamins", vitamins_total = list("fed", -1)) %>%
-  select(-c(proteins,
-            fats    ,
-            CHOs    ,
-            Ash     ,
-            vitamins,
-            foods     ))
+proteins_wide <- wide_subtables(metadata, "proteins")
+fats_wide     <- wide_subtables(metadata, "fats")
+CHOs_wide     <- wide_subtables(metadata, "CHOs")
+Ash_wide      <- wide_subtables(metadata, "Ash")
+vitamins_wide <- wide_subtables(metadata, "vitamins")
+subtables <- proteins_wide %>% 
+  left_join(fats_wide, by = join_by(SampleID, ExtractID, SequenceID)) %>% 
+  left_join(CHOs_wide, by = join_by(SampleID, ExtractID, SequenceID)) %>% 
+  left_join(Ash_wide, by = join_by(SampleID, ExtractID, SequenceID)) %>% 
+  left_join(vitamins_wide, by = join_by(SampleID, ExtractID, SequenceID))
+```
+
+```{r}
+reactable(
+              metadata,
+              resizable           = T,
+              filterable          = T,
+              showPageSizeOptions = T,
+              highlight           = T,
+              striped             = T,
+              compact             = T,
+              height              = 600,
+              columns             = list(
+                proteins = colDef(cell = function(value, index) {
+                  
+                  proteins_tbl <- metadata$proteins[[index]]
+                if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
+                  fed_value <- tbl$fed[tbl$nutrient == "total"]
+                  unit <- tbl$fed_unit[tbl$nutrient == "total"]
+                  paste0(fed_value, " ", unit)
+                } else {
+                  NA
+                }
+    htmltools::div(
+          style = "margin-top: 5px; margin-left: 20px; font-size: 12px;",
+      reactable(proteins_tbl,
+                fullWidth = F
+                  )
+                )
+                })))
 ```
 
 
 ```{r}
-write.table(metadata_summary, here(path$metadata$summary), row.names = F, sep = "\t")
-```
-
-```{r}
-metadata_summary <-  reactable(
+metadata_test <- reactable(
               metadata,
               resizable           = T,
               filterable          = T,
@@ -332,29 +365,57 @@ metadata_summary <-  reactable(
     }
   }),
   proteins = colDef(name = "Proteins",
-                      cell = function(value, index) {
-                        tbl <- metadata$proteins[[index]]
-                        if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
-                          fed_value <- tbl$fed[tbl$nutrient == "total"]
-                          unit <- tbl$fed_unit[tbl$nutrient == "total"]
-                          paste0(fed_value, " ", unit)
-                        } else {
-                          NA
-                        }
-                      },
-                    details = function(index) {
-    proteins_tbl <- metadata$proteins[[index]]
+                    details = function(row_index) {
+    proteins_tbl <- proteins_wide[[row_index]]
     
     if (inherits(proteins_tbl, "tbl_df") && nrow(proteins_tbl) > 0) {
       return(reactable(proteins_tbl, 
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }
+  )
+  )
+  )
+```
+
+
+```{r}
+metadata_visual <-  reactable(
+              metadata,
+              resizable           = T,
+              filterable          = T,
+              showPageSizeOptions = T,
+              highlight           = T,
+              striped             = T,
+              compact             = T,
+              height              = 600,
+          columns      = list(
+            
+  foods = colDef(name = "Foods", 
+                 details = function(index) {
+    foods_tbl <- metadata$foods[[index]]
+    
+    if (inherits(foods_tbl, "tbl_df") && nrow(foods_tbl) > 0) {
+      return(reactable(foods_tbl, 
                        columns = list(
-                         nutrient     = nested_colDefs$nutrient     ,
-                         fed          = nested_colDefs$fed          ,
-                         fed_unit     = nested_colDefs$fed_unit     ,
-                         relative_fed = nested_colDefs$relative_fed ,
-                         relative_unit= nested_colDefs$relative_unit
+                         food   = nested_colDefs$food   ,
+                         mg_fed = nested_colDefs$mg_fed 
                        ),
-                       columnGroups = list(nested_colGroups$amount_day),
+                       fullWidth = FALSE, 
+                       compact   = TRUE, 
+                       bordered  = TRUE, 
+                       striped   = TRUE))
+    }
+  }),
+  proteins = colDef(name = "Proteins",
+                    details = function(row_index) {
+    proteins_tbl <- proteins_wide[[row_index]]
+    
+    if (inherits(proteins_tbl, "tbl_df") && nrow(proteins_tbl) > 0) {
+      return(reactable(proteins_tbl, 
                        fullWidth = FALSE, 
                        compact   = TRUE, 
                        bordered  = TRUE, 

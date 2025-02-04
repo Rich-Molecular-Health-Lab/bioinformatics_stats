@@ -132,4 +132,6 @@ log <- list(
 keeper_notes <- enframe(log, name = NULL) %>%
   unnest_wider(value) %>%
   unnest_longer(subject) %>%
-  mutate(keeper_note = str_glue("{tag}", ": ", "{note}"), .keep = "unused")
+  mutate(keeper_note = str_glue("{tag}", ": ", "{note}"), .keep = "unused") %>%
+  ungroup() %>%
+  reframe(keeper_note = str_flatten(keeper_note, collapse = "; "), .by = c(date, subject))

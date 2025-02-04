@@ -60,13 +60,13 @@ nutrition <- bind_rows(nutr_protein,
                        nutr_Ash,
                        nutr_vitamins) %>%
   mutate(fed      = mg_fed,
-         fed_unit = "mg", .keep = "unused")
+         fed_unit = "mg", .keep = "unused") %>%  distinct()
 
 food_totals <-  enframe(foods_mg, name = "diet_name") %>%
   unnest_longer(value, values_to = "mg_fed", indices_to = "food") %>%
   mutate(diet_name = factor(diet_name, levels = diet_factors)) %>%
   arrange(diet_name, food) %>%
-  select(diet_name, food, mg_fed)
+  select(diet_name, food, mg_fed) %>%  distinct()
 
 
 diet_totals <- enframe(nutrient_totals, name = "diet_name") %>%
@@ -88,7 +88,7 @@ diet_totals <- enframe(nutrient_totals, name = "diet_name") %>%
          fed, 
          fed_unit, 
          relative_fed, 
-         relative_unit)
+         relative_unit) %>% distinct()
 
 write.table(diet_totals, here(path$metadata$diet_totals), sep = "\t", row.names = F)
 
@@ -110,4 +110,4 @@ diet_nested <- diet_totals %>%
     values_from = "fed") %>%
   nest_join(food_totals, by = join_by(diet_name), name = "foods") %>%
   relocate(all_of(c(starts_with("total_"))), .after = diet_name) %>%
-  relocate(foods, .after = total_mg_dry)
+  relocate(foods, .after = total_mg_dry) %>% distinct()
