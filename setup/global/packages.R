@@ -46,6 +46,7 @@ required_packages <- c(
   "png",
   "rcompanion",
   "reactable",
+  "reactablefmtr",
   "rmarkdown",
   "sass",
   "scales",
@@ -101,6 +102,7 @@ library(phyloseq)
 library(png)
 library(rcompanion)
 library(reactable)
+library(reactablefmtr)
 library(rmarkdown)
 library(sass)
 library(scales)

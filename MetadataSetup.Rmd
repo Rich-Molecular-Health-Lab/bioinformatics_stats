@@ -267,8 +267,17 @@ samples <- read.table(here(path$inventories$all_stages),
                       header = T, 
                       sep = "\t") %>%
             mutate(CollectionDate = ymd(CollectionDate),
-                   subject        = str_to_lower(Subject), .keep = "unused")
+                   subject        = str_to_lower(Subject), .keep = "unused") %>%
+            mutate(identifier = case_when(
+              !is.na(SequenceID)                    ~ SequenceID,
+              is.na(SequenceID) & !is.na(ExtractID) ~ ExtractID,
+              is.na(ExtractID)  & !is.na(SampleID)  ~ SampleID,
+              .default = SampleID
+            )) %>% relocate(identifier)
+```
 
+
+```{r}
 metadata <- samples %>% 
   left_join(metadata_daily,
             by           = join_by(subject, CollectionDate == date), 
@@ -276,63 +285,282 @@ metadata <- samples %>%
   relocate(all_of(ordered_variables)) %>% 
   filter(!is.na(study_day) & !is.na(subject)) %>% 
   distinct() %>%
-  arrange(study_day, subject, SequenceID)
+  arrange(study_day, subject, identifier)
 ```
+
+```{r}
+foods_expand     <- metadata %>% select(identifier, foods   ) %>% unnest(foods   )
+proteins_expand  <- metadata %>% select(identifier, proteins) %>% unnest(proteins) %>% rename(protein = nutrient, protein_fed = fed)
+fats_expand      <- metadata %>% select(identifier, fats    ) %>% unnest(fats    ) %>% rename(fat     = nutrient, fat_fed     = fed)
+CHOs_expand      <- metadata %>% select(identifier, CHOs    ) %>% unnest(CHOs    ) %>% rename(CHO     = nutrient, CHO_fed     = fed)
+Ash_expand       <- metadata %>% select(identifier, Ash     ) %>% unnest(Ash     ) %>% rename(mineral = nutrient, mineral_fed = fed)
+vitamins_expand  <- metadata %>% select(identifier, vitamins) %>% unnest(vitamins) %>% rename(vitamin = nutrient, vitamin_fed = fed)
+```
+
+
+```{r}
+compact_nutrients <-  select(
+                   filter(proteins_expand    , protein     == "total"), identifier, protein_fed) %>%
+  left_join(select(filter(fats_expand        , fat         == "total"), identifier, fat_fed    ), by = join_by(identifier)) %>%
+  left_join(select(filter(CHOs_expand        , CHO         == "total"), identifier, CHO_fed    ), by = join_by(identifier))  %>%
+  left_join(select(filter(Ash_expand         , mineral     == "total"), identifier, mineral_fed), by = join_by(identifier)) 
+```
+
 
 ### Complete Metadata Table
 
 ```{r}
-wide_subtables <- function(tbl, class) {
-  tbl %>% select(SampleID, ExtractID, SequenceID, class) %>% 
-  unnest(class) %>% 
-  select(SampleID, ExtractID, SequenceID, nutrient, fed) %>%
-  pivot_wider(id_cols     = c("SampleID", "ExtractID", "SequenceID"), 
-              names_from  = "nutrient", 
-              values_from = "fed")
-}
-```
-
-```{r}
+foods_wide <- metadata %>% select(identifier, subject, foods) %>% 
+  unnest(foods) %>% 
+  select(identifier, subject, food, mg_fed) %>%
+  pivot_wider(id_cols     = c("identifier", "subject"), 
+              names_from  = "food", 
+              values_from = "mg_fed") %>%
+  mutate(HDZ_oatgel = replace_na(HDZ_oatgel, 0))
 proteins_wide <- wide_subtables(metadata, "proteins")
 fats_wide     <- wide_subtables(metadata, "fats")
-CHOs_wide     <- wide_subtables(metadata, "CHOs")
+CHOs_wide     <- wide_subtables(metadata, "CHOs") %>% select(-WSC)
 Ash_wide      <- wide_subtables(metadata, "Ash")
-vitamins_wide <- wide_subtables(metadata, "vitamins")
+vitamins_wide <- wide_subtables(metadata, "vitamins") %>% select(-vitamins_total)
+
 subtables <- proteins_wide %>% 
-  left_join(fats_wide, by = join_by(SampleID, ExtractID, SequenceID)) %>% 
-  left_join(CHOs_wide, by = join_by(SampleID, ExtractID, SequenceID)) %>% 
-  left_join(Ash_wide, by = join_by(SampleID, ExtractID, SequenceID)) %>% 
-  left_join(vitamins_wide, by = join_by(SampleID, ExtractID, SequenceID))
+  left_join(fats_wide    , by = join_by(identifier, subject)) %>% 
+  left_join(CHOs_wide    , by = join_by(identifier, subject)) %>% 
+  left_join(Ash_wide     , by = join_by(identifier, subject)) %>% 
+  left_join(vitamins_wide, by = join_by(identifier, subject)) %>%
+  left_join(foods_wide, by = join_by(identifier, subject))
+```
+
+
+```{r}
+relative_nutrients <- subtables %>% mutate(across(where(is.numeric), ~ relative_values(.x))) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(subtables, by = join_by(identifier, subject))
+```
+
+
+```{r}
+relative_foods <- relative_nutrients %>% select(identifier, subject, any_of(nutrition_factors$foods)) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(foods_wide, by = join_by(identifier, subject))
+relative_proteins <- relative_nutrients %>% select(identifier, subject, any_of(nutrition_factors$proteins)) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(proteins_wide, by = join_by(identifier, subject))
+relative_fats     <- relative_nutrients %>% select(identifier, subject, any_of(nutrition_factors$fats    )) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(fats_wide    , by = join_by(identifier, subject))
+relative_CHOs     <- relative_nutrients %>% select(identifier, subject, any_of(nutrition_factors$CHOs    )) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(CHOs_wide    , by = join_by(identifier, subject))
+relative_Ash      <- relative_nutrients %>% select(identifier, subject, any_of(nutrition_factors$Ash     )) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(Ash_wide     , by = join_by(identifier, subject))
+relative_vitamins <- relative_nutrients %>% select(identifier, subject, any_of(nutrition_factors$vitamins)) %>% rename_with(~ paste0("rel_", .x), where(is.numeric)) %>% left_join(vitamins_wide, by = join_by(identifier, subject))
+```
+
+
+```{r}
+write.table(subtables         , here(path$metadata$subtables)    , sep = "\t", row.names = F)
+write.table(relative_nutrients, here(path$metadata$subtables_rel), sep = "\t", row.names = F)
+write.table(relative_foods    , here(path$metadata$foods)        , sep = "\t", row.names = F)
+write.table(relative_proteins , here(path$metadata$proteins)     , sep = "\t", row.names = F)
+write.table(relative_fats     , here(path$metadata$fats    )     , sep = "\t", row.names = F)
+write.table(relative_CHOs     , here(path$metadata$CHOs    )     , sep = "\t", row.names = F)
+write.table(relative_Ash      , here(path$metadata$Ash     )     , sep = "\t", row.names = F)
+write.table(relative_vitamins , here(path$metadata$vitamins)     , sep = "\t", row.names = F)
 ```
 
 ```{r}
-reactable(
-              metadata,
-              resizable           = T,
-              filterable          = T,
-              showPageSizeOptions = T,
-              highlight           = T,
-              striped             = T,
-              compact             = T,
-              height              = 600,
-              columns             = list(
-                proteins = colDef(cell = function(value, index) {
-                  
-                  proteins_tbl <- metadata$proteins[[index]]
-                if (inherits(tbl, "tbl_df") && "total" %in% tbl$nutrient) {
-                  fed_value <- tbl$fed[tbl$nutrient == "total"]
-                  unit <- tbl$fed_unit[tbl$nutrient == "total"]
-                  paste0(fed_value, " ", unit)
-                } else {
-                  NA
-                }
-    htmltools::div(
-          style = "margin-top: 5px; margin-left: 20px; font-size: 12px;",
-      reactable(proteins_tbl,
-                fullWidth = F
-                  )
-                )
-                })))
+metadata_summary <- metadata %>% 
+  select(-c(foods, proteins, fats, CHOs, Ash)) %>%
+  left_join(compact_nutrients, by = join_by(identifier)) %>%
+  relocate(ends_with("fed"), .after = "total_mg_dry")
+```
+
+
+```{r}
+vis_metadata <- metadata_summary %>%
+  reactable(
+    resizable           = T,
+    filterable          = T,
+    showPageSizeOptions = T,
+    compact             = T,
+    height              = 600,
+    theme               = clean(centered = TRUE),
+    columns             = list(
+      total_mg = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        )
+      ),
+      total_kcal = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        )
+      ),
+      total_mg_dry = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        )
+      ),
+      protein_fed = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        ),
+        details = function(index) {
+    data_sub <- proteins_expand[proteins_expand$identifier == metadata_summary$identifier[index], ]
+    reactable(
+      data_sub,
+      fullWidth = F,
+      theme     = clean(centered = TRUE),
+      columns = list(
+        protein         = colDef(name = "Protein"),
+        protein_fed     = colDef(name  = "Amt Daily (mg)"),
+        relative_fed    = colDef(name = "Proportion Daily", format = colFormat(percent = T, digits = 1)),
+        identifier      = colDef(show = FALSE),
+        fed_unit        = colDef(show = FALSE),
+        relative_unit   = colDef(show = FALSE)
+      )
+    ) 
+  }
+      ),
+      fat_fed = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        ),
+        details = function(index) {
+    data_sub <- fats_expand[fats_expand$identifier == metadata_summary$identifier[index], ]
+    reactable(
+      data_sub,
+      fullWidth = F,
+      theme     = clean(centered = TRUE),
+      columns = list(
+        fat             = colDef(name = "Fat"),
+        fat_fed         = colDef(name  = "Amt Daily (mg)"),
+        relative_fed    = colDef(name = "Proportion Daily", format = colFormat(percent = T, digits = 1)),
+        identifier      = colDef(show = FALSE),
+        fed_unit        = colDef(show = FALSE),
+        relative_unit   = colDef(show = FALSE)
+      )
+    ) 
+  }
+      ),
+      CHO_fed = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        ),
+        details = function(index) {
+    data_sub <- CHOs_expand[CHOs_expand$identifier == metadata_summary$identifier[index], ]
+    reactable(
+      data_sub,
+      fullWidth = F,
+      theme     = clean(centered = TRUE),
+      columns = list(
+        CHO             = colDef(name = "Carbohydrate"),
+        CHO_fed         = colDef(name = "Amt Daily (mg)"),
+        relative_fed    = colDef(name = "Proportion Daily", format = colFormat(percent = T, digits = 1)),
+        identifier      = colDef(show = FALSE),
+        fed_unit        = colDef(show = FALSE),
+        relative_unit   = colDef(show = FALSE)
+      )
+    ) 
+  }
+      ),
+      mineral_fed = colDef(
+        cell = data_bars(
+          data          = .,
+          fill_color    = "#775D60FF",
+          background    = "#A79C9A80",
+          border_style  = 'solid',
+          border_width  = '1px',
+          border_color  = "#775D60FF",
+          box_shadow    = TRUE,
+          text_position = 'inside-base',
+          number_fmt    = scales::comma
+        ),
+        details = function(index) {
+    data_sub <- Ash_expand[Ash_expand$identifier == metadata_summary$identifier[index], ]
+    reactable(
+      data_sub,
+      fullWidth = F,
+      theme     = clean(centered = TRUE),
+      columns = list(
+        mineral         = colDef(name = "Mineral Type"),
+        mineral_fed     = colDef(name = "Amt Daily (mg)"),
+        relative_fed    = colDef(name = "Proportion Daily", format = colFormat(percent = T, digits = 1)),
+        identifier      = colDef(show = FALSE),
+        fed_unit        = colDef(show = FALSE),
+        relative_unit   = colDef(show = FALSE)
+      )
+    ) 
+  }
+      ),
+      vitamins = colDef(
+        cell = function(value, index) {
+          tags$i("square-plus")
+        },
+        details = function(index) {
+    data_sub <- vitamins_expand[vitamins_expand$identifier == metadata_summary$identifier[index], ]
+    reactable(
+      data_sub,
+      fullWidth = F,
+      theme     = clean(centered = TRUE),
+      columns = list(
+        vitamin         = colDef(name = "Vitamin"),
+        vitamin_fed     = colDef(name = "Amt Daily (mg)"),
+        relative_fed    = colDef(name = "Relative Amt Daily", cell = function(value, index) {
+          unit <- vitamins_expand[index, "relative_unit"]
+      tags$span(
+        value,
+        tags$span(style = "font-size: 0.8em; margin-left: 2px; color: gray;", paste0(unit))
+      )
+        }),
+        identifier      = colDef(show = FALSE),
+        fed_unit        = colDef(show = FALSE),
+        relative_unit   = colDef(show = FALSE)
+      )
+    ) 
+  }
+      )
+  )
+)
+
 ```
 
 

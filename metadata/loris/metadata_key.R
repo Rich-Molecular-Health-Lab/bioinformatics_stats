@@ -1,9 +1,9 @@
 metadata_variables <- list(
   sample_context = list(
     basics = list(
+      identifier        =  "unique ID representing deepest processing ID (SequenceID if available, then ExtractID, then SampleID if sample not extracted yet)",
       study_day         =  "day of sample collection relative to collection start",
       subject           =  "name of subject sample collected from",
-      SampleID          =  "unique id for each sample collected",
       steps_remaining   = "has DNA sample been extracted/purified, library prepped, sequenced, etc?"
       ),
    nutrition = list(
@@ -13,9 +13,13 @@ metadata_variables <- list(
      total_mg_dry      = "total dry weight of daily diet in mg",
      foods             = "nested tibble with list of food categories and total mass of each (in mg) for a given diet" ,
      proteins          = "nested tibble with masses and relative proportions of proteins in diet" ,  
+     proteins_total    = "total protein as a proportion of the max mg protein fed for that subject across all study days",
      fats              = "nested tibble with masses and relative proportions of fats in diet" ,  
+     fats_total        = "total fat as a proportion of the max mg fat fed for that subject across all study days",
      CHOs              = "nested tibble with masses and relative proportions of carbohydrates in diet" ,  
+     CHOs_total        = "total carbohydrates as a proportion of the max mg carbohydrates fed for that subject across all study days",
      Ash               = "nested tibble with masses and relative proportions of mineral content in diet" ,    
+     Ash_total         = "total mineral content as a proportion of the max mg mineral content fed for that subject across all study days",
      vitamins          = "nested tibble with masses and relative proportions of vitamin content in diet" 
      ),
    supplements = list(
@@ -41,6 +45,7 @@ metadata_variables <- list(
      BirthLocation      =  "Institution where subject was born (uses AZA codes)"
      ),
    collection = list(
+     SampleID           =  "unique id for each sample collected",
      CollectionDate     =  "date of sample collection (yyyy-mm-dd)",     
      SampleSet          =  "lab code used to identify different samplesets (loris for this one)",
      SampleCollectedBy  =  "identifier for person or group collecting sample",
@@ -87,6 +92,132 @@ metadata_variables <- list(
       )
     )
   )
+
+relative_nutrients <- list(
+  id_cols = list(
+    "identifier"   =  "unique ID representing deepest processing ID (SequenceID if available, then ExtractID, then SampleID if sample not extracted yet)",
+    "SampleID"     =  "unique id for each sample collected",
+    "ExtractID"    =  "unique id for each (DNA) extract",
+    "SequenceID"   =  "unique id for each sequencing run per sample",         
+    "subject"      =  "name of subject sample collected from"
+  ),      
+  relative_vals = list(
+    proteins   = list(
+      "rel_methionine"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_taurine"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_proteins_total"         = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
+      ),     
+    fats       = list(
+        "rel_omega3"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+        "rel_omega6"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+        "rel_fats_total"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
+      ),  
+    CHOs       = list(
+      "rel_ADF"                    = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_NDF"                    = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_TDF"                    = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_crude_fiber"            = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_starch"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_CHOs_total"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
+      ),    
+    Ash        = list(
+      "rel_calcium"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_magnesium"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_phosphorus"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_potassium"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_copper"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_iodine"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_iron"                   = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_manganese"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_zinc"                   = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_Ash_total"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
+      ),    
+    vitamins   = list(
+      "rel_beta_carotene"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_lycopene"               = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_choline"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_folic_acid"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B1_thiamin"         = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B2_riboflavin"      = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B3_niacin"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B5_pantothenic_acid"= "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B6_pyridoxine"      = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B7_biotin"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_B12"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_C"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_A"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_D3"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_E"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_vit_K"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
+      ),  
+    foods      = list(
+      "rel_biscuit"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_gum_arabic"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_invertebrates"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_protein_rotate"         = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_seasonal_veggies"       = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
+      "rel_HDZ_oatgel"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days"
+      )
+    ),
+  raw_vals      = list(
+    proteins    = list(
+      "methionine"                 = "total amount fed per day in mg",
+      "taurine"                    = "total amount fed per day in mg",
+      "proteins_total"             = "total amount fed per day in mg"
+    ),
+    fats        = list(
+      "omega3"                     = "total amount fed per day in mg",
+      "omega6"                     = "total amount fed per day in mg",
+      "fats_total"                 = "total amount fed per day in mg"
+    ),
+    CHOs        = list(
+      "ADF"                        = "total amount fed per day in mg",
+      "NDF"                        = "total amount fed per day in mg",
+      "TDF"                        = "total amount fed per day in mg",
+      "crude_fiber"                = "total amount fed per day in mg",
+      "starch"                     = "total amount fed per day in mg",
+      "CHOs_total"                 = "total amount fed per day in mg"
+      ),     
+    Ash         = list(
+      "calcium"                    = "total amount fed per day in mg",
+      "magnesium"                  = "total amount fed per day in mg",
+      "phosphorus"                 = "total amount fed per day in mg",
+      "potassium"                  = "total amount fed per day in mg",
+      "copper"                     = "total amount fed per day in mg",
+      "iodine"                     = "total amount fed per day in mg",
+      "iron"                       = "total amount fed per day in mg",
+      "manganese"                  = "total amount fed per day in mg",
+      "zinc"                       = "total amount fed per day in mg",
+      "Ash_total"                  = "total amount fed per day in mg"
+      ),     
+    vitamins    = list(
+      "beta_carotene"              = "total amount fed per day in mg",
+      "lycopene"                   = "total amount fed per day in mg",
+      "choline"                    = "total amount fed per day in mg",
+      "folic_acid"                 = "total amount fed per day in mg",
+      "vit_B1_thiamin"             = "total amount fed per day in mg",
+      "vit_B2_riboflavin"          = "total amount fed per day in mg",
+      "vit_B3_niacin"              = "total amount fed per day in mg",
+      "vit_B5_pantothenic_acid"    = "total amount fed per day in mg",
+      "vit_B6_pyridoxine"          = "total amount fed per day in mg",
+      "vit_B7_biotin"              = "total amount fed per day in mg",
+      "vit_B12"                    = "total amount fed per day in mg",
+      "vit_C"                      = "total amount fed per day in mg",
+      "vit_A"                      = "total amount fed per day in mg",
+      "vit_D3"                     = "total amount fed per day in mg",
+      "vit_E"                      = "total amount fed per day in mg",
+      "vit_K"                      = "total amount fed per day in mg"
+      ),
+    foods       = list(
+      "biscuit"                    = "total amount fed per day in mg",
+      "gum_arabic"                 = "total amount fed per day in mg",
+      "invertebrates"              = "total amount fed per day in mg",
+      "protein_rotate"             = "total amount fed per day in mg",
+      "seasonal_veggies"           = "total amount fed per day in mg",
+      "HDZ_oatgel"                 = "total amount fed per day in mg"
+      )
+  )
+)
 
 nested_metadata <- list(
   foods    = list(
@@ -256,7 +387,7 @@ nutrition_details <- list(
 ordered_variables = c(
     "study_day",
     "subject",
-    "SampleID",
+    "identifier",
     "steps_remaining",
     "diet_name",
     "total_mg",
@@ -284,6 +415,7 @@ ordered_variables = c(
     "MotherID",
     "FatherID",
     "BirthLocation",
+    "SampleID",
     "CollectionDate",
     "SampleSet",
     "SampleCollectedBy",

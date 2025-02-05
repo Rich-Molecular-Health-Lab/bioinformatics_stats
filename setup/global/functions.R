@@ -140,3 +140,17 @@ yes.no.aggregated <- function(col) {
   }
   ")
 }
+
+relative_values <- function(col) {
+  col = col/max(col)
+}
+
+wide_subtables <- function(tbl, class) {
+  tbl %>% select(identifier, subject, class) %>% 
+    unnest(class) %>% 
+    select(identifier, subject, nutrient, fed) %>%
+    pivot_wider(id_cols     = c("identifier", "subject"), 
+                names_from  = "nutrient", 
+                values_from = "fed") %>%
+    rename_with( ~ paste0(class, "_", .x), total)
+}

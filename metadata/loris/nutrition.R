@@ -323,6 +323,16 @@ Ash <- list(
 ) 
 
 vitamins <- list(
+  totals = list(
+    baseline                       = list(mg_fed = 0, mg_kg = 0),
+    biscuit_elim                   = list(mg_fed = 0, mg_kg = 0),
+    lessBug_moreEgg                = list(mg_fed = 0, mg_kg = 0),
+    seasonals                      = list(mg_fed = 0, mg_kg = 0),
+    oatgel                         = list(mg_fed = 0, mg_kg = 0),
+    low_lectin                     = list(mg_fed = 0, mg_kg = 0),
+    gum36_veg37_invert27           = list(mg_fed = 0, mg_kg = 0),
+    water31_root31_protein19_gum19 = list(mg_fed = 0, mg_kg = 0)
+  ),
   vit_A = list(
     baseline                       = list(mg_fed = 641       , IU_g = 22),
     biscuit_elim                   = list(mg_fed = 732       , IU_g = 25.9006),
