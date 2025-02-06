@@ -384,396 +384,100 @@ nutrition_details <- list(
   )
 )
 
-ordered_variables = c(
-    "study_day",
-    "subject",
-    "identifier",
-    "steps_remaining",
-    "diet_name",
-    "total_mg",
-    "total_kcal",
-    "total_mg_dry",
-    "foods",
-    "proteins",
-    "fats",
-    "CHOs",
-    "Ash",
-    "vitamins",
-    "probiotic",
-    "fiber",
-    "steroid",
-    "antibiotic",
-    "antidiarrheal",
-    "holding",
-    "pair_access",
-    "warb_status",
-    "keeper_note",
-    "Subj_Certainty",
-    "Sex",
-    "subject_age",
-    "StudbookID",
-    "MotherID",
-    "FatherID",
-    "BirthLocation",
-    "SampleID",
-    "CollectionDate",
-    "SampleSet",
-    "SampleCollectedBy",
-    "SampleNotes",
-    "ExtractID",
-    "ExtractDate",
-    "ExtractConc",
-    "ExtractKit",
-    "ExtractBox",
-    "ExtractedBy",
-    "ExtractNotes",
-    "SequenceID",
-    "LibPrepDate",
-    "LibPrepWorkflow",
-    "LibraryCode",
-    "protocol_group_id",
-    "LibPrepKit",
-    "LibraryTube",
-    "TemplateVolPrep",
-    "LibraryBarcode",
-    "fragment_type",
-    "strands",
-    "Length",
-    "InputMassStart",
-    "Conc_QC2",
-    "PoolSamples",
-    "SampVolPool",
-    "BeadVol",
-    "TotalPoolVol",
-    "InputMassFinal",
-    "SeqRunID",
-    "SeqDate",
-    "SeqDateTime",
-    "FlowCellType",
-    "FlowCellSerial",
-    "FlongleAdapter",
-    "SeqDevice",
-    "reads_unclassified"
-)
-
-nested_colDefs <- list(
-  food              = colDef(name = "Food Items"),
-  mg_fed            = colDef(name = "mg per Day"),
-  nutrient          = colDef(name = "Category"),
-  fed               = colDef(name = "Weight"),
-  fed_unit          = colDef(name = "Units"),
-  relative_fed      = colDef(name = "Relative Amount"),
-  relative_unit     = colDef(name = "Relative Metric")
-)
-nested_colGroups <- list(
-  amount_day  = colGroup(name = "Fed per Day", columns = c("fed", "fed_unit", "relative_fed", "relative_unit"))
-)
-
-
-nested_tbls <- list(
-  foods = colDef(name = "Foods", 
-                 details = function(index) {
-    foods_tbl <- metadata$foods[[index]]
-    
-    if (inherits(foods_tbl, "tbl_df") && nrow(foods_tbl) > 0) {
-      return(reactable(foods_tbl, 
-                       columns = list(
-                         food   = nested_colDefs$food   ,
-                         mg_fed = nested_colDefs$mg_fed 
-                       ),
-                       fullWidth = FALSE, 
-                       compact   = TRUE, 
-                       bordered  = TRUE, 
-                       striped   = TRUE))
-    }
-  }),
-  proteins = colDef(name = "Proteins",
-                    details = function(index) {
-    proteins_tbl <- metadata$proteins[[index]]
-    
-    if (inherits(proteins_tbl, "tbl_df") && nrow(proteins_tbl) > 0) {
-      return(reactable(proteins_tbl, 
-                       columns = list(
-                         nutrient     = nested_colDefs$nutrient     ,
-                         fed          = nested_colDefs$fed          ,
-                         fed_unit     = nested_colDefs$fed_unit     ,
-                         relative_fed = nested_colDefs$relative_fed ,
-                         relative_unit= nested_colDefs$relative_unit
-                       ),
-                       columnGroups = nested_colGroups$amount_day,
-                       fullWidth = FALSE, 
-                       compact   = TRUE, 
-                       bordered  = TRUE, 
-                       striped   = TRUE))
-    }
-  }),
-  fats = colDef(name = "Fats",
-                details = function(index) {
-    fats_tbl <- metadata$fats[[index]]
-    
-    if (inherits(fats_tbl, "tbl_df") && nrow(fats_tbl) > 0) {
-      return(reactable(fats_tbl, 
-                       columns = list(
-                         nutrient     = nested_colDefs$nutrient     ,
-                         fed          = nested_colDefs$fed          ,
-                         fed_unit     = nested_colDefs$fed_unit     ,
-                         relative_fed = nested_colDefs$relative_fed ,
-                         relative_unit= nested_colDefs$relative_unit
-                       ),
-                       columnGroups = nested_colGroups$amount_day,
-                       fullWidth = FALSE, 
-                       compact   = TRUE, 
-                       bordered  = TRUE, 
-                       striped   = TRUE))
-    }
-  }),
-  
-  CHOs = colDef(name = "Carbohydrates",
-                details = function(index) {
-    CHOs_tbl <- metadata$CHOs[[index]]
-    
-    if (inherits(CHOs_tbl, "tbl_df") && nrow(CHOs_tbl) > 0) {
-      return(reactable(CHOs_tbl, 
-                       columns = list(
-                         nutrient     = nested_colDefs$nutrient     ,
-                         fed          = nested_colDefs$fed          ,
-                         fed_unit     = nested_colDefs$fed_unit     ,
-                         relative_fed = nested_colDefs$relative_fed ,
-                         relative_unit= nested_colDefs$relative_unit
-                       ),
-                       columnGroups = nested_colGroups$amount_day,
-                       fullWidth = FALSE, 
-                       compact   = TRUE, 
-                       bordered  = TRUE, 
-                       striped   = TRUE))
-    }
-  }),
-  
-    vitamins = colDef(name = "Vitamins",
-                      details = function(index) {
-    vitamins_tbl <- metadata$vitamins[[index]]
-    
-    if (inherits(vitamins_tbl, "tbl_df") && nrow(vitamins_tbl) > 0) {
-      return(reactable(vitamins_tbl, 
-                       columns = list(
-                         nutrient     = nested_colDefs$nutrient     ,
-                         fed          = nested_colDefs$fed          ,
-                         fed_unit     = nested_colDefs$fed_unit     ,
-                         relative_fed = nested_colDefs$relative_fed ,
-                         relative_unit= nested_colDefs$relative_unit
-                       ),
-                       columnGroups = nested_colGroups$amount_day,
-                       fullWidth = FALSE, 
-                       compact   = TRUE, 
-                       bordered  = TRUE, 
-                       striped   = TRUE))
-    }
-  })
-)
-
-colDefs <- list(
-  study_day         = colDef(name = "Study Day"),
-  subject           = colDef(name = "Subject"),
-  SampleID          = colDef(name = "Sample ID"),
-  steps_remaining   = colDef(name = "Analysis Stage"),
-  diet_name         = colDef(name = "Diet Phase"),
-  total_mg          = colDef(name = "Mass (in mg)"),
-  total_kcal        = colDef(name = "kcal"),
-  total_mg_dry      = colDef(name = "Dry Mass (in mg)"),
-  foods             = nested_tbls$foods   ,
-  proteins          = nested_tbls$proteins,
-  fats              = nested_tbls$fats    ,
-  CHOs              = nested_tbls$CHOs    ,
-  Ash               = nested_tbls$Ash     ,
-  vitamins          = nested_tbls$vitamins,
-  probiotic         = colDef(name = "Probiotic"),
-  fiber             = colDef(name = "Fiber"),
-  steroid           = colDef(name = "Steroid"),
-  antibiotic        = colDef(name = "Antibiotic"),
-  antidiarrheal     = colDef(name = "Antidiarrheal"),
-  holding           = colDef(name = "Holding Facility"),
-  pair_access       = colDef(name = "Full Pair Access"),
-  warb_status       = colDef(name = "Warble's Repro Status"),
-  keeper_note       = colDef(name = "Keeper Notes"),
-  Subj_Certainty    = colDef(name = "ID Certainty"),
-  Sex               = colDef(name = "Sex"),
-  subject_age       = colDef(name = "Age (years) on Collection Date"),
-  StudbookID        = colDef(name = "AZA Studbook ID"),
-  MotherID          = colDef(name = "Mother's AZA Studbook ID"),
-  FatherID          = colDef(name = "Father's AZA Studbook ID"),
-  BirthLocation     = colDef(name = "Birth Institution (AZA Code)"),
-  CollectionDate    = colDef(name = "Collection Date"),
-  SampleSet         = colDef(name = "Sample Set Code"),
-  SampleCollectedBy = colDef(name = "Collected by"),
-  SampleNotes       = colDef(name = "Collection Notes"),
-  ExtractID         = colDef(name = "ID"),
-  ExtractDate       = colDef(name = "Date"),
-  ExtractConc       = colDef(name = "DNA Concentration (ng/ul)"),
-  ExtractKit        = colDef(name = "Kit"),
-  ExtractBox        = colDef(name = "Storage Box"),
-  ExtractedBy       = colDef(name = "Performed by"),
-  ExtractNotes      = colDef(name = "Notes"),
-  SequenceID        = colDef(name = "Sequenced Profile ID"),
-  LibPrepDate       = colDef(name = "Date"),
-  LibPrepWorkflow   = colDef(name = "Protocol"),
-  LibraryCode       = colDef(name = "Pooled Library ID"),
-  protocol_group_id = colDef(name = "Sequencing Run ID (MinKNOW)"),
-  LibPrepKit        = colDef(name = "Kit"),
-  LibraryTube       = colDef(name = "Tube"),
-  TemplateVolPrep   = colDef(name = "Extract Volume Added (ul)"),
-  LibraryBarcode    = colDef(name = "Barcode ID"),
-  fragment_type     = colDef(name = "Fragment Size Code"),
-  strands           = colDef(name = "ds or ssDNA"),
-  Length            = colDef(name = "Target Length"),
-  InputMassStart    = colDef(name = "Starting Target Mass (ng)"),
-  Conc_QC2          = colDef(name = "Final Library Concentration (ng/ul)"),
-  PoolSamples       = colDef(name = "Samples Pooled?"),
-  SampVolPool       = colDef(name = "Volume added to Pool"),
-  BeadVol           = colDef(name = "Volume AMPure Beads to Pool"),
-  TotalPoolVol      = colDef(name = "Total Pool Volume (ul)"),
-  InputMassFinal    = colDef(name = "Final Target Mass (ng)"),
-  SeqRunID          = colDef(name = "ID"),
-  SeqDate           = colDef(name = "Date"),
-  SeqDateTime       = colDef(name = "Date and Time"),
-  FlowCellType      = colDef(name = "Flow Cell Type"),
-  FlowCellSerial    = colDef(name = "Flow Cell Serial"),
-  FlongleAdapter    = colDef(name = "Flongle Adapter Serial"),
-  SeqDevice         = colDef(name = "MinION Device"),
-  reads_unclassified= colDef(name = "Unclassified Read Count")
-)
-
 colGroups <- list(
-  basics      = colGroup(name = "Samples"                                     , columns = c("study_day", "subject", "SampleID"), sticky = "left"),
-  diet_totals = colGroup(name = "Dietary Total per Day"                       , columns = c("total_mg", "total_kcal", "total_mg_dry")),
-  diet_nested = colGroup(name = "Detailed Dietary Totals per Day"             , columns = c("foods", "proteins", "fats", "CHOs", "Ash", "vitamins")),
-  supplements = colGroup(name = "Meds/Supplements (as Proportion of Max Dose)", columns = c("probiotic", "fiber", "steroid", "antibiotic", "antidiarrheal")),
-  subject     = colGroup(name = "Subject Info"                                , columns = c("Subj_Certainty"  , "Sex", "subject_age", "StudbookID", "MotherID", "FatherID", "BirthLocation")),
-  collection  = colGroup(name = "Sample Collection"                           , columns = c(
-    "CollectionDate",
-    "SampleSet",
-    "SampleCollectedBy",
-    "SampleNotes")),
-  extraction  = colGroup(name = "DNA Extraction/Purification", columns = c(
-    "ExtractID",
-    "ExtractDate",
-    "ExtractConc",
-    "ExtractKit",
-    "ExtractBox",
-    "ExtractedBy",
-    "ExtractNotes")),
-  libraryprep = colGroup(name = "Library Prep Procedures", columns = c(
-    "LibPrepDate",
-    "LibPrepWorkflow",
-    "LibraryCode",
-    "protocol_group_id",
-    "LibPrepKit",
-    "LibraryTube",
-    "TemplateVolPrep",
-    "LibraryBarcode",
-    "fragment_type",
-    "strands",
-    "Length",
-    "InputMassStart",
-    "Conc_QC2",
-    "PoolSamples",
-    "SampVolPool",
-    "BeadVol",
-    "TotalPoolVol"
-  )),
-  sequencing = colGroup(name = "Sequencing Run", columns = c(
-    "InputMassFinal",
-    "SeqRunID",
-    "SeqDate",
-    "SeqDateTime",
-    "FlowCellType",
-    "FlowCellSerial",
-    "FlongleAdapter",
-    "SeqDevice",
-    "reads_unclassified"
-  ))
-)
 
-metadata_table <- list(
-  columns = list(
-    study_day         = colDefs$study_day         , 
-    subject           = colDefs$subject           , 
-    SampleID          = colDefs$SampleID          , 
-    steps_remaining   = colDefs$steps_remaining   , 
-    diet_name         = colDefs$diet_name         , 
-    total_mg          = colDefs$total_mg          , 
-    total_kcal        = colDefs$total_kcal        , 
-    total_mg_dry      = colDefs$total_mg_dry      , 
-    foods             = colDefs$foods             , 
-    proteins          = colDefs$proteins          , 
-    fats              = colDefs$fats              , 
-    CHOs              = colDefs$CHOs              , 
-    Ash               = colDefs$Ash               , 
-    vitamins          = colDefs$vitamins          , 
-    probiotic         = colDefs$probiotic         , 
-    fiber             = colDefs$fiber             , 
-    steroid           = colDefs$steroid           , 
-    antibiotic        = colDefs$antibiotic        , 
-    antidiarrheal     = colDefs$antidiarrheal     , 
-    holding           = colDefs$holding           , 
-    pair_access       = colDefs$pair_access       , 
-    warb_status       = colDefs$warb_status       , 
-    keeper_note       = colDefs$keeper_note       , 
-    Subj_Certainty    = colDefs$Subj_Certainty    , 
-    Sex               = colDefs$Sex               , 
-    subject_age       = colDefs$subject_age       , 
-    StudbookID        = colDefs$StudbookID        , 
-    MotherID          = colDefs$MotherID          , 
-    FatherID          = colDefs$FatherID          , 
-    BirthLocation     = colDefs$BirthLocation     , 
-    CollectionDate    = colDefs$CollectionDate    , 
-    SampleSet         = colDefs$SampleSet         , 
-    SampleCollectedBy = colDefs$SampleCollectedBy , 
-    SampleNotes       = colDefs$SampleNotes       , 
-    ExtractID         = colDefs$ExtractID         , 
-    ExtractDate       = colDefs$ExtractDate       , 
-    ExtractConc       = colDefs$ExtractConc       , 
-    ExtractKit        = colDefs$ExtractKit        , 
-    ExtractBox        = colDefs$ExtractBox        , 
-    ExtractedBy       = colDefs$ExtractedBy       , 
-    ExtractNotes      = colDefs$ExtractNotes      , 
-    SequenceID        = colDefs$SequenceID        , 
-    LibPrepDate       = colDefs$LibPrepDate       , 
-    LibPrepWorkflow   = colDefs$LibPrepWorkflow   , 
-    LibraryCode       = colDefs$LibraryCode       , 
-    protocol_group_id = colDefs$protocol_group_id , 
-    LibPrepKit        = colDefs$LibPrepKit        , 
-    LibraryTube       = colDefs$LibraryTube       , 
-    TemplateVolPrep   = colDefs$TemplateVolPrep   , 
-    LibraryBarcode    = colDefs$LibraryBarcode    , 
-    fragment_type     = colDefs$fragment_type     , 
-    strands           = colDefs$strands           , 
-    Length            = colDefs$Length            , 
-    InputMassStart    = colDefs$InputMassStart    , 
-    Conc_QC2          = colDefs$Conc_QC2          , 
-    PoolSamples       = colDefs$PoolSamples       , 
-    SampVolPool       = colDefs$SampVolPool       , 
-    BeadVol           = colDefs$BeadVol           , 
-    TotalPoolVol      = colDefs$TotalPoolVol      , 
-    InputMassFinal    = colDefs$InputMassFinal    , 
-    SeqRunID          = colDefs$SeqRunID          , 
-    SeqDate           = colDefs$SeqDate           , 
-    SeqDateTime       = colDefs$SeqDateTime       , 
-    FlowCellType      = colDefs$FlowCellType      , 
-    FlowCellSerial    = colDefs$FlowCellSerial    , 
-    FlongleAdapter    = colDefs$FlongleAdapter    , 
-    SeqDevice         = colDefs$SeqDevice         , 
-    reads_unclassified= colDefs$reads_unclassified
-    ),
-  columnGroups = list(
-    colGroups$basics     ,
-    colGroups$diet_totals,
-    colGroups$diet_nested,
-    colGroups$supplements,
-    colGroups$subject    ,
-    colGroups$collection ,
-    colGroups$extraction,
-    colGroups$libraryprep,
-    colGroups$sequencing
+colGroup(name = "Amount Fed Daily", columns = c(       
+  "total_mg"    ,      
+  "total_kcal"  ,       
+  "total_mg_dry",       
+  "protein_fed" ,      
+  "fat_fed"     ,       
+  "CHO_fed"     ,       
+  "mineral_fed" ,
+  "vitamins"
+  )
+),
+
+colGroup(name = "Daily Doses of Meds/Supplements (Normalized)", columns = c(       
+  "probiotic"   ,  
+  "fiber"       ,  
+  "steroid"     ,  
+  "antibiotic"  ,  
+  "antidiarrheal"
+  )
+),
+
+colGroup(name = "Environmental Variables", columns = c(   
+  "holding"        ,    
+  "pair_access"    ,    
+  "warb_status"    ,    
+  "keeper_note"      
+  )
+),
+
+colGroup(name = "Subject ID and Studbook Data", columns = c(
+  "Subj_Certainty"  ,   
+  "Sex"             ,  
+  "subject_age"     ,   
+  "StudbookID"      ,   
+  "MotherID"        ,  
+  "FatherID"        ,   
+  "BirthLocation"      
+  )
+),
+
+
+colGroup(name = "Sample Collection", columns = c(
+  "SampleID"          ,
+  "CollectionDate"     ,
+  "SampleSet"          ,
+  "SampleCollectedBy" ,
+  "SampleNotes"        
+  )
+),
+
+colGroup(name = "DNA Extraction", columns = c(
+  "ExtractID"     ,     
+  "ExtractDate"   ,    
+  "ExtractConc"   ,     
+  "ExtractKit"    ,     
+  "ExtractBox"    ,    
+  "ExtractedBy"   ,     
+  "ExtractNotes"  
+  )
+),
+
+colGroup(name = "Library Prep", columns = c(
+  "SequenceID"        ,
+  "LibPrepDate"       ,
+  "LibPrepWorkflow"   ,
+  "LibraryCode"       ,
+  "protocol_group_id" ,
+  "LibPrepKit"        ,
+  "LibraryTube"       ,
+  "TemplateVolPrep"   ,
+  "LibraryBarcode"    ,
+  "fragment_type"     ,
+  "strands"           ,
+  "Length"            ,
+  "InputMassStart"    ,
+  "Conc_QC2"          ,
+  "PoolSamples"       ,
+  "SampVolPool"       ,
+  "BeadVol"           ,
+  "TotalPoolVol"      ,
+  "InputMassFinal"    
+  )
+),
+
+colGroup(name = "DNA Sequencing", columns = c(
+  "SeqDate"          ,  
+  "SeqDateTime"      , 
+  "FlowCellType"     ,  
+  "FlowCellSerial"   ,  
+  "FlongleAdapter"   , 
+  "SeqDevice"        ,  
+  "reads_unclassified"
   )
 )
-    
+)

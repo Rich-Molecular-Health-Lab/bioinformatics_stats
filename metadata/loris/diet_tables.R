@@ -1,25 +1,3 @@
-nutrition_factors <- list(
-  foods    = c("biscuit", "HDZ_oatgel", "invertebrates",  "protein_rotate", "gum_arabic", "seasonal_veggies"),
-  classes  = c("proteins", "fats", "CHOs", "Ash", "vitamins", "total"),
-  proteins = c("methionine", "taurine", "total", "proteins_total"),
-  fats     = c("omega3", "omega6", "total", "fats_total"),
-  CHOs     = c("ADF", "NDF", "TDF", "WSC", "crude_fiber", "starch", "total", "CHOs_total"),
-  Ash      = c("calcium", "magnesium", "phosphorus", "potassium", "copper", "iodine", "iron", "manganese", "zinc", "total", "Ash_total"),
-  vitamins = c("beta_carotene", "lycopene", "choline", "folic_acid", "vit_B1_thiamin", "vit_B2_riboflavin", "vit_B3_niacin", "vit_B5_pantothenic_acid", "vit_B6_pyridoxine","vit_B7_biotin", "vit_B12", "vit_C", "vit_A", "vit_D3", "vit_E", "vit_K", "total", "vitamins_total"),
-  all      = c("methionine", "taurine", "omega3", "omega6", "ADF", "NDF", "TDF", "WSC", "crude_fiber", "starch", "calcium", "magnesium", "phosphorus", "potassium", "copper", "iodine", "iron", "manganese", "zinc","beta_carotene", "lycopene", "choline", "folic_acid", "vit_B1_thiamin", "vit_B2_riboflavin", "vit_B3_niacin", "vit_B5_pantothenic_acid", "vit_B6_pyridoxine","vit_B7_biotin", "vit_B12", "vit_C", "vit_A", "vit_D3", "vit_E", "vit_K", "total")
-)
-
-diet_factors <- c(
-"baseline",
-"oatgel",
-"biscuit_elim",
-"lessBug_moreEgg",
-"seasonals",
-"low_lectin",
-"gum36_veg37_invert27",
-"water31_root31_protein19_gum19"
-)
-
 enframe_nutr_simple <- function(list, name) {
   enframe(list, name = "nutrient") %>%
     mutate(nutrient_class = factor(name, levels = nutrition_factors$classes),

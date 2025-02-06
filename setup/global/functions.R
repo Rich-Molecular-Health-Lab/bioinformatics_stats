@@ -141,8 +141,8 @@ yes.no.aggregated <- function(col) {
   ")
 }
 
-relative_values <- function(col) {
-  col = col/max(col)
+relative_values <- function(col, col2) {
+  col2 = col/max(col)
 }
 
 wide_subtables <- function(tbl, class) {
@@ -153,4 +153,18 @@ wide_subtables <- function(tbl, class) {
                 names_from  = "nutrient", 
                 values_from = "fed") %>%
     rename_with( ~ paste0(class, "_", .x), total)
+}
+
+default_dataBars <- function(data, scale, unit) {
+  data_bars(
+    data          = data,
+    fill_color    = "#775D60FF",
+    background    = "#A79C9A80",
+    border_style  = 'solid',
+    border_width  = '1px',
+    border_color  = "#775D60FF",
+    box_shadow    = TRUE,
+    text_position = 'inside-base',
+    number_fmt    = label_number(scale = scale, scale_cut = cut_si(unit))
+  )
 }

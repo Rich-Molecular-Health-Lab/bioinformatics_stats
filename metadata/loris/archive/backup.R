@@ -27,3 +27,145 @@ diet_trials <- list(
 ) %>% .[order(map_dbl(., ~ .x$begin))] 
 
 
+
+### Medication
+
+In addition to the steroids included in trials, Culi recieved antibiotics for a stint during our collections. We definitely want to keep something like antibiotics factored into our microbiome data analysis, so I will create a table for that.
+
+```{r}
+culi.meds <- meds$culi %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         med_type,
+         med_name,
+         med_dose,
+         dose_units
+  )
+
+warble.meds <- meds$warble %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         med_type,
+         med_name,
+         med_dose,
+         dose_units
+  )
+
+```
+
+
+### Housing
+
+Over the course of the study, both lorises moved from neighboring enclosures in one building to a much more expansive set of enclosures with more variable shifting capabilities in another building. They moved at different dates, so I want to score each sample based on those different date ranges.
+
+```{r}
+warble.housing <- housing$warble %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         enclosure)
+
+culi.housing <- housing$culi %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         enclosure)
+```
+
+
+### Bristol Fecal Scores
+
+I only have scores for Culi recorded by keepers, and scores were recorded anywhere from 0 to 3x per day. For Warble, keepers indicated that daily scores should be recorded as "1".
+
+```{r}
+bristol <- read.table(here("metadata/loris/bristols.tsv"), sep = "\t", header = T) %>%
+  mutate(Date = ymd(date), .keep = "unused")
+```
+
+
+```{r}
+culi.bristol <- bristol %>%
+  group_by(date) %>%
+  summarize(bristol_min  = min(score),
+            bristol_mean = round(mean(score), digits = 0),
+            bristol_max  = max(score)) %>%
+  ungroup() %>%
+  full_join(study_days, by = join_by(date == Date)) %>%
+  select(Date = date, 
+         bristol_min,
+         bristol_mean,
+         bristol_max) %>%
+  arrange(Date)
+
+warble.bristol <- bristol_warble %>%
+  group_by(date) %>%
+  summarize(bristol_min  = min(score),
+            bristol_mean = round(mean(score), digits = 0),
+            bristol_max  = max(score)) %>%
+  ungroup() %>%
+  full_join(study_days, by = join_by(date == Date)) %>%
+  select(Date = date, 
+         bristol_min,
+         bristol_mean,
+         bristol_max) %>%
+  arrange(Date)
+
+```
+
+### Repro
+
+```{r, warning = FALSE}
+access.schedule <- repro.log$access %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         access = value)
+
+estrus.schedule <- repro.log$estrus %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         estrus = value)
+
+
+preg.schedule <- repro.log$pregnant %>%
+  rowwise() %>%
+  mutate(Date = list(seq.Date(from = start_day, to = last_day, by = "day"))) %>%
+  unnest(Date) %>%
+  select(Date, 
+         pregnant = value)
+
+warble.repro.notes <- repro.log$notes %>%
+  filter(subject == "warble" | subject == "both") %>%
+  select(Date, 
+         repro_note) %>%
+  group_by(Date) %>%
+  summarise(repro_note = str_c(repro_note, collapse = "; "), .groups = "drop")
+
+culi.repro.notes <- repro.log$notes %>%
+  filter(subject == "culi" | subject == "both") %>%
+  select(Date, 
+         repro_note) %>%
+  group_by(Date) %>%
+  summarise(repro_note = str_c(repro_note, collapse = "; "), .groups = "drop")
+
+```
+
+
+### Health
+
+Now I will score the misc. notes provided by staff on health observations as variables. 
+
+```{r}
+culi.health <- health.log$culi %>%
+  group_by(Date) %>%
+  summarise(health_note = str_c(health_note, collapse = "; "), .groups = "drop")
+```
