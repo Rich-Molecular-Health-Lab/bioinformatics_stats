@@ -115,9 +115,3 @@ factor_cols <- c(
   "SeqDevice",
   "diet_name"
 )
-
-icon_cols <- list(
-  steps_remaining = c(
-    
-  )
-)

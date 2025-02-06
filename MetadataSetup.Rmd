@@ -23,7 +23,6 @@ global             <- config::get(config = "default")
 here::i_am("MetadataSetup.Rmd")
 source(here::here(global$setup))
 source(here(swan$functions))
-
 for (file in path$metadata$scripts) {
   source(here(file))
 }
@@ -333,29 +332,6 @@ compact_nutrients <-  select(
 ### Complete Metadata Table
 
 ```{r}
-metadata_summary <- metadata %>% 
-  left_join(compact_nutrients, by = join_by(identifier)) %>%
-  mutate(icon_steps_remaining = case_when(
-    steps_remaining == "sample not extracted"           ~ "poop",
-    steps_remaining == "extract not sequenced"          ~ "vial",
-    steps_remaining == "sample extracted and sequenced" ~ "dna"
-    ),
-    color_steps_remaining = case_when(
-    steps_remaining == "sample not extracted"           ~ "#D2981AFF",
-    steps_remaining == "extract not sequenced"          ~ "#A53E1FFF",
-    steps_remaining == "sample extracted and sequenced" ~ "#457277FF"
-    ),
-    color_holding        = if_else(holding        == "old", "#D4D9DDFF", "#532A34FF"),
-    icon_Subj_Certainty  = if_else(Subj_Certainty == "no", "square-minus", "square-check"),
-    color_Subj_Certainty = if_else(Subj_Certainty == "no", "#D4D9DDFF", "#532A34FF"),
-    icon_pair_access     = if_else(pair_access    == "n" , "square-minus", "square-check"),
-    color_pair_access    = if_else(pair_access    == "n" , "#D4D9DDFF", "#532A34FF"),
-  across(any_of(factor_cols)      , ~ fct_relabel(.x, ~ str_to_title(.x))),
-  across(any_of(factor_cols_upper), ~ fct_relabel(.x, ~ str_to_upper(.x)))) %>%
-  relocate(ends_with("fed"), .after = "total_mg_dry")
-```
-
-```{r}
 default_nutrients <- function(data, scale, unit) {
   icon_assign(data, 
               fill_color  = "#1F6683FF", 
@@ -372,6 +348,10 @@ default_supplements <- function(data) {
               empty_color = "#D1C7B540", 
               buckets     = 3
               )
+}
+
+default_categorical <- function(data, icon_col, color_col) {
+  icon_sets(data, icon_ref = icon_col, icon_color_ref = color_col, icon_position = "over")
 }
 
 
@@ -442,6 +422,32 @@ default_subtable <- function(index, tbl, cols) {
         
 ```
 
+
+```{r}
+metadata_summary <- metadata %>% 
+  left_join(compact_nutrients, by = join_by(identifier)) %>%
+  mutate(icon_steps_remaining = case_when(
+    steps_remaining == "sample not extracted"           ~ "poop",
+    steps_remaining == "extract not sequenced"          ~ "vial",
+    steps_remaining == "sample extracted and sequenced" ~ "dna"
+    ),
+    color_steps_remaining = case_when(
+    steps_remaining == "sample not extracted"           ~ "#D2981AFF",
+    steps_remaining == "extract not sequenced"          ~ "#A53E1FFF",
+    steps_remaining == "sample extracted and sequenced" ~ "#457277FF"
+    ),
+    icon_holding         = "house",
+    color_holding        = if_else(holding        == "old", "#D4D9DDFF", "#532A34FF"),
+    icon_Subj_Certainty  = if_else(Subj_Certainty == "no", "square-minus", "square-check"),
+    color_Subj_Certainty = if_else(Subj_Certainty == "no", "#D4D9DDFF", "#532A34FF"),
+    icon_pair_access     = if_else(pair_access    == "n" , "square-minus", "square-check"),
+    color_pair_access    = if_else(pair_access    == "n" , "#D4D9DDFF", "#532A34FF"),
+  across(any_of(factor_cols)      , ~ fct_relabel(.x, ~ str_to_title(.x))),
+  across(any_of(factor_cols_upper), ~ fct_relabel(.x, ~ str_to_upper(.x)))) %>%
+  relocate(ends_with("fed"), .after = "total_mg_dry")
+```
+
+
 ```{r}
 vis_metadata <- metadata_summary %>%
   reactable(
@@ -456,19 +462,10 @@ vis_metadata <- metadata_summary %>%
   study_day         = colDef(name = "Study Day"),
   subject           = colDef(name = "Subject"),
   identifier        = colDef(name = "ID"),
-  steps_remaining   = colDef(name = "Lab Stage", 
-    cell = icon_sets(., icon_ref = "icon_steps_remaining", 
-                     icons = c("poop", "vial", "dna"), 
-                     icon_position = "over")),
+  steps_remaining   = colDef(name = "Lab Stage", cell = default_categorical(., "icon_steps_remaining", "color_steps_remaining")),
   diet_name         = colDef(name = "Diet"),
-  total_mg          = colDef(
-    name = "Total Weight",
-    cell = default_nutrients(., .001, "g")
-  ),
-  total_kcal = colDef(
-    name = "Calories",
-    cell = default_nutrients(., 1000, "cal")
-  ),
+  total_mg          = colDef(name = "Total Weight", cell = default_nutrients(., .001, "g")),
+  total_kcal = colDef(name = "Calories", cell = default_nutrients(., 1000, "cal")),
   total_mg_dry = colDef(
     name = "Dry Weight",
     cell = default_nutrients(., .001, "g")
@@ -506,17 +503,11 @@ vis_metadata <- metadata_summary %>%
   steroid           = colDef(name = "Steroid"         , cell = default_supplements(.)),
   antibiotic        = colDef(name = "Antibiotic"      , cell = default_supplements(.)),
   antidiarrheal     = colDef(name = "Antidiarrheal"   , cell = default_supplements(.)),
-  holding           = colDef(name = "Holding Facility", cell = icon_sets(metadata_summary, 
-                                                                         icon_color_ref = "color_holding",  
-                                                                         icons = "house-circle-check")),
-  pair_access       = colDef(name = "Pair Access"     , cell = icon_sets(metadata_summary, 
-                                                                         icon_ref = "icon_pair_access", 
-                                                                         icon_position = "over")),
+  holding           = colDef(name = "Holding Facility", cell = default_categorical(., "icon_holding"    , "color_holding")),
+  pair_access       = colDef(name = "Pair Access"     , cell = default_categorical(., "icon_pair_access", "color_pair_access")),
   warb_status       = colDef(name = "Warble's Status"),
   keeper_note       = colDef(name = "Keeper Notes"),
-  Subj_Certainty    = colDef(name = "ID Certainty"    , cell = icon_sets(metadata_summary, 
-                                                                         icon_ref = "icon_Subj_Certainty", 
-                                                                         icon_position = "over")),
+  Subj_Certainty    = colDef(name = "ID Certainty"    , cell = default_categorical(., "icon_Subj_Certainty", "color_Subj_Certainty")),
   Sex               = colDef(name = "Sex"             ),
   subject_age       = colDef(name = "Age at Collection"),
   StudbookID        = colDef(name = "Studbook ID"),

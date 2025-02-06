@@ -1,3 +1,6 @@
+i_am("metadata/loris/diet_tables.R")
+source(here("metadata/loris/factors.R"))
+
 enframe_nutr_simple <- function(list, name) {
   enframe(list, name = "nutrient") %>%
     mutate(nutrient_class = factor(name, levels = nutrition_factors$classes),
