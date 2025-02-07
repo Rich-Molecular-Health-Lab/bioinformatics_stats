@@ -20,7 +20,6 @@ required_packages <- c(
   "bsicons",
   "bslib",
   "bsplus",
-  "config",
   "conflicted",
   "crosstalk",
   "data.table",
@@ -76,7 +75,6 @@ library(bookdown)
 library(bsicons)
 library(bslib)
 library(bsplus)
-library(config)
 library(conflicted)
 library(crosstalk)
 library(data.table)
