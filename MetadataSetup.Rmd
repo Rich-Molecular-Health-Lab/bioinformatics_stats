@@ -272,6 +272,7 @@ samples <- read.table(here(path$inventories$all_stages),
             )) %>% relocate(identifier)
 ```
 
+## Complete Metadata Table
 
 ```{r}
 metadata <- samples %>% 
@@ -285,60 +286,37 @@ metadata <- samples %>%
   select(any_of(ordered_variables))
 ```
 
-```{r}
-foods_expand     <- metadata %>% 
-  select(identifier, foods   ) %>% 
-  unnest(foods   )
-proteins_expand  <- metadata %>% 
-  select(identifier, proteins) %>% 
-  unnest(proteins) %>% 
-  mutate(relative_fed = if_else(relative_unit == "proportion", relative_fed*100, relative_fed),
-         relative_unit = if_else(
-           relative_unit == "proportion", "%",
-           str_replace_all(relative_unit, "_", "/")))
-fats_expand      <- metadata %>% 
-  select(identifier, fats    ) %>% 
-  unnest(fats    ) %>% 
-  mutate(relative_fed = if_else(relative_unit == "proportion", relative_fed*100, relative_fed),
-         relative_unit = if_else(
-           relative_unit == "proportion", "%",
-           str_replace_all(relative_unit, "_", "/")))
-CHOs_expand      <- metadata %>% 
-  select(identifier, CHOs    ) %>% 
-  unnest(CHOs    ) %>% 
-  mutate(relative_fed = if_else(relative_unit == "proportion", relative_fed*100, relative_fed),
-         relative_unit = if_else(
-           relative_unit == "proportion", "%",
-           str_replace_all(relative_unit, "_", "/")))
-Ash_expand       <- metadata %>% 
-  select(identifier, Ash     ) %>% unnest(Ash     ) %>% 
-  mutate(relative_fed = if_else(relative_unit == "proportion", relative_fed*100, relative_fed),
-         relative_unit = if_else(
-           relative_unit == "proportion", "%",
-           str_replace_all(relative_unit, "_", "/")))
-vitamins_expand  <- metadata %>% 
-  select(identifier, vitamins) %>% 
-  unnest(vitamins) %>% 
-  mutate(relative_fed = if_else(relative_unit == "proportion", relative_fed*100, relative_fed),
-         relative_unit = if_else(
-           relative_unit == "proportion", "%",
-           str_replace_all(relative_unit, "_", "/")))
+### Export
 
-compact_nutrients <-  select(
-                   filter(proteins_expand, nutrient == "total"), identifier, protein_fed = fed) %>%
-  left_join(select(filter(fats_expand    , nutrient == "total"), identifier, fat_fed     = fed    ), by = join_by(identifier)) %>%
-  left_join(select(filter(CHOs_expand    , nutrient == "total"), identifier, CHO_fed     = fed    ), by = join_by(identifier))  %>%
-  left_join(select(filter(Ash_expand     , nutrient == "total"), identifier, mineral_fed = fed)    , by = join_by(identifier)) 
+```{r}
+write.table(metadata,
+            path$metadata$summary,
+            row.names = F,
+            sep = "\t")
+
 ```
 
 
-### Complete Metadata Table
+
+### Visual Metadata Summary
 
 ```{r}
-icon_fill  <- c("#1F6683FF")
-icon_empty <- c("#D1C7B540")
-icon_bins  <- c(3)
+foods_expand     <- metadata %>% 
+  select(identifier, foods   ) %>% 
+  unnest(foods   ) %>%
+  mutate(food = fct_recode(food, !!!rename_foods))
 
+fats_expand      <- expand_subtables(metadata, "fats")
+proteins_expand  <- expand_subtables(metadata, "proteins")
+CHOs_expand      <- expand_subtables(metadata, "CHOs")
+Ash_expand       <- expand_subtables(metadata, "Ash")
+vitamins_expand  <- expand_subtables(metadata, "vitamins")
+
+compact_nutrients <-  select(
+                   filter(proteins_expand, nutrient == "Total"), identifier, protein_fed = fed) %>%
+  left_join(select(filter(fats_expand    , nutrient == "Total"), identifier, fat_fed     = fed    ), by = join_by(identifier)) %>%
+  left_join(select(filter(CHOs_expand    , nutrient == "Total"), identifier, CHO_fed     = fed    ), by = join_by(identifier))  %>%
+  left_join(select(filter(Ash_expand     , nutrient == "Total"), identifier, mineral_fed = fed)    , by = join_by(identifier)) 
 ```
 
 
@@ -356,69 +334,29 @@ metadata_summary <- metadata %>%
     steps_remaining == "extract not sequenced"          ~ "#A53E1FFF",
     steps_remaining == "sample extracted and sequenced" ~ "#457277FF"
     ),
-  num_holding          = if_else(holding        == "old", 0, 1),
-  num_warb_status      = case_when(warb_status == "anestrus" ~ 0, warb_status == "estrus" ~ 1, warb_status == "pregnant" ~ 2),
-  icon_Subj_Certainty  = if_else(Subj_Certainty == "no", "square-minus", "square-check"),
-  color_Subj_Certainty = if_else(Subj_Certainty == "no", "#D4D9DDFF", "#532A34FF"),
+  num_holding          = if_else(holding        == "old", 1, 2),
+  num_warb_status      = case_when(warb_status == "anestrus" ~ 1, warb_status == "estrus" ~ 2, warb_status == "pregnant" ~ 3),
+  icon_Subj_Certainty  = if_else(Subj_Certainty == "no", "x", "check"),
+  color_Subj_Certainty = if_else(Subj_Certainty == "no", "#CA562CFF", "#B5B991FF"),
   icon_pair_access     = if_else(pair_access    == "n" , "square-minus", "square-check"),
-  color_pair_access    = if_else(pair_access    == "n" , "#D4D9DDFF", "#532A34FF")
+  color_pair_access    = if_else(pair_access    == "n" , "#E1C473FF", "#2C5724FF"),
+  icon_subject         = if_else(subject == "warble", "female", "male"),
+  color_subject        = if_else(subject == "warble", "#803777FF", "#216F63FF"),
+  subject              = str_to_title(subject),
+  diet_name            = str_to_title(diet_name),
+  num_diet             = dense_rank(diet_name),
+  icon_vitamins        = "square-caret-down"
   ) %>%
+  mutate(diet_name    = fct_recode(diet_name, !!!rename_diets),
+         diet_display = str_glue("{diet_name}", ": ", "{total_kcal}", " kcal"),
+         holding      = str_to_title(holding),
+         pair_access  = str_to_title(pair_access),
+         warb_status  = str_to_title(warb_status)) %>%
   relocate(ends_with("fed"), .after = "total_mg_dry")
 ```
-
-```{r}
-subtab_div <- function(data_sub) {
-  tags$div(style = "position: relative; margin-left: 350px; width: max-content; 
-                                background: white; padding: 10px; border: 1px solid #ccc; 
-                                box-shadow: 2px 2px 10px rgba(0,0,0,0.2);", data_sub)
-}
-
-nutrient_cell <- function(data) {
-  data_bars(data, number_fmt = label_number(scale = .001, scale_cut = cut_si("g")))
-}
-
-steps_remaining_cell <- function(data) {
-  icon_sets(data, icon_ref = "icon_steps_remaining", icon_color_ref = "color_steps_remaining", icon_position = "over")
-}
-
-food_subtab <- function(index) {
-      data_sub <- foods_expand[foods_expand$identifier == metadata_summary$identifier[index], ]
-      food_sub <-  reactable(data_sub,
-                  theme     = flatly(),
-                  fullWidth = FALSE,
-                  columns   = list(
-                      identifier = colDef(show = FALSE),
-                      food       = colDef(name = "Food"),
-                      mg_fed     = colDef(name = "Amount Daily", cell = nutrient_cell(data_sub))
-                  )
-        )
-      subtab_div(food_sub)
-}
-
-
-nutrient_details <- function(index, data) {
-      data_sub <- data[data$identifier == metadata_summary$identifier[index], ]
-      table_sub <-  reactable(
-                  data_sub,
-                  theme     = flatly(),
-                  fullWidth = FALSE,
-                  columns   = list(
-                      identifier = colDef(show = FALSE),
-                      nutrient   = colDef(name = "Nutrient"),
-                      fed        = colDef(name = "Amount Daily", cell = nutrient_cell(data_sub)),
-                      fed_unit     = colDef(show = FALSE),
-                      relative_fed = colDef(name = "Prop Daily", cell = merge_column(data_sub, merged_name = "relative_unit")),
-                      relative_unit = colDef(show = FALSE)
-                      )
-                  )
-      subtab_div(table_sub)
-}
-
-
-```
-
 ```{r}
 vis_metadata <- metadata_summary %>% 
+  select(all_of(summary_variables)) %>%
   reactable(
     compact             = T,
     pagination          = T,
@@ -426,453 +364,67 @@ vis_metadata <- metadata_summary %>%
     theme               = flatly(),
     defaultPageSize     = 25,
     columns             = list(
-  study_day       = colDef(name = "Study Day"   , cell = color_tiles(metadata_summary, number_fmt = label_number(prefix = "Day "))),
-  subject         = colDef(name = "Subject"),
+  study_day       = colDef(name = "Study Day"),
+  CollectionDate  = colDef(name = "Date", format = colFormat(date = TRUE)),
+  Subj_Certainty  = colDef(name = "ID Certainty", cell = icon_sets(metadata_summary, icon_ref = "icon_Subj_Certainty", icon_color_ref = "color_Subj_Certainty", icon_position = "over")),
+  subject         = colDef(name = "Subject"     , cell = icon_sets(metadata_summary, icon_ref = "icon_subject", icon_color_ref = "color_subject")),
   identifier      = colDef(name = "ID"),
-  total_kcal      = colDef(name = "Calories"    , cell = color_tiles(metadata_summary, number_fmt = label_number(scale = 1000, scale_cut = cut_si("cal")))),
-  total_mg_dry    = colDef(name = "Dry Weight"  , cell = color_tiles(metadata_summary, number_fmt = label_number(scale = .001, scale_cut = cut_si("g")))),
+  steps_remaining = colDef(name = "Lab Stage"   , cell = icon_sets(metadata_summary, icon_ref = "icon_steps_remaining", icon_color_ref = "color_steps_remaining", icon_position = "over")),
+  diet_display    = colDef(name = "Diet"        , cell = color_tiles(metadata_summary, color_by = "num_diet", box_shadow = TRUE)),
   total_mg        = colDef(name = "Total Weight", cell = nutrient_cell(metadata_summary), details = function(index) {food_subtab(index)}),
-  steps_remaining = colDef(name = "Lab Stage"   , cell = steps_remaining_cell(metadata_summary)),
   protein_fed     = colDef(name = "Protein"     , cell = nutrient_cell(metadata_summary), details = function(index) {nutrient_details(index, proteins_expand)}),
   fat_fed         = colDef(name = "Fat"         , cell = nutrient_cell(metadata_summary), details = function(index) {nutrient_details(index, fats_expand)}),
   CHO_fed         = colDef(name = "Carbohydrates",cell = nutrient_cell(metadata_summary), details = function(index) {nutrient_details(index, CHOs_expand)}),
   mineral_fed     = colDef(name = "Minerals"    , cell = nutrient_cell(metadata_summary), details = function(index) {nutrient_details(index, Ash_expand)}),
-  vitamins        = colDef(name = "Vitamins"    , details = function(index) {nutrient_details(index, vitamins_expand)}),
-  probiotic       = colDef(name = "Probiotic"   , cell = color_tiles(metadata_summary, number_fmt = label_number(suffix = " drops"))),
-  fiber           = colDef(name = "Fiber"       , cell = color_tiles(metadata_summary, number_fmt = label_number(suffix = " capsules"))),
-  steroid         = colDef(name = "Steroid"     , cell = color_tiles(metadata_summary, number_fmt = label_number(scale = 0.001, scale_cut = cut_si("g")))),
-  antibiotic      = colDef(name = "Antibiotic"  , cell = color_tiles(metadata_summary, number_fmt = label_number(scale = 0.001, scale_cut = cut_si("g")))),
-  antidiarrheal   = colDef(name = "Antidiarrheal",cell = color_tiles(metadata_summary, number_fmt = label_number(scale = 0.001, scale_cut = cut_si("g")))),
+  vitamins        = colDef(name = "Vitamins"    , cell = function(value) {"\u230e"}, details = function(index) {nutrient_details(index, vitamins_expand)}),
+  probiotic       = colDef(name = "Probiotic"   , cell = icon_assign(metadata_summary, icon = "droplet", icon_size = 10, seq_by = 5)),
+  fiber           = colDef(name = "Fiber"       , cell = icon_assign(metadata_summary, icon = "capsules", icon_size = 10, seq_by = 0.5)),
+  steroid         = colDef(name = "Steroid"     , cell = icon_assign(metadata_summary, icon = "syringe", icon_size = 10, seq_by = 0.1)),
+  antibiotic      = colDef(name = "Antibiotic"  , cell = icon_assign(metadata_summary, icon = "prescription-bottle-medical", icon_size = 10, seq_by = 12.5)),
+  antidiarrheal   = colDef(name = "Antidiarrheal",cell = icon_assign(metadata_summary, icon = "poop", icon_size = 10, seq_by = 0.08)),
   holding         = colDef(name = "Enclosure"   , cell = color_tiles(metadata_summary, color_by = "num_holding")),
   warb_status     = colDef(name = "Warble Status",cell = color_tiles(metadata_summary, color_by = "num_warb_status")),
   pair_access     = colDef(name = "Pair Access" , cell = icon_sets(metadata_summary, icon_ref = "icon_pair_access", icon_color_ref = "color_pair_access", icon_position = "over")),
-  Subj_Certainty  = colDef(name = "ID Certainty", cell = icon_sets(metadata_summary, icon_ref = "icon_Subj_Certainty", icon_color_ref = "color_Subj_Certainty", icon_position = "over")),
-  proteins        = colDef(show = FALSE),
-  fats            = colDef(show = FALSE),
-  CHOs            = colDef(show = FALSE),
-  Ash             = colDef(show = FALSE),
-  num_holding      = colDef(show = FALSE),
-  color_pair_access = colDef(show = FALSE),
-  icon_pair_access  = colDef(show = FALSE),
-    )
-  )
-```
-
-
-  
-
-
-
-
-```{r}
-vis_metadata <- metadata_summary_small %>%
-  reactable(
-    showPageSizeOptions = T,
-    compact             = T,
-    pagination          = T,
-    height              = 900,
-    theme               = flatly(),
-    columnGroups        = colGroups,
-    columns             = list(
-  study_day       = colDef(name = "Study Day"),
-  subject         = colDef(name = "Subject"),
-  identifier      = colDef(name = "ID"),
-  steps_remaining = colDef(name = "Lab Stage"   , 
-                           cell = icon_sets(., icon_ref    = "icon_steps_remaining", 
-                                            icon_color_ref = "color_steps_remaining", 
-                                            icon_position  = "over")),
-  diet_name       = colDef(name = "Diet"),
-  total_mg        = colDef(name = "Total Weight", 
-        cell = icon_assign(., 
-              icon        = "bowl-rice",
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              ),
-        details = function(index) { default_subtable(index, foods_expand, list(
-          identifier      = colDef(show = FALSE),
-          food            = colDef(name = "Food"),
-          mg_fed          = colDef(name = "Amount Daily",
-                  cell = icon_assign(foods_expand, 
-                        icon        = "bowl-food",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-                        show_values = "left"
-                        )
-                  )
-          ))}
-        ),
-  total_kcal      = colDef(name = "Calories", 
-        cell = icon_assign(., 
-              icon        = "bowl-rice",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = 1000, scale_cut = cut_si("cal")), 
-              show_values = "left"
-              )
-        ),
-  total_mg_dry    = colDef(name = "Dry Weight"  , 
-        cell = icon_assign(., 
-              icon        = "bowl-rice",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              )
-        ),
-  protein_fed     = colDef(name = "Protein"     , 
-        cell = icon_assign(., 
-              icon        = "egg",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              ),
-        details = function(index) { default_subtable(index, proteins_expand, list(
-          identifier      = colDef(show = FALSE),
-          protein         = colDef(name = "Protein"),
-          protein_fed     = colDef(name = "Amount Daily",
-                  cell = icon_assign(., 
-                        icon        = "egg",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        buckets     = icon_bins,
-                        number_fmt  = label_number(scale = .001, scale_cut = cut_si("g"))
-                        )
-                  ),
-          fed_unit        = colDef(show = FALSE),
-          relative_fed    = colDef(name = "Prop Daily", 
-                  cell = icon_assign(., 
-                        icon        = "egg",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        buckets     = icon_bins,
-                        number_fmt  = label_percent()
-                        )
-                  ),
-          relative_unit   = colDef(show = FALSE)
-          ))}
-  ),
-  fat_fed     = colDef(name = "Fat"     , 
-        cell = icon_assign(., 
-              icon        = "bacon",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              ),
-        details = function(index) { default_subtable(index, fats_expand, list(
-          identifier      = colDef(show = FALSE),
-          protein         = colDef(name = "Fat"),
-          protein_fed     = colDef(name = "Amount Daily",
-                  cell = icon_assign(., 
-                        icon        = "bacon",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        buckets     = icon_bins,
-                        number_fmt  = label_number(scale = .001, scale_cut = cut_si("g"))
-                        )
-                  ),
-          fed_unit        = colDef(show = FALSE),
-          relative_fed    = colDef(name = "Prop Daily", 
-                  cell = function(value, index) {
-                    unit <- fats_expand$relative_unit[index]
-                    paste(format(value), unit, sep = " ")
-                  }
-                  ),
-          relative_unit   = colDef(show = FALSE)
-          ))}
-  ),
-  CHO_fed     = colDef(name = "Carbohydrates"     , 
-        cell = icon_assign(., 
-              icon        = "wheat-awn",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              ),
-        details = function(index) { default_subtable(index, CHOs_expand, list(
-          identifier      = colDef(show = FALSE),
-          protein         = colDef(name = "Carbohydrate"),
-          protein_fed     = colDef(name = "Amount Daily",
-                  cell = icon_assign(., 
-                        icon        = "wheat-awn",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        buckets     = icon_bins,
-                        number_fmt  = label_number(scale = .001, scale_cut = cut_si("g"))
-                        )
-                  ),
-          fed_unit        = colDef(show = FALSE),
-          relative_fed    = colDef(name = "Prop Daily", 
-                  cell = icon_assign(., 
-                        icon        = "wheat-awn",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        buckets     = icon_bins,
-                        number_fmt  = label_percent()
-                        )
-                  ),
-          relative_unit   = colDef(show = FALSE)
-          ))}
-  ),
-  mineral_fed     = colDef(name = "Minerals"     , 
-        cell = icon_assign(., 
-              icon        = "nutritionix",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              ),
-        details = function(index) { default_subtable(index, Ash_expand, list(
-          identifier      = colDef(show = FALSE),
-          protein         = colDef(name = "Minerals"),
-          protein_fed     = colDef(name = "Amount Daily",
-                  cell = icon_assign(., 
-                        icon        = "nutritionix",
-                        fill_color  = icon_fill, 
-                        empty_color = icon_empty, 
-                        buckets     = icon_bins,
-                        number_fmt  = label_number(scale = .001, scale_cut = cut_si("g"))
-                        )
-                  ),
-          fed_unit        = colDef(show = FALSE),
-          relative_fed    = colDef(name = "Prop Daily", 
-                  cell = function(value, index) {
-                    unit <- Ash_expand$relative_unit[index]
-                    paste(format(value), unit, sep = " ")
-                  }
-                  ),
-          relative_unit   = colDef(show = FALSE)
-          ))}
-  ),
-  vitamins     = colDef(name = "Vitamins"     , 
-        cell = icon_assign(., 
-              icon        = "carrot",
-              fill_color  = icon_fill),
-        details = function(index) { default_subtable(index, vitamins_expand, list(
-          identifier      = colDef(show = FALSE),
-          protein         = colDef(name = "Vitamins"),
-          protein_fed     = colDef(name = "Amount Daily",
-                  cell = icon_sets(., icons = c("carrot"), colors = icon_fill)
-                  ),
-          fed_unit        = colDef(show = FALSE),
-          relative_fed    = colDef(name = "Prop Daily", 
-                  cell = function(value, index) {
-                    unit <- vitamins_expand$relative_unit[index]
-                    paste(format(value), unit, sep = " ")
-                  }
-                  ),
-          relative_unit   = colDef(show = FALSE)
-          ))}
-  ),
-  proteins          = colDef(show = FALSE),
-  fats              = colDef(show = FALSE),
-  CHOs              = colDef(show = FALSE),
-  Ash               = colDef(show = FALSE),
-  probiotic         = colDef(name = "Probiotic"       , 
-        cell = icon_assign(., 
-              icon        = "bacteria",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = 1, scale_cut = cut_si("drops")), 
-              show_values = "left"
-              )
-        ),
-  fiber             = colDef(name = "Fiber"           , 
-        cell = icon_assign(., 
-              icon        = "jar-wheat",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = 1, scale_cut = cut_si("capsules")), 
-              show_values = "left"
-              )
-        ),
-  steroid           = colDef(name = "Steroid"         , 
-        cell = icon_assign(., 
-              icon        = "syringe",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              )
-        ),
-  antibiotic        = colDef(name = "Antibiotic"      , 
-        cell = icon_assign(., 
-              icon        = "prescription-bottle-medical",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              )
-        ),
-  antidiarrheal     = colDef(name = "Antidiarrheal"   , 
-        cell = icon_assign(., 
-              icon        = "pills",
-              fill_color  = icon_fill, 
-              empty_color = icon_empty, 
-              buckets     = icon_bins,
-              number_fmt  = label_number(scale = .001, scale_cut = cut_si("g")), 
-              show_values = "left"
-              )
-        ),
-  holding           = colDef(name = "Holding Facility", 
-                  cell = icon_sets(., icon_ref = "icon_holding", icon_color_ref = "color_holding")
-                  ),
-  icon_pair_access  = colDef(name = "Pair Access"     ,
-                  cell = icon_sets(., icon_ref = "icon_pair_access", icon_color_ref = "color_pair_access")
-                  ),
-  icon_holding      = colDef(show = FALSE),
-  color_pair_access = colDef(show = FALSE),
-  color_holding     = colDef(show = FALSE),
-  pair_access       = colDef(show = FALSE),
-  warb_status       = colDef(name = "Warble's Status"),
-  keeper_note       = colDef(name = "Keeper Notes"),
-  Subj_Certainty    = colDef(name = "ID Certainty"    ,
-                  cell = icon_sets(., icon_ref = "icon_Subj_Certainty", icon_color_ref = "color_Subj_Certainty")
-                  ),
-  icon_Subj_Certainty = colDef(show = FALSE),
-  color_Subj_Certainty= colDef(show = FALSE),
-  Sex               = colDef(name = "Sex"             ),
+  keeper_note     = colDef(name = "Keeper Note"),
+  Sex               = colDef(name = "Sex" ,  cell = icon_sets(metadata_summary, icon_ref = "icon_subject", icon_color_ref = "color_subject")),
   subject_age       = colDef(name = "Age at Collection"),
   StudbookID        = colDef(name = "Studbook ID"),
-  MotherID          = colDef(show = FALSE),
-  FatherID          = colDef(show = FALSE),
-  BirthLocation     = colDef(show = FALSE),
   SampleID          = colDef(name = "ID"),
-  CollectionDate    = colDef(name = "Date", format = colFormat(date = TRUE)),
-  SampleSet         = colDef(show = FALSE),
-  SampleCollectedBy = colDef(show = FALSE),
   SampleNotes       = colDef(name = "Notes"),
   ExtractID         = colDef(name = "ID"),
   ExtractDate       = colDef(name = "Date", format = colFormat(date = TRUE)),
   ExtractConc       = colDef(name = "Concentration", format = colFormat(suffix = " ng/\u00b5L", digits = 2)),
   ExtractKit        = colDef(name = "Kit"),
   ExtractBox        = colDef(name = "Storage Box"),
-  ExtractedBy       = colDef(show = FALSE),
   ExtractNotes      = colDef(name = "Notes"),
   SequenceID        = colDef(name = "ID"),
   LibPrepDate       = colDef(name = "Date", format = colFormat(date = TRUE)),
   LibPrepWorkflow   = colDef(name = "Protocol"),
   LibraryCode       = colDef(name = "Pooled Library ID"),
-  protocol_group_id = colDef(show = FALSE),
   LibPrepKit        = colDef(name = "Kit"),
   LibraryTube       = colDef(name = "Tube"),
-  TemplateVolPrep   = colDef(name = "Extract Volume Added", format = colFormat(suffix = " \u00b5L", digits = 1)),
   LibraryBarcode    = colDef(name = "Barcode ID"),
-  fragment_type     = colDef(show = FALSE),
-  strands           = colDef(show = FALSE),
-  Length            = colDef(show = FALSE),
-  InputMassStart    = colDef(name = "Starting Target Mass", format = colFormat(suffix = " ng", digits = 1)),
   Conc_QC2          = colDef(name = "Final Library Concentration", format = colFormat(suffix = " ng/\u00b5L", digits = 2)),
-  PoolSamples       = colDef(show = FALSE),
-  SampVolPool       = colDef(name = "Volume added to Pool", format = colFormat(suffix = " \u00b5L", digits = 1)),
-  BeadVol           = colDef(show = FALSE),
-  TotalPoolVol      = colDef(show = FALSE),
-  InputMassFinal    = colDef(name = "Final Target Mass", format = colFormat(suffix = " ng", digits = 1)),
-  SeqRunID          = colDef(show = FALSE),
   SeqDate           = colDef(name = "Date", format = colFormat(date = TRUE)),
-  SeqDateTime       = colDef(show = FALSE),
   FlowCellType      = colDef(name = "Flow Cell"),
-  FlowCellSerial    = colDef(name = "Flow Cell Serial"),
-  FlongleAdapter    = colDef(show = FALSE),
   SeqDevice         = colDef(name = "MinION Device"),
-  reads_unclassified= colDef(name = "Unclassified Read Count")
+  reads_unclassified= colDef(name = "Unclassified Read Count", cell = data_bars(metadata_summary, round_edges = TRUE, text_position = "center")),
+  num_holding     = colDef(show = FALSE),
+  icon_vitamins   = colDef(show = FALSE),
+  color_pair_access     = colDef(show = FALSE),
+  icon_pair_access      = colDef(show = FALSE),
+  icon_steps_remaining  = colDef(show = FALSE),
+  color_steps_remaining = colDef(show = FALSE),
+  icon_subject          = colDef(show = FALSE),
+  color_subject         = colDef(show = FALSE),
+  num_warb_status       = colDef(show = FALSE),
+  num_diet              = colDef(show = FALSE),
+  icon_Subj_Certainty   = colDef(show = FALSE),
+  color_Subj_Certainty  = colDef(show = FALSE)
+    )
   )
-)
 ```
 
-
-
-## Metadata by Subject
-
-Now I am going to populate metadata tables for each subject by day.
-
-### Culi
-
-```{r, message = FALSE}
-culi.samples   <- samples %>% filter(Subject == "culi")
-
-culi.metadata <- study_days %>%
-  left_join(culi.schedule) %>%
-  left_join(culi.meds) %>%
-  left_join(culi.housing) %>%
-  left_join(culi.bristol) %>%
-  left_join(access.schedule) %>%
-  left_join(culi.repro.notes) %>%
-  left_join(culi.health) %>%
-  mutate(CollectionDate = Date, .keep = "unused") %>%
-  right_join(culi.samples, by = join_by(CollectionDate))
-```
-
-### Warble
-
-```{r, message = FALSE, warning = FALSE}
-warble.samples <- samples %>% filter(Subject == "warble")
-
-warble.metadata <- study_days %>%
-  left_join(warble.schedule) %>%
-  left_join(warble.meds) %>%
-  left_join(warble.housing) %>%
-  left_join(warble.bristol) %>%
-  left_join(access.schedule) %>%
-  left_join(estrus.schedule) %>%
-  left_join(preg.schedule) %>%
-  left_join(warble.repro.notes) %>%
-  mutate(CollectionDate = Date, .keep = "unused") %>%
-  right_join(warble.samples, by = join_by(CollectionDate))
-```
-
-## Merge and Export Complete Metadata Table
-
-
-```{r, message = FALSE}
-metadata <- samples %>%
-  filter(Subject != "warble" & Subject != "culi") %>%
-  full_join(warble.metadata) %>%
-  full_join(culi.metadata) %>%
-  mutate(subj_letter = str_to_upper(str_sub(Subject, 1L, 1L))) %>%
-  mutate(subj_day    = str_glue("{subj_letter}{study_day}")) %>%
-  select(-subj_letter) %>%
-  relocate(
-    SequenceID,
-    ExtractID,
-    SampleID,
-    study_day,
-    subj_day,
-    CollectionDate:health_note
-  ) %>%
-  arrange(CollectionDate, Subject)
-```
-
-```{r}
-write.table(metadata,
-            path$metadata$summary,
-            row.names = F,
-            sep = "\t")
-
-metadata %>%
-  kbl() %>%
-  kable_styling(full_width = T,
-                fixed_thead = T,
-                c("hover", "responsive"),
-                position = "center") %>%
-  column_spec(1, bold = T) %>%
-  collapse_rows(columns = 1, valign = "top") %>%
-  scroll_box(width = "800px", height = "800px")
-
-```
 
 
 ### Key for Metadata Variables
