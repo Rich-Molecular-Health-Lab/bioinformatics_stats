@@ -57,6 +57,7 @@ required_packages <- c(
   "showtext",
   "thematic",
   "tidyverse",
+  "tippy",
   "usethis",
   "utf8",
   "rmdformats"
@@ -112,6 +113,7 @@ library(shinyTime)
 library(showtext)
 library(thematic)
 library(tidyverse)
+library(tippy)
 library(usethis)
 library(utf8)
 library(rmdformats)

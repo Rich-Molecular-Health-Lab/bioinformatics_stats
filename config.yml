@@ -51,19 +51,17 @@ loris:
   day1: "2023-10-26"
   last: "2024-10-25"
   metadata: 
-    scripts: !expr list("metadata/loris/colors.R", "metadata/loris/nutrition.R", "metadata/loris/hdz_loris_log.R", "metadata/loris/diet_tables.R", "metadata/loris/metadata_key.R")
+    scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/nutrition.R", "metadata/loris/hdz_loris_log.R", "metadata/loris/diet_tables.R")
     bristol: "metadata/loris/bristols.tsv"
     studbook: "metadata/loris/subjects_loris.csv"
     summary: "metadata/loris/samples_metadata.tsv"
-    diet_totals: "metadata/loris/diet_totals.tsv"
-    subtables: "metadata/loris/diet_details.tsv"
-    subtables_rel: "metadata/loris/diet_details_relative.tsv"
     foods: "metadata/loris/foods.tsv"
     proteins: "metadata/loris/proteins.tsv"
     fats: "metadata/loris/fats.tsv"
     CHOs: "metadata/loris/CHOs.tsv"
     Ash: "metadata/loris/Ash.tsv"
     vitamins: "metadata/loris/vitamins.tsv"
+    reactable: "metadata/loris/loris_metadata_summary.html"
   inventories:
     all_stages: "dataframes/sample_inventories/compilation_loris.tsv"
     collection: "dataframes/sample_inventories/samples_loris.csv"

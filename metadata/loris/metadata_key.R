@@ -4,69 +4,63 @@ metadata_variables <- list(
       identifier        =  "unique ID representing deepest processing ID (SequenceID if available, then ExtractID, then SampleID if sample not extracted yet)",
       study_day         =  "day of sample collection relative to collection start",
       subject           =  "name of subject sample collected from",
-      steps_remaining   = "has DNA sample been extracted/purified, library prepped, sequenced, etc?"
+      steps_remaining   = "Lab analysis stage for samples as one of (1) collected (poop icon), (2) dna extracted (tube icon), (3) microbiome sequenced (dna icon)."
       ),
    nutrition = list(
      diet_name         = "code name applied to categorize diet trials administered to Culi (Warble is always baseline)",
-     total_mg          = "total weight of daily diet in mg",
+     total_mg          = "Total weight fed per day (expand cell for daily weight by food item/category)",
      total_kcal        = "total kcal in daily diet"   ,
      total_mg_dry      = "total dry weight of daily diet in mg",
-     foods             = "nested tibble with list of food categories and total mass of each (in mg) for a given diet" ,
-     proteins          = "nested tibble with masses and relative proportions of proteins in diet" ,  
-     proteins_total    = "total protein as a proportion of the max mg protein fed for that subject across all study days",
-     fats              = "nested tibble with masses and relative proportions of fats in diet" ,  
-     fats_total        = "total fat as a proportion of the max mg fat fed for that subject across all study days",
-     CHOs              = "nested tibble with masses and relative proportions of carbohydrates in diet" ,  
-     CHOs_total        = "total carbohydrates as a proportion of the max mg carbohydrates fed for that subject across all study days",
-     Ash               = "nested tibble with masses and relative proportions of mineral content in diet" ,    
-     Ash_total         = "total mineral content as a proportion of the max mg mineral content fed for that subject across all study days",
-     vitamins          = "nested tibble with masses and relative proportions of vitamin content in diet" 
+     protein_fed       = "Total weight proteins fed per day (expand cell for daily weight of specific proteins)",  
+     fat_fed           = "Total weight fats fed per day (expand cell for daily weight of specific fats)",  
+     CHO_fed           = "Total weight carbohydrates fed per day (expand cell for daily weight of specific carbohydrates)",  
+     mineral_fed       = "Total weight mineral content fed per day (expand cell for specific daily mineral content)",    
+     vitamins          = "Expand cell to view table with estimated vitamin content per day" 
      ),
    supplements = list(
-     probiotic         = "probiotic supplement administered, represented as proportion of max daily dose over study period (low dose = 5 drops, high dose = 10 drops)",       
-     fiber             = "fiber supplement (Metamucil) administered, represented as proportion of max daily dose over study period (low dose = .5 capsule, high dose = 1 capsule)",
-     steroid           = "steroid rx (Budesonide) administered, represented as proportion of max daily dose over study period (low dose = .1 mg, high dose = .2 mg)",
-     antibiotic        = "antibiotic rx (Metronidazole) administered, represented as proportion of max daily dose over study period (only dose given was 12.5 mg)",
-     antidiarrheal     = "antidiarrheal rx (Loperamide) administered, represented as proportion of max daily dose over study period (only dose given was 0.08 mg)"
+     probiotic         = "Probiotic given at 5 or 10 drops/day",       
+     fiber             = "0.5 or 1 capsule Metamucil/day",
+     steroid           = "Budesonide given 2x/day at 0.1 or 0.2 mg total",
+     antibiotic        = "Metronidazole given 2x/day at 12.5 mg total",
+     antidiarrheal     = "Loperamide given 2x/day at 0.08 mg total"
      ),
    other_by_date_subj = list(
-     holding           = "was subject still in the old enclosure or had they transferred to new enclosure? (old/new)",
-     pair_access       = "did the pair have complete physical access via shared enclosure? (y/n)", 
-     warb_status       = "was warble currently in estrus or pregnant? (estrus/pregnant/anestrus)",
-     keeper_note       = "ad lib notes from keepers or direct observations matched by date of note and relevant subject"
+     bristol_mean      = "Bristol fecal score recorded that day on scale of 1-6 (mean score for days with > 1 observation)",
+     holding           = "Was individual in old or new enclosure?",
+     pair_access       = "Did pair have shared enclosure access?", 
+     warb_status       = "Was Warble in estrus, pregnant, or anestrus cycle?",
+     keeper_note       = "Relevant observations or comments from care staff recorded on that day"
      ),
    subject_info = list(
-     Subj_Certainty     =  "whether subject identity is confirmed, unknown, suspected",  
+     Subj_Certainty     =  "Certainty of subject ID recorded for fecal sample (confirmed, unknown, suspected)",  
      Sex                =  "Sex of subject",
-     subject_age        =  "age of subject (in years) on the date of sample collection, relative to birth year in AZA studbook record",
+     subject_age        =  "Age of subject (in years) on the date of sample collection, relative to birth year in AZA studbook record",
      StudbookID         =  "AZA studbook ID number of subject",
      MotherID           =  "AZA studbook ID number of subject's mother",  
      FatherID           =  "AZA studbook ID number of subject's father",  
      BirthLocation      =  "Institution where subject was born (uses AZA codes)"
      ),
    collection = list(
-     SampleID           =  "unique id for each sample collected",
-     CollectionDate     =  "date of sample collection (yyyy-mm-dd)",     
-     SampleSet          =  "lab code used to identify different samplesets (loris for this one)",
+     SampleID           =  "Unique id for each sample collected",
+     CollectionDate     =  "Date of sample collection (yyyy-mm-dd)",     
+     SampleSet          =  "Lab code used to identify different samplesets (loris for this one)",
      SampleCollectedBy  =  "identifier for person or group collecting sample",
-     SampleNotes        =  "ad lib notes recorded for sample collection"
+     SampleNotes        =  "Ad lib notes recorded for sample collection"
      )),
   labwork = list(
     DNAextraction = list(
-      ExtractID          =  "unique id for each (DNA) extract",
-      ExtractDate        =  "date of DNA extraction/purification",  
+      ExtractID          =  "Unique id for each (DNA) extract",
+      ExtractDate        =  "Date of DNA extraction/purification",  
       ExtractConc        =  "DNA concentration (in ng/ul) estimated after extraction using Qubit assay and fluorometer",
-      ExtractKit         =  "kit used in DNA extraction/purification",  
-      ExtractBox         =  "identifier for freezer box where sample is located in the Rich Lab",
-      ExtractedBy        =  "person performing DNA extraction/purification", 
-      ExtractNotes       =  "ad lib notes recorded for DNA extraction/purification"
+      ExtractKit         =  "Kit used in DNA extraction/purification",  
+      ExtractBox         =  "Identifier for freezer box where sample is located in the Rich Lab",
+      ExtractedBy        =  "Person performing DNA extraction/purification", 
+      ExtractNotes       =  "Lab notes recorded for DNA extraction/purification procedure"
       ),
-    Sequencing = list(
-      SequenceID         =  "unique id for each sequencing run per sample",
+    LibraryPrep = list(
       LibPrepDate        =  "date of library preparation",  
       LibPrepWorkflow    =  "lab workflow used for library preparation",      
-      LibraryCode        =  "unique id for each pooled library",  
-      protocol_group_id  =  "unique id for each sequencing run logged by MinKNOW software",  
+      LibraryCode        =  "unique id for each pooled library",
       LibPrepKit         =  "ONT kit used for library prep",
       LibraryTube        =  "number applied to tube during Library Prep protocol",
       TemplateVolPrep    =  "volume of extract used in initial step of library prep",
@@ -80,7 +74,12 @@ metadata_variables <- list(
       SampVolPool        =  "volume of sample added to library pool after barcoding during library prep",
       BeadVol            =  "volume of AMPure beads added to pooled library for final cleanup step",
       TotalPoolVol       =  "total volume of pooled library at the end of library prep",
-      InputMassFinal     =  "target template mass (in ng) for flow cell loading after library prep",      
+      InputMassFinal     =  "target template mass (in ng) for flow cell loading after library prep"     
+      
+    ),
+    Sequencing = list(
+      SequenceID         =  "Unique id for each sequenced profile generated (some samples/extracts have technical replicates with unique IDs)",
+      protocol_group_id  =  "unique id for each sequencing run logged by MinKNOW software",  
       SeqRunID           =  "unique id for each sequencing run",  
       SeqDate            =  "date of library sequencing run",
       SeqDateTime        =  "date and time (Central Time Zone) of library sequencing run",
@@ -88,7 +87,7 @@ metadata_variables <- list(
       FlowCellSerial     = "serial number of flow cell used in sequencing run",      
       FlongleAdapter     =  "ID of adapter if Flongle Flow Cell was used for sequencing",     
       SeqDevice          =  "MinION device used for sequencing (Angel or Spike)"      ,
-      reads_unclassified =  "raw count of unclassified reads after post-sequencing basecalling performed"
+      reads_unclassified =  "Raw count of unclassified reads after alignment"
       )
     )
   )
@@ -100,65 +99,7 @@ relative_nutrients <- list(
     "ExtractID"    =  "unique id for each (DNA) extract",
     "SequenceID"   =  "unique id for each sequencing run per sample",         
     "subject"      =  "name of subject sample collected from"
-  ),      
-  relative_vals = list(
-    proteins   = list(
-      "rel_methionine"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_taurine"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_proteins_total"         = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
-      ),     
-    fats       = list(
-        "rel_omega3"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-        "rel_omega6"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-        "rel_fats_total"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
-      ),  
-    CHOs       = list(
-      "rel_ADF"                    = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_NDF"                    = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_TDF"                    = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_crude_fiber"            = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_starch"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_CHOs_total"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
-      ),    
-    Ash        = list(
-      "rel_calcium"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_magnesium"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_phosphorus"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_potassium"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_copper"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_iodine"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_iron"                   = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_manganese"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_zinc"                   = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_Ash_total"              = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
-      ),    
-    vitamins   = list(
-      "rel_beta_carotene"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_lycopene"               = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_choline"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_folic_acid"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B1_thiamin"         = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B2_riboflavin"      = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B3_niacin"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B5_pantothenic_acid"= "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B6_pyridoxine"      = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B7_biotin"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_B12"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_C"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_A"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_D3"                 = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_E"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_vit_K"                  = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" 
-      ),  
-    foods      = list(
-      "rel_biscuit"                = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_gum_arabic"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_invertebrates"          = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_protein_rotate"         = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_seasonal_veggies"       = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days" ,
-      "rel_HDZ_oatgel"             = "total amount fed as a proportion of the max amount fed in mg for that subject across all study days"
-      )
-    ),
+  ), 
   raw_vals      = list(
     proteins    = list(
       "methionine"                 = "total amount fed per day in mg",
@@ -382,102 +323,4 @@ nutrition_details <- list(
       vit_K                   = list(name = "Vitamin K (Phylloquinone & Menaquinone)"    , context = list("Essential for blood clotting and bone metabolism.", "Found in leafy greens (K1) and fermented foods (K2).", "Some gut bacteria produce K2, so deficiencies are rare but can occur with certain medications."))
     )
   )
-)
-
-colGroups <- list(
-
-colGroup(name = "Amount Fed Daily", columns = c(       
-  "total_mg"    ,      
-  "total_kcal"  ,       
-  "total_mg_dry",       
-  "protein_fed" ,      
-  "fat_fed"     ,       
-  "CHO_fed"     ,       
-  "mineral_fed" ,
-  "vitamins"
-  )
-),
-
-colGroup(name = "Daily Doses of Meds/Supplements (Normalized)", columns = c(       
-  "probiotic"   ,  
-  "fiber"       ,  
-  "steroid"     ,  
-  "antibiotic"  ,  
-  "antidiarrheal"
-  )
-),
-
-colGroup(name = "Environmental Variables", columns = c(   
-  "holding"        ,    
-  "pair_access"    ,    
-  "warb_status"    ,    
-  "keeper_note"      
-  )
-),
-
-colGroup(name = "Subject ID and Studbook Data", columns = c(
-  "Subj_Certainty"  ,   
-  "Sex"             ,  
-  "subject_age"     ,   
-  "StudbookID"      ,   
-  "MotherID"        ,  
-  "FatherID"        ,   
-  "BirthLocation"      
-  )
-),
-
-
-colGroup(name = "Sample Collection", columns = c(
-  "SampleID"          ,
-  "CollectionDate"     ,
-  "SampleSet"          ,
-  "SampleCollectedBy" ,
-  "SampleNotes"        
-  )
-),
-
-colGroup(name = "DNA Extraction", columns = c(
-  "ExtractID"     ,     
-  "ExtractDate"   ,    
-  "ExtractConc"   ,     
-  "ExtractKit"    ,     
-  "ExtractBox"    ,    
-  "ExtractedBy"   ,     
-  "ExtractNotes"  
-  )
-),
-
-colGroup(name = "Library Prep", columns = c(
-  "SequenceID"        ,
-  "LibPrepDate"       ,
-  "LibPrepWorkflow"   ,
-  "LibraryCode"       ,
-  "protocol_group_id" ,
-  "LibPrepKit"        ,
-  "LibraryTube"       ,
-  "TemplateVolPrep"   ,
-  "LibraryBarcode"    ,
-  "fragment_type"     ,
-  "strands"           ,
-  "Length"            ,
-  "InputMassStart"    ,
-  "Conc_QC2"          ,
-  "PoolSamples"       ,
-  "SampVolPool"       ,
-  "BeadVol"           ,
-  "TotalPoolVol"      ,
-  "InputMassFinal"    
-  )
-),
-
-colGroup(name = "DNA Sequencing", columns = c(
-  "SeqDate"          ,  
-  "SeqDateTime"      , 
-  "FlowCellType"     ,  
-  "FlowCellSerial"   ,  
-  "FlongleAdapter"   , 
-  "SeqDevice"        ,  
-  "reads_unclassified"
-  )
-)
 )

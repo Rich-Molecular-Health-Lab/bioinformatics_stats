@@ -83,4 +83,9 @@ bats                              |  Genetic and gut microbiome data gathered by
 environmental                     |  Samples gathered from opportunistic environmental sources for Thomas Raad's thesis.
 isolates                          |  Purified DNA from bacterial isolates grown in the Ayayeye lab for whole genome sequencing in the Rich Lab.
 
+Highlighted Summaries or Graphics
+---------------------------------------------------------------------
+These links take you to full-page summary tables or graphics compiled for some of the in-progress analyses.
+
+- [Summary Table of Loris Metadata](metadata/loris/loris_metadata_summary.html) 
 

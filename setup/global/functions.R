@@ -155,58 +155,7 @@ wide_subtables <- function(tbl, class) {
     rename_with( ~ paste0(class, "_", .x), total)
 }
 
-
-subtab_div <- function(data_sub) {
-  tags$div(style = "position: relative; margin-left: 350px; width: max-content; 
-                                background: white; padding: 10px; border: 1px solid #ccc; 
-                                box-shadow: 2px 2px 10px rgba(0,0,0,0.2);", data_sub)
+rescale_dose <- function(col, max) {
+  col = case_when(col == 0   ~ 0,
+                  col == max ~ 2, .default = 1)
 }
-
-nutrient_cell <- function(data) {
-  data_bars(data, round_edges = TRUE, text_position = "center", number_fmt = label_number(scale = .001, scale_cut = cut_si("g")))
-}
-
-food_subtab <- function(index) {
-  data_sub <- foods_expand[foods_expand$identifier == metadata_summary$identifier[index], ]
-  food_sub <-  reactable(data_sub,
-                         theme     = flatly(),
-                         fullWidth = FALSE,
-                         columns   = list(
-                           identifier = colDef(show = FALSE),
-                           food       = colDef(name = "Food"),
-                           mg_fed     = colDef(name = "Amount Daily", cell = nutrient_cell(data_sub))
-                         )
-  )
-  subtab_div(food_sub)
-}
-
-
-nutrient_details <- function(index, data) {
-  data_sub <- data[data$identifier == metadata_summary$identifier[index], ]
-  table_sub <-  reactable(
-    data_sub,
-    theme     = flatly(),
-    fullWidth = FALSE,
-    columns   = list(
-      identifier = colDef(show = FALSE),
-      nutrient   = colDef(name = "Nutrient"),
-      fed        = colDef(name = "Amount Daily", cell = nutrient_cell(data_sub)),
-      fed_unit     = colDef(show = FALSE),
-      relative_fed = colDef(name = "Prop Daily", cell = merge_column(data_sub, merged_name = "relative_unit")),
-      relative_unit = colDef(show = FALSE)
-    )
-  )
-  subtab_div(table_sub)
-}
-
-expand_subtables <- function(df, col) {
-  df %>% 
-    select(identifier, all_of(col)) %>% 
-    unnest(col) %>% 
-    mutate(relative_fed = if_else(relative_unit == "proportion", round(relative_fed*100, 2), round(relative_fed, 2)),
-           relative_unit = if_else(
-             relative_unit == "proportion", "%",
-             str_replace_all(relative_unit, "_", "/")),
-           nutrient = fct_recode(nutrient, !!!rename_nutrients))
-}
-

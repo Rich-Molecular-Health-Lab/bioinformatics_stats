@@ -20,6 +20,62 @@ diet_factors <- c(
   "water31_root31_protein19_gum19"
 )
 
+dose_cols <- c(
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal"
+)
+
+steps_remaining_colors <- c(
+  "#D2981AFF" = "sample not extracted"          ,
+  "#A53E1FFF" = "extract not sequenced"         ,
+  "#457277FF" = "sample extracted and sequenced"
+)
+
+steps_remaining_icons <- c(
+ "poop" = "sample not extracted"           ,
+ "vial" = "extract not sequenced"          ,
+ "dna"  = "sample extracted and sequenced" 
+)
+
+
+diet_colors <- c(
+   "#8C8C8CFF" = "baseline"                      ,
+   "#88BDE6FF" = "oatgel"                        ,
+   "#FBB258FF" = "biscuit_elim"                  ,
+   "#90CD97FF" = "lessBug_moreEgg"               ,
+   "#BFA554FF" = "seasonals"                     ,
+   "#BC99C7FF" = "low_lectin"                    ,
+   "#EDDD46FF" = "gum36_veg37_invert27"          ,
+   "#F07E6EFF" = "water31_root31_protein19_gum19"
+)
+
+warb_status_colors <- c(
+  "#A8A6A7FF" = "anestrus",
+  "#B1283AFF" = "estrus",
+  "#006A8EFF" = "pregnant"
+)
+
+holding_colors <- c(
+  "#5773CCFF" = "old",
+  "#FFB900FF" = "new"
+)
+
+certainty_colors <- c(
+  "#CA562CFF" = "no",
+  "#B5B991FF" = "yes"
+)
+
+
+
+alarm_colors <- c("#CEFF1AFF", "#D8E01BFF", "#DFC11BFF", "#E2A11BFF", "#E37F1BFF", "#E1581AFF", "#DE1A1AFF")
+concentration_scale <- c("#FF3200FF", "#E9A17CFF", "#E9E4A6FF", "#1BB6AFFF", "#0076BBFF", "#172869FF")
+intake_scale <- c("#1D457FFF", "#61599DFF", "#C36377FF", "#EB7F54FF", "#F2AF4AFF")
+
+supplement_color <- c("#985A71FF")
+
 rename_diets <- c(
   "Baseline"                         = "baseline",
   "Oat Gel"                          = "oatgel",
@@ -37,7 +93,7 @@ rename_foods <- c(
  "Invertebrates"             = "invertebrates",  
  "Protein Rotation"          = "protein_rotate", 
  "Gum Arabic"                =  "gum_arabic", 
-  "Seasonal Veggie Rotation" = "seasonal_veggies"
+ "Seasonal Veggie Rotation"  = "seasonal_veggies"
 )
 
 rename_nutrients <- c(
@@ -99,6 +155,9 @@ ordered_variables = c(
   "steroid",
   "antibiotic",
   "antidiarrheal",
+  "bristol_min",
+  "bristol_max",
+  "bristol_mean",
   "holding",
   "pair_access",
   "warb_status",
@@ -158,7 +217,9 @@ summary_variables <- c(
   "subject",
   "identifier",
   "steps_remaining",
-  "diet_display",
+  "bristol_mean",
+  "diet_name",
+  "total_kcal",
   "total_mg",
   "protein_fed",
   "fat_fed",
@@ -187,113 +248,26 @@ summary_variables <- c(
   "ExtractNotes",
   "SequenceID",
   "LibPrepDate",
-  "LibPrepWorkflow",
   "LibraryCode",
   "LibPrepKit",
-  "LibraryTube",
   "LibraryBarcode",
   "Conc_QC2",
   "SeqDate",
   "FlowCellType",
   "SeqDevice",
   "reads_unclassified",
+  "diet_color",
   "icon_steps_remaining",
   "color_steps_remaining",
-  "num_holding",
-  "num_warb_status",
+  "holding_color",
+  "warb_status_color",
   "icon_Subj_Certainty",
   "color_Subj_Certainty",
   "icon_pair_access",
   "color_pair_access",
   "icon_subject",
   "color_subject",
-  "num_diet",
   "icon_vitamins"
 )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-factor_cols_upper <- c(
-  "StudbookID",
-  "MotherID",
-  "FatherID",
-  "BirthLocation",
-  "SampleID",
-  "SequenceID",
-  "LibraryCode",
-  "ExtractID",
-  "ExtractKit",
-  "Sex",
-  "pair_access",
-  "identifier"
-)
-
-factor_cols <- c(
-  "subject",
-  "warb_status",
-  "LibPrepKit",
-  "FlowCellType",
-  "SeqDevice",
-  "diet_name"
-)
+source(here("metadata/loris/reactable_rendering.R"))

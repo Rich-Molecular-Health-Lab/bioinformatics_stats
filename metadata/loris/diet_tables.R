@@ -72,8 +72,6 @@ diet_totals <- enframe(nutrient_totals, name = "diet_name") %>%
          relative_fed, 
          relative_unit) %>% distinct()
 
-write.table(diet_totals, here(path$metadata$diet_totals), sep = "\t", row.names = F)
-
 diet_nested <- diet_totals %>%
   group_by(diet_name, nutrient_class) %>%
   nest(.key = "nutrients") %>%
