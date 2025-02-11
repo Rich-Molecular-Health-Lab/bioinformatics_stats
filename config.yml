@@ -21,10 +21,19 @@ modules:
   reactable_functions: "modules/reactable_functions.R"
   reactable_columns: "modules/reactable_columns.R"
   
-widgets:
-  depth_summary: "widgets/depth_summary.R"
+microbiome:
+  micro_scripts: !expr list("setup/microbiome/packages.R", "setup/microbiome/functions.R", "setup/microbiome/inputs.R")
+  setup_dir: "setup/microbiome"
+  inputs: "setup/microbiome/inputs.R"
+  packages: "setup/microbiome/packages.R"
+  first_use_packages: "setup/microbiome/packages_first_use.R"
+  functions: "setup/microbiome/functions.R"
+  tax4fun: "setup/microbiome/Tax4Fun2_ReferenceData_v2/"
+  Ref99NR: "setup/microbiome/Tax4Fun2_ReferenceData_v2/Ref99NR/"
+  blast: "setup/microbiome/ncbi-blast-2.16.0+/bin"
   
 swan:
+  swan_scripts: !expr list("setup/read_processing/functions.R", "setup/read_processing/options.R")
   functions: "setup/read_processing/functions.R"
   options: "setup/read_processing/options.R"
   loris_tax: "/work/richlab/aliciarich/bioinformatics_stats/data/loris/taxonomy/"
@@ -50,11 +59,16 @@ swan:
 loris:
   day1: "2023-10-26"
   last: "2024-10-25"
+  sequencing:
+    coverage: "visuals/loris_depth_summary.html"
+    depth_plot: "visuals/loris_depth_hist.html"
   metadata: 
     scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/nutrition.R", "metadata/loris/hdz_loris_log.R", "metadata/loris/diet_tables.R")
     bristol: "metadata/loris/bristols.tsv"
     studbook: "metadata/loris/subjects_loris.csv"
     summary: "metadata/loris/samples_metadata.tsv"
+    key: "metadata/loris/metadata_key.R"
+    factors: "metadata/loris/factors.R"
     foods: "metadata/loris/foods.tsv"
     proteins: "metadata/loris/proteins.tsv"
     fats: "metadata/loris/fats.tsv"
@@ -618,17 +632,6 @@ abund_wf16s_files:
   cm010: "data/marmoset/wf16s_abundance/cm010_abundance_table_species.tsv"
   cm011: "data/marmoset/wf16s_abundance/cm011_abundance_table_species.tsv"
 
-  
-microbiome:
-  setup_dir: "setup/microbiome"
-  inputs: "setup/microbiome/inputs.R"
-  packages: "setup/microbiome/packages.R"
-  first_use_packages: "setup/microbiome/packages_first_use.R"
-  functions: "setup/microbiome/functions.R"
-  tax4fun: "setup/microbiome/Tax4Fun2_ReferenceData_v2/"
-  Ref99NR: "setup/microbiome/Tax4Fun2_ReferenceData_v2/Ref99NR/"
-  blast: "setup/microbiome/ncbi-blast-2.16.0+/bin"
-
 methods_16s:
   libprep_workflow: "'rapid16s'"
   dorado_model: "'dna_r10.4.1_e8.2_400bps_sup@v5.0.0'"
@@ -642,15 +645,16 @@ methods_16s:
   n_taxa_barplot: 12
   abund_threshold: 0
   loris:
-    rarefy: 5000
+    rarefy: 4500
     norm: "SRS"
     min_abund: 0.0001
     min_freq: 0.02
     inlcude_lowest: TRUE
     unifrac: TRUE
-    betadiv: "canberra"
+    betadiv: "aitchison"
+    alpha_pd: TRUE
     tax4fun_db: "Ref99NR"
-    loris_rarefy: 5000
+    loris_rarefy: 4500
     keg_minID: 97
   loris_norm: "SRS"
   loris_filter:

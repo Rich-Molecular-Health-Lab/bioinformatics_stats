@@ -90,4 +90,6 @@ Highlighted Summaries or Graphics
 These links take you to full-page summary tables or graphics compiled for some of the in-progress analyses.
 
 - [Summary Table of Loris Metadata](metadata/loris/loris_metadata_summary.html) 
+- [Summary Table of Sequencing Depths for Loris 16S Data](visuals/loris_depth_summary.html)
+- [Histogram of Sequencing Depths for Loris 16S Data](visuals/loris_depth_hist.html)
 

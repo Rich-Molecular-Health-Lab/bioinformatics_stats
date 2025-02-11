@@ -4,14 +4,15 @@ author: "Alicia M. Rich, Ph.D."
 date: "`r Sys.Date()`"
 output:
   html_document:
-    theme: "lumen"
+    theme:
+      bootswatch: litera
     toc: true
-    toc_location: "before"
-    toc_depth: 6
-    number_sections: true
-    toc_float: false
-    code_folding: "hide"
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
     fig_caption: true
+    df_print: paged
 params:
   email: "'aliciarich@unomaha.edu'"
   sampleset: "loris"
@@ -19,32 +20,26 @@ params:
   
 ---
 
-```{r, message=FALSE}
-global      <- config::get(config = "default")
+```{r, include = F}
+global             <- config::get(config = "default")
 
-source(paste0(global$setup))
-source(paste0(swan$options))
-source(paste0(micro$packages))
-source(paste0(micro$functions))
-source(paste0(micro$inputs))
-source(global$knit_engines)
-```
+here::i_am("MicroEcoDataPrep.Rmd")
+source(here::here(global$setup))
+
+for (file in swan$swan_scripts) {
+  source(here(file))
+}
+for (file in micro$micro_scripts) {
+  source(here(file))
+}
+
+source(here(path$metadata$key))
+source(here(path$metadata$factors))
 
 
-```{r, message=FALSE}
 theme_set(theme_classic())
 thematic_rmd()
 thematic_on(accent = "#8785B2FF", fg = "black")
-source(modules$reactable_functions)
-source(modules$reactable_columns)
-source(path$metadata$bristol)
-source(path$metadata$key)
-source(path$metadata$diet)
-source(path$metadata$meds)
-source(path$metadata$housing)
-source(path$metadata$repro)
-source(path$metadata$health)
-
 ```
 
 # Intro
@@ -79,6 +74,92 @@ This script also switches back and forth between local R console commands and co
 
 I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original .Rmd script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
 
+### Previous Scripts
+
+Before this, you should use the [MetadataSetup script](MetadataSetup.html) to create the file samples_metadata.tsv.  
+
+# Other Configuration Settings
+
+## Sampleset in Params
+
+You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
+
+## File Paths
+
+Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. 
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External File",
+        tagList(tags$pre(includeText("config.yml")))
+    )
+  )
+)
+```
+
+Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External Script",
+        tagList(tags$pre(includeText(here(global$setup))))
+    )
+  )
+)
+```
+
+### Sequencing Run Lists
+
+The code in the chunk above also generated a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date.
+
+### Other Setup Scripts
+
+The script that I pasted above sources additional scripts that I run routinely at the start of any work to bring in functions and other inputs with shorter code chunks. You can flip through the text from those scripts below.
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      title = "Other External Setup Scripts",
+      open = FALSE,
+      accordion_panel(
+        "knit_engines.R",
+        tagList(tags$pre(includeText(here(global$knit_engines))))
+    ),
+      accordion_panel(
+        "conflicts.R",
+        tagList(tags$pre(includeText(here(global$conflicts))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(global$functions))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(global$packages))))
+    ),
+      accordion_panel(
+        "inputs.R",
+        tagList(tags$pre(includeText(here(micro$inputs))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(micro$packages))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(micro$functions))))
+    )
+  )
+)
+```
+
+
 # Load Data into R
 
 ## Sample Metadata
@@ -86,25 +167,13 @@ I am writing this script with a version of our lab's pygmy loris microbiome data
 You should have already completed the [SampleInventory](SampleInventory.html) and [MetadataSetup](MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
 ```{r}
 metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
-  select(all_of(names(metadata_key))) %>%
-  mutate(across(all_of(date.vars), ~ ymd(.)),
-         across(all_of(binary.vars), ~ as.character(.)),
-         across(all_of(ids),         ~ str_to_lower(.))) %>%
-  mutate(
-    Subject        = factor(str_to_lower(Subject), levels = c("culi", "warble", "unknown")),
-    StudbookID     = factor(StudbookID, levels = unique(StudbookID)),
-          Sex           = factor(Sex, levels = unique(Sex)),
-          MotherID      = factor(MotherID, levels = unique(MotherID)),
-          FatherID      = factor(FatherID, levels = unique(FatherID)),
-          BirthLocation = factor(BirthLocation, levels = unique(BirthLocation)),
-          BirthYear     = year(make_date(year = BirthYear))
-          ) %>%
-  mutate(across(all_of(binary.vars), ~ case_when(. == "1" ~ "yes",
-                                         . == "0" ~ "no",
-                                         .default = .))) %>%
+  filter(steps_remaining == "sample extracted and sequenced") %>%
   filter(!is.na(CollectionDate)) %>%
-  mutate(across(any_of(replace.unknowns), ~ 
-                  if_else(is.na(.), replace_na("unknown"), .))) %>%
+  select(all_of(microeco_cols)) %>%
+  mutate(across(all_of(date.vars),   ~ ymd(.)),
+         across(all_of(yn.vars),     ~ str_to_lower(as.character(.))),
+         across(all_of(ids),         ~ str_to_lower(.))) %>%
+  mutate(Subject        = str_to_lower(subject)) %>%
   arrange(study_day, Subject)
 
 ```
@@ -113,9 +182,9 @@ metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
 
 ```{r}
 sample.list <- metadata %>% 
-               distinct(SampleID, Subject, CollectionDate) %>%
+               distinct(identifier, Subject, CollectionDate) %>%
                arrange(Subject, CollectionDate) %>%
-               distinct(SampleID) %>%
+               distinct(identifier) %>%
                    map(\(x) as.list(x)) %>%
   list_flatten(name_spec = "")
 
@@ -123,9 +192,9 @@ samples <- sample.list %>% unlist()
 
 samp.list.culi  <- metadata %>% 
                    filter(Subject == "culi") %>%
-                   distinct(SampleID, CollectionDate) %>%
+                   distinct(identifier, CollectionDate) %>%
                    arrange(CollectionDate) %>%
-                   distinct(SampleID) %>%
+                   distinct(identifier) %>%
                    map(\(x) as.list(x)) %>%
   list_flatten(name_spec = "")
 
@@ -135,9 +204,9 @@ samples.culi       <- samp.list.culi %>% unlist()
 
 samp.list.warb  <- metadata %>% 
                    filter(Subject == "warble") %>%
-                   distinct(SampleID, CollectionDate) %>%
+                   distinct(identifier, CollectionDate) %>%
                    arrange(CollectionDate) %>%
-                   distinct(SampleID) %>%
+                   distinct(identifier) %>%
                    map(\(x) as.list(x)) %>%
   list_flatten(name_spec = "")
 
@@ -145,10 +214,10 @@ samples.warb <- samp.list.warb %>% unlist()
 
 libraries <- metadata %>%
   arrange(LibPrepDate) %>%
-  select(LibraryCode, SequenceID) %>%
+  select(LibraryCode, identifier) %>%
   group_by(LibraryCode) %>%
   group_map(~ {
-    setNames(list(as.list(.x$SequenceID)), .y$LibraryCode)
+    setNames(list(as.list(.x$identifier)), .y$LibraryCode)
   }, .keep = TRUE) %>%
   flatten()
 
@@ -329,13 +398,12 @@ alignments.long     <- bind_rows(alignment.files) %>%
                                class,
                                phylum,
                                superkingdom,
-                               SequenceID = alias,
+                               identifier = alias,
                                coverage,
                                n_reads = number.of.reads)    %>%
-                        left_join(select(metadata, c(SequenceID, SampleID)), 
-                                  by = join_by(SequenceID)) %>%
-                        select(-SequenceID) %>%
-                        filter(coverage >= methods_16s$min_cov & !is.na(SampleID)) %>%
+                        left_join(select(metadata, identifier), 
+                                  by = join_by(identifier)) %>%
+                        filter(coverage >= methods_16s$min_cov & !is.na(identifier)) %>%
                         group_by(ref,
                                  taxid,
                                  species,
@@ -345,11 +413,11 @@ alignments.long     <- bind_rows(alignment.files) %>%
                                  class,
                                  phylum,
                                  superkingdom,
-                                 SampleID) %>%
+                                 identifier) %>%
                         summarize(samp_cov     = mean(coverage),
                                   samp_n_reads = mean(n_reads)) %>% ungroup() %>%
-                        mutate(SampleID = factor(SampleID, levels = unique(samples))) %>%
-                        arrange(SampleID) %>%
+                        mutate(identifier = factor(identifier, levels = unique(samples))) %>%
+                        arrange(identifier) %>%
                         sort.taxa()
 ```
 
@@ -395,7 +463,7 @@ alignments    <- alignments.long %>%
                                  family,
                                  genus,
                                  species,
-                                 SampleID) %>%
+                                 identifier) %>%
                           summarize(counts = sum(samp_n_reads)) %>%
                           ungroup() %>%
                           left_join(alignments.refs,
@@ -410,7 +478,7 @@ alignments    <- alignments.long %>%
                                                taxid,
                                                taxonomy.ordered,
                                                ref_mean_cov),
-                                names_from  = SampleID,
+                                names_from  = identifier,
                                 values_from = counts) %>%
                     sort.taxa() %>%
                     mutate(across(where(is.numeric), ~replace_na(.x, 0)),
@@ -424,79 +492,237 @@ It is a good idea to look at our read counts across our dataset at this point so
 
 ```{r}
 depth <- alignments.long %>%
-  select(SampleID,
+  filter(!is.na(identifier)) %>%
+  select(identifier,
          samp_cov,
          samp_n_reads) %>%
-  group_by(SampleID) %>%
+  group_by(identifier) %>%
   summarize(depth         = round(sum(samp_n_reads), digits = 0),
             mean_coverage = round(mean(samp_cov), digits = 2)) %>%
   mutate(mean_coverage = mean_coverage/100) %>%
   ungroup() %>%
-  left_join(metadata, by = join_by(SampleID)) %>%
-  distinct(
-    CollectionDate,
-    study_day,
-    Subject,
-    SampleID,
-    depth,
-    mean_coverage,
-    probiotic,
-    oatgel,
-    steroid,
-    cauliflower,
-    tomatoes,
-    broccoli,
-    med_type,
-    med_name,
-    med_dose,
-    enclosure,
-    access,
-    estrus,
-    pregnant,
-    bristol_mean,
-    health_note,
-    repro_note,
-    SampleNotes
+  left_join(metadata, by = join_by(identifier)) %>%
+  select(all_of(coverage_table_cols)) %>%
+  distinct()
+```
+
+## Reactable Table with Sequencing Stats
+
+```{r}
+foods_expand    <- read.table(path$metadata$foods   , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+fats_expand     <- read.table(path$metadata$fats    , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+proteins_expand <- read.table(path$metadata$proteins, sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+CHOs_expand     <- read.table(path$metadata$CHOs    , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+Ash_expand      <- read.table(path$metadata$Ash     , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+vitamins_expand <- read.table(path$metadata$vitamins, sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+```
+
+```{r, warning = FALSE}
+depth_summary <- depth %>% 
+  mutate(
+  diet_color            = as.character(fct_recode(diet_name, !!!diet_colors)),
+  holding_color         = as.character(fct_recode(holding, !!!holding_colors)),
+  warb_status_color     = as.character(fct_recode(warb_status, !!!warb_status_colors)),
+  color_Subj_Certainty  = as.character(fct_recode(Subj_Certainty, !!!certainty_colors)),
+  icon_Subj_Certainty   = as.character(fct_recode(Subj_Certainty, !!!certainty_icons)),
+  color_pair_access     = as.character(fct_recode(pair_access, !!!pair_access_colors)),
+  icon_pair_access      = as.character(fct_recode(pair_access, !!!pair_access_icons)),
+  color_subject         = as.character(fct_recode(Subject, !!!subj_colors)),
+  icon_subject          = as.character(fct_recode(Subject, !!!subj_icons)),
+  vitamins              = "Expand Details"
   ) %>%
-  mutate(across(where(is.character), ~ str_replace_all(., "yes", "\u2714\ufe0f")),
-         across(where(is.character), ~ str_replace_all(., "^no$", "\u2718")),
-         across(where(is.character), ~ str_replace_all(., "unknown", "\u2754")),
-         across(where(is.character), ~str_replace_all(., "none", "")),
-         across(c("estrus", "pregnant"), ~if_else(Subject == "culi", NA, .)),
-         steroid = if_else(steroid == 0.0, "\u2718", as.character(steroid)),
-         med_dose= if_else(med_dose    == 0.0, "", as.character(med_dose))
-         ) %>%
-  filter((Subject == "warble" | Subject == "culi") & !is.na(CollectionDate)) %>%
-  arrange(CollectionDate, Subject)
-
+  mutate(diet_name    = fct_recode(diet_name, !!!rename_diets),
+         subject      = str_to_title(Subject),
+         holding      = str_to_title(holding),
+         pair_access  = str_to_title(pair_access),
+         warb_status  = str_to_title(warb_status),
+         across(all_of(dose_cols), ~ rescale_dose(.x, max(.x))), .keep = "unused") %>%
+  relocate(ends_with("fed"), .after = "total_mg_dry") %>%
+  select(all_of(depth_table_cols)) %>%
+  arrange(study_day, subject)
 ```
 
 ```{r}
-source(modules$generate_alignment_stats)
+depth_table <- depth_summary %>% 
+  reactable(
+    compact             = T,
+    sortable            = T,
+    pagination          = T,
+    showPageSizeOptions = T,
+    showSortable        = T,
+    height              = 700,
+    theme               = flatly(),
+    defaultPageSize     = 20,
+    columns             = list(
+  study_day       = colDef(header   = tippy_study_day(),
+                           maxWidth = 50),
+  subject         = colDef(header   = tippy_subject(), 
+                           cell     = subj_cell(depth_summary),
+                           filterable = TRUE),
+  identifier      = colDef(header   = tippy_identifier()),
+  depth           = colDef(header   = tippy_depth()    ,
+                           cell = raw_count_cell(depth_summary),
+                           filterable = TRUE),
+  mean_coverage   = colDef(header   = tippy_coverage(),
+                           cell = coverage_cell(depth_summary),
+                           filterable = TRUE),
+  bristol_mean    = colDef(header = tippy_bristol(),
+                           align = "center",
+                           cell = bristol_cell(depth_summary)),
+  diet_name       = colDef(header = tippy_diet(),
+                           cell = diet_name_cell(depth_summary),
+                           filterable = TRUE),
+  total_mg        = colDef(header = tippy_total_mg(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {food_subtab(depth_summary, index)}),
+  protein_fed     = colDef(header = tippy_protein(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, proteins_expand)}),
+  fat_fed         = colDef(header = tippy_fat(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, fats_expand)}),
+  CHO_fed         = colDef(header = tippy_chos(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, CHOs_expand)}),
+  mineral_fed     = colDef(header = tippy_ash(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, Ash_expand)}),
+  vitamins        = colDef(header = tippy_vitamins(),
+                           details = function(index) {nutrient_details(depth_summary, index, vitamins_expand)}),
+  probiotic       = colDef(header = tippy_probiotic(),
+                           cell = supplement_cell(depth_summary, "droplet"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  fiber           = colDef(header = tippy_fiber(),
+                           cell = supplement_cell(depth_summary, "capsules"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  steroid         = colDef(header = tippy_steroid(),
+                           cell = supplement_cell(depth_summary, "syringe"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  antibiotic      = colDef(header = tippy_antibiotic(),
+                           cell = supplement_cell(depth_summary, "prescription-bottle-medical"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  antidiarrheal   = colDef(header = tippy_antidiar(),
+                           cell = supplement_cell(depth_summary, "poop"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  holding         = colDef(header = tippy_enclosure(),
+                           cell = color_tiles(depth_summary, color_ref = "holding_color"),
+                           maxWidth = 70),
+  pair_access     = colDef(header = tippy_pair_access(),
+                           cell = pair_access_cell(depth_summary),
+                           maxWidth = 50),
+  warb_status     = colDef(header = tippy_warb_status(),
+                           cell = color_tiles(depth_summary, color_ref = "warb_status_color"),
+                           filterable = TRUE),
+  keeper_note     = colDef(header = tippy_keeper_note()),
+  Subj_Certainty  = colDef(header   = tippy_subj_certain(),
+                           cell     = subj_certain_cell(depth_summary),
+                           maxWidth = 50),
+  Sex               = colDef(name = "Sex" ,
+                             cell = sex_cell(depth_summary)),
+  subject_age       = colDef(header = tippy_subj_age(),
+                             maxWidth = 50),
+  CollectionDate  = colDef(header   = tippy_collectDate(),
+                           format   = colFormat(date = TRUE)),
+  SampleID          = colDef(header = tippy_sampID()),
+  SampleNotes       = colDef(header = tippy_collectNotes()),
+  ExtractID         = colDef(header = tippy_extractID()),
+  ExtractDate       = colDef(header = tippy_extractDate(),
+                             format = colFormat(date = TRUE)),
+  ExtractConc       = colDef(header = tippy_extractConc(),
+                             cell = concentration_cell(depth_summary)),
+  ExtractKit        = colDef(header = tippy_extractKit()),
+  ExtractedBy       = colDef(header = tippy_extractedBy(),
+                           filterable = TRUE),
+  ExtractNotes      = colDef(header = tippy_extractNotes()),
+  SequenceID        = colDef(header = tippy_seqID()),
+  LibPrepDate       = colDef(header = tippy_libprepDate(),
+                             format = colFormat(date = TRUE)),
+  LibraryCode       = colDef(header = tippy_libprepID(),
+                             maxWidth = 70,
+                           filterable = TRUE),
+  LibPrepKit        = colDef(header = tippy_libprepKit()),
+  LibraryBarcode    = colDef(header = tippy_barcode(),
+                             maxWidth = 50),
+  Conc_QC2          = colDef(header = tippy_finalConc(),
+                             cell = concentration_cell(depth_summary)),
+  SeqDate           = colDef(header = tippy_seqDate(),
+                             format = colFormat(date = TRUE)),
+  FlowCellType      = colDef(header = tippy_flowcell(),
+                           filterable = TRUE),
+  FlowCellSerial    = colDef(header = tippy_flowcell_serial()),
+  FlongleAdapter    = colDef(header = tippy_flongle()),
+  SeqDevice         = colDef(header = tippy_seqDevice()),
+  diet_color            = colDef(show = FALSE),
+  holding_color         = colDef(show = FALSE),
+  warb_status_color     = colDef(show = FALSE),
+  color_Subj_Certainty  = colDef(show = FALSE),
+  icon_Subj_Certainty   = colDef(show = FALSE),
+  color_pair_access     = colDef(show = FALSE),
+  icon_pair_access      = colDef(show = FALSE),
+  color_subject         = colDef(show = FALSE),
+  icon_subject          = colDef(show = FALSE)
+    )
+  ) %>%
+  add_title("Sequencing Summary for Pygmy Loris Microbiome Project") %>%
+  add_subtitle("One row per sample, includes nested tibbles with nutrition data (hover headers for details)") %>%
+  add_source(paste0("Last updated on ", today()))
+
+save_reactable_test(depth_table, path$sequencing$coverage)
 ```
 
-```{r}
+```{r, warning = FALSE}
+depth_plot <- plot_ly(alpha = 0.6) %>%
+  add_histogram(x        = ~depth,
+                data     = filter(depth_summary, subject == "Warble"),
+                color    = "#803777FF",
+                name     = "Warble",
+                bingroup = 1000) %>%
+  add_histogram(x     = ~depth,
+                data  = filter(depth_summary, subject == "Culi"),
+                color = "#216F63FF",
+                name  = "Culi",
+                bingroup = 1000) %>%
+  layout(barmode = "overlay",
+         bargap  = 0.1,
+         xaxis = list(
+           title     = "Depth (N Reads)",
+           tick0     = 2000,
+           dtick     = 2000,
+           tickangle = 45
+           ),
+         yaxis = list(
+           title = "Count (N Samples)"
+           )
+         )
+
+saveWidget(as_widget(depth_plot), here("visuals/loris_depth_hist.html"), selfcontained = TRUE)
+```
+
+
+```{r, warning = FALSE}
   page_fluid(
     accordion(
       open = TRUE,
       accordion_panel(
-        title = "Summary of Rarefaction Thresholds",
+        title = "Sequencing Depth Frequencies by Subject",
         icon = bsicons::bs_icon("bar-chart"),
         layout_column_wrap(
-          gt_depth_summary,
           depth_plot
         )
       ),
       accordion_panel(
-        title = "Sequencing Depth Across All Samples",
+        title = "Sample Table with Sequencing Depth",
         icon = bsicons::bs_icon("calendar-date"),
         depth_table
       )
     )
   )
 ```
-
-
 
 # Update References and Fetch Representative Sequences
 
@@ -743,39 +969,79 @@ This is also a good point to check for discrepencies in tables to see whether an
 samples.filtered <- setdiff(sample.list, otu.sample.list)
 
 excluded <- metadata %>% filter(SampleID %in% samples.filtered)
+
+print(excluded)
 ```
 
 ```{r, message = F}
 samples.duplicated <- metadata %>% 
-                filter(SampleID %in% otu.sample.list) %>%
+                filter(identifier %in% otu.sample.list) %>%
                 select(-c("ExtractID", 
                           "SequenceID",
-                          all_of(tech_vars))) %>%
+                          "SampleID",
+                          "SequenceID",
+                          "LibraryBarcode",
+                          "LibraryCode"
+                          )) %>%
                 distinct() %>%
-                      group_by(SampleID) %>%
+                      group_by(identifier) %>%
                       summarize(count = n()) %>%
                       filter(count > 1) %>%
                       left_join(metadata)
+
+print(samples.duplicated)
 ```
 
 
 ## Sample Table
 
-Now I need to update my metadata table so that I have one row per column in the OTU table. Because for now we are just look at sample-level trends, not doing a technical analysis of any potential benchside confounders, I am going to subset my metadata variables and reduce the rows in the table.
+Now I am going to refine the metadata table to include the versions of each variable that I may want to include in my downstream analyses.  
+  
+This is also a good time to format different variables as factors and create some interaction terms.  
+
+Most importantly, I need to update my metadata table so that I have **one row per column in the OTU table.**
 
 ```{r}
-sample.table <- metadata  %>% 
-                filter(SampleID %in% otu.sample.list) %>%
-                select(-c("ExtractID", 
-                          "SequenceID",
-                          all_of(tech_vars))) %>%
-                distinct() %>%
-                arrange(Subject, study_day) %>%
-                mutate(SampleID = factor(SampleID, levels = unique(SampleID))) %>%
-                column_to_rownames("SampleID")
+foods_wide <- foods_expand %>% 
+  pivot_wider(id_cols     = "identifier",
+              names_from  = "food",
+              values_from = "mg_fed") %>%
+  mutate(across(where(is.numeric), ~replace_na(., 0)))
+fats_wide      <- nutrients_wide(fats_expand)
+proteins_wide  <- nutrients_wide(proteins_expand)
+Ash_wide       <- nutrients_wide(Ash_expand)
+CHOs_wide      <- nutrients_wide(CHOs_expand)
+vitamins_wide  <- nutrients_wide(vitamins_expand)
 ```
 
 
+```{r}
+sample.table <- metadata  %>% 
+                filter(identifier %in% otu.sample.list) %>%
+                select(all_of(sample_table_cols)) %>%
+                left_join(fats_wide    , by = join_by(identifier)) %>%
+                left_join(proteins_wide, by = join_by(identifier)) %>%
+                left_join(Ash_wide     , by = join_by(identifier)) %>%
+                left_join(CHOs_wide    , by = join_by(identifier)) %>%
+                left_join(vitamins_wide, by = join_by(identifier)) %>%
+                left_join(foods_wide   , by = join_by(identifier)) %>%
+                rename_with(~str_replace_all(., " ", "_")) %>%
+                rename_with(~str_replace_all(., "-", "_")) %>%
+                rename_with(~str_remove_all(., fixed(")"))) %>%
+                rename_with(~str_remove_all(., fixed("("))) %>%
+                arrange(study_day, subject) %>%
+                mutate(day = as.character(study_day)) %>%
+                mutate(diet_name   = fct(diet_name,  levels = diet_factors),
+                       holding     = fct(holding,    levels = c("old", "new")),
+                       pair_access = fct(pair_access,levels = c("y", "n")),
+                       warb_status = fct(warb_status,levels = warb_cycle_factors),
+                       across(any_of(default_factors), ~fct(., levels = unique(.))),
+                       across(any_of(ids)            , ~fct(., levels = unique(.)))) %>%
+                mutate(subject_day = fct_cross(subject, day)) %>%
+                select(-day) %>%
+                column_to_rownames("identifier")
+                
+```
 
 ### Subset Versions
 
@@ -783,32 +1049,11 @@ I like to subset my tables at this point to create some smaller datasets that ma
 
 ```{r}
 otu.culi       <-  otu.table    %>% select(any_of(samples.culi))
-samp.tab.culi  <-  metadata  %>% 
-                filter(SampleID %in% samples.culi) %>%
-                filter(SampleID %in% otu.sample.list) %>%
-                select(-c("ExtractID", 
-                          "SequenceID",
-                          all_of(tech_vars))) %>%
-                distinct() %>%
-                arrange(study_day) %>%
-                mutate(SampleID = factor(SampleID, levels = unique(SampleID))) %>%
-                column_to_rownames("SampleID")
-```
+otu.warb       <-  otu.table  %>% select(any_of(samples.warb))
 
+samp.tab.culi  <-  sample.table  %>% filter(subject == "culi")
+samp.tab.warb  <-  sample.table  %>% filter(subject == "warble")
 
-```{r}
-otu.warb      <-  otu.table    %>% select(any_of(samples.warb))
-samp.tab.warb <-  metadata  %>% 
-                filter(SampleID %in% samples.warb) %>%
-                filter(SampleID %in% otu.sample.list) %>%
-                select(-c("ExtractID", 
-                          "SequenceID",
-                          all_of(tech_vars))) %>%
-                distinct() %>%
-                arrange(study_day) %>%
-                mutate(SampleID = factor(SampleID, levels = unique(SampleID))) %>%
-                column_to_rownames("SampleID") %>%
-                select(-c(starts_with("bristol")))
 ```
 
 ## Assemble Datasets
@@ -843,17 +1088,76 @@ dataset.warb <- microtable$new(
 
 ## Rarefaction
   
-Rarefaction is a technique used to standardize the number of reads across samples in a microbiome dataset. This ensures that differences in sample diversity and composition are not driven by varying sequencing depths but reflect true biological patterns. In this step, we are applying rarefaction using the Simple Random Sampling (SRS) method to normalize each sample to a consistent size of 6,000 sequences.
+Rarefaction is a technique used to standardize the number of reads across samples in a microbiome dataset. This ensures that differences in sample diversity and composition are not driven by varying sequencing depths but reflect true biological patterns.  
+  
+We can use the depth summaries from above to inform our decision, but microeco also has some handy visualization functions built in to generate rarefaction curves. These are also useful for supplementary data to demonstrate the robustness of your sample size relative to your specific population/taxa.
+
+```{r}
+rarefaction_depths <- c(seq.int(0, 8000, by = 500))
+
+rarefaction.main <- trans_rarefy$new(dataset.main, 
+                                     alphadiv = "Observed",
+                                     depth = rarefaction_depths)
+```
+
+```{r, warning = FALSE}
+rarefaction_plot <- rarefaction.main$plot_rarefy(show_legend = FALSE)
+rarefaction_plot
+ggsave("visuals/loris_rarefaction.png", rarefaction_plot)
+```
+
+In addition to the plot above, the text produced by initiating the rarefaction object can also be helpful. It looks like our inflection point is somewhere between 4,000 and 5,000 reads, so let's take a look at the result we would get from rarefaction at either of those thresholds:
+
+```
+Rarefy data at depth 4000 ...
+122 samples are removed because of fewer reads than input sample.size ...
+818 features with 0 abundance are removed after filtering samples ...
+289 features are removed because they are no longer present in any sample after random subsampling ...
+289 taxa with 0 abundance are removed from the otu_table ...
+
+Rarefy data at depth 4500 ...
+143 samples are removed because of fewer reads than input sample.size ...
+845 features with 0 abundance are removed after filtering samples ...
+248 features are removed because they are no longer present in any sample after random subsampling ...
+248 taxa with 0 abundance are removed from the otu_table ...
+
+Rarefy data at depth 5000 ...
+159 samples are removed because of fewer reads than input sample.size ...
+868 features with 0 abundance are removed after filtering samples ...
+227 features are removed because they are no longer present in any sample after random subsampling ...
+227 taxa with 0 abundance are removed from the otu_table ...
+
+Rarefy data at depth 5500 ...
+183 samples are removed because of fewer reads than input sample.size ...
+899 features with 0 abundance are removed after filtering samples ...
+219 features are removed because they are no longer present in any sample after random subsampling ...
+219 taxa with 0 abundance are removed from the otu_table ...
+```
+
+Based on the results we viewed from the sequencing depth summary table, histogram, and rarefaction curve above, we are applying rarefaction using the Simple Random Sampling (SRS) method to normalize each sample to a consistent size of 4,500 sequences.
 
 ```{r}
 dataset.main$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
 dataset.culi$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
 dataset.warb$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
 ```
+## Technical Replicates
+
+Now that we have normalized all sequenced libraries, we need to handle our duplicated observations. That includes (1) samples that were sequenced more than once and (2) days where we gathered more than one sample per individual.  
+  
+There are several ways to handle this, each with their own tradeoffs. For now, we are going to use microeco's merge samples function to merge all data for each day and subject.
+
+```{r}
+dataset.main <- dataset.main$merge_samples("subject_day")
+dataset.culi <- dataset.culi$merge_samples("subject_day")
+dataset.warb <- dataset.warb$merge_samples("subject_day")
+```
+
+
 
 ## Relative Abundance
 
-After rarefaction, we calculate relative abundances to express the composition of each sample as proportions rather than raw counts. This step converts the sequence data into percentages, making it easier to compare the microbial community structure across samples regardless of their total sequence counts. The resulting relative abundances provide insights into the relative prevalence of different taxa within each sample.
+After rarefaction and merging replicates, we calculate relative abundances to express the composition of each sample as proportions rather than raw counts. This step converts the sequence data into percentages, making it easier to compare the microbial community structure across samples regardless of their total sequence counts. The resulting relative abundances provide insights into the relative prevalence of different taxa within each sample.
 
 ```{r, message = FALSE}
 dataset.main$cal_abund()
@@ -879,12 +1183,12 @@ dataset.warb$filter_taxa(rel_abund      = methods_16s$loris$min_abund,
 
 ## Diversity Metrics
 
-Diversity metrics help us understand the structure of microbial communities within and across samples. **Alpha diversity** measures the richness and evenness of taxa within individual samples, providing insights into the complexity of each community. **Beta diversity** assesses differences in microbial composition between samples, revealing how communities vary across conditions or groups. In this step, we calculate alpha diversity for each dataset and beta diversity using UniFrac and Canberra distance metrics to capture both phylogenetic and compositional differences.
+Diversity metrics help us understand the structure of microbial communities within and across samples. **Alpha diversity** measures the richness and evenness of taxa within individual samples, providing insights into the complexity of each community. **Beta diversity** assesses differences in microbial composition between samples, revealing how communities vary across conditions or groups. In this step, we calculate alpha diversity for each dataset and beta diversity using UniFrac and Aitchinson distance metrics to capture both phylogenetic and compositional differences.
 
 ```{r, message = FALSE}
-dataset.main$cal_alphadiv()
-dataset.culi$cal_alphadiv()
-dataset.warb$cal_alphadiv()
+dataset.main$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
+dataset.culi$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
+dataset.warb$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
 dataset.main$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
 dataset.culi$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
 dataset.warb$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
@@ -1092,6 +1396,13 @@ dataset.keg.culi$rarefy_samples(method = methods_16s$loris$norm, sample.size = m
 dataset.keg.warb$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
 ```
 
+```{r}
+dataset.keg.main <- dataset.keg.main$merge_samples("subject_day")
+dataset.keg.culi <- dataset.keg.culi$merge_samples("subject_day")
+dataset.keg.warb <- dataset.keg.warb$merge_samples("subject_day")
+```
+
+
 
 ```{r, message=FALSE}
 dataset.keg.main$cal_abund()
@@ -1149,7 +1460,7 @@ keg.warb$cal_tax4fun2(
 
 The functional redundancy step estimates the Functional Redundancy Index (FRI), which measures the overlap of functional potential among taxa within a community. Higher redundancy suggests that multiple taxa perform similar functions, contributing to ecosystem stability and resilience. This analysis helps evaluate the robustness of microbial communities and their ability to maintain functional roles under environmental changes.  
   
->Note that this step is more memory intensive and can take some time for large datasets.
+>Note that this step is more memory intensive and can take some time for large datasets. That is why I choose to source this as an external script that I run as a background job within R Studio. Find more information about how to do that [here.](https://docs.posit.co/ide/user/ide/guide/tools/jobs.html)
 
 ```{r, eval = FALSE}
 keg.main$cal_tax4fun2_FRI()
@@ -1180,13 +1491,20 @@ keg.data.warb <- microtable$new(
 keg.data.main$tidy_dataset()
 keg.data.culi$tidy_dataset()
 keg.data.warb$tidy_dataset()
+```
+
+
+```{r, eval = FALSE}
 keg.data.main$cal_abund()
 keg.data.culi$cal_abund()
 keg.data.warb$cal_abund()
-keg.data.main$cal_betadiv(method = "canberra")
-keg.data.culi$cal_betadiv(method = "canberra")
-keg.data.warb$cal_betadiv(method = "canberra")
 
+keg.data.main$cal_alphadiv()
+keg.data.culi$cal_alphadiv()
+keg.data.warb$cal_alphadiv()
+keg.data.main$cal_betadiv(method = methods_16s$loris$betadiv)
+keg.data.culi$cal_betadiv(method = methods_16s$loris$betadiv)
+keg.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
 ```
 
 #### Export Datasets for Further Analysis
@@ -1274,9 +1592,13 @@ fpt.data.main$cal_abund()
 fpt.data.culi$cal_abund()
 fpt.data.warb$cal_abund()
 
-fpt.data.main$cal_betadiv(method = "canberra")
-fpt.data.culi$cal_betadiv(method = "canberra")
-fpt.data.warb$cal_betadiv(method = "canberra")
+fpt.data.main$cal_alphadiv()
+fpt.data.culi$cal_alphadiv()
+fpt.data.warb$cal_alphadiv()
+
+fpt.data.main$cal_betadiv(method = methods_16s$loris$betadiv)
+fpt.data.culi$cal_betadiv(method = methods_16s$loris$betadiv)
+fpt.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
 ```
 
 #### Export Dataset for Further Analysis
@@ -1353,9 +1675,12 @@ njc.data.warb$tidy_dataset()
 njc.data.main$cal_abund()
 njc.data.culi$cal_abund()
 njc.data.warb$cal_abund()
-njc.data.main$cal_betadiv(method = "canberra")
-njc.data.culi$cal_betadiv(method = "canberra")
-njc.data.warb$cal_betadiv(method = "canberra")
+njc.data.main$cal_alphadiv()
+njc.data.culi$cal_alphadiv()
+njc.data.warb$cal_alphadiv()
+njc.data.main$cal_betadiv(method = methods_16s$loris$betadiv)
+njc.data.culi$cal_betadiv(method = methods_16s$loris$betadiv)
+njc.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
 ```
 
 #### Export Dataset for Further Analysis

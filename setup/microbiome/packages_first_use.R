@@ -52,3 +52,11 @@ BiocManager::install("ggtree")
 BiocManager::install("metagenomeSeq")
 BiocManager::install("ALDEx2")
 BiocManager::install("ANCOMBC")
+
+# For linux or mac
+install.packages("doMC")
+# Then install the following packages
+install.packages("lokern")
+install.packages("monomvn")
+install.packages("pspline")
+devtools::install_github('csb5/beem')

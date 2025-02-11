@@ -42,6 +42,7 @@ required_packages <- c(
   "pandoc",
   "philr",
   "phyloseq",
+  "plotly",
   "png",
   "rcompanion",
   "reactable",
@@ -98,6 +99,7 @@ library(pander)
 library(pandoc)
 library(philr)
 library(phyloseq)
+library(plotly)
 library(png)
 library(rcompanion)
 library(reactable)

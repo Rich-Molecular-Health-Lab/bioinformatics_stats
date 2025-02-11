@@ -51,7 +51,7 @@ metadata_variables <- list(
     DNAextraction = list(
       ExtractID          =  "Unique id for each (DNA) extract",
       ExtractDate        =  "Date of DNA extraction/purification",  
-      ExtractConc        =  "DNA concentration (in ng/ul) estimated after extraction using Qubit assay and fluorometer",
+      ExtractConc        =  "DNA concentration (in ng/\u00b5L) estimated after extraction using Qubit assay and fluorometer",
       ExtractKit         =  "Kit used in DNA extraction/purification",  
       ExtractBox         =  "Identifier for freezer box where sample is located in the Rich Lab",
       ExtractedBy        =  "Person performing DNA extraction/purification", 
@@ -69,7 +69,7 @@ metadata_variables <- list(
       strands            =  "double or single-stranded DNA prepared during library prep protocol",
       Length             =  "target DNA length during library prep protocol",
       InputMassStart     =  "target starting template mass (in ng) during library prep protocol",      
-      Conc_QC2           =  "DNA concentration (in ng/ul) estimated at the end of library prep using Qubit assay and fluorometer",
+      Conc_QC2           =  "DNA concentration (in ng/\u00b5L) estimated at the end of library prep using Qubit assay and fluorometer",
       PoolSamples        =  "were samples barcoded and pooled for multiplexing during library prep?",  
       SampVolPool        =  "volume of sample added to library pool after barcoding during library prep",
       BeadVol            =  "volume of AMPure beads added to pooled library for final cleanup step",
@@ -87,7 +87,10 @@ metadata_variables <- list(
       FlowCellSerial     = "serial number of flow cell used in sequencing run",      
       FlongleAdapter     =  "ID of adapter if Flongle Flow Cell was used for sequencing",     
       SeqDevice          =  "MinION device used for sequencing (Angel or Spike)"      ,
-      reads_unclassified =  "Raw count of unclassified reads after alignment"
+      reads_unclassified =  "Raw count of reads from sequencing run before filtering and alignment",
+      raw_read_count     =  "Raw count of reads from sequencing run before filtering and alignment",
+      depth              =  "Raw count of reads after filtering and alignment for each library",
+      mean_coverage      =  "Mean proportion of reads that successfully aligned to a reference"
       )
     )
   )

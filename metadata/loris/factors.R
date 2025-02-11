@@ -28,6 +28,22 @@ dose_cols <- c(
   "antidiarrheal"
 )
 
+warb_cycle_factors <- c(
+  "anestrus",
+  "estrus",
+  "pregnant"
+)
+
+default_factors <- c(
+  "day",
+  "subject",
+  "ExtractKit",
+  "ExtractedBy",
+  "LibPrepKit",
+  "FlowCellType",
+  "SeqDevice"
+)
+
 steps_remaining_colors <- c(
   "#D2981AFF" = "sample not extracted"          ,
   "#A53E1FFF" = "extract not sequenced"         ,
@@ -67,12 +83,33 @@ certainty_colors <- c(
   "#CA562CFF" = "no",
   "#B5B991FF" = "yes"
 )
+certainty_icons <- c(
+  "x"     = "no",
+  "check" = "yes"
+)
+
+pair_access_colors <- c(
+  "#E1C473FF" = "n",
+  "#2C5724FF" = "y"
+)
+pair_access_icons <- c(
+  "square-minus"     = "no",
+  "square-check"     = "yes"
+)
+
+subj_colors <- c(
+  "#803777FF" = "warble",
+  "#216F63FF" = "culi"
+)
+subj_icons <- c(
+  "female"     = "warble",
+  "male"       = "culi"
+)
 
 
-
-alarm_colors <- c("#CEFF1AFF", "#D8E01BFF", "#DFC11BFF", "#E2A11BFF", "#E37F1BFF", "#E1581AFF", "#DE1A1AFF")
+alarm_colors        <- c("#CEFF1AFF", "#D8E01BFF", "#DFC11BFF", "#E2A11BFF", "#E37F1BFF", "#E1581AFF", "#DE1A1AFF")
 concentration_scale <- c("#FF3200FF", "#E9A17CFF", "#E9E4A6FF", "#1BB6AFFF", "#0076BBFF", "#172869FF")
-intake_scale <- c("#1D457FFF", "#61599DFF", "#C36377FF", "#EB7F54FF", "#F2AF4AFF")
+intake_scale        <- c("#1D457FFF", "#61599DFF", "#C36377FF", "#EB7F54FF", "#F2AF4AFF")
 
 supplement_color <- c("#985A71FF")
 
@@ -268,6 +305,223 @@ summary_variables <- c(
   "icon_subject",
   "color_subject",
   "icon_vitamins"
+)
+
+microeco_cols <- c(
+  "study_day",
+  "subject",
+  "identifier",
+  "diet_name",
+  "total_mg",
+  "total_kcal",
+  "total_mg_dry",
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "bristol_mean",
+  "holding",
+  "pair_access",
+  "warb_status",
+  "keeper_note",
+  "Subj_Certainty",
+  "Sex",
+  "subject_age",
+  "SampleID",
+  "CollectionDate",
+  "SampleNotes",
+  "ExtractID",
+  "ExtractDate",
+  "ExtractConc",
+  "ExtractKit",
+  "ExtractedBy",
+  "ExtractNotes",
+  "SequenceID",
+  "LibPrepDate",
+  "LibraryCode",
+  "LibPrepKit",
+  "LibraryBarcode",
+  "Conc_QC2",
+  "SeqDate",
+  "FlowCellType",
+  "FlowCellSerial",
+  "FlongleAdapter",
+  "SeqDevice",
+  "reads_unclassified",
+  "protein_fed",
+  "fat_fed",
+  "CHO_fed", 
+  "mineral_fed"     
+)
+
+date.vars <- c(
+  "CollectionDate",
+  "ExtractDate",
+  "LibPrepDate",
+  "SeqDate"
+)
+
+yn.vars <- c(
+  "pair_access",
+  "Subj_Certainty"
+)
+
+ids <- c(
+  "identifier",
+  "SampleID",
+  "ExtractID",
+  "SequenceID",
+  "LibraryCode"
+)
+
+coverage_table_cols <- c(
+  "study_day",
+  "Subject",
+  "identifier",
+  "raw_read_count" = "reads_unclassified",
+  "depth",
+  "mean_coverage",
+  "diet_name",
+  "total_mg",
+  "total_kcal",
+  "total_mg_dry",
+  "bristol_mean",
+  "protein_fed",
+  "fat_fed",
+  "CHO_fed", 
+  "mineral_fed",
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "holding",
+  "pair_access",
+  "warb_status",
+  "keeper_note",
+  "Subj_Certainty",
+  "Sex",
+  "subject_age",
+  "CollectionDate",
+  "SampleID",
+  "SampleNotes",
+  "ExtractID",
+  "ExtractDate",
+  "ExtractConc",
+  "ExtractKit",
+  "ExtractedBy",
+  "ExtractNotes",
+  "SequenceID",
+  "LibPrepDate",
+  "LibraryCode",
+  "LibPrepKit",
+  "LibraryBarcode",
+  "Conc_QC2",
+  "SeqDate",
+  "FlowCellType",
+  "FlowCellSerial",
+  "FlongleAdapter",
+  "SeqDevice"
+)
+
+depth_table_cols <- c(
+  "study_day",
+  "subject",
+  "identifier",
+  "diet_name",
+  "bristol_mean",
+  "depth",
+  "mean_coverage",
+  "ExtractConc",
+  "ExtractDate",
+  "ExtractedBy",
+  "ExtractNotes",
+  "LibPrepDate",
+  "LibraryCode",
+  "Conc_QC2",
+  "FlowCellType",
+  "SeqDevice",
+  "ExtractID",
+  "ExtractKit",
+  "SequenceID",
+  "LibPrepKit",
+  "LibraryBarcode",
+  "SeqDate",
+  "FlowCellSerial",
+  "FlongleAdapter",
+  "CollectionDate",
+  "SampleID",
+  "SampleNotes",
+  "total_mg",
+  "protein_fed",
+  "fat_fed",
+  "CHO_fed", 
+  "mineral_fed",
+  "vitamins",
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "holding",
+  "pair_access",
+  "warb_status",
+  "keeper_note",
+  "Subj_Certainty",
+  "Sex",
+  "subject_age",
+  "diet_color",
+  "holding_color",
+  "warb_status_color",
+  "color_Subj_Certainty",
+  "icon_Subj_Certainty",
+  "color_pair_access",
+  "icon_pair_access",
+  "color_subject",
+  "icon_subject"
+  )
+
+sample_table_cols <- c(
+  "study_day",
+  "subject",
+  "identifier",
+  "diet_name",
+  "total_mg",
+  "total_kcal",
+  "total_mg_dry",
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "bristol_mean",
+  "holding",
+  "pair_access",
+  "warb_status",
+  "keeper_note",
+  "Subj_Certainty",
+  "Sex",
+  "subject_age",
+  "SampleID",
+  "CollectionDate",
+  "SampleNotes",
+  "ExtractID",
+  "ExtractDate",
+  "ExtractKit",
+  "ExtractedBy",
+  "ExtractNotes",
+  "SequenceID",
+  "LibraryCode",
+  "LibPrepKit",
+  "FlowCellType",
+  "FlowCellSerial",
+  "FlongleAdapter",
+  "SeqDevice",
+  "protein_fed",
+  "fat_fed",
+  "CHO_fed", 
+  "mineral_fed"   
 )
 
 source(here("metadata/loris/reactable_rendering.R"))

@@ -340,6 +340,7 @@ foods_expand     <- metadata %>%
   mutate(food = fct_recode(food, !!!rename_foods))
 
 write.table(metadata_export, path$metadata$summary , row.names = F, sep = "\t")
+write.table(foods_expand   , path$metadata$foods   , row.names = F, sep = "\t")
 write.table(fats_expand    , path$metadata$fats    , row.names = F, sep = "\t")
 write.table(proteins_expand, path$metadata$proteins, row.names = F, sep = "\t")
 write.table(CHOs_expand    , path$metadata$CHOs    , row.names = F, sep = "\t")
@@ -362,16 +363,16 @@ metadata_summary <- metadata %>%
   warb_status_color     = as.character(fct_recode(warb_status, !!!warb_status_colors)),
   icon_steps_remaining  = as.character(fct_recode(steps_remaining, !!!steps_remaining_icons)),
   color_steps_remaining = as.character(fct_recode(steps_remaining, !!!steps_remaining_colors)),
-  icon_Subj_Certainty  = if_else(Subj_Certainty == "no"    , "x", "check"),
-  color_Subj_Certainty = if_else(Subj_Certainty == "no"    , "#CA562CFF", "#B5B991FF"),
-  icon_pair_access     = if_else(pair_access    == "n"     , "square-minus", "square-check"),
-  color_pair_access    = if_else(pair_access    == "n"     , "#E1C473FF", "#2C5724FF"),
-  icon_subject         = if_else(subject        == "warble", "female", "male"),
-  color_subject        = if_else(subject        == "warble", "#803777FF", "#216F63FF"),
-  subject              = str_to_title(subject),
+  color_Subj_Certainty  = as.character(fct_recode(Subj_Certainty, !!!certainty_colors)),
+  icon_Subj_Certainty   = as.character(fct_recode(Subj_Certainty, !!!certainty_icons)),
+  color_pair_access     = as.character(fct_recode(pair_access, !!!pair_access_colors)),
+  icon_pair_access      = as.character(fct_recode(pair_access, !!!pair_access_icons)),
+  color_subject         = as.character(fct_recode(subject, !!!subj_colors)),
+  icon_subject          = as.character(fct_recode(subject, !!!subj_icons)),
   icon_vitamins        = "square-caret-down"
   ) %>%
   mutate(diet_name    = fct_recode(diet_name, !!!rename_diets),
+         subject      = str_to_title(subject),
          holding      = str_to_title(holding),
          pair_access  = str_to_title(pair_access),
          warb_status  = str_to_title(warb_status),
@@ -417,22 +418,22 @@ vis_metadata <- metadata_summary %>%
                            maxWidth = 40),
   total_mg        = colDef(header = tippy_total_mg(),
                            cell = nutrient_cell(metadata_summary),
-                           details = function(index) {food_subtab(index)}),
+                           details = function(index) {food_subtab(metadata_summary, index)}),
   protein_fed     = colDef(header = tippy_protein(),
                            cell = nutrient_cell(metadata_summary),
-                           details = function(index) {nutrient_details(index, proteins_expand)}),
+                           details = function(index) {nutrient_details(metadata_summary, index, proteins_expand)}),
   fat_fed         = colDef(header = tippy_fat(),
                            cell = nutrient_cell(metadata_summary),
-                           details = function(index) {nutrient_details(index, fats_expand)}),
+                           details = function(index) {nutrient_details(metadata_summary, index, fats_expand)}),
   CHO_fed         = colDef(header = tippy_chos(),
                            cell = nutrient_cell(metadata_summary),
-                           details = function(index) {nutrient_details(index, CHOs_expand)}),
+                           details = function(index) {nutrient_details(metadata_summary, index, CHOs_expand)}),
   mineral_fed     = colDef(header = tippy_ash(),
                            cell = nutrient_cell(metadata_summary),
-                           details = function(index) {nutrient_details(index, Ash_expand)}),
+                           details = function(index) {nutrient_details(metadata_summary, index, Ash_expand)}),
   vitamins        = colDef(header = tippy_vitamins(),
                            cell = function(value) {"Expand Details \u230e"},
-                           details = function(index) {nutrient_details(index, vitamins_expand)}),
+                           details = function(index) {nutrient_details(metadata_summary, index, vitamins_expand)}),
   probiotic       = colDef(header = tippy_probiotic(),
                            cell = supplement_cell(metadata_summary, "droplet"),
                            maxWidth = 70),

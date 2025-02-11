@@ -948,4 +948,10 @@ function.correlation.table <- function(gt_table, df, variable_list) {
   return(gt_table)
 }
 
-
+nutrients_wide <- function(df) {
+  df %>%
+    pivot_wider(id_cols     = "identifier",
+                names_from  = "nutrient",
+                values_from = "fed") %>%
+    mutate(across(where(is.numeric), ~replace_na(., 0)))
+}

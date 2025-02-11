@@ -113,14 +113,6 @@ nutrient_cell <- function(data) {
             box_shadow    = TRUE)
 }
 
-concentration_cell <- function(data) {
-  data_bars(data, 
-            round_edges   = TRUE, 
-            fill_color    = concentration_scale,
-            text_position = "above", 
-            number_fmt    = label_number(suffix = " ng/\u00b5L"),
-            box_shadow    = TRUE)
-}
 
 supplement_cell <- function(data, icon) {
   icon_assign(data, icon = icon, icon_size = 13, fill_color = supplement_color, empty_opacity = 0)
@@ -157,8 +149,8 @@ reads_unclass_cell <- function(data) {
             text_position = "outside-end")
 }
 
-food_subtab <- function(index) {
-  data_sub <- foods_expand[foods_expand$identifier == metadata_summary$identifier[index], ]
+food_subtab <- function(data, index) {
+  data_sub <- foods_expand[foods_expand$identifier == data$identifier[index], ]
   food_sub <-  reactable(data_sub,
                          theme     = flatly(),
                          fullWidth = FALSE,
@@ -172,8 +164,8 @@ food_subtab <- function(index) {
 }
 
 
-nutrient_details <- function(index, data) {
-  data_sub <- data[data$identifier == metadata_summary$identifier[index], ]
+nutrient_details <- function(data, index, data_expand) {
+  data_sub <- data_expand[data_expand$identifier == data$identifier[index], ]
   table_sub <-  reactable(
     data_sub,
     theme     = flatly(),
@@ -332,6 +324,11 @@ tippy_extractNotes <- function() {
   tippy("Note", paste0(metadata_variables$labwork$DNAextraction$ExtractNotes))
 }
 
+tippy_extractedBy <- function() {
+  tippy("By", paste0(metadata_variables$labwork$DNAextraction$ExtractedBy))
+}
+
+
 
 tippy_seqID <- function() {
   tippy("ID", paste0(metadata_variables$labwork$Sequencing$SequenceID))
@@ -361,6 +358,13 @@ tippy_seqDate <- function() {
 tippy_flowcell <- function() {
   tippy("Flow Cell", paste0(metadata_variables$labwork$Sequencing$FlowCellType))
 }
+tippy_flowcell_serial <- function() {
+  tippy("Serial", paste0(metadata_variables$labwork$Sequencing$FlowCellSerial))
+}
+tippy_flongle <- function() {
+  tippy("Flongle", paste0(metadata_variables$labwork$Sequencing$FlongleAdapter))
+}
+
 
 tippy_seqDevice <- function() {
   tippy("Seq Device", paste0(metadata_variables$labwork$Sequencing$SeqDevice))
@@ -369,4 +373,51 @@ tippy_seqDevice <- function() {
 tippy_reads_unclass <- function() {
   tippy("Unclass. Reads", paste0(metadata_variables$labwork$Sequencing$reads_unclassified))
 }
+
+tippy_raw_reads <- function() {
+  tippy("Unclass. Reads", paste0(metadata_variables$labwork$Sequencing$raw_read_count))
+}
+tippy_depth <- function() {
+  tippy("Depth", paste0(metadata_variables$labwork$Sequencing$depth))
+}
+tippy_coverage <- function() {
+  tippy("Coverage", paste0(metadata_variables$labwork$Sequencing$mean_coverage))
+}
+
+coverage_cell <- function(data) {
+  gauge_chart(data, 
+            fill_color    = concentration_scale,
+            show_min_max  = TRUE,
+            number_fmt    = label_percent())
+}
+
+raw_count_cell <- function(data) {
+  data_bars(data, 
+            text_position = "above", 
+            fill_color    = concentration_scale,
+            bold_text     = TRUE,
+            round_edges   = TRUE,
+            box_shadow    = TRUE,
+            number_fmt    = label_number(scale_cut = cut_short_scale()))
+}
+
+diet_name_cell <- function(data) {
+  color_tiles(data,
+              color_ref  = "diet_color",
+              opacity    = 0.7,
+              box_shadow = TRUE,
+              bold_text  = TRUE)
+}
+
+concentration_cell <- function(data) {
+  data_bars(data, 
+            text_position = "above", 
+            fill_color    = concentration_scale,
+            bold_text     = TRUE,
+            round_edges   = TRUE,
+            box_shadow    = TRUE,
+            number_fmt    = label_number())
+}
+
+
 
