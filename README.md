@@ -4,8 +4,8 @@ Bioinformatics and Statistical Analysis
 This repository contains the scripts, tutorials, and templates for the Rich Lab's mainstream bioinformatic workflows.
 Before you begin working with any data or samples, you should first make sure you understand the DataInventory and Metadata workflows.
 
->To view the webpage version of this repository, click here: [Rich Lab Bioinformatics/Stats](https://rich-molecular-health-lab.github.io/bioinformatics_stats/)
->To view the base repository, click here: [Rich Lab Bioinformatics/Stats](https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats/)
+>To view the webpage version of this repository, click here: [Rich Lab Bioinformatics/Stats](https://rich-molecular-health-lab.github.io/bioinformatics_stats/)  
+>To view the base repository, click here: [Rich Lab Bioinformatics/Stats](https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats/)  
 
 
 Overview
