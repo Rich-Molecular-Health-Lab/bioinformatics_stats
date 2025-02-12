@@ -1,10 +1,3 @@
-# Set global options for all chunks
-opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = FALSE,
-               include = TRUE,
-               eval    = TRUE)
-
 knitr::knit_engines$set(terminal = function(options) {
   code <- paste(options$code, collapse = "\n")
   for (param in names(params)) {

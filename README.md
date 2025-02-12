@@ -19,6 +19,7 @@ If you are working with microbiome data, then you should follow these tutorials 
 
 4. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [MicroEcoDataPrep.html](MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
   - *Note: the [MicroEco package manual](https://chiliubio.github.io/microeco_tutorial/) is also a helpful reference for this.*
+5. [ExploreResults_LorisMicrobiome.Rmd](ExploreResults_LorisMicrobiome.Rmd) & [ExploreResults_LorisMicrobiome.html](ExploreResults_LorisMicrobiome.html) - in prep tutorial to use microeco for exploratory analysis and summary stats using loris microbiome data. Note: you must follow the MicroEcoDataPrep script to prepare datasets that will work with this pipeline.
 
 
 The raw scripts with chunk of code that you can run directly (assuming you download the entire repository with necessary dependencies) are in .Rmd format. I also use the knitr package to create "prettier" (but read-only) versions of those files, which are easier to read and study on their own.

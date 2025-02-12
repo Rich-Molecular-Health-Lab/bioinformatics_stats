@@ -1,5 +1,5 @@
 ---
-title: "Loris Microbiome Project Results Overview"
+title: "Loris Microbiome Project Results Overview - IN PROGRESS"
 author: "Alicia Rich"
 output:
   html_document:
@@ -45,7 +45,23 @@ thematic_on(accent = "#8785B2FF", fg = "black")
 
 # Read in Data
 
-I have written several custom functions to expedite some of the functions that I reuse multiple times for data sets across different sample and taxon subsets. The loop below will use one of those functions to read the microeco datasets that I built using the [MicroEcoDataPrep](MicroEcoDataPrep.html) script.
+I have written several custom functions to expedite some of the functions that I reuse multiple times for data sets across different sample and taxon subsets. The loop below will use one of those functions to read the microeco datasets that I built using the [MicroEcoDataPrep](MicroEcoDataPrep.html) script.  
+  
+This code makes use of the dataset paths referenced in my config.yaml file. To see the full path (relative to the repository base directory), refer to the relative syntax in this script and the config file below.  
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide Config File (config.yml)",
+        tagList(tags$pre(includeText("config.yml")))
+    )
+  )
+)
+```
+
+
 
 ```{r}
 # Define dataset categories
