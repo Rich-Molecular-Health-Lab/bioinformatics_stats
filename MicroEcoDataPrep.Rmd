@@ -86,7 +86,7 @@ You can use the sampleset setting under params in the header of this script to s
 
 ## File Paths
 
-Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. 
+Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. This also shows the paths to different files and directories I reference throughout this script relative to the repository home. 
 
 ```{r, echo = FALSE}
 page_fluid(
@@ -165,6 +165,7 @@ page_fluid(
 ## Sample Metadata
 
 You should have already completed the [SampleInventory](SampleInventory.html) and [MetadataSetup](MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
+
 ```{r}
 metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
   filter(steps_remaining == "sample extracted and sequenced") %>%
@@ -1037,7 +1038,7 @@ sample.table <- metadata  %>%
                        warb_status = fct(warb_status,levels = warb_cycle_factors),
                        across(any_of(default_factors), ~fct(., levels = unique(.))),
                        across(any_of(ids)            , ~fct(., levels = unique(.)))) %>%
-                mutate(subject_day = fct_cross(subject, day)) %>%
+                mutate(subject_day = fct_cross(subject, day, sep = "_")) %>%
                 select(-day) %>%
                 column_to_rownames("identifier")
                 
