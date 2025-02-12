@@ -5,6 +5,8 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 Before you begin working with any data or samples, you should first make sure you understand the DataInventory and Metadata workflows.
 
 >To view the webpage version of this repository, click here: [Rich Lab Bioinformatics/Stats](https://rich-molecular-health-lab.github.io/bioinformatics_stats/)
+>To view the base repository, click here: [Rich Lab Bioinformatics/Stats](https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats/)
+
 
 Overview
 --------
@@ -101,4 +103,38 @@ These links take you to full-page summary tables or graphics compiled for some o
 - [Summary Table of Loris Metadata](metadata/loris/loris_metadata_summary.html) 
 - [Summary Table of Sequencing Depths for Loris 16S Data](visuals/loris_depth_summary.html)
 - [Histogram of Sequencing Depths for Loris 16S Data](visuals/loris_depth_hist.html)
+
+
+
+Helpful Manuals, Cheatsheets, and Tutorials
+---------------------------------------------------------------------
+Here are some of the online resources for the packages or platforms that I use the most for different workflows and scripts in the lab.
+
+- [Posit Cheatsheets](https://posit.co/resources/cheatsheets/)
+- [R Studio User Guide](https://docs.posit.co/ide/user/)
+- [Holland Computing Center Manual](https://hcc.unl.edu/docs/intro/)
+- [Happy Git with R](https://happygitwithr.com/)
+- [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
+- [R Markdown Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+- [MicroEco Tutorial](https://chiliubio.github.io/microeco_tutorial/)
+- [Tidyverse Packages](https://www.tidyverse.org/)
+- [Tools for Microbiome Analysis](https://microsud.github.io/Tools-Microbiome-Analysis/)
+- [Unix Commands Cheatsheet](https://www.stationx.net/unix-commands-cheat-sheet/)
+- [Bash Scripting Cheatsheet](https://devhints.io/bash)
+- [Palateer Discrete R Color Palettes](https://emilhvitfeldt.github.io/r-color-palettes/discrete.html)
+- [Unicode Character Reference](https://www.compart.com/en/unicode/category/So)
+- [LaTeX Basics](https://en.wikibooks.org/wiki/LaTeX/Basics)
+- [HTML Tags](https://www.w3schools.com/tags/)
+- [Shiny for R](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/)
+- [Mastering Shiny](https://mastering-shiny.org/)
+- [R for Data Science](https://r4ds.had.co.nz/)
+- [Tools for Reproducible Research](https://sachsmc.github.io/knit-git-markr-guide/)
+- [Reactable Tables](https://glin.github.io/reactable/articles/examples.html)
+- [HTML Widgets Gallery](https://gallery.htmlwidgets.org/)
+- [Config Package](https://rstudio.github.io/config/articles/config.html)
+- [Here Package](https://here.r-lib.org/)
+- [Fontawesome Icons](https://fontawesome.com/search?ic=free)
+- [Bslib Toolkit](https://rstudio.github.io/bslib/index.html)
+- [Getting Started with Git](https://docs.github.com/en/get-started/getting-started-with-git/set-up-git)
+
 

@@ -9,6 +9,8 @@ lab.members <- list(
   "Segura-Palacio, Trineca" = "Trineca Segura-Palacio (TSP)",
   "Stout, Anthony"          = "Anthony Stout (AS)",
   "Wagstaff, Cate"          = "Cate Wagstaff (CW)",
+  "McMullen, Zach"          = "Zach McMullen (ZM)",
+  "Olson, Rozlyn"           = "Rozlyn Olson (RO)",
   "Other"                   = "Other Not-Listed (OTH)",
   "NA"                      = "Not Applicable (NA)"
 )
