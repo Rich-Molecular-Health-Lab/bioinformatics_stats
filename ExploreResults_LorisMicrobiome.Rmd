@@ -20,7 +20,7 @@ params:
 ```{r, include = F}
 global             <- config::get(config = "default")
 
-here::i_am("MicroEcoDataPrep.Rmd")
+here::i_am("ExploreResults_LorisMicrobiome.Rmd")
 source(here::here(global$setup))
 
 for (file in swan$swan_scripts) {
@@ -32,7 +32,11 @@ for (file in micro$micro_scripts) {
 
 source(here(path$metadata$key))
 source(here(path$metadata$factors))
+```
 
+
+```{r, include = F}
+dataset_dir <- path$microeco$dataset
 
 theme_set(theme_classic())
 thematic_rmd()
@@ -44,36 +48,78 @@ thematic_on(accent = "#8785B2FF", fg = "black")
 I have written several custom functions to expedite some of the functions that I reuse multiple times for data sets across different sample and taxon subsets. The loop below will use one of those functions to read the microeco datasets that I built using the [MicroEcoDataPrep](MicroEcoDataPrep.html) script.
 
 ```{r}
-# Define taxonomic and functional dataset categories
+# Define dataset categories
 dataset_types <- c("tax", "function")
-tax_levels <- c("spe", "gen", "fam", "ord", "cla", "phy")
-func_levels <- c("keg", "fpt", "njc")
-dataset_suffixes <- c("main", "culi", "warb")
+tax_levels    <- c("species", "genus", "family", "order", "class", "phylum")
+func_levels   <- c("kegg", "fpt", "njc")
+datasets      <- c("main", "culi", "warb")
 
 # Create an empty list to store all datasets
 microtable_datasets <- list()
 
+# Helper function to safely read files
+safe_read <- function(file, ...) {
+  if (file.exists(file)) {
+    return(read.table(file, ...))
+  } else {
+    warning(paste("File missing:", file))
+    return(NULL)
+  }
+}
+
 # Loop through dataset types (taxonomic and functional)
 for (data_type in dataset_types) {
-  # Select appropriate levels based on type
   levels <- if (data_type == "tax") tax_levels else func_levels
   
-  # Loop through levels and suffixes
-  for (prefix in levels) {
-    for (suffix in dataset_suffixes) {
-      # Construct dataset name dynamically
-      dataset_name <- paste0(prefix, ".dataset.", suffix)
+  for (level in levels) {
+    for (dataset in datasets) {
+      # Extract dataset path from config
+      if (!is.null(dataset_dir[[dataset]][[level]])) {
+        directory <- dataset_dir[[dataset]][[level]]
+      } else {
+        warning(paste("Path not found in config for:", dataset, level))
+        next  # Skip this iteration if the path is missing
+      }
       
-      # Read dataset and store it in the list
-      microtable_datasets[[dataset_name]] <- read.microtable(data_type, prefix, suffix)
+      # Generate dataset name
+      prefix       <- substr(level, 1, 3)  # Extract first 3 letters
+      dataset_name <- paste0(prefix, ".dataset.", dataset)
+
+      # Read required files
+      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1)
+      tax_table   <- safe_read(file.path(directory, "tax_table.tsv")    , sep = "\t", header = TRUE, row.names = 1)
+      otu_table   <- safe_read(file.path(directory, "feature_table.tsv"), sep = "\t", header = TRUE, row.names = 1)
+
+      # Create dataset object
+      if (data_type == "tax") {
+        phylo_tree <- if (file.exists(file.path(directory, 
+                                                "phylo_tree.tre"))) read.tree(file.path(directory, 
+                                                                                        "phylo_tree.tre")) else NULL
+        rep_fasta  <- if (file.exists(file.path(directory, 
+                                                "rep_fasta.fasta"))) read.fasta(file.path(directory, 
+                                                                                          "rep_fasta.fasta")) else NULL
+
+        microtable_datasets[[dataset_name]] <- microtable$new(
+          sample_table = sample_tab,
+          otu_table    = otu_table,
+          tax_table    = tax_table,
+          phylo_tree   = phylo_tree,
+          rep_fasta    = rep_fasta,
+          auto_tidy    = TRUE
+        )
+      } else {
+        microtable_datasets[[dataset_name]] <- microtable$new(
+          sample_table = sample_tab,
+          otu_table    = otu_table,
+          tax_table    = tax_table,
+          auto_tidy    = TRUE
+        )
+      }
     }
   }
 }
 
-# The datasets are now stored in the `microtable_datasets` list.
-# Access them using: microtable_datasets[["spe.dataset.main"]], etc.
-
-# If needed, convert the list into individual objects in the global environment:
+# Convert list to global environment variables if needed
 list2env(microtable_datasets, envir = .GlobalEnv)
 ```
 

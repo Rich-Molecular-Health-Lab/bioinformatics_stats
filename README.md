@@ -15,6 +15,12 @@ If you are working with any molecular samples in the lab, you should begin with 
 2. [MetadataSetup.Rmd](MetadataSetup.Rmd) & [MetadataSetup.html](MetadataSetup.html) - a tutorial that models some best practices for brainstorming, listing, and organizing key potential independent variables for a given study and matching a score for each variable to each sample in one dataframe.
 3. [Data_Notes.Rmd](Data_Notes.Rmd) & [Data_Notes.html](Data_Notes.html) - some notes, thoughts, and examples on the options we most often use for testing different hypotheses with the types of data we generate.
 
+If you are working with microbiome data, then you should follow these tutorials with the MicroEco Setup:
+
+4. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [MicroEcoDataPrep.html](MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
+  - *Note: the [MicroEco package manual](https://chiliubio.github.io/microeco_tutorial/) is also a helpful reference for this.*
+
+
 The raw scripts with chunk of code that you can run directly (assuming you download the entire repository with necessary dependencies) are in .Rmd format. I also use the knitr package to create "prettier" (but read-only) versions of those files, which are easier to read and study on their own.
 - To view any of the html files, first download the raw file, and then open it in the browser of your choice (it will automatically open in whichever browser you set as your default).
 - To use the .Rmd files, I recommend you [pull or clone the repository to your R Studio](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github). You can also download the individual Rmd files and then open them in your R Studio, but keep in mind that you will not have the files referenced in the code.

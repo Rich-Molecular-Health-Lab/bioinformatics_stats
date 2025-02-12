@@ -190,27 +190,27 @@ loris:
         fpt: "microeco/loris/betadiversity/main/fpt_betadiv_main"
         njc: "microeco/loris/betadiversity/main/njc_betadiv_main"
         phylum: 
-          canber:    "microeco/loris/betadiversity/main/phy_betadiv_main/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/main/phy_betadiv_main/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/main/phy_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/main/phy_betadiv_main/wei_unifrac.csv"
         class:  
-          canber:    "microeco/loris/betadiversity/main/cla_betadiv_main/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/main/cla_betadiv_main/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/main/cla_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/main/cla_betadiv_main/wei_unifrac.csv"
         order:  
-          canber:    "microeco/loris/betadiversity/main/ord_betadiv_main/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/main/ord_betadiv_main/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/main/ord_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/main/ord_betadiv_main/wei_unifrac.csv"
         family: 
-          canber:    "microeco/loris/betadiversity/main/fam_betadiv_main/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/main/fam_betadiv_main/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/main/fam_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/main/fam_betadiv_main/wei_unifrac.csv"
         genus:  
-          canber:    "microeco/loris/betadiversity/main/gen_betadiv_main/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/main/gen_betadiv_main/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/main/gen_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/main/gen_betadiv_main/wei_unifrac.csv"
         species:
-          canber:    "microeco/loris/betadiversity/main/spe_betadiv_main/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/main/spe_betadiv_main/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/main/spe_betadiv_main/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/main/spe_betadiv_main/wei_unifrac.csv"
       culi:
@@ -218,27 +218,27 @@ loris:
         fpt:  "microeco/loris/betadiversity/culi/fpt_betadiv_culi"
         njc:  "microeco/loris/betadiversity/culi/njc_betadiv_culi"
         phylum: 
-          canber:    "microeco/loris/betadiversity/culi/phy_betadiv_culi/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/culi/phy_betadiv_culi/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/culi/phy_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/culi/phy_betadiv_culi/wei_unifrac.csv"
         class:  
-          canber:    "microeco/loris/betadiversity/culi/cla_betadiv_culi/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/culi/cla_betadiv_culi/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/culi/cla_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/culi/cla_betadiv_culi/wei_unifrac.csv"
         order:  
-          canber:    "microeco/loris/betadiversity/culi/ord_betadiv_culi/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/culi/ord_betadiv_culi/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/culi/ord_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/culi/ord_betadiv_culi/wei_unifrac.csv"
         family:                                                                     
-          canber:    "microeco/loris/betadiversity/culi/fam_betadiv_culi/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/culi/fam_betadiv_culi/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/culi/fam_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/culi/fam_betadiv_culi/wei_unifrac.csv"
         genus:                                                                
-          canber:    "microeco/loris/betadiversity/culi/gen_betadiv_culi/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/culi/gen_betadiv_culi/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/culi/gen_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/culi/gen_betadiv_culi/wei_unifrac.csv"
         species:
-          canber:    "microeco/loris/betadiversity/culi/spe_betadiv_culi/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/culi/spe_betadiv_culi/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/culi/spe_betadiv_culi/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/culi/spe_betadiv_culi/wei_unifrac.csv"
       warb:
@@ -246,27 +246,27 @@ loris:
         fpt:  "microeco/loris/betadiversity/warble/fpt_betadiv_warb"
         njc:  "microeco/loris/betadiversity/warble/njc_betadiv_warb"
         phylum: 
-          canber:    "microeco/loris/betadiversity/warb/phy_betadiv_warb/canberra.csv"
+          aitchison: "microeco/loris/betadiversity/warb/phy_betadiv_warb/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/warb/phy_betadiv_warb/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/warb/phy_betadiv_warb/wei_unifrac.csv"
         class:  
-          canber:    "microeco/loris/betadiversity/warb/cla_betadiv_warb/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/warb/cla_betadiv_warb/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/warb/cla_betadiv_warb/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/warb/cla_betadiv_warb/wei_unifrac.csv"
         order:  
-          canber:    "microeco/loris/betadiversity/warb/ord_betadiv_warb/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/warb/ord_betadiv_warb/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/warb/ord_betadiv_warb/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/warb/ord_betadiv_warb/wei_unifrac.csv"
         family: 
-          canber:    "microeco/loris/betadiversity/warb/fam_betadiv_warb/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/warb/fam_betadiv_warb/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/warb/fam_betadiv_warb/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/warb/fam_betadiv_warb/wei_unifrac.csv"
         genus:  
-          canber:    "microeco/loris/betadiversity/warb/gen_betadiv_warb/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/warb/gen_betadiv_warb/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/warb/gen_betadiv_warb/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/warb/gen_betadiv_warb/wei_unifrac.csv"
         species:
-          canber:    "microeco/loris/betadiversity/warb/spe_betadiv_warb/canberra.csv"
+          aitchison:    "microeco/loris/betadiversity/warb/spe_betadiv_warb/aitchison.csv"
           unifrac_u: "microeco/loris/betadiversity/warb/spe_betadiv_warb/unwei_unifrac.csv"
           unifrac_w: "microeco/loris/betadiversity/warb/spe_betadiv_warb/wei_unifrac.csv"
     data:

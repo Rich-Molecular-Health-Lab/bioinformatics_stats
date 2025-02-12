@@ -132,9 +132,10 @@ env.cols.main <- c(
 
 
 #Loading Microeco Datasets & Recalculating Abundances
-read.microtable <- function(format, prefix, suffix){
+read.microtable <- function(format, level, dataset){
   if (format == "tax"){
-    phylo_tree  <-  read.tree(paste0(params$taxon, "$dataframes", prefix, "_dataset_", suffix, "/phylo_tree.tre"   )  )
+    dataset_path <- paste0(path$microeco$dataset, "$", prefix, "")
+    phylo_tree  <-  read.tree(paste0(path$microeco$dataset, "$", prefix, "_dataset_", suffix, "/phylo_tree.tre"   )  )
     rep_fasta   <- read.fasta(paste0(params$local, "dataframes/", prefix, "_dataset_", suffix, "/rep_fasta.fasta"  )  )
     sample_tab  <- read.table(paste0(params$local, "dataframes/", prefix, "_dataset_", suffix, "/sample_table.tsv" )  ,  sep = "\t", header = T, row.names = 1)
     tax_table   <- read.table(paste0(params$local, "dataframes/", prefix, "_dataset_", suffix, "/tax_table.tsv"    )  ,  sep = "\t", header = T, row.names = 1)
