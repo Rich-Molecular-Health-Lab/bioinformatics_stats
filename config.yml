@@ -33,9 +33,7 @@ microbiome:
   blast: "setup/microbiome/ncbi-blast-2.16.0+/bin"
   
 swan:
-  swan_scripts: !expr list("setup/read_processing/functions.R", "setup/read_processing/options.R")
   functions: "setup/read_processing/functions.R"
-  options: "setup/read_processing/options.R"
   loris_tax: "/work/richlab/aliciarich/bioinformatics_stats/data/loris/taxonomy/"
   uid_file: "/work/richlab/aliciarich/bioinformatics_stats/tmp/fetch_references.txt"
   logs: "/work/richlab/aliciarich/bioinformatics_stats/logs"

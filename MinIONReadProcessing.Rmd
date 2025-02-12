@@ -12,19 +12,18 @@ output:
     code_folding: "hide"
     fig_caption: true
 params:
-  taxon: "loris"
+  sampleset: "loris"
   seqrun: "hdz1"
   
 ---
 
 ```{r, message=FALSE}
 global      <- config::get(config = "default")
-path        <- config::get(config = paste0(params$taxon))
 
-source(paste0(global$setup))
-source(paste0(swan$functions))
-source(paste0(swan$options))
-source(global$knit_engines)
+here::i_am("MinIONReadProcessing.Rmd")
+source(here::here(global$setup))
+source(here(swan$functions))
+
 ```
 
 
@@ -109,20 +108,18 @@ I also use a custom language engine in this script that I named "terminal." If y
 
 #### Methods Parameters
 
-I keep track of my paremeters for workflows using the config package and file. Below is an exerpt from my config.yml file with the parameters I use for 16S microbiome sequences generated with ONT's rapid 16S kit:
+I keep track of my paremeters for workflows using the config package and file. Below is my full-length config.yml file. Scroll down to "methods_16s" to see the parameters I use for 16S microbiome sequences generated with ONT's rapid 16S kit. This allows us to modify parameters in one central location that we reference in all other scripts, avoiding any inconsistences across bioinformatic stages and giving us one place to check when reporting the methods for manuscripts or presentations.  
 
-```
-methods_16s:
-  libprep_workflow: "'rapid16s'"
-  dorado_model: "'dna_r10.4.1_e8.2_400bps_sup@v5.0.0'"
-  min_length: 1000
-  max_length: 2000
-  min_qual: 7
-  min_id: 85
-  min_cov: 80
-  kit_name: "'SQK-16S114-24'"
-  tax_rank: "S"
-  abund_threshold: 0
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide Config File (config.yml)",
+        tagList(tags$pre(includeText("config.yml")))
+    )
+  )
+)
 ```
 
 # First Time Steps: Setting Up your Working Swan Environment

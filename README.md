@@ -13,13 +13,15 @@ If you are working with any molecular samples in the lab, you should begin with 
 
 1. [SampleInventory.Rmd](SampleInventory.Rmd) & [SampleInventory.html](SampleInventory.html) - a script to streamline and standardize the information we maintain about every sample's process of purification and analysis for reliable downstream integration.
 2. [MetadataSetup.Rmd](MetadataSetup.Rmd) & [MetadataSetup.html](MetadataSetup.html) - a tutorial that models some best practices for brainstorming, listing, and organizing key potential independent variables for a given study and matching a score for each variable to each sample in one dataframe.
-3. [Data_Notes.Rmd](Data_Notes.Rmd) & [Data_Notes.html](Data_Notes.html) - some notes, thoughts, and examples on the options we most often use for testing different hypotheses with the types of data we generate.
+3. [MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) & [MinIONReadProcessing.html](MinIONReadProcessing.html) - a tutorial to use the HCC cluster to process the raw sequencing data (.pod5 files) that we get from the ONT MinION sequencer directly after any sequencing run.
+  - *Note: with the new Linux laptop we may be able to shift some of these scripts to local runs rather than using the high performance nodes on the HCC. If this works, I will add a modified script to run the pipeline locally.*
+4. [Data_Notes.Rmd](Data_Notes.Rmd) & [Data_Notes.html](Data_Notes.html) - some notes, thoughts, and examples on the options we most often use for testing different hypotheses with the types of data we generate.
 
 If you are working with microbiome data, then you should follow these tutorials with the MicroEco Setup:
 
-4. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [MicroEcoDataPrep.html](MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
+5. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [MicroEcoDataPrep.html](MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
   - *Note: the [MicroEco package manual](https://chiliubio.github.io/microeco_tutorial/) is also a helpful reference for this.*
-5. [ExploreResults_LorisMicrobiome.Rmd](ExploreResults_LorisMicrobiome.Rmd) & [ExploreResults_LorisMicrobiome.html](ExploreResults_LorisMicrobiome.html) - in prep tutorial to use microeco for exploratory analysis and summary stats using loris microbiome data. Note: you must follow the MicroEcoDataPrep script to prepare datasets that will work with this pipeline.
+6. [ExploreResults_LorisMicrobiome.Rmd](ExploreResults_LorisMicrobiome.Rmd) & [ExploreResults_LorisMicrobiome.html](ExploreResults_LorisMicrobiome.html) - in prep tutorial to use microeco for exploratory analysis and summary stats using loris microbiome data. Note: you must follow the MicroEcoDataPrep script to prepare datasets that will work with this pipeline.
 
 
 The raw scripts with chunk of code that you can run directly (assuming you download the entire repository with necessary dependencies) are in .Rmd format. I also use the knitr package to create "prettier" (but read-only) versions of those files, which are easier to read and study on their own.

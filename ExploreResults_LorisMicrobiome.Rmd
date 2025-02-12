@@ -22,13 +22,13 @@ global             <- config::get(config = "default")
 
 here::i_am("ExploreResults_LorisMicrobiome.Rmd")
 source(here::here(global$setup))
+source(here::here(swan$functions))
+
 
 for (file in swan$swan_scripts) {
   source(here(file))
 }
-for (file in micro$micro_scripts) {
-  source(here(file))
-}
+
 
 source(here(path$metadata$key))
 source(here(path$metadata$factors))

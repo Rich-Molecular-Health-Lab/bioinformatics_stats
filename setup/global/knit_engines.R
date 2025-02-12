@@ -1,7 +1,7 @@
 knitr::knit_engines$set(terminal = function(options) {
   code <- paste(options$code, collapse = "\n")
   
-  params <- map(params, ~ if (is.atomic(.)) list(.) else .) %>%
+  params <- map(params, ~ if (is.atomic(.)) {list(.)} else {(.)}) %>%
     list_flatten()
   
   # Define placeholder groups
