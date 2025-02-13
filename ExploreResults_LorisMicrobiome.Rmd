@@ -188,8 +188,9 @@ devtools::install_github('csb5/beem')
 
 ### Prepare Time-Series Dataset
 
-First, we have to update our sample table for the trans_ts dataset class:  
+For our sample table to work with the trans_ts dataset class:  
   - *"Two columns with exact names in sample_table are necessary; one is 'Time', which is the time point and should be the numeric class; the other is 'Rep', which represents the biological replicates and is also numeric class. If no replicates, use 1 to represent 1 replicate."*
+    - I included these columns in the sample table that we attached when compiling the datasets in the MicroEcoDataPrep tutorial, so if you did not, you should go back and add them now.
 
 ```{r}
 ts.dataset.main <- trans_ts$new(dataset = spe.dataset.main, filter_thres = methods_16s$loris$min_abund)
