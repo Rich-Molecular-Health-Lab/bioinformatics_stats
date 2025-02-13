@@ -1518,6 +1518,14 @@ keg.data.culi$tidy_dataset()
 keg.data.warb$tidy_dataset()
 ```
 
+```{r}
+dataset.keg.main$sample_table <- data.frame(dataset.keg.main$sample_table, sample.table.merged[rownames(dataset.keg.main$sample_table), ])
+dataset.keg.culi$sample_table <- data.frame(dataset.keg.culi$sample_table, sample.table.merged[rownames(dataset.keg.culi$sample_table), ])
+dataset.keg.warb$sample_table <- data.frame(dataset.keg.warb$sample_table, sample.table.merged[rownames(dataset.keg.warb$sample_table), ])
+```
+
+
+
 
 ```{r, eval = FALSE}
 keg.data.main$cal_abund()
