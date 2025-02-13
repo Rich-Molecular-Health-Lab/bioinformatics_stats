@@ -524,4 +524,35 @@ sample_table_cols <- c(
   "mineral_fed"   
 )
 
+sample_merge_cols <- c(
+  "study_day",
+  "subject",
+  "subject_day",
+  "Time",
+  "Rep",
+  "diet_name",
+  "total_mg",
+  "total_kcal",
+  "total_mg_dry",
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "bristol_mean",
+  "holding",
+  "pair_access",
+  "warb_status",
+  "keeper_note",
+  "Subj_Certainty",
+  "Sex",
+  "subject_age",
+  "CollectionDate",
+  "protein_fed",
+  "fat_fed",
+  "CHO_fed", 
+  "mineral_fed" 
+  
+)
+
 source(here("metadata/loris/reactable_rendering.R"))

@@ -29,10 +29,7 @@ for (file in micro$micro_scripts) {
 
 source(here(path$metadata$key))
 source(here(path$metadata$factors))
-```
 
-
-```{r, include = F}
 dataset_dir <- path$microeco$dataset
 
 theme_set(theme_classic())
@@ -136,8 +133,67 @@ for (data_type in dataset_types) {
 list2env(microtable_datasets, envir = .GlobalEnv)
 ```
 
-```{r}
+# Exploring Time-Series Analyses
 
+## BEEM as a Suitable Approach {.tabset}
+
+BEEM (**Bayesian inference of Ecological interactions from Microbiome time-series data**) is a computational approach that estimates species interactions and dynamic relationships in microbial communities over time. Unlike beemStatic, which is geared toward cross-sectional datasets, **BEEM** is specifically designed for **time-series microbiome data**, making it a better fit for our study.
+  - Daily samples collected from two individuals over one year provide a true time-series dataset, which is ideal for BEEM.
+  - **Metadata includes key covariates**: We have multiple independent variables that change over time (e.g., diet, supplements, subject health status, enclosure conditions), which can be incorporated into BEEM to explore how microbiome dynamics are influenced by these factors.
+  - **BEEM is designed for non-stationary interactions**: The microbial interactions in our dataset likely change over time due to diet shifts, health interventions, or environmental changes. BEEM models these dynamic interactions rather than assuming a static microbial network.
+  
+### Some of Our Options with BEEM
+
+1.	**Infer Microbial Interactions Over Time**
+  - BEEM fits a **generalized Lotka-Volterra (gLV) model**, which describes how different microbial taxa interact (competition, mutualism, predation).
+  - It identifies **key players** (dominant taxa) and how their populations influence each other across time.
+2.	**Estimate the Influence of External Factors**
+  - BEEM allows incorporation of **time-dependent covariates** (e.g., diet composition, antibiotic use, enclosure conditions) to test their effects on microbiome dynamics.
+  - In our case, it could reveal whether changes in **diet composition, supplements, or health events** significantly impact microbial interactions.
+3.	**Predict Future Microbiome Dynamics**
+  - If we provide a subset of the data, BEEM can **forecast** future microbial shifts based on observed patterns.
+4.	**Distinguish Individual-Specific Effects**
+  - Since we have two subjects, BEEM could estimate whether **subject-specific factors (e.g., individual health, genetics, or behaviors)** contribute to differences in microbiome dynamics.
+  
+### First use: Setting up BEEM
+
+MicroEco's tutorial [guided us through installation of several dependencies, including BEEM-static](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence), but to work with true longitudinal data like this, we want to use the original BEEM package instead. This is where microeco's [*mecodev* package](https://chiliubio.github.io/microeco_tutorial/mecodev-package.html) comes in handy. Mecodev provides a set of extended classes based on the microeco package, including *trans_ts*, a class designed for handling time-series data.
+
+#### Install mecodev and dependencies
+
+>I am following the linux/mac instructions. See the microeco tutorial for windows-specific code.
+
+```{r, eval = FALSE}
+# If devtools package is not installed, first install it
+install.packages("devtools")
 ```
 
+##### mecodev
+
+```{r, eval = FALSE}
+devtools::install_github("ChiLiubio/mecodev")
+```
+
+##### Dependencies
+
+```{r, eval = FALSE}
+# For linux or mac
+install.packages("doMC")
+# Then install the following packages
+install.packages("lokern")
+install.packages("monomvn")
+install.packages("pspline")
+devtools::install_github('csb5/beem')
+```
+
+### Prepare Time-Series Dataset
+
+First, we have to update our sample table for the trans_ts dataset class:  
+  - *"Two columns with exact names in sample_table are necessary; one is 'Time', which is the time point and should be the numeric class; the other is 'Rep', which represents the biological replicates and is also numeric class. If no replicates, use 1 to represent 1 replicate."*
+
+```{r}
+ts.dataset.main <- trans_ts$new(dataset = spe.dataset.main, filter_thres = methods_16s$loris$min_abund)
+ts.dataset.culi <- trans_ts$new(dataset = spe.dataset.culi, filter_thres = methods_16s$loris$min_abund)
+ts.dataset.warb <- trans_ts$new(dataset = spe.dataset.warb, filter_thres = methods_16s$loris$min_abund)
+```
 

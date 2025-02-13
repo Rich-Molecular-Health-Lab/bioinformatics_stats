@@ -660,9 +660,3 @@ methods_16s:
     freq: 0.02
     inlcude_lowest: TRUE
     
-notebooks:
-  AMR: "../Notebooks/Rich/"
-  SA: "../Notebooks/Azadmanesh/"
-  TA: "../Notebooks/Raad/"
-  TSP: "../Notebooks/Palacio/"
-  DG: "../Notebooks/Gill/"

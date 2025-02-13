@@ -1040,11 +1040,24 @@ sample.table <- metadata  %>%
                        across(any_of(ids)            , ~fct(., levels = unique(.)))) %>%
                 mutate(subject_day = fct_cross(subject, day, sep = "_")) %>%
                 select(-day) %>%
+                mutate(Rep  = n(), .by = subject_day) %>%
+                mutate(Time = as.numeric(study_day)) %>%
                 column_to_rownames("identifier")
                 
 ```
 
 ### Subset Versions
+
+I am also going to create a sample table version that I can easily add back into my dataset after I merge technical and biological replicates by subject and day.
+
+```{r}
+sample.table.merged <- sample.table %>%
+  remove_rownames() %>%
+  select(all_of(sample_merge_cols)) %>%
+  distinct() %>%
+  column_to_rownames("subject_day")
+```
+
 
 I like to subset my tables at this point to create some smaller datasets that make it easier to do focused analyses on just a subset of my samples.
 
@@ -1052,9 +1065,8 @@ I like to subset my tables at this point to create some smaller datasets that ma
 otu.culi       <-  otu.table    %>% select(any_of(samples.culi))
 otu.warb       <-  otu.table  %>% select(any_of(samples.warb))
 
-samp.tab.culi  <-  sample.table  %>% filter(subject == "culi")
-samp.tab.warb  <-  sample.table  %>% filter(subject == "warble")
-
+samp.tab.culi    <-  sample.table  %>% filter(subject == "culi")
+samp.tab.warb    <-  sample.table  %>% filter(subject == "warble")
 ```
 
 ## Assemble Datasets
@@ -1154,6 +1166,13 @@ dataset.culi <- dataset.culi$merge_samples("subject_day")
 dataset.warb <- dataset.warb$merge_samples("subject_day")
 ```
 
+And now we need to add our environmental data back in to match these merged datapoints.
+
+```{r}
+dataset.main$sample_table <- data.frame(dataset.main$sample_table, sample.table.merged[rownames(dataset.main$sample_table), ])
+dataset.culi$sample_table <- data.frame(dataset.culi$sample_table, sample.table.merged[rownames(dataset.culi$sample_table), ])
+dataset.warb$sample_table <- data.frame(dataset.warb$sample_table, sample.table.merged[rownames(dataset.warb$sample_table), ])
+```
 
 
 ## Relative Abundance
@@ -1403,6 +1422,11 @@ dataset.keg.culi <- dataset.keg.culi$merge_samples("subject_day")
 dataset.keg.warb <- dataset.keg.warb$merge_samples("subject_day")
 ```
 
+```{r}
+dataset.keg.main$sample_table <- data.frame(dataset.keg.main$sample_table, sample.table.merged[rownames(dataset.keg.main$sample_table), ])
+dataset.keg.culi$sample_table <- data.frame(dataset.keg.culi$sample_table, sample.table.merged[rownames(dataset.keg.culi$sample_table), ])
+dataset.keg.warb$sample_table <- data.frame(dataset.keg.warb$sample_table, sample.table.merged[rownames(dataset.keg.warb$sample_table), ])
+```
 
 
 ```{r, message=FALSE}
