@@ -1,0 +1,52 @@
+
+
+
+##### Option 2: Aggregate Over Time Intervals (If Daily Data is Too Noisy)
+
+- **Definition**: Define biological replicates as weekly or monthly time blocks instead of daily samples.
+- **Rationale**: 
+  - If daily sampling is too granular, grouping into **weekly means** can smooth noise while maintaining temporal resolution.
+  - BEEM still detects longitudinal patterns without excessive variation from day-to-day fluctuations.
+  
+**Example**
+
+```
+sample.table <- sample.table %>%
+  dplyr::mutate(week = floor(study_day / 7)) %>%  # Group by week
+  dplyr::group_by(subject, week) %>%
+  dplyr::summarise(across(everything(), mean, na.rm = TRUE))  # Aggregate
+```
+
+##### Option 3: Define Replicates Based on Major Perturbations (Event-Based Replicates)
+
+- **Definition**: Consider biological replicates as **time windows around major events** like:
+  - **Diet changes**
+  - **Medication use (antibiotics, steroids, etc.)**
+  - **Health shifts (illness episodes)**
+  - **Reproductive states (estrus or pregnancy)**
+	
+- **Rationale**: 
+  - Instead of treating every day as independent, group time points into **pre/post-treatment windows.**
+  - BEEM will detect microbial shifts before and after interventions.
+  
+**Example**
+
+```
+metadata_df <- metadata_df %>%
+  dplyr::mutate(bio_replicate = paste(subject, diet_name, sep = "_"))  # Replicates per diet phase
+```
+
+##### Option 4: Define Replicates Based on Microbiome Stability or Distinct Clusters
+
+- **Definition**: Instead of pre-defining biological replicates by subject/time, use clustering methods (e.g., **beta-diversity clustering**) to define groups.
+	
+- **Rationale**: 
+  - If microbiome shifts occur in distinct phases, cluster samples into **stable states** rather than forcing arbitrary time bins.
+  
+**Example**
+
+```
+dist_matrix <- vegdist(otu_table, method = "bray")  
+clusters    <- cutree(hclust(dist_matrix), k = 5)  # 5 microbiome states  
+metadata_df$bio_replicate <- clusters
+```

@@ -645,18 +645,13 @@ methods_16s:
   loris:
     rarefy: 4500
     norm: "SRS"
-    min_abund: 0.0001
-    min_freq: 0.02
-    inlcude_lowest: TRUE
+    min_abund: 0.00001
+    min_freq: 1
+    include_lowest: TRUE
     unifrac: TRUE
     betadiv: "aitchison"
     alpha_pd: TRUE
     tax4fun_db: "Ref99NR"
     loris_rarefy: 4500
     keg_minID: 97
-  loris_norm: "SRS"
-  loris_filter:
-    rel_abund: 0.0001
-    freq: 0.02
-    inlcude_lowest: TRUE
     

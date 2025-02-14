@@ -20,21 +20,21 @@ params:
   
 ---
 
-```{r, include = F}
+```{r, message = FALSE}
 global             <- config::get(config = "default")
 
 here::i_am("MicroEcoDataPrep.Rmd")
 source(here::here(global$setup))
 
-for (file in swan$swan_scripts) {
-  source(here(file))
-}
+
 for (file in micro$micro_scripts) {
   source(here(file))
 }
 
 source(here(path$metadata$key))
 source(here(path$metadata$factors))
+
+dataset_dir <- path$microeco$dataset
 
 
 theme_set(theme_classic())
@@ -343,7 +343,7 @@ Now comes the somewhat messy workaround...
 
 >Again, only do this after you have those 24 new csv files in the tmp_downloads directory beginning in *wf-metagenomics-alignment* and you have the filename table we created above sitting in the tmp_lists directory.
   - The code will simultaneously rename all 24 files and transfer them to the subdirectory path$read_alignments.
-  - The rest of the script below uses this filename system to import and merge the files, matching every aligned read to its sampleID.
+  - The rest of the script below uses this filename system to import and merge the files, matching every aligned read to its SequenceID
   - If it worked, then all the files should disappear from the temp directory and you should see 24 new csv files in your data directory ending in *wf-metagenomics-alignment.csv*
 
 ```{terminal, warning = FALSE, echo = FALSE}
@@ -385,7 +385,6 @@ alignment.files <- Map(function(df, id) {
 ```
   
 >In the next step, note that I filter the reads based on the minimum coverage value for the methods_16s records in my config file. This is an example of how using the config file helps us avoid any discrepancies in our parameters over the course of the study and gives us a centralized location to update those parameters or compile them for our reporting/publications at any time.  
->I will also deal with technical replicates here (that is, samples that were sequenced more than once). There are many ways to deal with this, and we could always change this later if we notice discrepencies. For now, I will just generate mean counts across multiple sequencing runs for each sample.
 
 ```{r, message = FALSE, warning = FALSE}
 alignments.long     <- bind_rows(alignment.files) %>%
@@ -1040,8 +1039,6 @@ sample.table <- metadata  %>%
                        across(any_of(ids)            , ~fct(., levels = unique(.)))) %>%
                 mutate(subject_day = fct_cross(subject, day, sep = "_")) %>%
                 select(-day) %>%
-                mutate(Rep  = n(), .by = subject_day) %>%
-                mutate(Time = as.numeric(study_day)) %>%
                 column_to_rownames("identifier")
                 
 ```
@@ -1110,7 +1107,7 @@ rarefaction_depths <- c(seq.int(0, 8000, by = 500))
 
 rarefaction.main <- trans_rarefy$new(dataset.main, 
                                      alphadiv = "Observed",
-                                     depth = rarefaction_depths)
+                                     depth    = rarefaction_depths)
 ```
 
 ```{r, warning = FALSE}
@@ -1169,9 +1166,9 @@ dataset.warb <- dataset.warb$merge_samples("subject_day")
 And now we need to add our environmental data back in to match these merged datapoints.
 
 ```{r}
-dataset.main$sample_table <- data.frame(dataset.main$sample_table, sample.table.merged[rownames(dataset.main$sample_table), ])
-dataset.culi$sample_table <- data.frame(dataset.culi$sample_table, sample.table.merged[rownames(dataset.culi$sample_table), ])
-dataset.warb$sample_table <- data.frame(dataset.warb$sample_table, sample.table.merged[rownames(dataset.warb$sample_table), ])
+dataset.main$sample_table <- data.frame(sample.table.merged[rownames(dataset.main$sample_table), ])
+dataset.culi$sample_table <- data.frame(sample.table.merged[rownames(dataset.culi$sample_table), ])
+dataset.warb$sample_table <- data.frame(sample.table.merged[rownames(dataset.warb$sample_table), ])
 ```
 
 
@@ -1187,18 +1184,27 @@ dataset.warb$cal_abund()
 
 ## Filter Taxa
 
-To focus on the most relevant features of the microbial communities, we apply a filtering step to remove low-abundance taxa. This step excludes taxa with relative abundances below 0.01% in less than 2% of samples, while optionally retaining the lowest-level taxa. Filtering reduces noise and ensures that downstream analyses are driven by biologically meaningful patterns rather than rare or sporadic taxa.
+To focus on the most relevant features of the microbial communities, we apply a filtering step to remove low-abundance taxa. Filtering reduces noise and ensures that downstream analyses are driven by biologically meaningful patterns rather than rare or sporadic taxa. 
+  
+**From the microeco manual:**  
+
+- **rel_abund**
+  - default 0; the relative abundance threshold, such as 0.0001.
+- **freq**
+  - default 1; the occurrence frequency threshold. For example, the number 2 represents filtering the feature that occurs less than 2 times. A number smaller than 1 is also allowable. For instance, the number 0.1 represents filtering the feature that occurs in less than 10% samples.
+- **include_lowest**
+  - default TRUE; whether include the feature with the threshold.
 
 ```{r}
 dataset.main$filter_taxa(rel_abund      = methods_16s$loris$min_abund, 
                          freq           = methods_16s$loris$min_freq, 
-                         include_lowest = methods_16s$loris$inlcude_lowest)
+                         include_lowest = methods_16s$loris$include_lowest)
 dataset.culi$filter_taxa(rel_abund      = methods_16s$loris$min_abund, 
                          freq           = methods_16s$loris$min_freq, 
-                         include_lowest = methods_16s$loris$inlcude_lowest)
+                         include_lowest = methods_16s$loris$include_lowest)
 dataset.warb$filter_taxa(rel_abund      = methods_16s$loris$min_abund, 
                          freq           = methods_16s$loris$min_freq, 
-                         include_lowest = methods_16s$loris$inlcude_lowest)
+                         include_lowest = methods_16s$loris$include_lowest)
 ```
 
 ## Diversity Metrics
@@ -1487,7 +1493,7 @@ The functional redundancy step estimates the Functional Redundancy Index (FRI), 
   
 >Note that this step is more memory intensive and can take some time for large datasets. That is why I choose to source this as an external script that I run as a background job within R Studio. Find more information about how to do that [here.](https://docs.posit.co/ide/user/ide/guide/tools/jobs.html)
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, message = FALSE}
 keg.main$cal_tax4fun2_FRI()
 keg.culi$cal_tax4fun2_FRI()
 keg.warb$cal_tax4fun2_FRI()

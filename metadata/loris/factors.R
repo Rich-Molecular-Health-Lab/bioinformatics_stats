@@ -528,8 +528,6 @@ sample_merge_cols <- c(
   "study_day",
   "subject",
   "subject_day",
-  "Time",
-  "Rep",
   "diet_name",
   "total_mg",
   "total_kcal",

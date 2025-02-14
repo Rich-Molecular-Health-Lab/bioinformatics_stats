@@ -17,7 +17,7 @@ params:
                      
 ---
 
-```{r, include = F}
+```{r, message = FALSE}
 global             <- config::get(config = "default")
 
 here::i_am("ExploreResults_LorisMicrobiome.Rmd")
@@ -96,7 +96,8 @@ for (data_type in dataset_types) {
       dataset_name <- paste0(prefix, ".dataset.", dataset)
 
       # Read required files
-      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1)
+      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1) %>%
+        mutate(Time = study_day, Rep = if_else(subject == "culi", 1, 2))
       tax_table   <- safe_read(file.path(directory, "tax_table.tsv")    , sep = "\t", header = TRUE, row.names = 1)
       otu_table   <- safe_read(file.path(directory, "feature_table.tsv"), sep = "\t", header = TRUE, row.names = 1)
 
@@ -109,7 +110,7 @@ for (data_type in dataset_types) {
                                                 "rep_fasta.fasta"))) read.fasta(file.path(directory, 
                                                                                           "rep_fasta.fasta")) else NULL
 
-        microtable_datasets[[dataset_name]] <- microtable$new(
+        microtable_datasets$tax[[dataset_name]] <- microtable$new(
           sample_table = sample_tab,
           otu_table    = otu_table,
           tax_table    = tax_table,
@@ -118,7 +119,7 @@ for (data_type in dataset_types) {
           auto_tidy    = TRUE
         )
       } else {
-        microtable_datasets[[dataset_name]] <- microtable$new(
+        microtable_datasets$fun[[dataset_name]] <- microtable$new(
           sample_table = sample_tab,
           otu_table    = otu_table,
           tax_table    = tax_table,
@@ -129,9 +130,80 @@ for (data_type in dataset_types) {
   }
 }
 
-# Convert list to global environment variables if needed
-list2env(microtable_datasets, envir = .GlobalEnv)
 ```
+
+```{r}
+# Function to apply microeco operations
+cal_basics_tax <- function(dataset) {
+  
+  dataset$tidy_dataset()
+  
+  # Compute abundance
+  dataset$cal_abund()
+
+  # Filter taxa
+  dataset$filter_taxa(
+    rel_abund      = methods_16s$loris$min_abund, 
+    freq           = methods_16s$loris$min_freq, 
+    include_lowest = methods_16s$loris$include_lowest
+  )
+
+  # Calculate alpha diversity
+  dataset$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
+
+  # Calculate beta diversity
+  dataset$cal_betadiv(
+    unifrac = methods_16s$loris$unifrac, 
+    method  = methods_16s$loris$betadiv
+  )
+
+  return(dataset) # Return modified dataset
+}
+```
+
+```{r, message = FALSE}
+# Loop through all datasets and apply functions
+microtable_datasets$tax <-  map(microtable_datasets$tax, \(x) cal_basics_tax(x))
+```
+
+
+```{r}
+# Function to apply microeco operations
+cal_basics_fun <- function(dataset) {
+  
+  dataset$tidy_dataset()
+  
+  # Compute abundance
+  dataset$cal_abund()
+
+  # Filter taxa
+  dataset$filter_taxa(
+    rel_abund      = methods_16s$loris$min_abund, 
+    freq           = methods_16s$loris$min_freq, 
+    include_lowest = methods_16s$loris$include_lowest
+  )
+
+  # Calculate alpha diversity
+  dataset$cal_alphadiv()
+
+  # Calculate beta diversity
+  dataset$cal_betadiv(method  = methods_16s$loris$betadiv)
+
+  return(dataset) # Return modified dataset
+}
+
+```
+
+```{r}
+# Loop through all datasets and apply functions
+microtable_datasets$fun <-  map(microtable_datasets$fun, \(x) cal_basics_fun(x))
+```
+
+```{r}
+microtables <- list_flatten(microtable_datasets, name_spec = "{inner}")
+```
+
+
 
 # Exploring Time-Series Analyses
 
@@ -188,13 +260,137 @@ devtools::install_github('csb5/beem')
 
 ### Prepare Time-Series Dataset
 
-For our sample table to work with the trans_ts dataset class:  
-  - *"Two columns with exact names in sample_table are necessary; one is 'Time', which is the time point and should be the numeric class; the other is 'Rep', which represents the biological replicates and is also numeric class. If no replicates, use 1 to represent 1 replicate."*
-    - I included these columns in the sample table that we attached when compiling the datasets in the MicroEcoDataPrep tutorial, so if you did not, you should go back and add them now.
+>For our sample table to work with the trans_ts dataset class:  
+>*"Two columns with exact names in sample_table are necessary; one is 'Time', which is the time point and should be the numeric class; the other is 'Rep', which represents the biological replicates and is also numeric class. If no replicates, use 1 to represent 1 replicate."*  
+
+#### Trans_ts Class Conversion
 
 ```{r}
-ts.dataset.main <- trans_ts$new(dataset = spe.dataset.main, filter_thres = methods_16s$loris$min_abund)
-ts.dataset.culi <- trans_ts$new(dataset = spe.dataset.culi, filter_thres = methods_16s$loris$min_abund)
-ts.dataset.warb <- trans_ts$new(dataset = spe.dataset.warb, filter_thres = methods_16s$loris$min_abund)
+prefixes    <- c("spe", "gen", "fam", "ord", "cla", "phy", "keg", "fpt", "njc")
+sets       <- c("main", "culi", "warb")
+ts.objects <- list()
+
+ts_new <- function(dataset) {
+  trans_ts$new(dataset = dataset)
+}
+
+
+
+for (set in sets) {
+  for (prefix in prefixes) {
+
+    dataset_name <- paste0(prefix, ".dataset.", set)
+    ts_name      <- paste0(prefix, ".ts.", set)
+       
+    dataset_obj <- microtables[[dataset_name]]
+
+    if (!is.null(dataset_obj)) {
+      ts.objects[[ts_name]] <- ts_new(dataset_obj)  # Store trans_ts object
+    } else {
+      warning(paste("Dataset object not found for:", dataset_name))
+    }
+  }
+}
 ```
+
+### Predict Biomass
+
+>*This function predicts total microbial biomass using the Expectation-Maximization (EM) algorithm from BEEM. It adjusts for relative abundances and estimates total biomass without requiring absolute quantification.*  
+  
+**Note: Like the functional redundancy algorithm with Tax4fun2, this chunk can be quite memory-intensive and move slowly. You may want to consider running this as a background job.**
+
+
+
+```{r}
+ts_biomass <- function(dataset) {
+  dataset$cal_biomass(ncpu = 4)
+  return(dataset)
+}
+
+
+map(ts.objects, \(x) ts_biomass(x))
+
+
+```
+
+```{r}
+# Convert list to global environment variables
+list2env(ts.objects, envir = .GlobalEnv)
+```
+
+
+### Calculate Network
+
+```{r}
+ts_network <- function(dataset) {
+  dataset$cal_network()
+}
+
+map(ts.objects, \(x) ts_network(x))
+```
+
+```{r}
+fam.ts.main$cal_biomass(ncpu = 4)
+```
+
+
+### Calculate Network Modules
+
+```{r}
+ts_module <- function(dataset) {
+  dataset$calmodule()
+}
+
+map(ts.objects, \(x) ts_module(x))
+```
+
+### Save Network
+
+Save network as gexf style, which can be opened by [Gephi](https://gephi.org/).
+
+```{r}
+ts_module <- function(dataset, filepath) {
+  dataset$save_network(filepath = filepath)
+}
+
+imap(ts.objects, \(x, idx) ts_module(x, paste0("visuals/gephi/", idx, ".gexf")))
+
+```
+
+### Plot Network
+
+```{r}
+ts_plot_network <- function(dataset) {
+  dataset$plot_network(method = "networkD3")
+}
+
+map(ts.objects, \(x) ts_plot_network(x))
+
+```
+
+
+### Plot Taxa Roles
+
+#### Get Node Table
+
+```{r}
+ts_node <- function(dataset) {
+  dataset$get_node_table()
+}
+
+map(ts.objects, \(x) ts_node(x))
+
+```
+
+#### Plot
+
+```{r}
+ts_plot_network <- function(dataset) {
+  dataset$plot_network(method = "networkD3")
+}
+
+map(ts.objects, \(x) ts_plot_network(x))
+
+```
+
 
