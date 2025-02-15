@@ -24,6 +24,7 @@ required_packages <- c(
   "crosstalk",
   "data.table",
   "devtools",
+  "equatiomatic",
   "fontawesome",
   "glue",
   "ggtext",
@@ -81,6 +82,7 @@ library(conflicted)
 library(crosstalk)
 library(data.table)
 library(devtools)
+library(equatiomatic)
 library(fontawesome)
 library(glue)
 library(ggtext)

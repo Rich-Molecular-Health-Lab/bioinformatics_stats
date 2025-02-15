@@ -1040,7 +1040,7 @@ sample.table <- metadata  %>%
                 mutate(subject_day = fct_cross(subject, day, sep = "_")) %>%
                 select(-day) %>%
                 column_to_rownames("identifier")
-                
+write.table(sample.table, path$metadata$sample_table$main, row.names = F, sep = "\t")         
 ```
 
 ### Subset Versions
@@ -1048,11 +1048,20 @@ sample.table <- metadata  %>%
 I am also going to create a sample table version that I can easily add back into my dataset after I merge technical and biological replicates by subject and day.
 
 ```{r}
+identifier.key <- sample.table %>%
+  select(subject_day, SampleID, ExtractID, SequenceID) %>%
+  rownames_to_column("identifier")
+write.table(identifier.key, path$metadata$sample_table$identifier, row.names = F, sep = "\t") 
+```
+
+
+```{r}
 sample.table.merged <- sample.table %>%
   remove_rownames() %>%
   select(all_of(sample_merge_cols)) %>%
   distinct() %>%
   column_to_rownames("subject_day")
+write.table(sample.table.merged, path$metadata$sample_table$merged, row.names = F, sep = "\t")
 ```
 
 
@@ -1289,7 +1298,48 @@ cla.data.warb$save_table(path$microeco$dataset$warb$class  , sep = "\t")
 phy.data.main$save_table(path$microeco$dataset$main$phylum , sep = "\t")
 phy.data.culi$save_table(path$microeco$dataset$culi$phylum , sep = "\t")
 phy.data.warb$save_table(path$microeco$dataset$warb$phylum , sep = "\t")
+dataset.main$save_abund(path$microeco$abund$main$tax, sep = "\t")
+dataset.culi$save_abund(path$microeco$abund$culi$tax, sep = "\t")
+dataset.warb$save_abund(path$microeco$abund$warb$tax, sep = "\t")
+dataset.main$save_betadiv(path$microeco$beta$main$species)
+dataset.culi$save_betadiv(path$microeco$beta$culi$species)
+dataset.warb$save_betadiv(path$microeco$beta$warb$species)
+gen.data.main$save_betadiv(path$microeco$beta$main$genus )
+gen.data.culi$save_betadiv(path$microeco$beta$culi$genus )
+gen.data.warb$save_betadiv(path$microeco$beta$warb$genus )
+fam.data.main$save_betadiv(path$microeco$beta$main$family)
+fam.data.culi$save_betadiv(path$microeco$beta$culi$family)
+fam.data.warb$save_betadiv(path$microeco$beta$warb$family)
+ord.data.main$save_betadiv(path$microeco$beta$main$order )
+ord.data.culi$save_betadiv(path$microeco$beta$culi$order )
+ord.data.warb$save_betadiv(path$microeco$beta$warb$order )
+cla.data.main$save_betadiv(path$microeco$beta$main$class )
+cla.data.culi$save_betadiv(path$microeco$beta$culi$class )
+cla.data.warb$save_betadiv(path$microeco$beta$warb$class )
+phy.data.main$save_betadiv(path$microeco$beta$main$phylum)
+phy.data.culi$save_betadiv(path$microeco$beta$culi$phylum)
+phy.data.warb$save_betadiv(path$microeco$beta$warb$phylum)
+dataset.main$save_alphadiv(path$microeco$alpha$main$species)
+dataset.culi$save_alphadiv(path$microeco$alpha$culi$species)
+dataset.warb$save_alphadiv(path$microeco$alpha$warb$species)
+gen.data.main$save_alphadiv(path$microeco$alpha$main$genus )
+gen.data.culi$save_alphadiv(path$microeco$alpha$culi$genus )
+gen.data.warb$save_alphadiv(path$microeco$alpha$warb$genus )
+fam.data.main$save_alphadiv(path$microeco$alpha$main$family)
+fam.data.culi$save_alphadiv(path$microeco$alpha$culi$family)
+fam.data.warb$save_alphadiv(path$microeco$alpha$warb$family)
+ord.data.main$save_alphadiv(path$microeco$alpha$main$order )
+ord.data.culi$save_alphadiv(path$microeco$alpha$culi$order )
+ord.data.warb$save_alphadiv(path$microeco$alpha$warb$order )
+cla.data.main$save_alphadiv(path$microeco$alpha$main$class )
+cla.data.culi$save_alphadiv(path$microeco$alpha$culi$class )
+cla.data.warb$save_alphadiv(path$microeco$alpha$warb$class )
+phy.data.main$save_alphadiv(path$microeco$alpha$main$phylum)
+phy.data.culi$save_alphadiv(path$microeco$alpha$culi$phylum)
+phy.data.warb$save_alphadiv(path$microeco$alpha$warb$phylum)
 ```
+
+
 
 # Functional Profiles
 
@@ -1303,82 +1353,7 @@ Functional profiling in Microeco provides insights into the potential roles and 
 
 ## KEGG Pathways
 
-### Tax4Fun2 Dependencies (First Use Only)
-
-Microeco leverages [**Tax4Fun2**](https://environmentalmicrobiome.biomedcentral.com/articles/10.1186/s40793-020-00358-7) to predict the functional potential of microbial communities based on 16S rRNA gene data on the **KEGG** database. Tax4Fun translates taxonomic profiles into functional profiles by mapping taxa to KEGG Orthologs (KOs) using pre-trained databases. This integration allows researchers to estimate the metabolic capabilities of microbial communities, such as energy production, nutrient cycling, and ecological interactions.  
-  
-I will provide a series of steps below to set this up for your first run, but keep in mind that this sometimes works differently based on operating systems. I also recommend you set up your directory structure to follow mine if you are working from a clone of the github repository. Unlike other dependencies, I do not load these to the repo, as they take up too much unecessary space.  
-  
-I also recommend you check on the [instructions in the microeco tutorial](https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2), where they provide alternative methods for these steps.
-
->**Why Tax4Fun2?**
->Tax4Fun2 is efficient and user-friendly, making it ideal for functional predictions when shotgun metagenomics data isn’t available. However, setting up Tax4Fun2 and its dependencies (e.g., reference databases) can be challenging but crucial for reliable results.
-
-#### Download and extract reference database
-
-- [Click here to download the database](https://zenodo.org/records/10035668/files/Tax4Fun2_ReferenceData_v2.tar.gz?download=1)
-- Transfer the downloaded, zipped directory to the location where you want to extract everything.
-- Run the chunk below to extract all files.  
-
-```{terminal}
-cd micro$setup_dir
-
-tar -xvzf Tax4Fun2_ReferenceData_v2.tar.gz
-```
-
-#### Download the Blast+ Tools {.tabset}
-
-##### For Mac Computers with the newer Silicon Chips:
-
-- Run the following code in your terminal from the same directory as the last step:
-
-```{terminal}
-cd micro$setup_dir
-
-curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-aarch64-macosx.tar.gz
-
-tar -xvzf ncbi-blast-2.16.0+-aarch64-macosx.tar.gz
-```
-
-
-##### For Mac Computers with the older Intel systems:
-
-- Run the following code in your terminal from the same directory as the last step:
-
-```{terminal}
-cd micro$setup_dir
-
-curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-macosx.tar.gz
-
-tar -xvzf ncbi-blast-2.16.0+-x64-macosx.tar.gz
-```
-
-#### Make Sure the Extracted Downloads are Executable
-
-- Run the following chunk from the same directory again:
-
-```{terminal}
-cd micro$setup_dir
-
-chmod 755 ncbi-blast-2.16.0+/bin/*
-  
-chmod -R 755 Tax4Fun2_ReferenceData_v2/*
-```
-
-#### Futher Troubleshooting
-
-If you are on a mac and still get an error about executing blastn after running the Tax4Fun2 commands, then you may still need to go to your security preferences and select *"Open anyway"* where it says something about blocking Blastn.  
-  
-You can also run the chunk below from the R console to make sure R is able to read and write to the directory.
-
-```{r eval=FALSE}
-dir_path <- micro$Ref99NR
-if (file.access(dir_path, mode = 4) == 0) {
-  print("Directory is readable.")
-} else {
-  print("Directory is not accessible.")
-}
-```
+>If you have not implemented the Tax4Fun2 algorithm with microeco before, make sure you follow the directions to set up this microeco extension. I created my own version in the script that you can find within `setup/microbiome/microeco_first_use.Rmd`.
 
 ### Construct KEGG Datasets
 
@@ -1446,15 +1421,15 @@ dataset.keg.warb$cal_abund()
 dataset.keg.main$filter_taxa(
                          rel_abund      = methods_16s$loris$min_abund, 
                          freq           = methods_16s$loris$min_freq, 
-                         include_lowest = methods_16s$loris$inlcude_lowest)
+                         include_lowest = TRUE)
 dataset.keg.culi$filter_taxa(
                          rel_abund      = methods_16s$loris$min_abund, 
                          freq           = methods_16s$loris$min_freq, 
-                         include_lowest = methods_16s$loris$inlcude_lowest)
+                         include_lowest = TRUE)
 dataset.keg.warb$filter_taxa(
                          rel_abund      = methods_16s$loris$min_abund, 
                          freq           = methods_16s$loris$min_freq, 
-                         include_lowest = methods_16s$loris$inlcude_lowest)
+                         include_lowest = TRUE)
 ```
 
 

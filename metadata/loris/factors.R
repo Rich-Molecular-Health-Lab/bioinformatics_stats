@@ -9,6 +9,11 @@ nutrition_factors <- list(
   all      = c("methionine", "taurine", "omega3", "omega6", "ADF", "NDF", "TDF", "WSC", "crude_fiber", "starch", "calcium", "magnesium", "phosphorus", "potassium", "copper", "iodine", "iron", "manganese", "zinc","beta_carotene", "lycopene", "choline", "folic_acid", "vit_B1_thiamin", "vit_B2_riboflavin", "vit_B3_niacin", "vit_B5_pantothenic_acid", "vit_B6_pyridoxine","vit_B7_biotin", "vit_B12", "vit_C", "vit_A", "vit_D3", "vit_E", "vit_K", "total")
 )
 
+holding_factors <- c(
+  "old",
+  "new"
+)
+
 diet_factors <- c(
   "baseline",
   "oatgel",
@@ -27,6 +32,35 @@ dose_cols <- c(
   "antibiotic",
   "antidiarrheal"
 )
+
+probiotic_factors <- c(
+  "none" = 0.00,
+  "low"  = 05.0,
+  "max"  = 10.0
+)
+
+steroid_factors <- c(
+  "none" = 0.00,
+  "low"  = 00.1,
+  "max"  = 00.2
+)
+
+fiber_factors <- c(
+  "none" = 0.00,
+  "low"  = 00.5,
+  "max"  = 01.0
+)
+
+antibiotic_factors <- c(
+  "none" = 0.00,
+  "max"  = 12.5
+)
+
+antidiarrheal_factors <- c(
+  "none" = 0.00,
+  "max"  = 00.08
+)
+
 
 warb_cycle_factors <- c(
   "anestrus",
@@ -545,11 +579,52 @@ sample_merge_cols <- c(
   "Subj_Certainty",
   "Sex",
   "subject_age",
-  "CollectionDate",
-  "protein_fed",
-  "fat_fed",
-  "CHO_fed", 
-  "mineral_fed" 
+  "CollectionDate",              
+  "protein_fed"                ,
+  "fat_fed"                    ,
+  "CHO_fed"                    ,
+  "mineral_fed"                ,
+  "Omega_3"                    ,
+  "Omega_6"                    ,
+  "Methionine"                 ,
+  "Taurine"                    ,
+  "Calcium_Ca"                 ,
+  "Magnesium_Mg"               ,
+  "Phosphorus_P"               ,
+  "Potassium_K"                ,
+  "Copper_Cu"                  ,
+  "Iodine_I"                   ,
+  "Iron_Fe"                    ,
+  "Manganese_Mn"               ,
+  "Zinc_Zn"                    ,
+  "Acid_Detergent_Fiber"       ,
+  "Neutral_Detergent_Fiber"    ,
+  "Total_Dietary_Fiber"        ,
+  "Water_Soluble_Carbohydrates",
+  "Crude_Fiber"                ,
+  "Starch"                     ,
+  "Beta_Carotene"              ,
+  "Lycopene"                   ,
+  "Choline"                    ,
+  "Folic_Acid_Vitamin_B9"      ,
+  "Vitamin_B1_Thiamin"         ,
+  "Vitamin_B2_Riboflavin"      ,
+  "Vitamin_B3_Niacin"          ,
+  "Vitamin_B5_Pantothenic_Acid",
+  "Vitamin_B6_Pyridoxine"      ,
+  "Vitamin_B7_Biotin"          ,
+  "Vitamin_B12_Cobalamin"      ,
+  "Vitamin_C_Ascorbic_Acid"    ,
+  "Vitamin_A"                  ,
+  "Vitamin_D3_Cholecalciferol" ,
+  "Vitamin_E"                  ,
+  "Vitamin_K"                  ,
+  "Biscuit"                    ,
+  "Gum_Arabic"                 ,
+  "Invertebrates"              ,
+  "Protein_Rotation"           ,
+  "Seasonal_Veggie_Rotation"   ,
+  "Oat_Gel" 
   
 )
 

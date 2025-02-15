@@ -159,3 +159,11 @@ rescale_dose <- function(col, max) {
   col = case_when(col == 0   ~ 0,
                   col == max ~ 2, .default = 1)
 }
+
+merge_samples <- function(df) {
+  df %>% arrange(study_day, subject) %>%
+    mutate(day     = fct(as.character(study_day)),
+           subject = fct(subject)) %>%
+    mutate(subject_day = fct_cross(subject, day, sep = "_")) %>%
+    select(-day)
+}

@@ -1,29 +1,197 @@
 ---
-title: "microeco_first_use"
-output: html_document
+title: "Microbiome Analysis with MicroEco - Dependency Setup"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "loris"
+                     
 ---
 
+```{r global, message = FALSE}
+global             <- config::get(config = "default")
 
-# download link of the compressed packages archive
-# Alternative from Gitee "https://gitee.com/chiliubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
+here::i_am("setup/microbiome/microeco_first_use.Rmd")
+```
+
+
+# Main MicroEco Dependencies
+
+>I am following the linux/mac instructions. See the microeco tutorial for windows-specific code.
+
+```{r, eval = FALSE}
+# If devtools package is not installed, first install it
+install.packages("devtools")
+```
+
+## Download link of the compressed packages archive
+
+- [Alternative from Gitee](https://gitee.com/chiliubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip)
+
+```{r}
 url <- "https://github.com/ChiLiubio/microeco_dependence/releases/download/v0.20.0/microeco_dependence.zip"
 # allow more time to download the zip file in R
 options(timeout = 2000)
+```
 
+```{r}
 # Another way is to open the upper url in browser to download the zip file and move it to the current R working directory
 download.file(url = url, destfile = "microeco_dependence.zip")
+```
+
+```{r}
 # uncompress the file in R
 tmp <- "microeco_dependence"
 unzip(paste0(tmp, ".zip"))
-# install devtools
-# run these one by one
+```
+
+## Install Downloaded Packages in Order as Follows
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "SpiecEasi-master.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "mixedCCA-master.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "SPRING-master.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "NetCoMi-main.zip"), repos = BiocManager::repositories())
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "beem-static-master.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "chorddiag-master.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "ggradar-master.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "ggnested-main.zip"), dependencies = TRUE)
+```
+
+```{r}
 devtools::install_local(paste0(tmp, "/", "ggcor-1-master.zip"), dependencies = TRUE)
+```
+
+# Tax4Fun2 Dependencies
+
+Microeco leverages [**Tax4Fun2**](https://environmentalmicrobiome.biomedcentral.com/articles/10.1186/s40793-020-00358-7) to predict the functional potential of microbial communities based on 16S rRNA gene data on the **KEGG** database. Tax4Fun translates taxonomic profiles into functional profiles by mapping taxa to KEGG Orthologs (KOs) using pre-trained databases. This integration allows researchers to estimate the metabolic capabilities of microbial communities, such as energy production, nutrient cycling, and ecological interactions.  
+  
+I will provide a series of steps below to set this up for your first run, but keep in mind that this sometimes works differently based on operating systems. I also recommend you set up your directory structure to follow mine if you are working from a clone of the github repository. Unlike other dependencies, I do not load these to the repo, as they take up too much unecessary space.  
+  
+I also recommend you check on the [instructions in the microeco tutorial](https://chiliubio.github.io/microeco_tutorial/intro.html#tax4fun2), where they provide alternative methods for these steps.
+
+>**Why Tax4Fun2?**
+>Tax4Fun2 is efficient and user-friendly, making it ideal for functional predictions when shotgun metagenomics data isn’t available. However, setting up Tax4Fun2 and its dependencies (e.g., reference databases) can be challenging but crucial for reliable results.
+
+#### Download and extract reference database
+
+- [Click here to download the database](https://zenodo.org/records/10035668/files/Tax4Fun2_ReferenceData_v2.tar.gz?download=1)
+- Transfer the downloaded, zipped directory to the location where you want to extract everything.
+- Run the chunk below to extract all files.  
+
+```{terminal}
+cd micro$setup_dir
+
+tar -xvzf Tax4Fun2_ReferenceData_v2.tar.gz
+```
+
+#### Download the Blast+ Tools {.tabset}
+
+##### For Mac Computers with the newer Silicon Chips:
+
+- Run the following code in your terminal from the same directory as the last step:
+
+```{terminal}
+cd micro$setup_dir
+
+curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-aarch64-macosx.tar.gz
+
+tar -xvzf ncbi-blast-2.16.0+-aarch64-macosx.tar.gz
+```
+
+
+##### For Mac Computers with the older Intel systems:
+
+- Run the following code in your terminal from the same directory as the last step:
+
+```{terminal}
+cd micro$setup_dir
+
+curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-macosx.tar.gz
+
+tar -xvzf ncbi-blast-2.16.0+-x64-macosx.tar.gz
+```
+
+#### Make Sure the Extracted Downloads are Executable
+
+- Run the following chunk from the same directory again:
+
+```{terminal}
+cd micro$setup_dir
+
+chmod 755 ncbi-blast-2.16.0+/bin/*
+  
+chmod -R 755 Tax4Fun2_ReferenceData_v2/*
+```
+
+#### Futher Troubleshooting
+
+If you are on a mac and still get an error about executing blastn after running the Tax4Fun2 commands, then you may still need to go to your security preferences and select *"Open anyway"* where it says something about blocking Blastn.  
+  
+You can also run the chunk below from the R console to make sure R is able to read and write to the directory.
+
+```{r eval=FALSE}
+dir_path <- micro$Ref99NR
+if (file.access(dir_path, mode = 4) == 0) {
+  print("Directory is readable.")
+} else {
+  print("Directory is not accessible.")
+}
+```
+
+
+# MecoDev Dependencies
+
+MicroEco's tutorial excerpt above [guided us through installation of several dependencies, including BEEM-static](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence), but to work with true longitudinal data, we want to use the original BEEM package instead. This is where microeco's [*mecodev* package](https://chiliubio.github.io/microeco_tutorial/mecodev-package.html) comes in handy. Mecodev provides a set of extended classes based on the microeco package, including *trans_ts*, a class designed for handling time-series data.
+
+#### Install mecodev and dependencies
+
+##### mecodev
+
+```{r, eval = FALSE}
+devtools::install_github("ChiLiubio/mecodev")
+```
+
+##### Dependencies
+
+```{r, eval = FALSE}
+# For linux or mac
+install.packages("doMC")
+# Then install the following packages
+install.packages("lokern")
+install.packages("monomvn")
+install.packages("pspline")
+devtools::install_github('csb5/beem')
+```
+
 

@@ -17,44 +17,12 @@ params:
                      
 ---
 
-### First use: Setting up BEEM
 
-MicroEco's tutorial [guided us through installation of several dependencies, including BEEM-static](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence), but to work with true longitudinal data, we want to use the original BEEM package instead. This is where microeco's [*mecodev* package](https://chiliubio.github.io/microeco_tutorial/mecodev-package.html) comes in handy. Mecodev provides a set of extended classes based on the microeco package, including *trans_ts*, a class designed for handling time-series data.
-
-#### Install mecodev and dependencies
-
->I am following the linux/mac instructions. See the microeco tutorial for windows-specific code.
-
-```{r, eval = FALSE}
-# If devtools package is not installed, first install it
-install.packages("devtools")
-```
-
-##### mecodev
-
-```{r, eval = FALSE}
-devtools::install_github("ChiLiubio/mecodev")
-```
-
-##### Dependencies
-
-```{r, eval = FALSE}
-# For linux or mac
-install.packages("doMC")
-# Then install the following packages
-install.packages("lokern")
-install.packages("monomvn")
-install.packages("pspline")
-devtools::install_github('csb5/beem')
-```
-
-
-```{r, message = FALSE}
+```{r global, message = FALSE}
 global             <- config::get(config = "default")
 
 here::i_am("ExploreResults_LorisMicrobiome.Rmd")
 source(here::here(global$setup))
-1
 
 for (file in micro$micro_scripts) {
   source(here(file))
@@ -69,6 +37,7 @@ theme_set(theme_classic())
 thematic_rmd()
 thematic_on(accent = "#8785B2FF", fg = "black")
 ```
+
 
 # Read in Data
 
@@ -87,7 +56,6 @@ page_fluid(
   )
 )
 ```
-
 
 
 ```{r}
@@ -129,8 +97,7 @@ for (data_type in dataset_types) {
       dataset_name <- paste0(prefix, ".dataset.", dataset)
 
       # Read required files
-      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1) %>%
-        mutate(Time = study_day, Rep = if_else(subject == "culi", 1, 2))
+      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1)
       tax_table   <- safe_read(file.path(directory, "tax_table.tsv")    , sep = "\t", header = TRUE, row.names = 1)
       otu_table   <- safe_read(file.path(directory, "feature_table.tsv"), sep = "\t", header = TRUE, row.names = 1)
 
@@ -165,8 +132,71 @@ for (data_type in dataset_types) {
 
 ```
 
+# Formatting our Metadata for Modelling
+
+Our metadata table (``gen.dataset.main[["sample_table"]]``) contains a mix of **categorical, numeric, and binary variables**. Below is a function to properly format each column before running any of our regression models.  
+  
+This function will also add columns to our sample table with more detailed nutritional variables.
+
+## Read in Additional Metadata Variables
+
 ```{r}
-# Function to apply microeco operations
+foods    <- read.table(path$metadata$foods     , header = T, sep = "\t")
+proteins <- read.table(path$metadata$proteins  , header = T, sep = "\t")
+fats     <- read.table(path$metadata$fats      , header = T, sep = "\t")
+CHOs     <- read.table(path$metadata$CHOs      , header = T, sep = "\t")
+Ash      <- read.table(path$metadata$Ash       , header = T, sep = "\t")
+vitamins <- read.table(path$metadata$vitamins  , header = T, sep = "\t")
+```
+
+
+```{r}
+vars_numeric <- c(
+"study_day",
+"total_mg",
+"total_kcal",
+"total_mg_dry",
+"protein_fed",
+"fat_fed",
+"CHO_fed",
+"mineral_fed",
+"bristol_mean"
+)
+
+format_vars <- function(sample_table) {
+  sample_table <- sample_table %>%
+    mutate(subject      = fct(       subject),
+           Sex          = fct(       Sex),
+           pair_access  = fct(       pair_access),
+           diet_name    = fct(       diet_name    , !!!diet_factors),
+           warb_status  = fct(       warb_status  , !!!warble_cycle_factors),
+           holding      = fct(       holding      , !!!holding_factors),
+           probiotic    = fct_recode(probiotic    , !!!probiotic_factors),
+           steroid      = fct_recode(steroid      , !!!steroid_factors),
+           fiber        = fct_recode(fiber        , !!!fiber_factors),
+           antibiotic   = fct_recode(antibiotic   , !!!antibiotic_factors),
+           antidiarrheal= fct_recode(antidiarrheal, !!!antidiarrheal_factors),
+           accross(any_of(vars_numeric), ~as.numeric(.)))
+}
+```
+
+
+## Convert Binary Variables to Factors
+
+## Convert Continuous Variables to Numeric
+
+## Convert Time and Rep to Factors if Needed
+
+## Handle Missing Values
+
+## Verify Data Formatting Before Running any Models
+
+# Calculate Basic Statistics for Interpretation
+
+I also created a function to loop through every dataset and calculate our standard metrics needed for downstream analyses (`cal_abund`, `cal_alphadiv`, `cal_betadiv`).
+
+```{r}
+# Function to apply microeco operations for standard phylogenetic datasets
 cal_basics_tax <- function(dataset) {
   
   dataset$tidy_dataset()
@@ -192,16 +222,8 @@ cal_basics_tax <- function(dataset) {
 
   return(dataset) # Return modified dataset
 }
-```
 
-```{r, message = FALSE}
-# Loop through all datasets and apply functions
-microtable_datasets$tax <-  map(microtable_datasets$tax, \(x) cal_basics_tax(x))
-```
-
-
-```{r}
-# Function to apply microeco operations
+# Function to apply microeco operations for functional profile versions of datasets
 cal_basics_fun <- function(dataset) {
   
   dataset$tidy_dataset()
@@ -228,14 +250,288 @@ cal_basics_fun <- function(dataset) {
 ```
 
 ```{r, message = FALSE}
-# Loop through all datasets and apply functions
+# Loop through all phylogenetic datasets and apply functions
+microtable_datasets$tax <-  map(microtable_datasets$tax, \(x) cal_basics_tax(x))
+
+# Loop through all functional profiling datasets and apply functions
 microtable_datasets$fun <-  map(microtable_datasets$fun, \(x) cal_basics_fun(x))
+
+# Merge and flatten both phylogenetic and functional datasets into single list
+microtables <- list_flatten(microtable_datasets, name_spec = "{inner}")
+
+# Create a separate top-level list of only the default phylogenetic datasets
+taxatables <- keep_at(microtable_datasets, "tax") %>% list_flatten(name_spec = "{inner}")
+```
+
+# Convert list of all datasets to global environment variables
+
+```{r}
+list2env(microtables, envir = .GlobalEnv)
+```
+
+# Choosing a Statistical Method
+
+The `` trans_diff `` function provides several methods for differential abundance testing. The appropriate method depends on the type of data and study design:
+
+- **Wilcoxon Rank-Sum Test (`wilcox`)**: Non-parametric test for two-group comparisons.
+
+- **Kruskal-Wallis Test (`KW`)**: Non-parametric test for multiple groups.
+
+- **Linear Model (`lm`)**: Models taxa abundance as a function of predictor variables.
+
+- **Beta Regression (`betareg`)**: For proportion data (relative abundance between 0-1).
+
+- **Generalized Linear Mixed Model (`glmm`)**: Incorporates random effects for repeated measures.
+
+- **Zero-inflated GLMM (`glmm_beta`)**: Handles zero-inflated taxa abundance data with a beta distribution.
+
+Based on our data characteristics (relative abundances from long-read 16S sequencing), **beta regression (`betareg`) or generalized linear mixed models with a beta distribution (`glmm_beta`)** are the best choices for differential abundance analysis. Here’s how to decide between them:
+
+## Choosing Between `betareg` and `glmm_beta`
+
+| Method                  | When to Use                                                                                       | Key Features                                                                 |
+|-------------------------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| **Beta Regression (`betareg`)** | - If you have **independent** samples (no repeated measures). <br>- If your relative abundances **do not** have excessive zeros. | - Models values between (0,1). <br>- Requires a **pseudo count** if you have zeros. |
+| **GLMM with Beta (`glmm_beta`)** | - If you have **repeated measures** (same subject over time). <br>- If you have **hierarchical structure** (e.g., multiple samples per subject). <br>- If you have **zero-inflation** (many taxa with 0 abundance). | - Accounts for **random effects** (e.g., `(1|subject)`). <br>- Handles **zero-inflation** better than `betareg` by adding a pseudo count. |
+
+## Recommended Approach for Our Data
+
+Becaues we have:
+
+  - **Relative abundances were pre-calculated (`cal_abund`)**, so values are between 0 and 1.
+  
+  - **Longitudinal design** (samples over time for the same subjects).
+  
+  - **Increasing zeros at lower taxonomic levels** (e.g., species-level has more zero-abundant taxa).
+
+We should start with `glmm_beta` to account for **repeated measures** and **zero-inflation**.
+
+## Implementing `glmm_beta` in microeco
+
+To model genus-level abundance as a function of diet and supplements while accounting for repeated measures.
+
+```{r}
+glmm_genus <- trans_diff$new(
+                     dataset      = data,
+                     taxa_level   = "Genus",
+                     method       = "glmm_beta",
+                     formula      = "diet_name + probiotic + fiber + steroid + (1|subject)",
+                     filter_thres = 0.001)
+```
+
+### Interpreting Results
+
+The result is stored in:
+
+```{r}
+summary(glmm_genus$res_diff)
+```
+
+
+This will include:
+
+  - **Estimate**: Effect size of each factor.
+  
+  - **P-value and Adjusted P-value (`P.adj`)**: Significance level.
+  
+  - **Conditional and Marginal R²**: Variance explained by fixed and random effects.
+
+### Handling Common Issues
+
+1.  **Singularity warnings (`Can't compute random effect variances`)**:
+  - Ensure `subject` has multiple observations.
+  - Consider removing random effects if variance is too low.
+    - To remove random effects, we can switch to using `beta_reg`.
+  
+2.  **Rank-deficiency (`dropping columns from rank-deficient model`)**:
+  - Check for collinearity among predictors using `cor()`.
+  - Drop highly correlated variables.
+  
+3.  **Zero-inflation**:
+  - Use `glmm_beta` to handle excess zeros, especially in our lower level taxa.
+  - If a taxon is mostly absent across samples, set a higher `filter_thres` (e.g., 0.005 instead of 0.001).
+  - If `glmm_beta` struggles with excessive zeros, consider `glmmTMB` with zero-inflation.
+  
+    ```
+    glmm_species <- glmmTMB(Species_Abundance ~ diet_name + probiotic + fiber + steroid + (1|subject),
+                         data   = species_data,
+                         family = beta_family(link="logit"))
+    ```
+  - You also may try increasing the `beta_pseudo` value beyond the default applied by `glmm_beta`.
+    - To avoid errors, `glmm_beta` **adds a small pseudo count to 0s** and adjusts 1s slightly downward using the parameter `beta_pseudo = .Machine$double.eps`.
+    - You can adust this to something like `beta_pseudo = 0.001` if `.Machine$double.eps` is too small and the model still struggles.
+
+# Linear Models
+
+## Independent Variables
+
+```{r}
+diet_vars <- list(
+"diet_name"	,
+"total_mg"	,
+"total_kcal"	,
+"total_mg_dry"	,
+"protein_fed"	,
+"fat_fed"	,
+"CHO_fed"	,
+"mineral_fed"
+)
+
+meds_supplements <- list(
+"probiotic"	,
+"fiber"	,
+"steroid"	,
+"antibiotic"	,
+"antidiarrheal"	
+)
+
+random_effects <- list(
+"study_day"	,
+"subject"	,
+"holding"	,
+"pair_access"	,
+"warb_status"	
+)
+```
+
+
+## Dependent Variables
+
+```{r}
+inflammation <- list("bristol_mean")
+abundance    <- list("rel_abundance")
+alpha_diversity <- list()
+```
+
+
+## Generalized Linear Mixed Models (GLMMs) {.tabset}
+
+GLMMs are an extension of generalized linear models (GLMs), allowing for the inclusion of random effects to account for hierarchical or nested data structures.  
+
+### Designing and Running the Model
+
+```{r}
+effects_fixed_diet <- c(
+                      "diet_name", 
+                      "probiotic", 
+                      "fiber", 
+                      "steroid", 
+                      "total_mg", 
+                      "total_kcal")
+
+effects_random <- c("subject")
 ```
 
 ```{r}
-microtables <- list_flatten(microtable_datasets, name_spec = "{inner}")
+null_gen <- trans_nullmodel$new(
+  dataset      = gen.dataset.main,
+  filter_thres = 0.001,
+  env_cols     = c(effects_fixed_diet, effects_random)
+)
 ```
 
+```{r}
+null_gen$cal_mantel_corr(use_env = "diet_name")
+```
+
+```{r}
+null_gen$plot_mantel_corr()
+```
+
+```{r}
+null_gen$cal_ses_betampd()
+```
+
+```{r}
+# add betaNRI matrix to beta_diversity list
+gen.dataset.main$beta_diversity[["betaNRI"]] <- null_gen$res_ses_betampd
+```
+
+
+```{r}
+# create trans_beta class, use measure "betaNRI"
+beta_gen <- trans_beta$new(dataset = gen.dataset.main, 
+                           group   = "diet_name", 
+                           measure = "betaNRI")
+```
+
+
+```{r}
+# transform the distance for each group
+beta_gen$cal_group_distance()
+```
+
+
+```{r}
+# see the help document for more methods, e.g. "anova" and "KW_dunn"
+beta_gen$cal_group_distance_diff(method = "wilcox")
+```
+
+
+```{r}
+# plot the results
+plot_beta_gen <- t2$plot_group_distance(add = "mean")
+g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
+```
+
+```{r}
+mod3 <- lm(body_mass_g ~ bill_length_mm + species, penguins)
+extract_eq(mod3)
+```
+
+
+```{r}
+glmm_gen <- trans_diff$new(
+                     dataset      = gen.dataset.main, 
+                     method       = "glmm_beta", 
+                     formula      = "diet_name + probiotic + steroid + (1|study_day)", 
+                     beta_pseudo  = 1,
+                     filter_thres = 0.001)
+
+summary(glmm_gen)
+```
+
+
+
+### Background
+  
+#### When to Use GLMMs
+
+1.  **Hierarchical Data**: For example, when samples are nested within subjects, and subjects are nested within treatment groups.
+2.  **Overdispersion**: When the variance in the data is greater than expected under a traditional GLM.
+3.  **Non-Normal Response Variables**: For example:
+  - Binomial data (e.g., presence/absence of a microbial taxon).
+  - Poisson data (e.g., counts of microbial reads).
+
+### Structure of a GLMM
+
+A GLMM has the form:  
+
+$g(E(y)) = X\beta + Zb$
+ 
+  
+- $g(E(y))$: A link function (e.g., log, logit) that relates the expected value of the response variable y to the linear predictors.
+- $X\beta$: Fixed effects (predictors like treatment, time, etc.).
+- $Zb$: Random effects (e.g., subject-specific effects).
+
+
+#### Common Applications
+
+- **Microbial Abundance:** Using Poisson or negative binomial distributions to model raw or normalized count data.
+- **Presence/Absence:** Modeling binary outcomes for specific taxa (e.g., the presence of a pathogenic species).
+- **Diversity Metrics:** Modeling alpha diversity indices as the response variable while accounting for repeated measures or nested study designs.
+
+#### How GLMMs Work for Microbiome Data
+
+A GLMM can handle situations like:  
+
+- **Raw Counts**: Model the abundance of a specific taxon across samples using Poisson or negative binomial distributions.
+- **Taxa Presence/Absence**: Use a logistic regression model to predict whether a taxon is present or absent based on variables like diet, time, or environmental factors.
+
+#### Why GLMMs Are Useful
+
+- They allow us to adjust for random effects, like individual variation between subjects or differences between sequencing runs.
+- GLMMs can account for overdispersion, which is common in count data like microbial abundances.
 
 
 # Exploring Time-Series Analyses
@@ -270,7 +566,7 @@ BEEM (**Bayesian inference of Ecological interactions from Microbiome time-serie
 >Note that here I am going to increase our filtering threshold to 0.01. This algorithm can't handle low abundance taxa and zero values as much as others, so this will improve its efficiency.
 
 ```{r}
-prefixes    <- c("spe", "gen", "fam", "ord", "cla", "phy", "keg", "fpt", "njc")
+prefixes    <- c("spe", "gen", "fam", "ord", "cla", "phy")
 sets       <- c("main", "culi", "warb")
 ts.objects <- list()
 
@@ -286,7 +582,7 @@ for (set in sets) {
     dataset_name <- paste0(prefix, ".dataset.", set)
     ts_name      <- paste0(prefix, ".ts.", set)
        
-    dataset_obj <- microtables[[dataset_name]]
+    dataset_obj <- taxatables[[dataset_name]]
 
     if (!is.null(dataset_obj)) {
       ts.objects[[ts_name]] <- ts_new(dataset_obj)  # Store trans_ts object
@@ -297,23 +593,47 @@ for (set in sets) {
 }
 ```
 
+
+```{r}
+cla.ts.main <- trans_ts$new(dataset = cla.dataset.main, filter_thres = 0.005)
+```
+
+```{r}
+gen.ts.main <- trans_ts$new(dataset = gen.dataset.main, filter_thres = 0.005)
+```
+
+
+
 ### Predict Biomass {.tabset}
 
 >*This function predicts total microbial biomass using the Expectation-Maximization (EM) algorithm from BEEM. It adjusts for relative abundances and estimates total biomass without requiring absolute quantification.*  
   
 **Note: Like the functional redundancy algorithm with Tax4fun2, this chunk can be quite memory-intensive and move slowly. You may want to consider running this as a background job.**
 
-```{r, message = FALSE}
-ts_biomass <- function(dataset) {
-  dataset$cal_biomass(ncpu = 6)
-  return(dataset)
-}
-
-
-map(ts.objects, \(x) ts_biomass(x))
-
-
+```{r}
+phy.ts.main$cal_biomass(ncpu = 6)
 ```
+
+```{r}
+ord.ts.main$cal_biomass(ncpu = 6)
+```
+
+
+```{r}
+print(ord.ts.main$res_biomass)  
+print(ord.ts.main$res_param)
+```
+
+```{r}
+cla.ts.main$cal_biomass(ncpu = 6)
+```
+
+```{r}
+print(cla.ts.main$res_biomass)  
+print(cla.ts.main$res_param)
+```
+
+
 
 
 ### Calculate Network
@@ -387,110 +707,5 @@ map(ts.objects, \(x) ts_plot_network(x))
 
 ```
 
-```{r}
-# Convert list to global environment variables
-list2env(ts.objects, envir = .GlobalEnv)
-```
 
 
-# Linear Models
-
-## Independent Variables
-
-```{r}
-diet_vars <- list(
-"diet_name"	,
-"total_mg"	,
-"total_kcal"	,
-"total_mg_dry"	,
-"protein_fed"	,
-"fat_fed"	,
-"CHO_fed"	,
-"mineral_fed"
-)
-
-meds_supplements <- list(
-"probiotic"	,
-"fiber"	,
-"steroid"	,
-"antibiotic"	,
-"antidiarrheal"	
-)
-
-random_effects <- list(
-"study_day"	,
-"subject"	,
-"holding"	,
-"pair_access"	,
-"warb_status"	
-)
-```
-
-
-## Dependent Variables
-
-```{r}
-inflammation <- list("bristol_mean")
-abundance    <- list("rel_abundance")
-alpha_diversity <- list()
-```
-
-
-## Generalized Linear Mixed Models (GLMMs) {.tabset}
-
-GLMMs are an extension of generalized linear models (GLMs), allowing for the inclusion of random effects to account for hierarchical or nested data structures.  
-
-### Designing and Running the Model
-
-```{r}
-effects_fixed <- list("diet_name", 
-                      "probiotic", "fiber", steroid, total_mg, total_kcal, warb_status, subject_age, Sex)
-```
-
-
-```{r}
-glmmA <- c()
-```
-
-
-
-
-### Background
-  
-#### When to Use GLMMs
-
-1.  **Hierarchical Data**: For example, when samples are nested within subjects, and subjects are nested within treatment groups.
-2.  **Overdispersion**: When the variance in the data is greater than expected under a traditional GLM.
-3.  **Non-Normal Response Variables**: For example:
-  - Binomial data (e.g., presence/absence of a microbial taxon).
-  - Poisson data (e.g., counts of microbial reads).
-
-### Structure of a GLMM
-
-A GLMM has the form:  
-
-$g(E(y)) = X\beta + Zb$
- 
-  
-- $g(E(y))$: A link function (e.g., log, logit) that relates the expected value of the response variable y to the linear predictors.
-- $X\beta$: Fixed effects (predictors like treatment, time, etc.).
-- $Zb$: Random effects (e.g., subject-specific effects).
-
-
-#### Common Applications
-
-- **Microbial Abundance:** Using Poisson or negative binomial distributions to model raw or normalized count data.
-- **Presence/Absence:** Modeling binary outcomes for specific taxa (e.g., the presence of a pathogenic species).
-- **Diversity Metrics:** Modeling alpha diversity indices as the response variable while accounting for repeated measures or nested study designs.
-
-#### How GLMMs Work for Microbiome Data
-
-A GLMM can handle situations like:  
-
-- **Raw Counts**: Model the abundance of a specific taxon across samples using Poisson or negative binomial distributions.
-- **Taxa Presence/Absence**: Use a logistic regression model to predict whether a taxon is present or absent based on variables like diet, time, or environmental factors.
-
-#### Why GLMMs Are Useful
-
-- They allow us to adjust for random effects, like individual variation between subjects or differences between sequencing runs.
-- GLMMs can account for overdispersion, which is common in count data like microbial abundances.
