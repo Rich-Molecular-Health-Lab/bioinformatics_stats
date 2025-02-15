@@ -1441,7 +1441,7 @@ keg.warb <- trans_func$new(dataset.keg.warb)
 
 ### Run Tax4Fun2 Algorithm
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, message=FALSE}
 keg.main$cal_tax4fun2(
           blast_tool_path           = micro$blast,
           path_to_reference_data    = micro$tax4fun,

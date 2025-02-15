@@ -39,7 +39,7 @@ thematic_on(accent = "#8785B2FF", fg = "black")
 ```
 
 
-# Read in Data
+# Read in and Format Datasets
 
 I have written several custom functions to expedite some of the functions that I reuse multiple times for data sets across different sample and taxon subsets. The loop below will use one of those functions to read the microeco datasets that I built using the [MicroEcoDataPrep](MicroEcoDataPrep.html) script.  
   
@@ -52,19 +52,39 @@ page_fluid(
       accordion_panel(
         "Show/Hide Config File (config.yml)",
         tagList(tags$pre(includeText("config.yml")))
+    ),
+      accordion_panel(
+        "Show/Hide Variables and Lists Used in Functions",
+        tagList(
+          withTags(
+            ul(
+              li(pre("dataset_types")        , br(), print(dataset_types)),
+              li(pre("tax_levels")           , br(), print(tax_levels)),
+              li(pre("func_levels")          , br(), print(func_levels)),
+              li(pre("datasets")             , br(), print(datasets)),
+              li(pre("func_levels")          , br(), print(func_levels)),
+              li(pre("func_levels")          , br(), print(func_levels)),
+              li(pre("diet_factors")         , br(), print(diet_factors)),
+              li(pre("warble_cycle_factors") , br(), print(warble_cycle_factors)),
+              li(pre("holding_factors")      , br(), print(holding_factors)),
+              li(pre("probiotic_factors")    , br(), print(probiotic_factors)),
+              li(pre("steroid_factors")      , br(), print(steroid_factors)),
+              li(pre("fiber_factors")        , br(), print(fiber_factors)),
+              li(pre("antibiotic_factors")   , br(), print(antibiotic_factors)),
+              li(pre("antidiarrheal_factors"), br(), print(antidiarrheal_factors)),
+              li(pre("sample_table_numeric") , br(), print(sample_table_numeric)),
+              li(pre("env_cols")             , br(), print(env_cols))
+              )
+            )
+          )
+        )
     )
   )
-)
 ```
 
 
-```{r}
-# Define dataset categories
-dataset_types <- c("tax", "function")
-tax_levels    <- c("species", "genus", "family", "order", "class", "phylum")
-func_levels   <- c("kegg", "fpt", "njc")
-datasets      <- c("main", "culi", "warb")
 
+```{r}
 # Create an empty list to store all datasets
 microtable_datasets <- list()
 
@@ -97,9 +117,23 @@ for (data_type in dataset_types) {
       dataset_name <- paste0(prefix, ".dataset.", dataset)
 
       # Read required files
-      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1)
       tax_table   <- safe_read(file.path(directory, "tax_table.tsv")    , sep = "\t", header = TRUE, row.names = 1)
       otu_table   <- safe_read(file.path(directory, "feature_table.tsv"), sep = "\t", header = TRUE, row.names = 1)
+      
+      # Format metadata for analyses when reading in sample tables
+      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1) %>%
+    mutate(subject      = fct(       subject),
+           Sex          = fct(       Sex),
+           pair_access  = fct(       pair_access),
+           diet_name    = fct(       diet_name    , !!!diet_factors),
+           warb_status  = fct(       warb_status  , !!!warble_cycle_factors),
+           holding      = fct(       holding      , !!!holding_factors),
+           probiotic    = fct_recode(probiotic    , !!!probiotic_factors),
+           steroid      = fct_recode(steroid      , !!!steroid_factors),
+           fiber        = fct_recode(fiber        , !!!fiber_factors),
+           antibiotic   = fct_recode(antibiotic   , !!!antibiotic_factors),
+           antidiarrheal= fct_recode(antidiarrheal, !!!antidiarrheal_factors),
+           accross(any_of(sample_table_numeric), ~as.numeric(.)))
 
       # Create dataset object
       if (data_type == "tax") {
@@ -132,66 +166,7 @@ for (data_type in dataset_types) {
 
 ```
 
-# Formatting our Metadata for Modelling
-
-Our metadata table (``gen.dataset.main[["sample_table"]]``) contains a mix of **categorical, numeric, and binary variables**. Below is a function to properly format each column before running any of our regression models.  
-  
-This function will also add columns to our sample table with more detailed nutritional variables.
-
-## Read in Additional Metadata Variables
-
-```{r}
-foods    <- read.table(path$metadata$foods     , header = T, sep = "\t")
-proteins <- read.table(path$metadata$proteins  , header = T, sep = "\t")
-fats     <- read.table(path$metadata$fats      , header = T, sep = "\t")
-CHOs     <- read.table(path$metadata$CHOs      , header = T, sep = "\t")
-Ash      <- read.table(path$metadata$Ash       , header = T, sep = "\t")
-vitamins <- read.table(path$metadata$vitamins  , header = T, sep = "\t")
-```
-
-
-```{r}
-vars_numeric <- c(
-"study_day",
-"total_mg",
-"total_kcal",
-"total_mg_dry",
-"protein_fed",
-"fat_fed",
-"CHO_fed",
-"mineral_fed",
-"bristol_mean"
-)
-
-format_vars <- function(sample_table) {
-  sample_table <- sample_table %>%
-    mutate(subject      = fct(       subject),
-           Sex          = fct(       Sex),
-           pair_access  = fct(       pair_access),
-           diet_name    = fct(       diet_name    , !!!diet_factors),
-           warb_status  = fct(       warb_status  , !!!warble_cycle_factors),
-           holding      = fct(       holding      , !!!holding_factors),
-           probiotic    = fct_recode(probiotic    , !!!probiotic_factors),
-           steroid      = fct_recode(steroid      , !!!steroid_factors),
-           fiber        = fct_recode(fiber        , !!!fiber_factors),
-           antibiotic   = fct_recode(antibiotic   , !!!antibiotic_factors),
-           antidiarrheal= fct_recode(antidiarrheal, !!!antidiarrheal_factors),
-           accross(any_of(vars_numeric), ~as.numeric(.)))
-}
-```
-
-
-## Convert Binary Variables to Factors
-
-## Convert Continuous Variables to Numeric
-
-## Convert Time and Rep to Factors if Needed
-
-## Handle Missing Values
-
-## Verify Data Formatting Before Running any Models
-
-# Calculate Basic Statistics for Interpretation
+## Calculate Basic Statistics for Interpretation
 
 I also created a function to loop through every dataset and calculate our standard metrics needed for downstream analyses (`cal_abund`, `cal_alphadiv`, `cal_betadiv`).
 
@@ -255,7 +230,11 @@ microtable_datasets$tax <-  map(microtable_datasets$tax, \(x) cal_basics_tax(x))
 
 # Loop through all functional profiling datasets and apply functions
 microtable_datasets$fun <-  map(microtable_datasets$fun, \(x) cal_basics_fun(x))
+```
 
+## Flatten Lists of Objects
+
+```{r, message = FALSE}
 # Merge and flatten both phylogenetic and functional datasets into single list
 microtables <- list_flatten(microtable_datasets, name_spec = "{inner}")
 
@@ -263,45 +242,114 @@ microtables <- list_flatten(microtable_datasets, name_spec = "{inner}")
 taxatables <- keep_at(microtable_datasets, "tax") %>% list_flatten(name_spec = "{inner}")
 ```
 
-# Convert list of all datasets to global environment variables
+## Create `trans_env` Objects
+
+>This class is a wrapper for a series of operations associated with environmental measurements, including redundancy analysis, mantel test, correlation analysis and linear fitting.
+
+We will use the `trans_env` class to look at how some of our other metadata variables affect `bristol_mean` or interact more generally. To do so, we first create new objects of this class.
+
+```{r}
+new_names <- function(dataset_name) {
+  prefix       <- substr(dataset_name,  1,  3) 
+  suffix       <- substr(dataset_name, nchar(dataset_name) - 3, nchar(dataset_name))
+  return(paste0(prefix, ".env.", suffix))
+}
+
+new_env <- function(dataset) {
+  trans_env$new(
+    dataset  = dataset,
+    env_cols = env_cols 
+  )
+}
+
+env_objects <- imap(microtables, 
+                    function(x, idx) {
+                      object        <- trans_env$new(dataset = x, env_cols = env_cols)
+                      names(object) <- new_names(idx)
+                      
+                      return(object)
+                      })
+```
+
+## Unlist All Objects
 
 ```{r}
 list2env(microtables, envir = .GlobalEnv)
+list2env(env_objects, envir = .GlobalEnv)
 ```
 
-# Choosing a Statistical Method
+# Differential Abundance of Microbial Taxa
 
-The `` trans_diff `` function provides several methods for differential abundance testing. The appropriate method depends on the type of data and study design:
+The `trans_diff` function provides several methods for differential abundance testing. The appropriate method depends on the type of data and study design:
 
-- **Wilcoxon Rank-Sum Test (`wilcox`)**: Non-parametric test for two-group comparisons.
+  - **Wilcoxon Rank-Sum Test (`wilcox`)**: Non-parametric test for two-group comparisons.
+  - **Kruskal-Wallis Test (`KW`)**: Non-parametric test for multiple groups.
+  - **Linear Model (`lm`)**: Models taxa abundance as a function of predictor variables.
+  - **Beta Regression (`betareg`)**: For proportion data (relative abundance between 0-1).
+  - **Generalized Linear Mixed Model (`glmm`)**: Incorporates random effects for repeated measures.
+  - **Zero-inflated GLMM (`glmm_beta`)**: Handles zero-inflated taxa abundance data with a beta distribution.
+  
 
-- **Kruskal-Wallis Test (`KW`)**: Non-parametric test for multiple groups.
+## More Info on GLMMs {.tabset}
+  
+### When to Use GLMMs
 
-- **Linear Model (`lm`)**: Models taxa abundance as a function of predictor variables.
+1.  **Hierarchical Data**: For example, when samples are nested within subjects, and subjects are nested within treatment groups.
+2.  **Overdispersion**: When the variance in the data is greater than expected under a traditional GLM.
+3.  **Non-Normal Response Variables**: For example:
+  - Binomial data (e.g., presence/absence of a microbial taxon).
+  - Poisson data (e.g., counts of microbial reads).
 
-- **Beta Regression (`betareg`)**: For proportion data (relative abundance between 0-1).
+### Structure of a GLMM
 
-- **Generalized Linear Mixed Model (`glmm`)**: Incorporates random effects for repeated measures.
+A GLMM has the form:  
 
-- **Zero-inflated GLMM (`glmm_beta`)**: Handles zero-inflated taxa abundance data with a beta distribution.
+$g(E(y)) = X\beta + Zb$
+ 
+  
+- $g(E(y))$: A link function (e.g., log, logit) that relates the expected value of the response variable y to the linear predictors.
+- $X\beta$: Fixed effects (predictors like treatment, time, etc.).
+- $Zb$: Random effects (e.g., subject-specific effects).
 
-Based on our data characteristics (relative abundances from long-read 16S sequencing), **beta regression (`betareg`) or generalized linear mixed models with a beta distribution (`glmm_beta`)** are the best choices for differential abundance analysis. Here’s how to decide between them:
 
-## Choosing Between `betareg` and `glmm_beta`
+### Common Applications
+
+- **Microbial Abundance:** Using Poisson or negative binomial distributions to model raw or normalized count data.
+- **Presence/Absence:** Modeling binary outcomes for specific taxa (e.g., the presence of a pathogenic species).
+- **Diversity Metrics:** Modeling alpha diversity indices as the response variable while accounting for repeated measures or nested study designs.
+
+### How GLMMs Work for Microbiome Data
+
+A GLMM can handle situations like:  
+
+- **Raw Counts**: Model the abundance of a specific taxon across samples using Poisson or negative binomial distributions.
+- **Taxa Presence/Absence**: Use a logistic regression model to predict whether a taxon is present or absent based on variables like diet, time, or environmental factors.
+
+### Why GLMMs Are Useful
+
+- They allow us to adjust for random effects, like individual variation between subjects or differences between sequencing runs.
+- GLMMs can account for overdispersion, which is common in count data like microbial abundances.
+
+### Choosing Between `betareg` and `glmm_beta`
 
 | Method                  | When to Use                                                                                       | Key Features                                                                 |
 |-------------------------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
 | **Beta Regression (`betareg`)** | - If you have **independent** samples (no repeated measures). <br>- If your relative abundances **do not** have excessive zeros. | - Models values between (0,1). <br>- Requires a **pseudo count** if you have zeros. |
 | **GLMM with Beta (`glmm_beta`)** | - If you have **repeated measures** (same subject over time). <br>- If you have **hierarchical structure** (e.g., multiple samples per subject). <br>- If you have **zero-inflation** (many taxa with 0 abundance). | - Accounts for **random effects** (e.g., `(1|subject)`). <br>- Handles **zero-inflation** better than `betareg` by adding a pseudo count. |
 
-## Recommended Approach for Our Data
+
+## Hypothesis Testing with Differential Abundances
+  
+### Diet + Supplements + Medications as Predictors of Microbial Abundance
+
+Based on our data characteristics (relative abundances from long-read 16S sequencing), **beta regression (`betareg`) or generalized linear mixed models with a beta distribution (`glmm_beta`)** are the best choices for differential abundance analysis. Here’s how to decide between them:
+
+#### Recommended Approach for Our Data
 
 Becaues we have:
 
   - **Relative abundances were pre-calculated (`cal_abund`)**, so values are between 0 and 1.
-  
   - **Longitudinal design** (samples over time for the same subjects).
-  
   - **Increasing zeros at lower taxonomic levels** (e.g., species-level has more zero-abundant taxa).
 
 We should start with `glmm_beta` to account for **repeated measures** and **zero-inflation**.
@@ -315,7 +363,8 @@ glmm_genus <- trans_diff$new(
                      dataset      = data,
                      taxa_level   = "Genus",
                      method       = "glmm_beta",
-                     formula      = "diet_name + probiotic + fiber + steroid + (1|subject)",
+                     formula      = 
+"diet_name + probiotic + fiber + steroid + diet_name*probiotic + diet_name*fiber + diet_name*steroid + probiotic*fiber*steroid + diet_name*probiotic*fiber*steroid +  (1|subject) + (1|study_day)",
                      filter_thres = 0.001)
 ```
 
@@ -360,178 +409,112 @@ This will include:
   - You also may try increasing the `beta_pseudo` value beyond the default applied by `glmm_beta`.
     - To avoid errors, `glmm_beta` **adds a small pseudo count to 0s** and adjusts 1s slightly downward using the parameter `beta_pseudo = .Machine$double.eps`.
     - You can adust this to something like `beta_pseudo = 0.001` if `.Machine$double.eps` is too small and the model still struggles.
+    
+    
+## Identifying Microbial Biomarkers as Predictors of Fecal Consistency {.tabset}
 
-# Linear Models
-
-## Independent Variables
-
-```{r}
-diet_vars <- list(
-"diet_name"	,
-"total_mg"	,
-"total_kcal"	,
-"total_mg_dry"	,
-"protein_fed"	,
-"fat_fed"	,
-"CHO_fed"	,
-"mineral_fed"
-)
-
-meds_supplements <- list(
-"probiotic"	,
-"fiber"	,
-"steroid"	,
-"antibiotic"	,
-"antidiarrheal"	
-)
-
-random_effects <- list(
-"study_day"	,
-"subject"	,
-"holding"	,
-"pair_access"	,
-"warb_status"	
-)
-```
+Because this is going to require some deep exploratory analysis to search for potentially subtle patterns and interactions between taxa, the following two differential abundance estimators are likely our best options.
 
 
-## Dependent Variables
+### Ordinal Regression (clmm for Ordered Data)
+
+You can fit an **ordinal regression model** in `glmmTMB` using the **cumulative link model (CLM)** approach. The key family function is **`family=ordinal()`**, which allows you to model ordered categorical outcomes.
+
+#### When to use it?
+
+- When `bristol_mean` is a ranked outcome (1-7) rather than a true continuous variable.
+- When you want to **account for repeated measures (random effect: (`1|subject`)**).
+- When you need **better handling of zero-inflation** (compared to `clmm` in ordinal package).
+
+#### Pros:
+
+- More appropriate for ordinal responses like `bristol_mean`.
+
+#### Cons:
+
+- More complex than `clmm` from the `ordinal` package.
+
+#### Implementation
 
 ```{r}
-inflammation <- list("bristol_mean")
-abundance    <- list("rel_abundance")
-alpha_diversity <- list()
-```
-
-
-## Generalized Linear Mixed Models (GLMMs) {.tabset}
-
-GLMMs are an extension of generalized linear models (GLMs), allowing for the inclusion of random effects to account for hierarchical or nested data structures.  
-
-### Designing and Running the Model
-
-```{r}
-effects_fixed_diet <- c(
-                      "diet_name", 
-                      "probiotic", 
-                      "fiber", 
-                      "steroid", 
-                      "total_mg", 
-                      "total_kcal")
-
-effects_random <- c("subject")
-```
-
-```{r}
-null_gen <- trans_nullmodel$new(
-  dataset      = gen.dataset.main,
+bristol_glmm <- trans_diff$new(
+  dataset      = gen.dataset.main, 
+  taxa_level   = "Genus", 
+  method       = "glmm_beta", 
+  formula      = "bristol_mean ~ 
+  Genus_Abundance + 
+  diet_name + 
+  probiotic + 
+  fiber + 
+  steroid +  
+  diet_name*probiotic + 
+  diet_name*fiber + 
+  diet_name*steroid + 
+  probiotic*fiber*steroid + 
+  diet_name*probiotic*fiber*steroid +  
+  (1|subject) + 
+  (1|study_day)", 
   filter_thres = 0.001,
-  env_cols     = c(effects_fixed_diet, effects_random)
+  family       = glmmTMB::ordinal(link = "probit")
 )
 ```
 
-```{r}
-null_gen$cal_mantel_corr(use_env = "diet_name")
-```
+### Random Forest and Machine Learning Approaches
+
+#### When to use it?
+
+- If you want to discover patterns without assuming a linear relationship.
+- If you suspect complex interactions between multiple microbes and fecal scores.
+
+#### Pros:
+
+- Can identify key microbial taxa that predict `bristol_mean.`
+- Nonparametric (no assumptions about relationships).
+
+#### Cons:
+
+- Harder to interpret individual effect sizes.
+- Needs a lot of data to avoid overfitting.
+
+#### Implementation
 
 ```{r}
-null_gen$plot_mantel_corr()
-```
-
-```{r}
-null_gen$cal_ses_betampd()
-```
-
-```{r}
-# add betaNRI matrix to beta_diversity list
-gen.dataset.main$beta_diversity[["betaNRI"]] <- null_gen$res_ses_betampd
-```
-
-
-```{r}
-# create trans_beta class, use measure "betaNRI"
-beta_gen <- trans_beta$new(dataset = gen.dataset.main, 
-                           group   = "diet_name", 
-                           measure = "betaNRI")
-```
-
-
-```{r}
-# transform the distance for each group
-beta_gen$cal_group_distance()
+bristol_rf <- trans_diff$new(
+  dataset      = gen.dataset.main, 
+  taxa_level   = "Genus", 
+  method       = "rf", 
+  group        = "bristol_mean"
+)
 ```
 
 
+### Feature Selection Using LEfSe
+
+#### When to use it?
+
+- If you want to identify biomarker taxa strongly associated with fecal scores.
+
+#### Pros:
+
+- Identifies taxa with the strongest differential association with bristol_mean.
+- LDA scores indicate effect size.
+
+#### Cons:
+
+- Requires categorical grouping of bristol_mean (e.g., binning into low, medium, high stool scores).
+
+#### Implementation
+
 ```{r}
-# see the help document for more methods, e.g. "anova" and "KW_dunn"
-beta_gen$cal_group_distance_diff(method = "wilcox")
+bristol_lefse <- trans_diff$new(
+  dataset      = gen.dataset.main, 
+  taxa_level   = "Genus", 
+  method       = "lefse", 
+  group        = "bristol_mean"
+)
 ```
 
 
-```{r}
-# plot the results
-plot_beta_gen <- t2$plot_group_distance(add = "mean")
-g1 + geom_hline(yintercept = -2, linetype = 2) + geom_hline(yintercept = 2, linetype = 2)
-```
-
-```{r}
-mod3 <- lm(body_mass_g ~ bill_length_mm + species, penguins)
-extract_eq(mod3)
-```
-
-
-```{r}
-glmm_gen <- trans_diff$new(
-                     dataset      = gen.dataset.main, 
-                     method       = "glmm_beta", 
-                     formula      = "diet_name + probiotic + steroid + (1|study_day)", 
-                     beta_pseudo  = 1,
-                     filter_thres = 0.001)
-
-summary(glmm_gen)
-```
-
-
-
-### Background
-  
-#### When to Use GLMMs
-
-1.  **Hierarchical Data**: For example, when samples are nested within subjects, and subjects are nested within treatment groups.
-2.  **Overdispersion**: When the variance in the data is greater than expected under a traditional GLM.
-3.  **Non-Normal Response Variables**: For example:
-  - Binomial data (e.g., presence/absence of a microbial taxon).
-  - Poisson data (e.g., counts of microbial reads).
-
-### Structure of a GLMM
-
-A GLMM has the form:  
-
-$g(E(y)) = X\beta + Zb$
- 
-  
-- $g(E(y))$: A link function (e.g., log, logit) that relates the expected value of the response variable y to the linear predictors.
-- $X\beta$: Fixed effects (predictors like treatment, time, etc.).
-- $Zb$: Random effects (e.g., subject-specific effects).
-
-
-#### Common Applications
-
-- **Microbial Abundance:** Using Poisson or negative binomial distributions to model raw or normalized count data.
-- **Presence/Absence:** Modeling binary outcomes for specific taxa (e.g., the presence of a pathogenic species).
-- **Diversity Metrics:** Modeling alpha diversity indices as the response variable while accounting for repeated measures or nested study designs.
-
-#### How GLMMs Work for Microbiome Data
-
-A GLMM can handle situations like:  
-
-- **Raw Counts**: Model the abundance of a specific taxon across samples using Poisson or negative binomial distributions.
-- **Taxa Presence/Absence**: Use a logistic regression model to predict whether a taxon is present or absent based on variables like diet, time, or environmental factors.
-
-#### Why GLMMs Are Useful
-
-- They allow us to adjust for random effects, like individual variation between subjects or differences between sequencing runs.
-- GLMMs can account for overdispersion, which is common in count data like microbial abundances.
 
 
 # Exploring Time-Series Analyses
