@@ -58,22 +58,20 @@ page_fluid(
         tagList(
           withTags(
             ul(
-              li(pre("dataset_types")        , br(), print(dataset_types)),
-              li(pre("tax_levels")           , br(), print(tax_levels)),
-              li(pre("func_levels")          , br(), print(func_levels)),
-              li(pre("datasets")             , br(), print(datasets)),
-              li(pre("func_levels")          , br(), print(func_levels)),
-              li(pre("func_levels")          , br(), print(func_levels)),
-              li(pre("diet_factors")         , br(), print(diet_factors)),
-              li(pre("warble_cycle_factors") , br(), print(warble_cycle_factors)),
-              li(pre("holding_factors")      , br(), print(holding_factors)),
-              li(pre("probiotic_factors")    , br(), print(probiotic_factors)),
-              li(pre("steroid_factors")      , br(), print(steroid_factors)),
-              li(pre("fiber_factors")        , br(), print(fiber_factors)),
-              li(pre("antibiotic_factors")   , br(), print(antibiotic_factors)),
-              li(pre("antidiarrheal_factors"), br(), print(antidiarrheal_factors)),
-              li(pre("sample_table_numeric") , br(), print(sample_table_numeric)),
-              li(pre("env_cols")             , br(), print(env_cols))
+              li(em("dataset_types")        , pre(toString(dataset_types))),
+              li(em("tax_levels")           , pre(toString(tax_levels))),
+              li(em("datasets")             , pre(toString(datasets))),
+              li(em("func_levels")          , pre(toString(func_levels))),
+              li(em("diet_factors")         , pre(toString(diet_factors))),
+              li(em("warble_cycle_factors") , pre(toString(warb_cycle_factors))),
+              li(em("holding_factors")      , pre(toString(holding_factors))),
+              li(em("probiotic_factors")    , pre(toString(probiotic_factors))),
+              li(em("steroid_factors")      , pre(toString(steroid_factors))),
+              li(em("fiber_factors")        , pre(toString(fiber_factors))),
+              li(em("antibiotic_factors")   , pre(toString(antibiotic_factors))),
+              li(em("antidiarrheal_factors"), pre(toString(antidiarrheal_factors))),
+              li(em("sample_table_numeric") , pre(toString(sample_table_numeric))),
+              li(em("env_cols")             , pre(toString(env_cols)))
               )
             )
           )
@@ -82,9 +80,30 @@ page_fluid(
   )
 ```
 
-
-
 ```{r}
+sample_table <- read.table(path$metadata$sample_table$merged, 
+                           header = T, 
+                           sep = "\t") %>%
+  mutate(ID = str_glue("{subject}", "_", "{study_day}")) %>%
+  relocate(ID) %>%
+  mutate(subject      = fct(subject),
+         pair_access  = fct(pair_access  , levels = c("n", "y")),
+         diet_name    = fct(diet_name    , levels = diet_factors),
+         warb_status  = fct(warb_status  , levels = warb_cycle_factors),
+         holding      = fct(holding      , levels = holding_factors))
+
+culi.bristols <- sample_table %>%
+  filter(subject == "culi") %>%
+  summarize(med = median(bristol_mean, na.rm = TRUE))
+
+dataset_tbl <- sample_table %>%
+  mutate(bristol_mean = if_else(is.na(bristol_mean), culi.bristols$med, bristol_mean)) %>%
+  select(all_of(categ_cols_env), study_day, bristol_mean) %>%
+  mutate(rowname = ID) %>%
+  column_to_rownames("rowname")
+```
+
+```{r, warning = FALSE}
 # Create an empty list to store all datasets
 microtable_datasets <- list()
 
@@ -120,22 +139,8 @@ for (data_type in dataset_types) {
       tax_table   <- safe_read(file.path(directory, "tax_table.tsv")    , sep = "\t", header = TRUE, row.names = 1)
       otu_table   <- safe_read(file.path(directory, "feature_table.tsv"), sep = "\t", header = TRUE, row.names = 1)
       
-      # Format metadata for analyses when reading in sample tables
-      sample_tab  <- safe_read(file.path(directory, "sample_table.tsv") , sep = "\t", header = TRUE, row.names = 1) %>%
-    mutate(subject      = fct(       subject),
-           Sex          = fct(       Sex),
-           pair_access  = fct(       pair_access),
-           diet_name    = fct(       diet_name    , !!!diet_factors),
-           warb_status  = fct(       warb_status  , !!!warble_cycle_factors),
-           holding      = fct(       holding      , !!!holding_factors),
-           probiotic    = fct_recode(probiotic    , !!!probiotic_factors),
-           steroid      = fct_recode(steroid      , !!!steroid_factors),
-           fiber        = fct_recode(fiber        , !!!fiber_factors),
-           antibiotic   = fct_recode(antibiotic   , !!!antibiotic_factors),
-           antidiarrheal= fct_recode(antidiarrheal, !!!antidiarrheal_factors),
-           accross(any_of(sample_table_numeric), ~as.numeric(.)))
+      sample_tab  <- dataset_tbl
 
-      # Create dataset object
       if (data_type == "tax") {
         phylo_tree <- if (file.exists(file.path(directory, 
                                                 "phylo_tree.tre"))) read.tree(file.path(directory, 
@@ -246,37 +251,173 @@ taxatables <- keep_at(microtable_datasets, "tax") %>% list_flatten(name_spec = "
 
 >This class is a wrapper for a series of operations associated with environmental measurements, including redundancy analysis, mantel test, correlation analysis and linear fitting.
 
-We will use the `trans_env` class to look at how some of our other metadata variables affect `bristol_mean` or interact more generally. To do so, we first create new objects of this class.
+We will use the `trans_env` class to look at how some of our other metadata variables affect `bristol_mean` or interact more generally. To do so, we first create new objects of this class, and we want to customize our metadata variables for the analyses we are interested in running.
 
 ```{r}
-new_names <- function(dataset_name) {
-  prefix       <- substr(dataset_name,  1,  3) 
-  suffix       <- substr(dataset_name, nchar(dataset_name) - 3, nchar(dataset_name))
-  return(paste0(prefix, ".env.", suffix))
-}
+ranked_env <- sample_table %>% 
+  select(all_of(ranked_cols_env)) %>%
+  mutate(bristol_mean = if_else(is.na(bristol_mean), culi.bristols$med, bristol_mean)) %>%
+  mutate(across(where(is.numeric)    , ~ if_else(. == 0, 0L, dense_rank(.)))) %>%
+  mutate(across(where(~ min(.x) == 0), ~ if_else(. == 0, 0, . - 1))) %>%
+  mutate(across(where(is.numeric)    , ~ factor(., levels = sort(unique(.))))) %>%
+  rename_with(~ paste0("fct_", .x), !ID)
+```
 
-new_env <- function(dataset) {
-  trans_env$new(
-    dataset  = dataset,
-    env_cols = env_cols 
-  )
-}
+```{r}
+ranked_numeric <- sample_table %>% 
+  select(all_of(ranked_cols_env)) %>%
+  select(-bristol_mean) %>%
+  mutate(across(where(is.numeric)    , ~ if_else(. == 0, 0L, dense_rank(.)))) %>%
+  mutate(across(where(~ min(.x) == 0), ~ if_else(. == 0, 0, . - 1)))
+```
 
-env_objects <- imap(microtables, 
-                    function(x, idx) {
-                      object        <- trans_env$new(dataset = x, env_cols = env_cols)
-                      names(object) <- new_names(idx)
-                      
-                      return(object)
-                      })
+```{r}
+categ_env <- sample_table %>% 
+  select(all_of(categ_cols_env)) %>%
+  mutate(across(!ID, ~ as.numeric(fct_infreq(.x)))) %>%
+  rename_with(~ paste0("num_", .x), where(is.numeric))
+```
+
+```{r}
+numeric_vars <- ranked_numeric %>%
+  left_join(dataset_tbl, by = join_by(ID)) %>%
+  mutate(subject   = as.character(subject),
+         study_day = as.character(study_day)) %>%
+  mutate(across(where(is.factor), ~ as.numeric(.x))) %>%
+  select(-c(subject, holding, warb_status, pair_access))
+
+uniform_vars <- numeric_vars %>% select(where(~min(.x) == max(.x)))
+
+drop_cols <- names(uniform_vars)
+```
+
+
+```{r}
+bubble_numeric_vars <- numeric_vars %>%
+  select(where(~min(.x) != max(.x))) %>%
+  pivot_longer(where(is.numeric)) %>%
+  ggplot( aes(x = name, y = value, color = name)) +
+    geom_count(alpha = 0.7) +
+    geom_point(aes(size = after_stat(n)), 
+               shape = 21, stroke = 0.1, color = "black", fill = NA, 
+               stat = "sum") +
+    scale_colour_paletteer_d("ggsci::default_igv") +
+    scale_size_area(max_size = 15) +
+    theme(axis.text.x = element_text(angle = 90),
+          legend.position="none")
+
+plot_bubble <- ggplotly(bubble_numeric_vars)
+
+```
+
+```{r}
+saveWidget(as_widget(plot_bubble), here("visuals/loris_predictor_vars.html"), selfcontained = TRUE)
+plot_bubble
+```
+
+```{r}
+
+env_data_foods <- ranked_env %>%
+  select(ID,
+         fct_Biscuit,
+         fct_Gum_Arabic,
+         fct_Invertebrates,
+         fct_Protein_Rotation,
+         fct_Seasonal_Veggie_Rotation,
+         fct_Oat_Gel
+         ) %>%
+  left_join(dataset_tbl, by = join_by(ID))
+
+```
+
+
+
+```{r, message = FALSE}
+env_obj_vitm <- map(microtables, \(x) trans_env$new(dataset  = x, 
+                                                        env_cols = c(env_default,
+                                                                     env_vitamins))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.vitm"))
+
+env_obj_food <- map(microtables, \(x) trans_env$new(dataset  = x, 
+                                                     env_cols = c(env_default,
+                                                                  env_foods))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.food"))
+
+env_obj_fats <- map(microtables, \(x) trans_env$new(dataset  = x, 
+                                                    env_cols = c(env_default,
+                                                                 env_fats))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.fats"))
+
+env_obj_diet <- map(microtables, \(x) trans_env$new(
+                                                    dataset  = x, 
+                                                    env_cols = c(env_default,
+                                                                 env_diet))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.diet"))
+
+env_obj_supp <- map(microtables, \(x) trans_env$new(
+                                                    dataset  = x, 
+                                                    env_cols = c(env_default,
+                                                                 env_supps))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.supp"))
+
+env_obj_prot <- map(microtables, \(x) trans_env$new(
+                                                    dataset  = x, 
+                                                    env_cols = c(env_default,
+                                                                 env_proteins))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.prot"))
+
+env_obj_CHOs <- map(microtables, \(x) trans_env$new(
+                                                    dataset  = x, 
+                                                    env_cols = c(env_default,
+                                                                 env_CHOs))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.CHOs"))
+
+env_obj_mins <- map(microtables, \(x) trans_env$new(
+                                                    dataset  = x, 
+                                                    env_cols = c(env_default,
+                                                                 env_Ash))) %>%
+  set_names(., ~ str_replace_all(., "dataset", "env.mins"))
+
+
 ```
 
 ## Unlist All Objects
 
 ```{r}
-list2env(microtables, envir = .GlobalEnv)
-list2env(env_objects, envir = .GlobalEnv)
+list2env(microtables , envir = .GlobalEnv)
+list2env(env_obj_mins, envir = .GlobalEnv)
+list2env(env_obj_CHOs, envir = .GlobalEnv)
+list2env(env_obj_prot, envir = .GlobalEnv)
+list2env(env_obj_supp, envir = .GlobalEnv)
+list2env(env_obj_diet, envir = .GlobalEnv)
+list2env(env_obj_fats, envir = .GlobalEnv)
+list2env(env_obj_food, envir = .GlobalEnv)
+list2env(env_obj_vitm, envir = .GlobalEnv)
 ```
+
+# Shape and Colinearity of Env Variables
+
+```{r}
+spe.env.food.main$cal_diff(
+  group    = "subject",
+  by_group = "fct_bristol",
+  method   = "anova"
+)
+
+
+# place all the plots into a list
+tmp <- list()
+for(i in unique(spe.env.food.main$res_diff$Measure)){
+    tmp[[i]] <- spe.env.food.main$plot_diff(
+                                       measure           = i, 
+                                       add_sig_text_size = 5, 
+                                       xtext_size        = 12) + 
+      theme(plot.margin = unit(c(0.1, 0, 0, 1), "cm"))
+}
+plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
+```
+
+
 
 # Differential Abundance of Microbial Taxa
 
@@ -358,14 +499,14 @@ We should start with `glmm_beta` to account for **repeated measures** and **zero
 
 To model genus-level abundance as a function of diet and supplements while accounting for repeated measures.
 
+
 ```{r}
-glmm_genus <- trans_diff$new(
-                     dataset      = data,
-                     taxa_level   = "Genus",
+glmmB_diet <- trans_diff$new(
+                     dataset      = spe.dataset.main,
                      method       = "glmm_beta",
                      formula      = 
-"diet_name + probiotic + fiber + steroid + diet_name*probiotic + diet_name*fiber + diet_name*steroid + probiotic*fiber*steroid + diet_name*probiotic*fiber*steroid +  (1|subject) + (1|study_day)",
-                     filter_thres = 0.001)
+"Biscuit + Gum_Arabic + Invertebrates + Protein_Rotation +Seasonal_Veggie_Rotation + Oat_Gel + steroid + probiotic + (1|subject)",
+                     filter_thres = 0.005)
 ```
 
 ### Interpreting Results

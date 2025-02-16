@@ -18,11 +18,7 @@ diet_factors <- c(
   "baseline",
   "oatgel",
   "biscuit_elim",
-  "lessBug_moreEgg",
-  "seasonals",
-  "low_lectin",
-  "gum36_veg37_invert27",
-  "water31_root31_protein19_gum19"
+  "lessBug_moreEgg"
 )
 
 dose_cols <- c(
@@ -34,31 +30,31 @@ dose_cols <- c(
 )
 
 probiotic_factors <- c(
-  "none" = 0.00,
-  "low"  = 05.0,
-  "max"  = 10.0
+  "none" = "0",
+  "low"  = "5",
+  "max"  = "10"
 )
 
 steroid_factors <- c(
-  "none" = 0.00,
-  "low"  = 00.1,
-  "max"  = 00.2
+  "none" = "0",
+  "low"  = "0.1",
+  "max"  = "0.2"
 )
 
 fiber_factors <- c(
-  "none" = 0.00,
-  "low"  = 00.5,
-  "max"  = 01.0
+  "none" = "0",
+  "low"  = "0.5",
+  "max"  = "1"
 )
 
 antibiotic_factors <- c(
-  "none" = 0.00,
-  "max"  = 12.5
+  "none" = "0",
+  "max"  = "12.5"
 )
 
 antidiarrheal_factors <- c(
-  "none" = 0.00,
-  "max"  = 00.08
+  "none" = "0",
+  "max"  = "0.08"
 )
 
 
@@ -627,6 +623,64 @@ sample_merge_cols <- c(
   "Oat_Gel" 
 )
 
+ranked_cols_env <- c(
+  "ID"                         ,
+  "total_mg"                   ,
+  "total_kcal"                 ,
+  "total_mg_dry"               ,
+  "bristol_mean"               ,
+  "probiotic"                  ,
+  "steroid"                    ,
+  "fiber"                      ,
+  "antibiotic"                 ,
+  "antidiarrheal"              ,
+  "protein_fed"                ,
+  "fat_fed"                    ,
+  "CHO_fed"                    ,
+  "mineral_fed"                ,
+  "Omega_3"                    ,
+  "Omega_6"                    ,
+  "Methionine"                 ,
+  "Taurine"                    ,
+  "Calcium_Ca"                 ,
+  "Magnesium_Mg"               ,
+  "Phosphorus_P"               ,
+  "Potassium_K"                ,
+  "Copper_Cu"                  ,
+  "Iodine_I"                   ,
+  "Iron_Fe"                    ,
+  "Manganese_Mn"               ,
+  "Zinc_Zn"                    ,
+  "Acid_Detergent_Fiber"       ,
+  "Neutral_Detergent_Fiber"    ,
+  "Total_Dietary_Fiber"        ,
+  "Water_Soluble_Carbohydrates",
+  "Crude_Fiber"                ,
+  "Starch"                     ,
+  "Beta_Carotene"              ,
+  "Lycopene"                   ,
+  "Choline"                    ,
+  "Folic_Acid_Vitamin_B9"      ,
+  "Vitamin_B1_Thiamin"         ,
+  "Vitamin_B2_Riboflavin"      ,
+  "Vitamin_B3_Niacin"          ,
+  "Vitamin_B5_Pantothenic_Acid",
+  "Vitamin_B6_Pyridoxine"      ,
+  "Vitamin_B7_Biotin"          ,
+  "Vitamin_B12_Cobalamin"      ,
+  "Vitamin_C_Ascorbic_Acid"    ,
+  "Vitamin_A"                  ,
+  "Vitamin_D3_Cholecalciferol" ,
+  "Vitamin_E"                  ,
+  "Vitamin_K"                  ,
+  "Biscuit"                    ,
+  "Gum_Arabic"                 ,
+  "Invertebrates"              ,
+  "Protein_Rotation"           ,
+  "Seasonal_Veggie_Rotation"   ,
+  "Oat_Gel" 
+)
+
 sample_table_numeric <- c(
   "study_day",
   "total_mg",
@@ -686,68 +740,110 @@ func_levels   <- c("kegg", "fpt", "njc")
 all_levels    <- c("species", "genus", "family", "order", "class", "phylum", "kegg", "fpt", "njc")
 datasets      <- c("main", "culi", "warb")
 
-env_cols <- c(
-  "subject",
-  "subject_day",
-  "diet_name",
-  "probiotic",
-  "fiber",
-  "steroid",
-  "antibiotic",
-  "antidiarrheal",
-  "holding",
-  "pair_access",
-  "warb_status",
-  "study_day",
-  "total_mg",
-  "total_kcal",
-  "total_mg_dry",
-  "bristol_mean",
+categ_cols_env <- c(
+  "ID"                            ,
+  "subject"                       ,
+  "diet_name"                     ,
+  "holding"                       ,
+  "pair_access"                   ,
+  "warb_status"                   
+)
+
+env_factors <- c(
+  "subject"                       ,
+  "study_day"                     ,
+  "diet_name"                     ,
+  "holding"                       ,
+  "pair_access"                   ,
+  "warb_status"                   ,
+  "fct_bristol"                   ,
+  "fct_Biscuit"                   ,
+  "fct_Gum_Arabic"                ,
+  "fct_Invertebrates"             ,
+  "fct_Protein_Rotation"          ,
+  "fct_Seasonal_Veggie_Rotation"  ,
+  "fct_Oat_Gel"                   ,
+  "probiotic"                     ,
+  "fiber"                         ,
+  "steroid"                       ,
+  "antibiotic"                    ,
+  "antidiarrheal"                 
+)
+
+env_supps <- c(
+  "num_probiotic",
+  "num_fiber",
+  "num_steroid",
+  "num_antibiotic",
+  "num_antidiarrheal"
+)
+
+env_diet <- c(
+  "total_mg"                   ,
+  "total_kcal"                 ,
+  "total_mg_dry"               ,
   "protein_fed"                ,
   "fat_fed"                    ,
   "CHO_fed"                    ,
-  "mineral_fed"                ,
-  "Omega_3"                    ,
-  "Omega_6"                    ,
-  "Methionine"                 ,
-  "Taurine"                    ,
-  "Calcium_Ca"                 ,
-  "Magnesium_Mg"               ,
-  "Phosphorus_P"               ,
-  "Potassium_K"                ,
-  "Copper_Cu"                  ,
-  "Iodine_I"                   ,
-  "Iron_Fe"                    ,
-  "Manganese_Mn"               ,
-  "Zinc_Zn"                    ,
-  "Acid_Detergent_Fiber"       ,
-  "Neutral_Detergent_Fiber"    ,
-  "Total_Dietary_Fiber"        ,
-  "Water_Soluble_Carbohydrates",
-  "Crude_Fiber"                ,
-  "Starch"                     ,
-  "Beta_Carotene"              ,
-  "Lycopene"                   ,
-  "Choline"                    ,
-  "Folic_Acid_Vitamin_B9"      ,
-  "Vitamin_B1_Thiamin"         ,
-  "Vitamin_B2_Riboflavin"      ,
-  "Vitamin_B3_Niacin"          ,
-  "Vitamin_B5_Pantothenic_Acid",
-  "Vitamin_B6_Pyridoxine"      ,
-  "Vitamin_B7_Biotin"          ,
-  "Vitamin_B12_Cobalamin"      ,
-  "Vitamin_C_Ascorbic_Acid"    ,
-  "Vitamin_A"                  ,
-  "Vitamin_D3_Cholecalciferol" ,
-  "Vitamin_E"                  ,
-  "Vitamin_K"                  ,
-  "Biscuit"                    ,
-  "Gum_Arabic"                 ,
-  "Invertebrates"              ,
-  "Protein_Rotation"           ,
-  "Seasonal_Veggie_Rotation"   ,
+  "mineral_fed"                
+)
+
+env_foods <- c(
+  "Biscuit"                   ,
+  "Gum_Arabic"                ,
+  "Invertebrates"             ,
+  "Protein_Rotation"          ,
+  "Seasonal_Veggie_Rotation"  ,
   "Oat_Gel" 
+)
+
+env_fats <- c(
+  "Omega_3"                   ,
+  "Omega_6"                   
+)
+
+env_proteins <- c(
+  "Methionine"                ,
+  "Taurine"                   
+)
+
+env_CHOs <- c(
+  "Acid_Detergent_Fiber"      ,
+  "Neutral_Detergent_Fiber"   ,
+  "Total_Dietary_Fiber"       ,
+  "Crude_Fiber"               ,
+  "Starch"                    
+)
+
+env_Ash <- c(
+  "Calcium_Ca"                ,
+  "Magnesium_Mg"              ,
+  "Phosphorus_P"              ,
+  "Potassium_K"               ,
+  "Copper_Cu"                 ,
+  "Iodine_I"                  ,
+  "Iron_Fe"                   ,
+  "Manganese_Mn"              ,
+  "Zinc_Zn"                   
+)
+
+env_vitamins <- c(
+  "Beta_Carotene"             ,
+  "Lycopene"                  ,
+  "Choline"                   ,
+  "Folic_Acid_Vitamin_B9"     ,
+  "Vitamin_B1_Thiamin"        ,
+  "Vitamin_B2_Riboflavin"     ,
+  "Vitamin_B3_Niacin"         ,
+  "Vitamin_B5_Pantothenic_Acid",
+  "Vitamin_B6_Pyridoxine"     ,
+  "Vitamin_B7_Biotin"         ,
+  "Vitamin_B12_Cobalamin"     ,
+  "Vitamin_C_Ascorbic_Acid"   ,
+  "Vitamin_A"                 ,
+  "Vitamin_D3_Cholecalciferol",
+  "Vitamin_E"                 ,
+  "Vitamin_K"                 
 )
 
 source(here("metadata/loris/reactable_rendering.R"))
