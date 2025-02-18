@@ -740,110 +740,100 @@ func_levels   <- c("kegg", "fpt", "njc")
 all_levels    <- c("species", "genus", "family", "order", "class", "phylum", "kegg", "fpt", "njc")
 datasets      <- c("main", "culi", "warb")
 
-categ_cols_env <- c(
-  "ID"                            ,
-  "subject"                       ,
-  "diet_name"                     ,
-  "holding"                       ,
-  "pair_access"                   ,
-  "warb_status"                   
+env_vars <- list(
+  "Categorical Variables" = c(
+    "Sample"     = "ID"         ,         
+    "Diet Name"  = "diet_name"  ,         
+    "Study Day"  = "study_day"
+  ),
+  
+  "Health Outcomes" = c(
+    "Bristol Fecal Score" = "bristol_mean"  
+  ),
+  
+  "Supplements and Medications" = c(
+    "Probiotic"        = "probiotic"         ,         
+    "Steroid"          = "steroid"           ,         
+    "Fiber Supplement" = "fiber"             ,         
+    "Antibiotic"       = "antibiotic"        ,         
+    "Antidiarrheal"    = "antidiarrheal"              
+  ),
+  
+  "Daily Diet Totals" = c(
+    "Total Weight"     = "total_mg"    ,               
+    "Total kcal"       = "total_kcal"  ,               
+    "Total Dry Weight" = "total_mg_dry"               
+  ),
+  
+  "Diet Composition" = c(
+    "Biscuit"                   = "Biscuit", 
+    "Oat Gel"                   = "Oat_Gel", 
+    "Invertebrates"             = "Invertebrates",  
+    "Protein Rotation"          = "Protein_Rotation", 
+    "Gum Arabic"                =  "Gum_Arabic", 
+    "Seasonal Veggie Rotation"  = "Seasonal_Veggie_Rotation"
+  ),
+  
+  "Nutritional Composition" = c(
+    "Total Proteins"          = "protein_fed"     ,           
+    "Total Fats"              = "fat_fed"         ,           
+    "Total Carbohydrates"     = "CHO_fed"         ,           
+    "Total Mineral Content"   = "mineral_fed"                
+  ),
+  
+  "Carbohydrates" = c(
+    "Acid Detergent Fiber"         = "Acid_Detergent_Fiber", 
+    "Neutral Detergent Fiber"      = "Neutral_Detergent_Fiber", 
+    "Total Dietary Fiber"          = "Total_Dietary_Fiber", 
+    "Water-Soluble Carbohydrates"  = "Water_Soluble_Carbohydrates", 
+    "Crude Fiber"                  = "Crude_Fiber", 
+    "Starch"                       = "Starch"
+  ),
+  
+  "Fats" = c(
+    "Omega-3"                      = "Omega_3", 
+    "Omega-6"                      = "Omega_6"
+  ),
+  
+  "Proteins" = c(
+    "Methionine"                   = "Methionine", 
+    "Taurine"                      = "Taurine"
+  ),
+  
+  "Mineral Content" = c(
+    "Calcium (Ca)"                 = "Calcium_Ca", 
+    "Magnesium (Mg)"               = "Magnesium_Mg", 
+    "Phosphorus (P)"               = "Phosphorus_P", 
+    "Potassium (K)"                = "Potassium_K",
+    "Copper (Cu)"                  = "Copper_Cu", 
+    "Iodine (I)"                   = "Iodine_I", 
+    "Iron (Fe)"                    = "Iron_Fe", 
+    "Manganese (Mn)"               = "Manganese_Mn", 
+    "Zinc (Zn)"                    = "Zinc_Zn"     
+  ),
+  
+  "Vitamins" = c(
+    "Beta-Carotene"                  =  "Beta_Carotene"              ,
+    "Lycopene"                       =  "Lycopene"                   ,
+    "Choline"                        =  "Choline"                    ,
+    "Folic Acid (Vitamin B9)"        =  "Folic_Acid_Vitamin_B9"      ,
+    "Vitamin B1 (Thiamin)"           =  "Vitamin_B1_Thiamin"         ,
+    "Vitamin B2 (Riboflavin)"        =  "Vitamin_B2_Riboflavin"      ,
+    "Vitamin B3 (Niacin)"            =  "Vitamin_B3_Niacin"          ,
+    "Vitamin B5 (Pantothenic Acid)"  =  "Vitamin_B5_Pantothenic_Acid",
+    "Vitamin B6 (Pyridoxine)"        =  "Vitamin_B6_Pyridoxine"      ,
+    "Vitamin B7 (Biotin)"            =  "Vitamin_B7_Biotin"          ,
+    "Vitamin B12 (Cobalamin)"        =  "Vitamin_B12_Cobalamin"      ,
+    "Vitamin C (Ascorbic Acid)"      =  "Vitamin_C_Ascorbic_Acid"    ,
+    "Vitamin A"                      =  "Vitamin_A"                  ,
+    "Vitamin D3 (Cholecalciferol)"   =  "Vitamin_D3_Cholecalciferol" ,
+    "Vitamin E"                      =  "Vitamin_E"                  ,
+    "Vitamin K"                      =  "Vitamin_K"                  
+  )
 )
 
-env_factors <- c(
-  "subject"                       ,
-  "study_day"                     ,
-  "diet_name"                     ,
-  "holding"                       ,
-  "pair_access"                   ,
-  "warb_status"                   ,
-  "fct_bristol"                   ,
-  "fct_Biscuit"                   ,
-  "fct_Gum_Arabic"                ,
-  "fct_Invertebrates"             ,
-  "fct_Protein_Rotation"          ,
-  "fct_Seasonal_Veggie_Rotation"  ,
-  "fct_Oat_Gel"                   ,
-  "probiotic"                     ,
-  "fiber"                         ,
-  "steroid"                       ,
-  "antibiotic"                    ,
-  "antidiarrheal"                 
-)
 
-env_supps <- c(
-  "num_probiotic",
-  "num_fiber",
-  "num_steroid",
-  "num_antibiotic",
-  "num_antidiarrheal"
-)
 
-env_diet <- c(
-  "total_mg"                   ,
-  "total_kcal"                 ,
-  "total_mg_dry"               ,
-  "protein_fed"                ,
-  "fat_fed"                    ,
-  "CHO_fed"                    ,
-  "mineral_fed"                
-)
-
-env_foods <- c(
-  "Biscuit"                   ,
-  "Gum_Arabic"                ,
-  "Invertebrates"             ,
-  "Protein_Rotation"          ,
-  "Seasonal_Veggie_Rotation"  ,
-  "Oat_Gel" 
-)
-
-env_fats <- c(
-  "Omega_3"                   ,
-  "Omega_6"                   
-)
-
-env_proteins <- c(
-  "Methionine"                ,
-  "Taurine"                   
-)
-
-env_CHOs <- c(
-  "Acid_Detergent_Fiber"      ,
-  "Neutral_Detergent_Fiber"   ,
-  "Total_Dietary_Fiber"       ,
-  "Crude_Fiber"               ,
-  "Starch"                    
-)
-
-env_Ash <- c(
-  "Calcium_Ca"                ,
-  "Magnesium_Mg"              ,
-  "Phosphorus_P"              ,
-  "Potassium_K"               ,
-  "Copper_Cu"                 ,
-  "Iodine_I"                  ,
-  "Iron_Fe"                   ,
-  "Manganese_Mn"              ,
-  "Zinc_Zn"                   
-)
-
-env_vitamins <- c(
-  "Beta_Carotene"             ,
-  "Lycopene"                  ,
-  "Choline"                   ,
-  "Folic_Acid_Vitamin_B9"     ,
-  "Vitamin_B1_Thiamin"        ,
-  "Vitamin_B2_Riboflavin"     ,
-  "Vitamin_B3_Niacin"         ,
-  "Vitamin_B5_Pantothenic_Acid",
-  "Vitamin_B6_Pyridoxine"     ,
-  "Vitamin_B7_Biotin"         ,
-  "Vitamin_B12_Cobalamin"     ,
-  "Vitamin_C_Ascorbic_Acid"   ,
-  "Vitamin_A"                 ,
-  "Vitamin_D3_Cholecalciferol",
-  "Vitamin_E"                 ,
-  "Vitamin_K"                 
-)
+     
 
 source(here("metadata/loris/reactable_rendering.R"))
