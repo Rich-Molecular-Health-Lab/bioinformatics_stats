@@ -1229,116 +1229,24 @@ dataset.culi$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_1
 dataset.warb$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
 ```
 
-## Clone and Merge at Different Taxonomic Levels
-
-Cloning and merging datasets at different taxonomic levels allow us to explore microbial communities at varying degrees of resolution. By focusing on higher taxonomic levels (e.g., phylum or class), we can identify broad patterns, while finer levels (e.g., genus or species) provide detailed insights into specific taxa. This flexibility helps tailor analyses to research questions and ensures biologically meaningful interpretations across scales.
-
-```{r, message = FALSE}
-gen.data.main <- clone(dataset.main, deep = T)
-gen.data.culi <- clone(dataset.culi, deep = T)
-gen.data.warb <- clone(dataset.warb, deep = T)
-
-gen.data.main$merge_taxa(taxa = "Genus")
-gen.data.culi$merge_taxa(taxa = "Genus")
-gen.data.warb$merge_taxa(taxa = "Genus")
-
-fam.data.main <- clone(dataset.main, deep = T)
-fam.data.culi <- clone(dataset.culi, deep = T)
-fam.data.warb <- clone(dataset.warb, deep = T)
-
-fam.data.main$merge_taxa(taxa = "Family")
-fam.data.culi$merge_taxa(taxa = "Family")
-fam.data.warb$merge_taxa(taxa = "Family")
-
-ord.data.main <- clone(dataset.main, deep = T)
-ord.data.culi <- clone(dataset.culi, deep = T)
-ord.data.warb <- clone(dataset.warb, deep = T)
-
-ord.data.main$merge_taxa(taxa = "Order")
-ord.data.culi$merge_taxa(taxa = "Order")
-ord.data.warb$merge_taxa(taxa = "Order")
-
-cla.data.main <- clone(dataset.main, deep = T)
-cla.data.culi <- clone(dataset.culi, deep = T)
-cla.data.warb <- clone(dataset.warb, deep = T)
-
-cla.data.main$merge_taxa(taxa = "Class")
-cla.data.culi$merge_taxa(taxa = "Class")
-cla.data.warb$merge_taxa(taxa = "Class")
-
-phy.data.main <- clone(dataset.main, deep = T)
-phy.data.culi <- clone(dataset.culi, deep = T)
-phy.data.warb <- clone(dataset.warb, deep = T)
-
-phy.data.main$merge_taxa(taxa = "Phylum")
-phy.data.culi$merge_taxa(taxa = "Phylum")
-phy.data.warb$merge_taxa(taxa = "Phylum")
-```
-
 ## Export Datasets for Further Analysis
 
 Now we will export these datasets for the next analysis steps. I do this to modularize these scripts. Beginning with the next script, the code you do/do not choose to run and parameters you use will become increasingly specific to the questions you are focused on or the sampleset you are working with. MicroEco will export these datasets into their own subdirectories with formatted files that make it easy to bring them back into the package and make use of their built-in functions for stats and visuals.
 
 ```{r, warning=FALSE, message=FALSE}
- dataset.main$save_table(path$microeco$dataset$main$species, sep = "\t")
- dataset.culi$save_table(path$microeco$dataset$culi$species, sep = "\t")
- dataset.warb$save_table(path$microeco$dataset$warb$species, sep = "\t")
-gen.data.main$save_table(path$microeco$dataset$main$genus  , sep = "\t")
-gen.data.culi$save_table(path$microeco$dataset$culi$genus  , sep = "\t")
-gen.data.warb$save_table(path$microeco$dataset$warb$genus  , sep = "\t")
-fam.data.main$save_table(path$microeco$dataset$main$family , sep = "\t")
-fam.data.culi$save_table(path$microeco$dataset$culi$family , sep = "\t")
-fam.data.warb$save_table(path$microeco$dataset$warb$family , sep = "\t")
-ord.data.main$save_table(path$microeco$dataset$main$order  , sep = "\t")
-ord.data.culi$save_table(path$microeco$dataset$culi$order  , sep = "\t")
-ord.data.warb$save_table(path$microeco$dataset$warb$order  , sep = "\t")
-cla.data.main$save_table(path$microeco$dataset$main$class  , sep = "\t")
-cla.data.culi$save_table(path$microeco$dataset$culi$class  , sep = "\t")
-cla.data.warb$save_table(path$microeco$dataset$warb$class  , sep = "\t")
-phy.data.main$save_table(path$microeco$dataset$main$phylum , sep = "\t")
-phy.data.culi$save_table(path$microeco$dataset$culi$phylum , sep = "\t")
-phy.data.warb$save_table(path$microeco$dataset$warb$phylum , sep = "\t")
+dataset.main$save_table(path$microeco$dataset$main$tax, sep = "\t")
+dataset.culi$save_table(path$microeco$dataset$culi$tax, sep = "\t")
+dataset.warb$save_table(path$microeco$dataset$warb$tax, sep = "\t")
 dataset.main$save_abund(path$microeco$abund$main$tax, sep = "\t")
 dataset.culi$save_abund(path$microeco$abund$culi$tax, sep = "\t")
 dataset.warb$save_abund(path$microeco$abund$warb$tax, sep = "\t")
-dataset.main$save_betadiv(path$microeco$beta$main$species)
-dataset.culi$save_betadiv(path$microeco$beta$culi$species)
-dataset.warb$save_betadiv(path$microeco$beta$warb$species)
-gen.data.main$save_betadiv(path$microeco$beta$main$genus )
-gen.data.culi$save_betadiv(path$microeco$beta$culi$genus )
-gen.data.warb$save_betadiv(path$microeco$beta$warb$genus )
-fam.data.main$save_betadiv(path$microeco$beta$main$family)
-fam.data.culi$save_betadiv(path$microeco$beta$culi$family)
-fam.data.warb$save_betadiv(path$microeco$beta$warb$family)
-ord.data.main$save_betadiv(path$microeco$beta$main$order )
-ord.data.culi$save_betadiv(path$microeco$beta$culi$order )
-ord.data.warb$save_betadiv(path$microeco$beta$warb$order )
-cla.data.main$save_betadiv(path$microeco$beta$main$class )
-cla.data.culi$save_betadiv(path$microeco$beta$culi$class )
-cla.data.warb$save_betadiv(path$microeco$beta$warb$class )
-phy.data.main$save_betadiv(path$microeco$beta$main$phylum)
-phy.data.culi$save_betadiv(path$microeco$beta$culi$phylum)
-phy.data.warb$save_betadiv(path$microeco$beta$warb$phylum)
-dataset.main$save_alphadiv(path$microeco$alpha$main$species)
-dataset.culi$save_alphadiv(path$microeco$alpha$culi$species)
-dataset.warb$save_alphadiv(path$microeco$alpha$warb$species)
-gen.data.main$save_alphadiv(path$microeco$alpha$main$genus )
-gen.data.culi$save_alphadiv(path$microeco$alpha$culi$genus )
-gen.data.warb$save_alphadiv(path$microeco$alpha$warb$genus )
-fam.data.main$save_alphadiv(path$microeco$alpha$main$family)
-fam.data.culi$save_alphadiv(path$microeco$alpha$culi$family)
-fam.data.warb$save_alphadiv(path$microeco$alpha$warb$family)
-ord.data.main$save_alphadiv(path$microeco$alpha$main$order )
-ord.data.culi$save_alphadiv(path$microeco$alpha$culi$order )
-ord.data.warb$save_alphadiv(path$microeco$alpha$warb$order )
-cla.data.main$save_alphadiv(path$microeco$alpha$main$class )
-cla.data.culi$save_alphadiv(path$microeco$alpha$culi$class )
-cla.data.warb$save_alphadiv(path$microeco$alpha$warb$class )
-phy.data.main$save_alphadiv(path$microeco$alpha$main$phylum)
-phy.data.culi$save_alphadiv(path$microeco$alpha$culi$phylum)
-phy.data.warb$save_alphadiv(path$microeco$alpha$warb$phylum)
+dataset.main$save_alphadiv(path$microeco$alpha$main)
+dataset.culi$save_alphadiv(path$microeco$alpha$culi)
+dataset.warb$save_alphadiv(path$microeco$alpha$warb)
+dataset.main$save_betadiv(path$microeco$beta$main$tax)
+dataset.culi$save_betadiv(path$microeco$beta$culi$tax)
+dataset.warb$save_betadiv(path$microeco$beta$warb$tax)
 ```
-
 
 
 # Functional Profiles
@@ -1525,21 +1433,21 @@ keg.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
 
 ```{r, eval=FALSE}
 
-keg.data.main$save_table(path$microeco$dataset$main$kegg, sep = "\t")
-keg.data.culi$save_table(path$microeco$dataset$culi$kegg, sep = "\t")
-keg.data.warb$save_table(path$microeco$dataset$warb$kegg, sep = "\t")
+keg.data.main$save_table(path$microeco$dataset$main$keg, sep = "\t")
+keg.data.culi$save_table(path$microeco$dataset$culi$keg, sep = "\t")
+keg.data.warb$save_table(path$microeco$dataset$warb$keg, sep = "\t")
 
 ```
 
 ##### Table Version of Basic Stats
 
 ```{r, eval=FALSE}
-  keg.data.main$save_abund(path$microeco$abund$main$kegg, sep = "\t")
-  keg.data.culi$save_abund(path$microeco$abund$culi$kegg, sep = "\t")
-  keg.data.warb$save_abund(path$microeco$abund$warb$kegg, sep = "\t")
-keg.data.main$save_betadiv(path$microeco$beta$main$kegg)
-keg.data.culi$save_betadiv(path$microeco$beta$culi$kegg)
-keg.data.warb$save_betadiv(path$microeco$beta$warb$kegg)
+  keg.data.main$save_abund(path$microeco$abund$main$keg, sep = "\t")
+  keg.data.culi$save_abund(path$microeco$abund$culi$keg, sep = "\t")
+  keg.data.warb$save_abund(path$microeco$abund$warb$keg, sep = "\t")
+keg.data.main$save_betadiv(path$microeco$beta$main$keg)
+keg.data.culi$save_betadiv(path$microeco$beta$culi$keg)
+keg.data.warb$save_betadiv(path$microeco$beta$warb$keg)
 ```
 
 ## FAPROTAX
