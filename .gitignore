@@ -63,3 +63,10 @@ rsconnect/
 # Reference Databases
 **/Tax4Fun2_ReferenceData_v2/*
 **/ncbi-blast-2.16.0+/*
+
+# Dorado build
+cuda_11.8.0_520.61.05_linux.run
+cuda11.8/**
+cmake-env/**
+dorado-env/**
+../dorado/**

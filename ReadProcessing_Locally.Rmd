@@ -1,0 +1,31 @@
+---
+title: "Local Post-Sequencing Raw ONT Read Processing Workflow"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "loris"
+  seqrun: "hdz1"
+  
+---
+
+```{r, message = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("ReadProcessing_Locally.Rmd")
+source(here::here(global$setup))
+
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+```
