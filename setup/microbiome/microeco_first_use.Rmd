@@ -110,7 +110,7 @@ I also recommend you check on the [instructions in the microeco tutorial](https:
 - Run the chunk below to extract all files.  
 
 ```{terminal}
-cd micro$setup_dir
+cd "setup/microbiome"
 
 tar -xvzf Tax4Fun2_ReferenceData_v2.tar.gz
 ```
@@ -122,7 +122,7 @@ tar -xvzf Tax4Fun2_ReferenceData_v2.tar.gz
 - Run the following code in your terminal from the same directory as the last step:
 
 ```{terminal}
-cd micro$setup_dir
+cd "setup/microbiome"
 
 curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-aarch64-macosx.tar.gz
 
@@ -135,7 +135,7 @@ tar -xvzf ncbi-blast-2.16.0+-aarch64-macosx.tar.gz
 - Run the following code in your terminal from the same directory as the last step:
 
 ```{terminal}
-cd micro$setup_dir
+cd "setup/microbiome"
 
 curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.16.0+-x64-macosx.tar.gz
 
@@ -147,7 +147,7 @@ tar -xvzf ncbi-blast-2.16.0+-x64-macosx.tar.gz
 - Run the following chunk from the same directory again:
 
 ```{terminal}
-cd micro$setup_dir
+cd "setup/microbiome"
 
 chmod 755 ncbi-blast-2.16.0+/bin/*
   
@@ -161,7 +161,7 @@ If you are on a mac and still get an error about executing blastn after running 
 You can also run the chunk below from the R console to make sure R is able to read and write to the directory.
 
 ```{r eval=FALSE}
-dir_path <- micro$Ref99NR
+dir_path <- "setup/microbiome/Tax4Fun2_ReferenceData_v2/Ref99NR/"
 if (file.access(dir_path, mode = 4) == 0) {
   print("Directory is readable.")
 } else {
