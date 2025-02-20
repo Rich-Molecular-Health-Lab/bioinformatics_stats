@@ -117,6 +117,7 @@ Here are some of the online resources for the packages or platforms that I use t
 - [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
 - [R Markdown Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
 - [MicroEco Tutorial](https://chiliubio.github.io/microeco_tutorial/)
+- [Data Analysis in R](https://bookdown.org/steve_midway/DAR/)
 - [Tidyverse Packages](https://www.tidyverse.org/)
 - [Tools for Microbiome Analysis](https://microsud.github.io/Tools-Microbiome-Analysis/)
 - [Unix Commands Cheatsheet](https://www.stationx.net/unix-commands-cheat-sheet/)

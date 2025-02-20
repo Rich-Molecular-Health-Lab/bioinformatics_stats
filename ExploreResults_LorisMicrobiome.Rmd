@@ -93,14 +93,12 @@ sample_table <- read.table(path$metadata$sample_table$merged,
          holding      = fct(holding      , levels = holding_factors))
 
 culi.bristols <- sample_table %>%
-  filter(subject == "culi") %>%
+  filter(subject == "culi", bristol_mean > 0) %>%
   summarize(med = median(bristol_mean, na.rm = TRUE))
 
 dataset_tbl <- sample_table %>%
-  mutate(bristol_mean = if_else(is.na(bristol_mean), culi.bristols$med, bristol_mean)) %>%
-  select(all_of(categ_cols_env), study_day, bristol_mean) %>%
-  mutate(rowname = ID) %>%
-  column_to_rownames("rowname")
+  mutate(bristol_mean = if_else(is.na(bristol_mean) | bristol_mean == 0, culi.bristols$med, bristol_mean))
+
 ```
 
 ```{r, warning = FALSE}
@@ -150,7 +148,6 @@ for (data_type in dataset_types) {
                                                                                           "rep_fasta.fasta")) else NULL
 
         microtable_datasets$tax[[dataset_name]] <- microtable$new(
-          sample_table = sample_tab,
           otu_table    = otu_table,
           tax_table    = tax_table,
           phylo_tree   = phylo_tree,
@@ -159,7 +156,6 @@ for (data_type in dataset_types) {
         )
       } else {
         microtable_datasets$fun[[dataset_name]] <- microtable$new(
-          sample_table = sample_tab,
           otu_table    = otu_table,
           tax_table    = tax_table,
           auto_tidy    = TRUE
@@ -247,6 +243,7 @@ microtables <- list_flatten(microtable_datasets, name_spec = "{inner}")
 taxatables <- keep_at(microtable_datasets, "tax") %>% list_flatten(name_spec = "{inner}")
 ```
 
+
 ## Create `trans_env` Objects
 
 >This class is a wrapper for a series of operations associated with environmental measurements, including redundancy analysis, mantel test, correlation analysis and linear fitting.
@@ -254,9 +251,8 @@ taxatables <- keep_at(microtable_datasets, "tax") %>% list_flatten(name_spec = "
 We will use the `trans_env` class to look at how some of our other metadata variables affect `bristol_mean` or interact more generally. To do so, we first create new objects of this class, and we want to customize our metadata variables for the analyses we are interested in running.
 
 ```{r}
-ranked_env <- sample_table %>% 
+ranked_env <- dataset_tbl %>% 
   select(all_of(ranked_cols_env)) %>%
-  mutate(bristol_mean = if_else(is.na(bristol_mean), culi.bristols$med, bristol_mean)) %>%
   mutate(across(where(is.numeric)    , ~ if_else(. == 0, 0L, dense_rank(.)))) %>%
   mutate(across(where(~ min(.x) == 0), ~ if_else(. == 0, 0, . - 1))) %>%
   mutate(across(where(is.numeric)    , ~ factor(., levels = sort(unique(.))))) %>%
@@ -264,7 +260,7 @@ ranked_env <- sample_table %>%
 ```
 
 ```{r}
-ranked_numeric <- sample_table %>% 
+ranked_numeric <- dataset_tbl %>% 
   select(all_of(ranked_cols_env)) %>%
   select(-bristol_mean) %>%
   mutate(across(where(is.numeric)    , ~ if_else(. == 0, 0L, dense_rank(.)))) %>%
@@ -272,41 +268,87 @@ ranked_numeric <- sample_table %>%
 ```
 
 ```{r}
-categ_env <- sample_table %>% 
+categ_env <- dataset_tbl %>% 
   select(all_of(categ_cols_env)) %>%
   mutate(across(!ID, ~ as.numeric(fct_infreq(.x)))) %>%
   rename_with(~ paste0("num_", .x), where(is.numeric))
 ```
 
+### Shape and Colinearity of Env Variables
+
 ```{r}
 numeric_vars <- ranked_numeric %>%
   left_join(dataset_tbl, by = join_by(ID)) %>%
   mutate(subject   = as.character(subject),
-         study_day = as.character(study_day)) %>%
+         study_day = as.character(study_day),
+         diet_char = as.character(diet_name)) %>%
   mutate(across(where(is.factor), ~ as.numeric(.x))) %>%
   select(-c(subject, holding, warb_status, pair_access))
+
 
 uniform_vars <- numeric_vars %>% select(where(~min(.x) == max(.x)))
 
 drop_cols <- names(uniform_vars)
-```
 
+env_factors    <- unlist(env_vars, recursive = TRUE, use.names = TRUE) %>% set_names(., ~ sub("^[^.]+\\.", "", .x))
+env_categories <- c(names(env_vars))
 
-```{r}
-bubble_numeric_vars <- numeric_vars %>%
+plot_vars <- numeric_vars %>%
   select(where(~min(.x) != max(.x))) %>%
   pivot_longer(where(is.numeric)) %>%
-  ggplot( aes(x = name, y = value, color = name)) +
-    geom_count(alpha = 0.7) +
-    geom_point(aes(size = after_stat(n)), 
+  mutate(category = case_when(
+   name %in% env_vars[["Categorical Variables"]]         ~ "Categorical Variables",
+   name %in% env_vars[["Health Outcomes"]]               ~ "Health Outcomes",
+   name %in% env_vars[["Supplements and Medications"]]   ~ "Supplements and Medications",
+   name %in% env_vars[["Daily Diet Totals"]]             ~ "Daily Diet Totals",
+   name %in% env_vars[["Diet Composition"]]              ~ "Diet Composition",
+   name %in% env_vars[["Nutritional Composition"]]       ~ "Nutritional Composition",
+   name %in% env_vars[["Carbohydrates"]]                 ~ "Carbohydrates",
+   name %in% env_vars[["Fats"]]                          ~ "Fats",
+   name %in% env_vars[["Proteins"]]                      ~ "Proteins",
+   name %in% env_vars[["Mineral Content"]]               ~ "Mineral Content",
+   name %in% env_vars[["Vitamins"]]                      ~ "Vitamins",
+   .default = "Other"
+  )) %>%
+  mutate(name     = fct_recode(name, !!!env_factors),
+         category = fct(category, env_categories)) %>%
+  mutate(label = if_else(name == "Diet Name", 
+                         diet_char, 
+                         as.character(
+                           round(value, 1)
+                         ))) %>%
+  mutate(label = str_to_title(label)) %>%
+  group_by(name) %>%
+  add_count(value, name = "count") %>%
+  mutate(min = min(value), max = max(value)) %>%
+  mutate(text = paste(
+    category,
+    paste0(name, ": ", label),
+    paste0("N obs: ", count),
+    paste0("Max value: ", max),
+    paste0("Min value: ", min),
+    sep = "\n")
+  ) %>%
+  select(-diet_char) %>%
+  ungroup() %>%
+  arrange(category, name, study_day, ID) %>%
+  mutate(category = fct_inorder(category),
+         name     = fct_inorder(name))
+  
+bubble_numeric_vars <- plot_vars %>%
+  ggplot( aes(x = name, y = value, color = category, group = category)) +
+    geom_count(alpha = 0.7, aes(group = category)) +
+    geom_point(aes(size = after_stat(n), group = text), 
                shape = 21, stroke = 0.1, color = "black", fill = NA, 
                stat = "sum") +
     scale_colour_paletteer_d("ggsci::default_igv") +
     scale_size_area(max_size = 15) +
     theme(axis.text.x = element_text(angle = 90),
-          legend.position="none")
+          legend.position="none") +
+    ylab("Normalized Values (dense rank)") +
+    xlab("Predictor Variables")
 
-plot_bubble <- ggplotly(bubble_numeric_vars)
+plot_bubble <- ggplotly(bubble_numeric_vars, tooltip = "text")
 
 ```
 
@@ -315,20 +357,213 @@ saveWidget(as_widget(plot_bubble), here("visuals/loris_predictor_vars.html"), se
 plot_bubble
 ```
 
-```{r}
+#### Autocorrelation
 
-env_data_foods <- ranked_env %>%
-  select(ID,
-         fct_Biscuit,
-         fct_Gum_Arabic,
-         fct_Invertebrates,
-         fct_Protein_Rotation,
-         fct_Seasonal_Veggie_Rotation,
-         fct_Oat_Gel
-         ) %>%
-  left_join(dataset_tbl, by = join_by(ID))
+```{r}
+env_fac_abbr    <- unlist(env_vars, recursive = TRUE, use.names = FALSE)
+```
+
+
+```{r}
+ranked_factor <- ranked_numeric %>%
+  left_join(select(dataset_tbl, ID, bristol_mean), by = join_by(ID)) %>%
+  mutate(bristol_mean = if_else(is.na(bristol_mean), culi.bristols$med, bristol_mean))  %>%
+  pivot_longer(where(is.numeric)) %>%
+  mutate(fct_name  = fct(name, levels = env_fac_abbr),
+         fct_value = fct_inseq(as.character(value))) %>%
+  select(-value)
+```
+
+
+```{r}
+diet_env <- sample_table %>% 
+  select(all_of(ranked_cols_env)) %>%
+  mutate(bristol_mean = if_else(is.na(bristol_mean), culi.bristols$med, bristol_mean))  %>%
+  select(where(~min(.x) != max(.x))) %>%
+  pivot_longer(where(is.numeric)) %>%
+  left_join(ranked_factor, by = join_by(ID, name)) %>%
+  mutate(fct_category = case_when(
+   name %in% env_vars[["Categorical Variables"]]         ~ "Categorical Variables",
+   name %in% env_vars[["Health Outcomes"]]               ~ "Health Outcomes",
+   name %in% env_vars[["Supplements and Medications"]]   ~ "Supplements and Medications",
+   name %in% env_vars[["Daily Diet Totals"]]             ~ "Daily Diet Totals",
+   name %in% env_vars[["Diet Composition"]]              ~ "Diet Composition",
+   name %in% env_vars[["Nutritional Composition"]]       ~ "Nutritional Composition",
+   name %in% env_vars[["Carbohydrates"]]                 ~ "Carbohydrates",
+   name %in% env_vars[["Fats"]]                          ~ "Fats",
+   name %in% env_vars[["Proteins"]]                      ~ "Proteins",
+   name %in% env_vars[["Mineral Content"]]               ~ "Mineral Content",
+   name %in% env_vars[["Vitamins"]]                      ~ "Vitamins",
+   .default = "Other"
+  )) %>%
+  mutate(fct_name     = fct_recode(fct_name, !!!env_factors),
+         fct_category = fct(fct_category, env_categories))
+  
+```
+
+
+```{r}
+split_table <- function(df) {
+  select(df, ID, name, value) %>%
+    pivot_wider(id_cols     = ID,
+                names_from  = name,
+                values_from = value)
+}
+
+diet_split_env <- diet_env %>%
+  split(.$fct_category) %>%
+  map(., \(x) split_table(x))
+```
+
+
+```{r}
+diet_env_wide <- diet_env %>%
+  select(ID, name, value, fct_value) %>%
+    pivot_wider(id_cols     = ID,
+                names_from  = name,
+                values_from = c(value, fct_value)) %>%
+  rename_with( ~str_remove_all(.x, "value_")) %>%
+  left_join(select(dataset_tbl, -bristol_mean), by = join_by(ID)) %>%
+  column_to_rownames("ID")
+
+diet_env_num <- diet_env %>%
+  select(ID, name, value) %>%
+    pivot_wider(id_cols     = ID,
+                names_from  = name,
+                values_from = value) %>%
+  left_join(select(dataset_tbl, -bristol_mean), by = join_by(ID)) %>%
+  column_to_rownames("ID")
+```
+
+```{r}
+bristol_distribution <- ggplot(filter(diet_env_num, subject == "culi"), aes(bristol_mean)) +
+  geom_histogram()
+
+ggplotly(bristol_distribution)
+```
+
+
+```{r}
+diet_all_dataset <- clone(microtables$spe.dataset.main)
+
+diet_all_dataset$sample_table <- diet_env_num
+```
+
+
+```{r}
+diet_all <- trans_env$new(
+  dataset           = diet_all_dataset,
+  env_cols          = 1:56,
+  character2numeric = TRUE,
+  complete_na       = TRUE
+)
+
+diet_all$cal_diff(
+  group          = "subject",
+  by_group       = "bristol_mean",
+  method         = "KW_dunn",
+  KW_dunn_letter = FALSE
+)
+```
+
+```{r, warning = FALSE}
+diet_autocor <- diet_all$cal_autocor(ggpairs = FALSE, group = "subject")
+```
+
+```{r}
+print(filter(diet_autocor, Env2 == "bristol_mean"))
+```
+
+
+```{r}
+print(names(diet_split_env))
+```
+
+```{r}
+bristol_env_data <- clone(microtables$spe.dataset.main) 
+bristol_env_data$sample_table <- dataset_tbl
+```
+
+```{r}
+bristol_env <- trans_env$new(
+  dataset           = bristol_env_data,
+  env_cols          = 2:8,
+  character2numeric = TRUE,
+  complete_na       = TRUE
+)
+
+bristol_env$cal_diff(
+  group          = "bristol_mean",
+  method         = "KW_dunn",
+  KW_dunn_letter = FALSE
+)
 
 ```
+
+
+
+
+```{r}
+bristol_env$cal_autocor()
+```
+
+```{r}
+gen.dataset.main$sample_table <- diet_env_num
+```
+
+
+```{r}
+default.env <- trans_env$new(
+  dataset           = gen.dataset.main,
+  env_cols          = 1:56,
+  character2numeric = TRUE,
+  standardize       = TRUE,
+  complete_na       = TRUE
+)
+```
+
+```{r, warning = FALSE}
+default.env$cal_diff(
+  formula = "probiotic + steroid + Total_Dietary_Fiber + Gum_Arabic + Invertebrates + Biscuit + (1|study_day)",
+  method = "glmm"
+)
+```
+
+```{r}
+res.bristol <- filter(default.env$res_diff, Measure == "bristol_mean")
+print(res.bristol)
+```
+
+
+
+```{r}
+diet_all$cal_ordination()
+```
+
+
+```{r}
+bristol_env$trans_ordination()
+bristol_env$plot_ordination(plot_color = "bristol_mean")
+bristol_env$trans_ordination(adjust_arrow_length = TRUE, max_perc_env = 1.5)
+bristol_env$plot_ordination(plot_color = "bristol_mean")
+```
+
+
+
+```{r}
+# place all the plots into a list
+tmp <- list()
+for(i in unique(diet_all$res_diff$Measure)){
+    tmp[[i]] <- diet_all$plot_diff(
+                                       measure           = i, 
+                                       add_sig_text_size = 5, 
+                                       xtext_size        = 12) + 
+      theme(plot.margin = unit(c(0.1, 0, 0, 1), "cm"))
+}
+plot(gridExtra::arrangeGrob(grobs = tmp, ncol = 3))
+
+```
+
 
 
 
@@ -385,6 +620,10 @@ env_obj_mins <- map(microtables, \(x) trans_env$new(
 
 ```{r}
 list2env(microtables , envir = .GlobalEnv)
+```
+
+
+```{r}
 list2env(env_obj_mins, envir = .GlobalEnv)
 list2env(env_obj_CHOs, envir = .GlobalEnv)
 list2env(env_obj_prot, envir = .GlobalEnv)
@@ -395,7 +634,6 @@ list2env(env_obj_food, envir = .GlobalEnv)
 list2env(env_obj_vitm, envir = .GlobalEnv)
 ```
 
-# Shape and Colinearity of Env Variables
 
 ```{r}
 spe.env.food.main$cal_diff(
