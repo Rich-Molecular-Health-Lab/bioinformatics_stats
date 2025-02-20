@@ -1,75 +1,3 @@
-install_missing_packages <- function(required_packages) {
-  installed_packages <- rownames(installed.packages())
-  missing_packages   <- dplyr::setdiff(required_packages, installed_packages)
-  
-  if (length(missing_packages) > 0) {
-    message("Installing missing packages: ", paste(missing_packages, collapse = ", "))
-    install.packages(missing_packages)
-  } else {
-    message("All required packages are already installed.")
-  }
-}
-
-
-required_packages <- c(
-  "knitr",
-  "ape",
-  "bibtex",
-  "BiocManager",
-  "bookdown",
-  "bsicons",
-  "bslib",
-  "bsplus",
-  "conflicted",
-  "crosstalk",
-  "data.table",
-  "devtools",
-  "equatiomatic",
-  "fontawesome",
-  "glue",
-  "ggtext",
-  "gt",
-  "gtExtras",
-  "gtable",
-  "here",
-  "htmltools",
-  "htmlwidgets",
-  "kableExtra",
-  "MASS",
-  "lmerTest",
-  "lubridate",
-  "paletteer",
-  "pander",
-  "pandoc",
-  "philr",
-  "phyloseq",
-  "plotly",
-  "png",
-  "rcompanion",
-  "reactable",
-  "reactablefmtr",
-  "rmarkdown",
-  "sass",
-  "scales",
-  "shiny",
-  "shinydashboard",
-  "shinyjs",
-  "shinyMatrix",
-  "shinyTime",
-  "showtext",
-  "thematic",
-  "tidyverse",
-  "tippy",
-  "usethis",
-  "utf8",
-  "rmdformats"
-)
-
-if (!exists("packages_checked")) {
-  install_missing_packages(required_packages)
-  packages_checked <- TRUE
-}
-
 library(knitr)
 library(ape)
 library(bibtex)
@@ -93,13 +21,12 @@ library(here)
 library(htmltools)
 library(htmlwidgets)
 library(kableExtra)
-library(MASS)
 library(lmerTest)
+library(MASS)
 library(lubridate)
 library(paletteer)
 library(pander)
 library(pandoc)
-library(philr)
 library(phyloseq)
 library(plotly)
 library(png)
