@@ -54,6 +54,9 @@ swan:
   loris_mb_aligned: "/work/richlab/aliciarich/bioinformatics_stats/data/loris/taxonomy/refseqs_aligned.fasta"
   loris_mb_tree: "/work/richlab/aliciarich/bioinformatics_stats/data/loris/taxonomy/refseqs_tree.newick"
 
+isolates:
+  samplesets: "salci"
+
 loris:
   day1: "2023-10-26"
   last: "2024-10-25"

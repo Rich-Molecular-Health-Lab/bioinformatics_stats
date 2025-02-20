@@ -14,8 +14,8 @@ output:
     fig_caption: true
     df_print: paged
 params:
-  sampleset: "loris"
-  seqrun: "hdz1"
+  sampleset: "isolates"
+  seqrun: "salci1"
   
 ---
 
@@ -34,9 +34,46 @@ thematic_on(accent = "#8785B2FF", fg = "black")
 
 >You should use this script if you are processing raw sequencing files on our lab's sequencing computer (the System76 laptop). If you plan to run these scripts from a different computer, you should either **1. switch to the original read processing script and remotely access the HCC** or **2. verify that your computer has the  minimum computing requirements needed (only high performance PCs with NVIDA will work) and mirror my dorado directory structure.**
 
+## What is different about this script?
+
+Now that we are working locally, the chunks below that are written to the `bash` engine instead of the default `r` engine will automatically get sent to your terminal as a bash script. You will see this at work in the chunk below.
+
 ## Pull all updates from the github repository
+
+We want to make sure we have sent all our updates to the github repository and then pull anything new as well. This avoids the tedious process of cross-checking and merging any edits not matching between the two locations.
 
 ```{bash}
 git add ~/GitRepos/bioinformatics_stats/*
+git commit -m "checking updates before new basecalling run"
+git push origin main
+```
+
+```{bash}
+git pull origin main
+```
+
+## Transfer sequencing data
+
+You could do this direct from the command line, but sometimes I just prefer doing things by icons. Go to the directory icon and enter the following path in the box:
+```
+/var/lib/minknow/data
+```
+From there, find the parent directory specific to your most recent sequencing run. Right click the directory icon, and then select `Copy_to` to copy the entire directory to the following path:
+```
+/Home/GitRepos/seqRuns
+```
+Now you should rename that directory with the less cumbersome `seqrun` name that matches the syntax you used in the params of this document.
+
+# Basecalling Script
+
+Now open the shell script at the following path:
+```
+bioinformatics_stats/batch_scripts/basecall_local.sh
+```
+Update the seqrun and sampleset variables in the first line to match your current sequencing run. Save the file again, close it, and run the chunk below.
+
+
+```{r}
+system2("bash", args = "batch_scripts/basecall_local.sh", wait = FALSE)
 ```
 
