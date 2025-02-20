@@ -29,3 +29,14 @@ theme_set(theme_classic())
 thematic_rmd()
 thematic_on(accent = "#8785B2FF", fg = "black")
 ```
+
+# Before you begin
+
+>You should use this script if you are processing raw sequencing files on our lab's sequencing computer (the System76 laptop). If you plan to run these scripts from a different computer, you should either **1. switch to the original read processing script and remotely access the HCC** or **2. verify that your computer has the  minimum computing requirements needed (only high performance PCs with NVIDA will work) and mirror my dorado directory structure.**
+
+## Pull all updates from the github repository
+
+```{bash}
+git add ~/GitRepos/bioinformatics_stats/*
+```
+
