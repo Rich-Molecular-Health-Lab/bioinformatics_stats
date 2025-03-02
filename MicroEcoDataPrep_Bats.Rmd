@@ -1,0 +1,1724 @@
+---
+title: "Preparing Bat 16S Data for MicroEco-Based Analysis"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  email: "'aliciarich@unomaha.edu'"
+  sampleset: "bats"
+  seqrun: "NWR1"
+  
+---
+
+```{r, message = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("MicroEcoDataPrep.Rmd")
+source(here::here(global$setup))
+
+
+for (file in micro$micro_scripts) {
+  source(here(file))
+}
+
+source(here(path$metadata$key))
+source(here(path$metadata$factors))
+
+dataset_dir <- path$microeco$dataset
+
+
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+```
+
+# Intro
+
+## This Workflow
+
+This is the current recommended pipeline for processing **full-length 16S reads and count data** generated from the EPI2ME Labs wf-16s workflow.  
+
+## Some Background
+
+Microbiome data analysis has rapidly evolved into a cornerstone of biological and ecological research, offering insights into how microbial communities influence everything from human health to environmental ecosystems. However, this type of analysis often involves multiple complex steps: data normalization, diversity calculations, community composition comparisons, and advanced visualizations.  
+
+>For more information on some of the statistical tests I often use/recommend, see the tutorial in this directory called [Data_Notes](Data_Notes.html).
+
+## MicroEco
+
+The [microeco R package](https://chiliubio.github.io/microeco_tutorial/) provides an elegant and comprehensive solution by integrating many of the most current and popular microbiome analysis approaches into a unified framework. This package simplifies workflows, making it easy to prepare datasets, calculate metrics, and create publication-quality visualizations. Importantly, microeco is designed to work seamlessly with ggplot2 and other widely used R packages, offering flexibility for customization and compatibility with established workflows. If you click the link above, you will find a very comprehensive tutorial presenting the full array of analysis options.  
+
+In this workflow, we will prepare our datasets for use with microeco, ensuring that our data is clean, structured, and ready for downstream analyses such as diversity calculations, community comparisons, and informative visualizations.  
+
+### First Use
+
+MicroEco installation can be a bit tricky the first time, simply because of the number of dependencies. I created a separate markdown file to walk you through the packages you will need, but the tutorial on [MicroEco's page does an even better job of explaining things](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence). If this is your first time on this workflow, I recommend you start with that, ensure all packages have been installed, and then proceed with this.  
+
+## Notes on Syntax/Functions
+
+This script uses some fairly complex custom functions that I wrote for reproducibility. Those functions should automatically load in a separate .R script sourced in the setup chunk above. One of those scripts will also load some factor variables and other parameters that I use to keep this script tidy.  
+  
+This script also switches back and forth between local R console commands and code that you will use in your terminal both to access local directories and to send scripts to the Swan server on the HCC. For more information on accessing the HCC and using the terminal language engine in this script, please see the previous script in this pipeline - [MinIONReadProcessing](MinIONReadProcessing.html).  
+
+## The Data Used Here
+
+I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original .Rmd script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
+
+### Previous Scripts
+
+Before this, you should use the [MetadataSetup script](MetadataSetup.html) to create the file samples_metadata.tsv.  
+
+# Other Configuration Settings
+
+## Sampleset in Params
+
+You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., loris or marmoset). 
+
+## File Paths
+
+Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. This also shows the paths to different files and directories I reference throughout this script relative to the repository home. 
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External File",
+        tagList(tags$pre(includeText("config.yml")))
+    )
+  )
+)
+```
+
+Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External Script",
+        tagList(tags$pre(includeText(here(global$setup))))
+    )
+  )
+)
+```
+
+### Sequencing Run Lists
+
+The code in the chunk above also generated a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets (currently just for loris and marmoset). Make sure the end number matches the highest integer we have for that sampleset to date.
+
+### Other Setup Scripts
+
+The script that I pasted above sources additional scripts that I run routinely at the start of any work to bring in functions and other inputs with shorter code chunks. You can flip through the text from those scripts below.
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      title = "Other External Setup Scripts",
+      open = FALSE,
+      accordion_panel(
+        "knit_engines.R",
+        tagList(tags$pre(includeText(here(global$knit_engines))))
+    ),
+      accordion_panel(
+        "conflicts.R",
+        tagList(tags$pre(includeText(here(global$conflicts))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(global$functions))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(global$packages))))
+    ),
+      accordion_panel(
+        "inputs.R",
+        tagList(tags$pre(includeText(here(micro$inputs))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(micro$packages))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(micro$functions))))
+    )
+  )
+)
+```
+
+
+# Load Data into R
+
+## Sample Metadata
+
+You should have already completed the [SampleInventory](SampleInventory.html) and [MetadataSetup](MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
+
+```{r}
+metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
+  filter(steps_remaining == "sample extracted and sequenced") %>%
+  filter(!is.na(CollectionDate)) %>%
+  select(all_of(microeco_cols)) %>%
+  mutate(across(all_of(date.vars),   ~ ymd(.)),
+         across(all_of(yn.vars),     ~ str_to_lower(as.character(.))),
+         across(all_of(ids),         ~ str_to_lower(.))) %>%
+  mutate(Subject        = str_to_lower(subject)) %>%
+  arrange(study_day, Subject)
+
+```
+
+### Ordered Sample Lists for Subsetting
+
+```{r}
+sample.list <- metadata %>% 
+               distinct(identifier, Subject, CollectionDate) %>%
+               arrange(Subject, CollectionDate) %>%
+               distinct(identifier) %>%
+                   map(\(x) as.list(x)) %>%
+  list_flatten(name_spec = "")
+
+samples <- sample.list %>% unlist()
+
+samp.list.culi  <- metadata %>% 
+                   filter(Subject == "culi") %>%
+                   distinct(identifier, CollectionDate) %>%
+                   arrange(CollectionDate) %>%
+                   distinct(identifier) %>%
+                   map(\(x) as.list(x)) %>%
+  list_flatten(name_spec = "")
+
+samples.culi       <- samp.list.culi %>% unlist()
+
+
+
+samp.list.warb  <- metadata %>% 
+                   filter(Subject == "warble") %>%
+                   distinct(identifier, CollectionDate) %>%
+                   arrange(CollectionDate) %>%
+                   distinct(identifier) %>%
+                   map(\(x) as.list(x)) %>%
+  list_flatten(name_spec = "")
+
+samples.warb <- samp.list.warb %>% unlist()
+
+libraries <- metadata %>%
+  arrange(LibPrepDate) %>%
+  select(LibraryCode, identifier) %>%
+  group_by(LibraryCode) %>%
+  group_map(~ {
+    setNames(list(as.list(.x$identifier)), .y$LibraryCode)
+  }, .keep = TRUE) %>%
+  flatten()
+
+working_libraries <- libraries %>%
+  keep_at(paste0(params$seqrun)) %>%
+  list_c()
+```
+
+## Wf-16S Outputs
+
+You will need the following files from the output directory generated by running wf-16s at the end of the ReadProcessing script:
+
+```{r, echo = FALSE}
+wf16s.files <- tibble(
+  Name = c(
+    "Species-Level Abundance Table",
+    "Wf-16s Summary Report",
+    "Read Alignment Tables"
+  ),
+  Filename = c(
+    "abundance_table_species.tsv",
+    "wf-16s-report.html",
+    "wf-metagenomics-alignment.csv"
+  ),
+  Location = c(
+    "output directory created by wf-16s - transfer this to the path bioinformatics_stats/data/loris/ and rename with the sequencing run id as the file prefix.",
+    "This is in the output directory from wf-16s. Open the html report in your browser, and from there you can download other files for analysis.",
+    "You must individually download one table for each sample from the html summary file produced by wf-16s (see below)."
+  )
+) %>%
+  gt(rowname_col = "Name") %>%
+  opt_stylize(style = 3, color = "gray")
+
+wf16s.files
+```
+
+### Species-Level Abundance Table
+
+We are going to read all current versions of abundance tables produced by wf-16s and bind them into a single table. We really just want to use this to inventory the names and other data for every sample according to the wf-16s syntax though. We will calculate abundances on our own after we clean, filter, and manipulate the data a bit more.  
+
+For this step, make sure you have all abundance tables and only your abundance files in the subdirectory path identified in your config.yml file. They should also be named beginning with the sequencing run id or LibraryCode followed by "_abundance_table_species.tsv".  
+
+```{r}
+abundance <- map(seqruns, ~ {
+  seqrun <- .x
+  path   <- abund_wf16s_files[[paste0(seqrun)]]
+  
+  df <-   read.table(path,
+                     sep    = "\t",
+                     header = TRUE) %>%
+               select(-c(starts_with("total"))) %>%
+               rename_with(~gsub(".", "-", .x, fixed = TRUE)) %>%
+               fix.strings() 
+  
+  df.list <- list(df) %>% set_names(seqrun)
+  
+  return(df.list)
+}) %>% list_flatten(name_spec = "{inner}")
+
+seqids <- imap(abundance, ~ {
+  seqrun   <- .y
+  df       <- .x
+  seqids   <- names(select(df, -tax))
+
+  
+  as.list(seqids)
+  
+})
+
+
+```
+
+
+### Read Alignment Tables
+
+This step is pretty annoying, but until the developers update this gap I use the following workaround to import the raw alignment data for each sample and process it directly here in R.  
+
+First, we will use the list of IDs that we just generated from the abundance tables and the metadata table as well as the seqrun id from the yaml header to create a table for renaming the csv files we download from the Wf-16S Report.  
+
+#### Generate Filenames
+
+```{r}
+filenames <- seqids %>% 
+             keep_at(params$seqrun) %>% 
+             unlist() %>%
+             enframe() %>%
+             select(alias = value) %>%
+  mutate(file_append = (row_number() - 1)) %>%
+  mutate(old_name    = if_else(file_append == 0,
+                               "wf-metagenomics-alignment.csv",
+                      str_glue("wf-metagenomics-alignment (",
+                               "{file_append}", ").csv")),
+         new_name    = str_glue("{alias}",
+                                "_wf-metagenomics-alignment.csv"), 
+                                .keep = "none")
+
+write.table(filenames,  global$tmp_tsv,
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE,
+              col.names = FALSE)
+```
+
+
+#### Download all Individual Alignment Tables
+
+Now comes the somewhat messy workaround...
+
+1. Make sure you have a completely clean temporary directory available for downloading.
+  - I generally just empty out my Downloads folder each time before I do this and download to there first.
+2. Go to the html workflow report in your browser window and scroll down to the **Alignment Statistics** section. 
+  - Click ***Export CSV***. Then use the dropdown box to select the next sample and repeat the *Export CSV* process. 
+  - Keep doing this for all 24 samples from your multiplexed run.
+  - This part is important: **You must be sure to download each table sequentially in the order it appears in the dropdown.**
+    - The code chunk that I wrote below uses an ordered list of those sample IDs to rename the files in your downloads folder based on the order in which you downloaded them (e.g., *wf-metagenomics-alignment (2).csv* and *wf-metagenomics-alignment (3).csv* may become *hdz-489-s391_wf-metagenomics-alignment.csv* and *hdz-488-s390_wf-metagenomics-alignment.csv*).
+3. Manually transfer all your newly downloaded **but not yet renamed** files to the following sub directory (found at global$tmp_downloads in my config.yml):
+  - "../bioinformatics_stats/tmp/downloads/"
+  - **NOTE: MAKE SURE THIS FOLDER IS EMPTY FIRST**
+3.  **Only after you have downloaded all 24 csv files and transferred them to that directory:** Run the code below from the Terminal tab. 
+  
+#### Rename and Transfer Files from the Local Terminal
+
+>Again, only do this after you have those 24 new csv files in the tmp_downloads directory beginning in *wf-metagenomics-alignment* and you have the filename table we created above sitting in the tmp_lists directory.
+  - The code will simultaneously rename all 24 files and transfer them to the subdirectory path$read_alignments.
+  - The rest of the script below uses this filename system to import and merge the files, matching every aligned read to its SequenceID
+  - If it worked, then all the files should disappear from the temp directory and you should see 24 new csv files in your data directory ending in *wf-metagenomics-alignment.csv*
+
+```{terminal, warning = FALSE, echo = FALSE}
+
+filenames="../tmp_table.tsv"
+target_dir="../../path$read_alignments"
+downloads="global$tmp_downloads"
+
+cd $downloads
+
+while IFS=$'\t' read -r old_name new_name; do
+    mv "$old_name" "$target_dir/$new_name"
+done < "$filenames"
+
+```
+
+#### Read All Files In
+
+Now we will go ahead and read in those new tables as well as any others to update one comprehensive dataframe with all read alignments for this dataset to date. This code assumes that you have all properly named and structured alignment tables in a single subdirectory together and makes use of the config file's path to that subdirectory.  
+
+```{r, warning = FALSE}
+alignment.files.list <- list.files(path       = path$read_alignments, 
+                                   pattern    = "*_wf-metagenomics-alignment.csv$", 
+                                   full.names = TRUE)
+alignment.filenames  <- list.files(path       = path$read_alignments, 
+                                   pattern    = "*_wf-metagenomics-alignment.csv$", 
+                                   full.names = FALSE)
+alignment.files      <- lapply(alignment.files.list, read_alignment_file)
+alias                <- str_remove(alignment.filenames, "_wf-metagenomics-alignment.csv")
+
+alignment.files <- Map(function(df, id) {
+  if (nrow(df) > 0) {
+    df$alias <- id
+  } else {
+    warning(paste("Data frame for", id, "is empty. Alias not assigned."))
+  }
+  return(df)
+}, alignment.files, alias)
+```
+  
+>In the next step, note that I filter the reads based on the minimum coverage value for the methods_16s records in my config file. This is an example of how using the config file helps us avoid any discrepancies in our parameters over the course of the study and gives us a centralized location to update those parameters or compile them for our reporting/publications at any time.  
+
+```{r, message = FALSE, warning = FALSE}
+alignments.long     <- bind_rows(alignment.files) %>%
+                        as_tibble() %>% fix.strings() %>% 
+                        select(ref,
+                               taxid,
+                               species,
+                               genus,
+                               family,
+                               order,
+                               class,
+                               phylum,
+                               superkingdom,
+                               identifier = alias,
+                               coverage,
+                               n_reads = number.of.reads)    %>%
+                        left_join(select(metadata, identifier), 
+                                  by = join_by(identifier)) %>%
+                        filter(coverage >= methods_16s$min_cov & !is.na(identifier)) %>%
+                        group_by(ref,
+                                 taxid,
+                                 species,
+                                 genus,
+                                 family,
+                                 order,
+                                 class,
+                                 phylum,
+                                 superkingdom,
+                                 identifier) %>%
+                        summarize(samp_cov     = mean(coverage),
+                                  samp_n_reads = mean(n_reads)) %>% ungroup() %>%
+                        mutate(identifier = factor(identifier, levels = unique(samples))) %>%
+                        arrange(identifier) %>%
+                        sort.taxa()
+```
+
+  
+Next, we will simplify this into a table with just one row per reference represented in our dataset. This will be important for fetching representative fasta files from GenBank a few steps below.  
+
+```{r, warning = FALSE, message = FALSE}
+alignments.refs <- alignments.long %>% 
+                        group_by(ref,
+                                 taxid,
+                                 species,
+                                 genus,
+                                 family,
+                                 order,
+                                 class,
+                                 phylum,
+                                 superkingdom) %>%
+                        summarize(ref_n_reads   = round(sum(samp_n_reads),  digits = 2),
+                                  ref_mean_cov  = round(mean(samp_cov),     digits = 2)) %>%
+                        ungroup() %>% group_by(species,
+                                               genus,
+                                               family,
+                                               order,
+                                               class,
+                                               phylum,
+                                               superkingdom) %>%
+                        arrange(species, desc(ref_n_reads), desc(ref_mean_cov)) %>%
+                        mutate(ref_order       = row_number(),
+                               tax_total_count = sum(ref_n_reads)) %>%
+                        ungroup() %>%
+                        filter(ref_order == 1) %>%
+                        select(-ref_order) %>% sort.taxa()
+```
+  
+Now, we will take the original long table and wrangle it into a structure that we can use for calculating relative abundances after we do some further quality control and normalization on the data.  
+
+```{r, warning = FALSE, message = FALSE}
+alignments    <- alignments.long %>% 
+                        group_by(superkingdom,
+                                 phylum,
+                                 class,
+                                 order,
+                                 family,
+                                 genus,
+                                 species,
+                                 identifier) %>%
+                          summarize(counts = sum(samp_n_reads)) %>%
+                          ungroup() %>%
+                          left_join(alignments.refs,
+                    by = join_by(superkingdom,
+                                 phylum,
+                                 class,
+                                 order,
+                                 family,
+                                 genus,
+                                 species)) %>%
+                    pivot_wider(id_cols    = c(ref,
+                                               taxid,
+                                               taxonomy.ordered,
+                                               ref_mean_cov),
+                                names_from  = identifier,
+                                values_from = counts) %>%
+                    sort.taxa() %>%
+                    mutate(across(where(is.numeric), ~replace_na(.x, 0)),
+                           organism = str_glue("txid", "{taxid}")) 
+
+```
+
+# Data Check
+
+It is a good idea to look at our read counts across our dataset at this point so we can decide how best to normalize our data later.
+
+```{r}
+depth <- alignments.long %>%
+  filter(!is.na(identifier)) %>%
+  select(identifier,
+         samp_cov,
+         samp_n_reads) %>%
+  group_by(identifier) %>%
+  summarize(depth         = round(sum(samp_n_reads), digits = 0),
+            mean_coverage = round(mean(samp_cov), digits = 2)) %>%
+  mutate(mean_coverage = mean_coverage/100) %>%
+  ungroup() %>%
+  left_join(metadata, by = join_by(identifier)) %>%
+  select(all_of(coverage_table_cols)) %>%
+  distinct()
+```
+
+## Reactable Table with Sequencing Stats
+
+```{r}
+foods_expand    <- read.table(path$metadata$foods   , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+fats_expand     <- read.table(path$metadata$fats    , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+proteins_expand <- read.table(path$metadata$proteins, sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+CHOs_expand     <- read.table(path$metadata$CHOs    , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+Ash_expand      <- read.table(path$metadata$Ash     , sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+vitamins_expand <- read.table(path$metadata$vitamins, sep = "\t", header = TRUE) %>% mutate(identifier = str_to_lower(identifier))
+```
+
+```{r, warning = FALSE}
+depth_summary <- depth %>% 
+  mutate(
+  diet_color            = as.character(fct_recode(diet_name, !!!diet_colors)),
+  holding_color         = as.character(fct_recode(holding, !!!holding_colors)),
+  warb_status_color     = as.character(fct_recode(warb_status, !!!warb_status_colors)),
+  color_Subj_Certainty  = as.character(fct_recode(Subj_Certainty, !!!certainty_colors)),
+  icon_Subj_Certainty   = as.character(fct_recode(Subj_Certainty, !!!certainty_icons)),
+  color_pair_access     = as.character(fct_recode(pair_access, !!!pair_access_colors)),
+  icon_pair_access      = as.character(fct_recode(pair_access, !!!pair_access_icons)),
+  color_subject         = as.character(fct_recode(Subject, !!!subj_colors)),
+  icon_subject          = as.character(fct_recode(Subject, !!!subj_icons)),
+  vitamins              = "Expand Details"
+  ) %>%
+  mutate(diet_name    = fct_recode(diet_name, !!!rename_diets),
+         subject      = str_to_title(Subject),
+         holding      = str_to_title(holding),
+         pair_access  = str_to_title(pair_access),
+         warb_status  = str_to_title(warb_status),
+         across(all_of(dose_cols), ~ rescale_dose(.x, max(.x))), .keep = "unused") %>%
+  relocate(ends_with("fed"), .after = "total_mg_dry") %>%
+  select(all_of(depth_table_cols)) %>%
+  arrange(study_day, subject)
+```
+
+```{r}
+depth_table <- depth_summary %>% 
+  reactable(
+    compact             = T,
+    sortable            = T,
+    pagination          = T,
+    showPageSizeOptions = T,
+    showSortable        = T,
+    height              = 700,
+    theme               = flatly(),
+    defaultPageSize     = 20,
+    columns             = list(
+  study_day       = colDef(header   = tippy_study_day(),
+                           maxWidth = 50),
+  subject         = colDef(header   = tippy_subject(), 
+                           cell     = subj_cell(depth_summary),
+                           filterable = TRUE),
+  identifier      = colDef(header   = tippy_identifier()),
+  depth           = colDef(header   = tippy_depth()    ,
+                           cell = raw_count_cell(depth_summary),
+                           filterable = TRUE),
+  mean_coverage   = colDef(header   = tippy_coverage(),
+                           cell = coverage_cell(depth_summary),
+                           filterable = TRUE),
+  bristol_mean    = colDef(header = tippy_bristol(),
+                           align = "center",
+                           cell = bristol_cell(depth_summary)),
+  diet_name       = colDef(header = tippy_diet(),
+                           cell = diet_name_cell(depth_summary),
+                           filterable = TRUE),
+  total_mg        = colDef(header = tippy_total_mg(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {food_subtab(depth_summary, index)}),
+  protein_fed     = colDef(header = tippy_protein(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, proteins_expand)}),
+  fat_fed         = colDef(header = tippy_fat(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, fats_expand)}),
+  CHO_fed         = colDef(header = tippy_chos(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, CHOs_expand)}),
+  mineral_fed     = colDef(header = tippy_ash(),
+                           cell = nutrient_cell(depth_summary),
+                           details = function(index) {nutrient_details(depth_summary, index, Ash_expand)}),
+  vitamins        = colDef(header = tippy_vitamins(),
+                           details = function(index) {nutrient_details(depth_summary, index, vitamins_expand)}),
+  probiotic       = colDef(header = tippy_probiotic(),
+                           cell = supplement_cell(depth_summary, "droplet"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  fiber           = colDef(header = tippy_fiber(),
+                           cell = supplement_cell(depth_summary, "capsules"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  steroid         = colDef(header = tippy_steroid(),
+                           cell = supplement_cell(depth_summary, "syringe"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  antibiotic      = colDef(header = tippy_antibiotic(),
+                           cell = supplement_cell(depth_summary, "prescription-bottle-medical"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  antidiarrheal   = colDef(header = tippy_antidiar(),
+                           cell = supplement_cell(depth_summary, "poop"),
+                           maxWidth = 70,
+                           filterable = TRUE),
+  holding         = colDef(header = tippy_enclosure(),
+                           cell = color_tiles(depth_summary, color_ref = "holding_color"),
+                           maxWidth = 70),
+  pair_access     = colDef(header = tippy_pair_access(),
+                           cell = pair_access_cell(depth_summary),
+                           maxWidth = 50),
+  warb_status     = colDef(header = tippy_warb_status(),
+                           cell = color_tiles(depth_summary, color_ref = "warb_status_color"),
+                           filterable = TRUE),
+  keeper_note     = colDef(header = tippy_keeper_note()),
+  Subj_Certainty  = colDef(header   = tippy_subj_certain(),
+                           cell     = subj_certain_cell(depth_summary),
+                           maxWidth = 50),
+  Sex               = colDef(name = "Sex" ,
+                             cell = sex_cell(depth_summary)),
+  subject_age       = colDef(header = tippy_subj_age(),
+                             maxWidth = 50),
+  CollectionDate  = colDef(header   = tippy_collectDate(),
+                           format   = colFormat(date = TRUE)),
+  SampleID          = colDef(header = tippy_sampID()),
+  SampleNotes       = colDef(header = tippy_collectNotes()),
+  ExtractID         = colDef(header = tippy_extractID()),
+  ExtractDate       = colDef(header = tippy_extractDate(),
+                             format = colFormat(date = TRUE)),
+  ExtractConc       = colDef(header = tippy_extractConc(),
+                             cell = concentration_cell(depth_summary)),
+  ExtractKit        = colDef(header = tippy_extractKit()),
+  ExtractedBy       = colDef(header = tippy_extractedBy(),
+                           filterable = TRUE),
+  ExtractNotes      = colDef(header = tippy_extractNotes()),
+  SequenceID        = colDef(header = tippy_seqID()),
+  LibPrepDate       = colDef(header = tippy_libprepDate(),
+                             format = colFormat(date = TRUE)),
+  LibraryCode       = colDef(header = tippy_libprepID(),
+                             maxWidth = 70,
+                           filterable = TRUE),
+  LibPrepKit        = colDef(header = tippy_libprepKit()),
+  LibraryBarcode    = colDef(header = tippy_barcode(),
+                             maxWidth = 50),
+  Conc_QC2          = colDef(header = tippy_finalConc(),
+                             cell = concentration_cell(depth_summary)),
+  SeqDate           = colDef(header = tippy_seqDate(),
+                             format = colFormat(date = TRUE)),
+  FlowCellType      = colDef(header = tippy_flowcell(),
+                           filterable = TRUE),
+  FlowCellSerial    = colDef(header = tippy_flowcell_serial()),
+  FlongleAdapter    = colDef(header = tippy_flongle()),
+  SeqDevice         = colDef(header = tippy_seqDevice()),
+  diet_color            = colDef(show = FALSE),
+  holding_color         = colDef(show = FALSE),
+  warb_status_color     = colDef(show = FALSE),
+  color_Subj_Certainty  = colDef(show = FALSE),
+  icon_Subj_Certainty   = colDef(show = FALSE),
+  color_pair_access     = colDef(show = FALSE),
+  icon_pair_access      = colDef(show = FALSE),
+  color_subject         = colDef(show = FALSE),
+  icon_subject          = colDef(show = FALSE)
+    )
+  ) %>%
+  add_title("Sequencing Summary for Pygmy Loris Microbiome Project") %>%
+  add_subtitle("One row per sample, includes nested tibbles with nutrition data (hover headers for details)") %>%
+  add_source(paste0("Last updated on ", today()))
+
+save_reactable_test(depth_table, path$sequencing$coverage)
+```
+
+```{r, warning = FALSE}
+depth_plot <- plot_ly(alpha = 0.6) %>%
+  add_histogram(x        = ~depth,
+                data     = filter(depth_summary, subject == "Warble"),
+                color    = "#803777FF",
+                name     = "Warble",
+                bingroup = 1000) %>%
+  add_histogram(x     = ~depth,
+                data  = filter(depth_summary, subject == "Culi"),
+                color = "#216F63FF",
+                name  = "Culi",
+                bingroup = 1000) %>%
+  layout(barmode = "overlay",
+         bargap  = 0.1,
+         xaxis = list(
+           title     = "Depth (N Reads)",
+           tick0     = 2000,
+           dtick     = 2000,
+           tickangle = 45
+           ),
+         yaxis = list(
+           title = "Count (N Samples)"
+           )
+         )
+
+saveWidget(as_widget(depth_plot), here("visuals/loris_depth_hist.html"), selfcontained = TRUE)
+```
+
+
+```{r, warning = FALSE}
+  page_fluid(
+    accordion(
+      open = TRUE,
+      accordion_panel(
+        title = "Sequencing Depth Frequencies by Subject",
+        icon = bsicons::bs_icon("bar-chart"),
+        layout_column_wrap(
+          depth_plot
+        )
+      ),
+      accordion_panel(
+        title = "Sample Table with Sequencing Depth",
+        icon = bsicons::bs_icon("calendar-date"),
+        depth_table
+      )
+    )
+  )
+```
+
+# Update References and Fetch Representative Sequences
+
+Some of the standard microbiome profiling metrics rely on on an OTU approach developed for the more traditional short-read sequences produced by Illumina and other nextgen platforms. Constructing representative sequences for each OTU enables phylogenetic analyses that can be particularly useful in visualizations.  
+  
+ONT Reads are generally still too messy and long to smoothly produce consensus sequences for each taxon. I use a workaround to enable us to still generate some phylogenetic estimates and graphics, though we will really be visualizing the relationships between the reference sequences for each taxon that our reads align to. The first step of this will use Entrez Direct to source a reference fasta for each of the taxids from our minimap2 results.  
+
+## Check Previous Taxonomy List
+
+Because we do not sequence and profile all our data for a project at once, we need a system for reading in, updating, and exporting our taxonomy records. This is also a helpful approach, because as we notice fewer and fewer new taxa appearing in our subsequent sequencing runs, we can assume we are reaching an optimal sample size. First, we will read in our ongoing taxonomy list for this sampleset.
+
+```{r, message = FALSE, eval=FALSE}
+rep.seqs.previous <- read.fasta(path$taxa_reps$aligned)
+
+rep.seqs.txids    <- tibble(getName(rep.seqs.previous)) %>% 
+  mutate(organism  =        getName(rep.seqs.previous)) %>% 
+  mutate(taxid     = as.numeric(str_remove_all(organism, "[^\\d]"))) %>%
+  select(taxid)
+
+new.refs          <- alignments %>% anti_join(rep.seqs.txids) %>% 
+                     select(ref, organism) %>% distinct()
+
+
+  write.table(new.refs,
+              global$tmp_fetch,
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE,
+              col.names = FALSE)
+```
+
+Transfer the fetch_references.txt file from the local tmp directory to the proper directory on Swan and then run the script below.
+
+## Fetch New References Using Entrez Direct
+
+Now you need to switch to the terminal and log into the HCC. We will use the entrez-direct package to interface with NCBI's databases adn fetch our reference sequences. If you have not used the HCC before, then refer to the [MinIONReadProcessing](MinIONReadProcessing.html) script for more details.
+
+### Batch Script Header
+
+```{terminal, warning = FALSE, echo = FALSE}
+#!/bin/bash
+#SBATCH --time=1:00:00
+#SBATCH --job-name=fetch_refs_params$seqrun
+#SBATCH --error=swan$logs/fetch_refs_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/fetch_refs_params$seqrun_%A_%a.out
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=100GB
+#SBATCH --partition=guest
+```
+
+### Open Interactive Job
+
+```{terminal, warning = FALSE, echo = FALSE, echo = FALSE}
+srun --partition=guest --time=1:00:00 --nodes=1 --ntasks=1 --mem=100GB --job-name=fetch_refs_params$seqrun --pty $SHELL
+```
+
+### Code to Use
+
+```{terminal, warning = FALSE, echo = FALSE}
+module purge
+module load entrez-direct
+module load seqkit 
+
+uid_file="swan$uid_file"
+accessions_file="swan$accessions"
+fasta_file="swan$tmp_fasta1"
+renamed_fasta="swan$tmp_fasta2"
+fasta_out="swan$tmp_fasta3"
+
+
+> "$fasta_file"
+
+cut -f1 "$uid_file" > "$accessions_file"
+
+if efetch -db nuccore -input "$accessions_file" -format fasta -email params$email > "$fasta_file"; then
+    echo "Sequences fetched successfully."
+else
+    echo "Error fetching sequences." >&2
+    exit 1
+fi
+
+seqkit replace $fasta_file -p '^(\S+)(.+?)$' -r '{kv}$2' -k $uid_file -o $renamed_fasta
+
+rm $fasta_file
+mv $renamed_fasta $fasta_out
+
+```
+
+### Submit Batch Script
+
+```{terminal, warning = FALSE, echo = FALSE}
+cd swan$scripts
+sbatch fetch_refs_params$seqrun.sh
+```
+
+Once the script finishes running, transfer the tmp3.fasta file from the "tmp" directory on Swan to the local matching directory to run the next step in R.
+
+
+## Join New References to Old FASTA
+
+```{r, eval=F}
+new.refseqs    <- read.fasta(paste0(global$tmp_fasta3))
+merged.refseqs <- c(new.refseqs, rep.seqs.previous)
+
+write.fasta(sequences =       merged.refseqs,
+            names     = names(merged.refseqs),
+            file.out  = global$tmp_fasta4)
+```
+  
+  
+Transfer this fasta file from your local "tmp" directory over to the matching directory on Swan and then run the script below.
+
+## Realign Sequences and Assemble Updated Tree
+
+### Batch Script Header
+
+```{terminal, warning = FALSE, echo = FALSE}
+#!/bin/bash
+#SBATCH --time=3:00:00
+#SBATCH --job-name=align_tree_params$seqrun
+#SBATCH --error=swan$logs/align_tree_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/align_tree_params$seqrun_%A_%a.out
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=250GB
+#SBATCH --partition=guest
+```
+
+### Open Interactive Job
+
+```{terminal, warning = FALSE, echo = FALSE}
+srun --partition=guest --time=3:00:00 --nodes=1 --ntasks=1 --mem=250GB --job-name=align_tree_params$seqrun --pty $SHELL
+```
+
+### Code to Use
+
+```{terminal, warning = FALSE, echo = FALSE}
+module purge
+module load mafft 
+module load fasttree 
+
+input_fasta="swan$tmp_fasta4"
+aligned_fasta="swan$loris_mb_aligned"
+tree_file="swan$loris_mb_tree"
+
+mafft --auto $input_fasta > $aligned_fasta
+
+FastTree -nt $aligned_fasta > $tree_file
+
+```
+
+### Submit Batch Script
+
+```{terminal, warning = FALSE, echo = FALSE}
+sbatch align_tree_params$seqrun.sh
+```
+
+Wait for the script to finish running and then transfer the final fasta and tree files from the directory on Swan to your local matching directory.
+
+# Prepare MicroEco Datasets
+
+MicroEco requires the following files to compile a dataset:
+
+1.  **OTU Table**
+  - TaxID as the rownames
+  - Sample identifier as the column names
+  
+2.  **Taxonomy Table**
+  - TaxID as the rownames
+  - Taxonomic levels as the column names
+  
+The following files are optional inputs for the dataset:
+
+1.  **Sample Table**
+  - Sample identifier as the rownames
+  - Metadata variables as the column names
+  
+2.  **Phylogenetic Tree**
+  - Tree built from representative sequences and read in using read.tree from ape package
+  
+3.  **Representative Fasta**
+  - Fasta with one representative sequence for every row in the Taxonomy table.
+  
+We will prepare each of these objects to compile our datasets.
+
+## Phylogenetic Tree and Representative Fasta
+
+Formatting within the Representative Fasta can be pretty tricky for some applications once we work with different microeco fucntions. In particular, the Tax4Fun algorithm seems to work better with a slightly different syntax in the files, so I will create different versions that eventually build mirror datasets to use depending on the application.
+
+```{r}
+tax.tree         <- read.tree(path$taxa_reps$tree)
+rep.seqs         <- read.fasta(path$taxa_reps$aligned)
+rep.seqs.tax4fun <- lapply(rep.seqs, function(seq) {gsub("-", "", seq)})
+```
+
+## Taxonomy Table
+
+```{r}
+tax.table <- alignments %>% 
+             column_to_rownames("organism") %>%
+             select(taxonomy.ordered) %>% 
+             sort.taxa() %>%
+             rename_with(~str_to_title(.x), .cols = everything()) %>%
+             mutate(Kingdom = Superkingdom, .keep = "unused") %>%
+             relocate(Kingdom) %>%
+             distinct() %>%
+             tidy_taxonomy()
+```
+
+Now we need to update our working taxonomy file for future updates after sequencing runs, so I will also write a version of this to a tsv file.
+
+```{r}
+taxonomy.list <- alignments %>% 
+                 select(organism, taxonomy.ordered) %>% 
+                 sort.taxa() %>%
+                 rename_with(~str_to_title(.x), .cols = everything()) %>%
+                 mutate(Kingdom = Superkingdom, .keep = "unused") %>%
+                 relocate(Organism, Kingdom)
+
+write.table(taxonomy.list,
+            path$taxa_reps$table,
+            row.names = FALSE,
+            sep = "\t")
+```
+
+
+## OTU Table
+
+```{r}
+otu.table <- alignments %>% 
+          select(organism,
+                 any_of(samples)) %>%
+                 column_to_rownames("organism")
+
+otu.sample.list <- as.list(names(otu.table))
+```
+
+### Check Workflow
+
+This is also a good point to check for discrepencies in tables to see whether any data have been erroneously excluded or to notice any patterns in excluded samples. I will also check the metadata table for any duplicated SampleIDs, as this will give us problems in the next step.
+
+```{r}
+samples.filtered <- setdiff(sample.list, otu.sample.list)
+
+excluded <- metadata %>% filter(SampleID %in% samples.filtered)
+
+print(excluded)
+```
+
+```{r, message = F}
+samples.duplicated <- metadata %>% 
+                filter(identifier %in% otu.sample.list) %>%
+                select(-c("ExtractID", 
+                          "SequenceID",
+                          "SampleID",
+                          "SequenceID",
+                          "LibraryBarcode",
+                          "LibraryCode"
+                          )) %>%
+                distinct() %>%
+                      group_by(identifier) %>%
+                      summarize(count = n()) %>%
+                      filter(count > 1) %>%
+                      left_join(metadata)
+
+print(samples.duplicated)
+```
+
+
+## Sample Table
+
+Now I am going to refine the metadata table to include the versions of each variable that I may want to include in my downstream analyses.  
+  
+This is also a good time to format different variables as factors and create some interaction terms.  
+
+Most importantly, I need to update my metadata table so that I have **one row per column in the OTU table.**
+
+```{r}
+foods_wide <- foods_expand %>% 
+  pivot_wider(id_cols     = "identifier",
+              names_from  = "food",
+              values_from = "mg_fed") %>%
+  mutate(across(where(is.numeric), ~replace_na(., 0)))
+fats_wide      <- nutrients_wide(fats_expand)
+proteins_wide  <- nutrients_wide(proteins_expand)
+Ash_wide       <- nutrients_wide(Ash_expand)
+CHOs_wide      <- nutrients_wide(CHOs_expand)
+vitamins_wide  <- nutrients_wide(vitamins_expand)
+```
+
+
+```{r}
+sample.table <- metadata  %>% 
+                filter(identifier %in% otu.sample.list) %>%
+                select(all_of(sample_table_cols)) %>%
+                left_join(fats_wide    , by = join_by(identifier)) %>%
+                left_join(proteins_wide, by = join_by(identifier)) %>%
+                left_join(Ash_wide     , by = join_by(identifier)) %>%
+                left_join(CHOs_wide    , by = join_by(identifier)) %>%
+                left_join(vitamins_wide, by = join_by(identifier)) %>%
+                left_join(foods_wide   , by = join_by(identifier)) %>%
+                rename_with(~str_replace_all(., " ", "_")) %>%
+                rename_with(~str_replace_all(., "-", "_")) %>%
+                rename_with(~str_remove_all(., fixed(")"))) %>%
+                rename_with(~str_remove_all(., fixed("("))) %>%
+                arrange(study_day, subject) %>%
+                mutate(day = as.character(study_day)) %>%
+                mutate(diet_name   = fct(diet_name,  levels = diet_factors),
+                       holding     = fct(holding,    levels = c("old", "new")),
+                       pair_access = fct(pair_access,levels = c("y", "n")),
+                       warb_status = fct(warb_status,levels = warb_cycle_factors),
+                       across(any_of(default_factors), ~fct(., levels = unique(.))),
+                       across(any_of(ids)            , ~fct(., levels = unique(.)))) %>%
+                mutate(subject_day = fct_cross(subject, day, sep = "_")) %>%
+                select(-day) %>%
+                column_to_rownames("identifier")
+write.table(sample.table, path$metadata$sample_table$main, row.names = F, sep = "\t")         
+```
+
+### Subset Versions
+
+I am also going to create a sample table version that I can easily add back into my dataset after I merge technical and biological replicates by subject and day.
+
+```{r}
+identifier.key <- sample.table %>%
+  select(subject_day, SampleID, ExtractID, SequenceID) %>%
+  rownames_to_column("identifier")
+write.table(identifier.key, path$metadata$sample_table$identifier, row.names = F, sep = "\t") 
+```
+
+
+```{r}
+sample.table.merged <- sample.table %>%
+  remove_rownames() %>%
+  select(all_of(sample_merge_cols)) %>%
+  distinct() %>%
+  column_to_rownames("subject_day")
+write.table(sample.table.merged, path$metadata$sample_table$merged, row.names = F, sep = "\t")
+```
+
+
+I like to subset my tables at this point to create some smaller datasets that make it easier to do focused analyses on just a subset of my samples.
+
+```{r}
+otu.culi       <-  otu.table    %>% select(any_of(samples.culi))
+otu.warb       <-  otu.table  %>% select(any_of(samples.warb))
+
+samp.tab.culi    <-  sample.table  %>% filter(subject == "culi")
+samp.tab.warb    <-  sample.table  %>% filter(subject == "warble")
+```
+
+## Assemble Datasets
+
+Now we are finally ready to create a few complete microeco datasets.
+
+```{r}
+dataset.main  <- microtable$new(
+                               sample_table = sample.table,
+                               otu_table    = otu.table,
+                               tax_table    = tax.table,
+                               phylo_tree   = tax.tree,
+                               rep_fasta    = rep.seqs,
+                               auto_tidy    = T)
+dataset.culi <- microtable$new(
+                               sample_table = samp.tab.culi,
+                               otu_table    = otu.culi,
+                               tax_table    = tax.table,
+                               phylo_tree   = tax.tree,
+                               rep_fasta    = rep.seqs,
+                               auto_tidy    = T)
+dataset.warb <- microtable$new(
+                               sample_table = samp.tab.warb,
+                               otu_table    = otu.warb,
+                               tax_table    = tax.table,
+                               phylo_tree   = tax.tree,
+                               rep_fasta    = rep.seqs,
+                               auto_tidy    = T)
+```
+
+# MicroEco Basic Stats and Data Cleaning
+
+## Rarefaction
+  
+Rarefaction is a technique used to standardize the number of reads across samples in a microbiome dataset. This ensures that differences in sample diversity and composition are not driven by varying sequencing depths but reflect true biological patterns.  
+  
+We can use the depth summaries from above to inform our decision, but microeco also has some handy visualization functions built in to generate rarefaction curves. These are also useful for supplementary data to demonstrate the robustness of your sample size relative to your specific population/taxa.
+
+```{r}
+rarefaction_depths <- c(seq.int(0, 8000, by = 500))
+
+rarefaction.main <- trans_rarefy$new(dataset.main, 
+                                     alphadiv = "Observed",
+                                     depth    = rarefaction_depths)
+```
+
+```{r, warning = FALSE}
+rarefaction_plot <- rarefaction.main$plot_rarefy(show_legend = FALSE)
+rarefaction_plot
+ggsave("visuals/loris_rarefaction.png", rarefaction_plot)
+```
+
+In addition to the plot above, the text produced by initiating the rarefaction object can also be helpful. It looks like our inflection point is somewhere between 4,000 and 5,000 reads, so let's take a look at the result we would get from rarefaction at either of those thresholds:
+
+```
+Rarefy data at depth 4000 ...
+122 samples are removed because of fewer reads than input sample.size ...
+818 features with 0 abundance are removed after filtering samples ...
+289 features are removed because they are no longer present in any sample after random subsampling ...
+289 taxa with 0 abundance are removed from the otu_table ...
+
+Rarefy data at depth 4500 ...
+143 samples are removed because of fewer reads than input sample.size ...
+845 features with 0 abundance are removed after filtering samples ...
+248 features are removed because they are no longer present in any sample after random subsampling ...
+248 taxa with 0 abundance are removed from the otu_table ...
+
+Rarefy data at depth 5000 ...
+159 samples are removed because of fewer reads than input sample.size ...
+868 features with 0 abundance are removed after filtering samples ...
+227 features are removed because they are no longer present in any sample after random subsampling ...
+227 taxa with 0 abundance are removed from the otu_table ...
+
+Rarefy data at depth 5500 ...
+183 samples are removed because of fewer reads than input sample.size ...
+899 features with 0 abundance are removed after filtering samples ...
+219 features are removed because they are no longer present in any sample after random subsampling ...
+219 taxa with 0 abundance are removed from the otu_table ...
+```
+
+Based on the results we viewed from the sequencing depth summary table, histogram, and rarefaction curve above, we are applying rarefaction using the Simple Random Sampling (SRS) method to normalize each sample to a consistent size of 4,500 sequences.
+
+```{r}
+dataset.main$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
+dataset.culi$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
+dataset.warb$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
+```
+## Technical Replicates
+
+Now that we have normalized all sequenced libraries, we need to handle our duplicated observations. That includes (1) samples that were sequenced more than once and (2) days where we gathered more than one sample per individual.  
+  
+There are several ways to handle this, each with their own tradeoffs. For now, we are going to use microeco's merge samples function to merge all data for each day and subject.
+
+```{r}
+dataset.main <- dataset.main$merge_samples("subject_day")
+dataset.culi <- dataset.culi$merge_samples("subject_day")
+dataset.warb <- dataset.warb$merge_samples("subject_day")
+```
+
+And now we need to add our environmental data back in to match these merged datapoints.
+
+```{r}
+dataset.main$sample_table <- data.frame(sample.table.merged[rownames(dataset.main$sample_table), ])
+dataset.culi$sample_table <- data.frame(sample.table.merged[rownames(dataset.culi$sample_table), ])
+dataset.warb$sample_table <- data.frame(sample.table.merged[rownames(dataset.warb$sample_table), ])
+```
+
+
+## Relative Abundance
+
+After rarefaction and merging replicates, we calculate relative abundances to express the composition of each sample as proportions rather than raw counts. This step converts the sequence data into percentages, making it easier to compare the microbial community structure across samples regardless of their total sequence counts. The resulting relative abundances provide insights into the relative prevalence of different taxa within each sample.
+
+```{r, message = FALSE}
+dataset.main$cal_abund()
+dataset.culi$cal_abund()
+dataset.warb$cal_abund()
+```
+
+## Filter Taxa
+
+To focus on the most relevant features of the microbial communities, we apply a filtering step to remove low-abundance taxa. Filtering reduces noise and ensures that downstream analyses are driven by biologically meaningful patterns rather than rare or sporadic taxa. 
+  
+**From the microeco manual:**  
+
+- **rel_abund**
+  - default 0; the relative abundance threshold, such as 0.0001.
+- **freq**
+  - default 1; the occurrence frequency threshold. For example, the number 2 represents filtering the feature that occurs less than 2 times. A number smaller than 1 is also allowable. For instance, the number 0.1 represents filtering the feature that occurs in less than 10% samples.
+- **include_lowest**
+  - default TRUE; whether include the feature with the threshold.
+
+```{r}
+dataset.main$filter_taxa(rel_abund      = methods_16s$loris$min_abund, 
+                         freq           = methods_16s$loris$min_freq, 
+                         include_lowest = methods_16s$loris$include_lowest)
+dataset.culi$filter_taxa(rel_abund      = methods_16s$loris$min_abund, 
+                         freq           = methods_16s$loris$min_freq, 
+                         include_lowest = methods_16s$loris$include_lowest)
+dataset.warb$filter_taxa(rel_abund      = methods_16s$loris$min_abund, 
+                         freq           = methods_16s$loris$min_freq, 
+                         include_lowest = methods_16s$loris$include_lowest)
+```
+
+## Diversity Metrics
+
+Diversity metrics help us understand the structure of microbial communities within and across samples. **Alpha diversity** measures the richness and evenness of taxa within individual samples, providing insights into the complexity of each community. **Beta diversity** assesses differences in microbial composition between samples, revealing how communities vary across conditions or groups. In this step, we calculate alpha diversity for each dataset and beta diversity using UniFrac and Aitchinson distance metrics to capture both phylogenetic and compositional differences.
+
+```{r, message = FALSE}
+dataset.main$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
+dataset.culi$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
+dataset.warb$cal_alphadiv(PD = methods_16s$loris$alpha_pd)
+dataset.main$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
+dataset.culi$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
+dataset.warb$cal_betadiv(unifrac = methods_16s$loris$unifrac, method = methods_16s$loris$betadiv)
+```
+
+## Clone and Merge at Different Taxonomic Levels
+
+Cloning and merging datasets at different taxonomic levels allow us to explore microbial communities at varying degrees of resolution. By focusing on higher taxonomic levels (e.g., phylum or class), we can identify broad patterns, while finer levels (e.g., genus or species) provide detailed insights into specific taxa. This flexibility helps tailor analyses to research questions and ensures biologically meaningful interpretations across scales.
+
+```{r, message = FALSE}
+gen.data.main <- clone(dataset.main, deep = T)
+gen.data.culi <- clone(dataset.culi, deep = T)
+gen.data.warb <- clone(dataset.warb, deep = T)
+
+gen.data.main$merge_taxa(taxa = "Genus")
+gen.data.culi$merge_taxa(taxa = "Genus")
+gen.data.warb$merge_taxa(taxa = "Genus")
+
+fam.data.main <- clone(dataset.main, deep = T)
+fam.data.culi <- clone(dataset.culi, deep = T)
+fam.data.warb <- clone(dataset.warb, deep = T)
+
+fam.data.main$merge_taxa(taxa = "Family")
+fam.data.culi$merge_taxa(taxa = "Family")
+fam.data.warb$merge_taxa(taxa = "Family")
+
+ord.data.main <- clone(dataset.main, deep = T)
+ord.data.culi <- clone(dataset.culi, deep = T)
+ord.data.warb <- clone(dataset.warb, deep = T)
+
+ord.data.main$merge_taxa(taxa = "Order")
+ord.data.culi$merge_taxa(taxa = "Order")
+ord.data.warb$merge_taxa(taxa = "Order")
+
+cla.data.main <- clone(dataset.main, deep = T)
+cla.data.culi <- clone(dataset.culi, deep = T)
+cla.data.warb <- clone(dataset.warb, deep = T)
+
+cla.data.main$merge_taxa(taxa = "Class")
+cla.data.culi$merge_taxa(taxa = "Class")
+cla.data.warb$merge_taxa(taxa = "Class")
+
+phy.data.main <- clone(dataset.main, deep = T)
+phy.data.culi <- clone(dataset.culi, deep = T)
+phy.data.warb <- clone(dataset.warb, deep = T)
+
+phy.data.main$merge_taxa(taxa = "Phylum")
+phy.data.culi$merge_taxa(taxa = "Phylum")
+phy.data.warb$merge_taxa(taxa = "Phylum")
+```
+
+## Export Datasets for Further Analysis
+
+Now we will export these datasets for the next analysis steps. I do this to modularize these scripts. Beginning with the next script, the code you do/do not choose to run and parameters you use will become increasingly specific to the questions you are focused on or the sampleset you are working with. MicroEco will export these datasets into their own subdirectories with formatted files that make it easy to bring them back into the package and make use of their built-in functions for stats and visuals.
+
+```{r, warning=FALSE, message=FALSE}
+ dataset.main$save_table(path$microeco$dataset$main$species, sep = "\t")
+ dataset.culi$save_table(path$microeco$dataset$culi$species, sep = "\t")
+ dataset.warb$save_table(path$microeco$dataset$warb$species, sep = "\t")
+gen.data.main$save_table(path$microeco$dataset$main$genus  , sep = "\t")
+gen.data.culi$save_table(path$microeco$dataset$culi$genus  , sep = "\t")
+gen.data.warb$save_table(path$microeco$dataset$warb$genus  , sep = "\t")
+fam.data.main$save_table(path$microeco$dataset$main$family , sep = "\t")
+fam.data.culi$save_table(path$microeco$dataset$culi$family , sep = "\t")
+fam.data.warb$save_table(path$microeco$dataset$warb$family , sep = "\t")
+ord.data.main$save_table(path$microeco$dataset$main$order  , sep = "\t")
+ord.data.culi$save_table(path$microeco$dataset$culi$order  , sep = "\t")
+ord.data.warb$save_table(path$microeco$dataset$warb$order  , sep = "\t")
+cla.data.main$save_table(path$microeco$dataset$main$class  , sep = "\t")
+cla.data.culi$save_table(path$microeco$dataset$culi$class  , sep = "\t")
+cla.data.warb$save_table(path$microeco$dataset$warb$class  , sep = "\t")
+phy.data.main$save_table(path$microeco$dataset$main$phylum , sep = "\t")
+phy.data.culi$save_table(path$microeco$dataset$culi$phylum , sep = "\t")
+phy.data.warb$save_table(path$microeco$dataset$warb$phylum , sep = "\t")
+dataset.main$save_abund(path$microeco$abund$main$tax, sep = "\t")
+dataset.culi$save_abund(path$microeco$abund$culi$tax, sep = "\t")
+dataset.warb$save_abund(path$microeco$abund$warb$tax, sep = "\t")
+dataset.main$save_betadiv(path$microeco$beta$main$species)
+dataset.culi$save_betadiv(path$microeco$beta$culi$species)
+dataset.warb$save_betadiv(path$microeco$beta$warb$species)
+gen.data.main$save_betadiv(path$microeco$beta$main$genus )
+gen.data.culi$save_betadiv(path$microeco$beta$culi$genus )
+gen.data.warb$save_betadiv(path$microeco$beta$warb$genus )
+fam.data.main$save_betadiv(path$microeco$beta$main$family)
+fam.data.culi$save_betadiv(path$microeco$beta$culi$family)
+fam.data.warb$save_betadiv(path$microeco$beta$warb$family)
+ord.data.main$save_betadiv(path$microeco$beta$main$order )
+ord.data.culi$save_betadiv(path$microeco$beta$culi$order )
+ord.data.warb$save_betadiv(path$microeco$beta$warb$order )
+cla.data.main$save_betadiv(path$microeco$beta$main$class )
+cla.data.culi$save_betadiv(path$microeco$beta$culi$class )
+cla.data.warb$save_betadiv(path$microeco$beta$warb$class )
+phy.data.main$save_betadiv(path$microeco$beta$main$phylum)
+phy.data.culi$save_betadiv(path$microeco$beta$culi$phylum)
+phy.data.warb$save_betadiv(path$microeco$beta$warb$phylum)
+dataset.main$save_alphadiv(path$microeco$alpha$main$species)
+dataset.culi$save_alphadiv(path$microeco$alpha$culi$species)
+dataset.warb$save_alphadiv(path$microeco$alpha$warb$species)
+gen.data.main$save_alphadiv(path$microeco$alpha$main$genus )
+gen.data.culi$save_alphadiv(path$microeco$alpha$culi$genus )
+gen.data.warb$save_alphadiv(path$microeco$alpha$warb$genus )
+fam.data.main$save_alphadiv(path$microeco$alpha$main$family)
+fam.data.culi$save_alphadiv(path$microeco$alpha$culi$family)
+fam.data.warb$save_alphadiv(path$microeco$alpha$warb$family)
+ord.data.main$save_alphadiv(path$microeco$alpha$main$order )
+ord.data.culi$save_alphadiv(path$microeco$alpha$culi$order )
+ord.data.warb$save_alphadiv(path$microeco$alpha$warb$order )
+cla.data.main$save_alphadiv(path$microeco$alpha$main$class )
+cla.data.culi$save_alphadiv(path$microeco$alpha$culi$class )
+cla.data.warb$save_alphadiv(path$microeco$alpha$warb$class )
+phy.data.main$save_alphadiv(path$microeco$alpha$main$phylum)
+phy.data.culi$save_alphadiv(path$microeco$alpha$culi$phylum)
+phy.data.warb$save_alphadiv(path$microeco$alpha$warb$phylum)
+```
+
+
+
+# Functional Profiles
+
+>This step is one of the reasons I came up with a workaround to attach representative sequences to our datasets. Keep in mind that any results we get for functional profiles are based on the ***16S reference sequence matched to that taxon***, not the actual 16S reads from our sequenced DNA.
+
+Functional profiling in Microeco provides insights into the potential roles and activities of microbial communities. Databases like [KEGG](https://www.genome.jp/kegg/ko.html), [NJC19](https://www.nature.com/articles/s41597-020-0516-5), and [FAPROTAX](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) map microbial taxa to known functional pathways or ecological roles:
+
+- [**KEGG** predicts metabolic pathways and molecular functions based on gene annotations.](https://www.genome.jp/kegg/ko.html)
+- [**NJC19** large-scale metabolic interaction network of the mouse and human gut microbiota.](https://www.nature.com/articles/s41597-020-0516-5)
+- [**FAPROTAX** focuses on linking prokaryotic taxa to specific ecological functions, such as methanogenesis or nitrate reduction.](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php)
+
+## KEGG Pathways
+
+>If you have not implemented the Tax4Fun2 algorithm with microeco before, make sure you follow the directions to set up this microeco extension. I created my own version in the script that you can find within `setup/microbiome/microeco_first_use.Rmd`.
+
+### Construct KEGG Datasets
+
+First, we make a temp directory for the test predictions that KEGG needs to work with.
+
+```{r, warning = FALSE}
+dir.create(micro$test_prediction)
+```
+
+
+Now we mostly replicate our setup steps from before. The only reason we reconstruct the datasets here is so that we can use the special fasta we created with a syntax that works better within tax4fun. Then, in the last step, we populate them with abundances for pathway matches instead of taxa.
+
+```{r, message=FALSE}
+dataset.keg.main  <- microtable$new(
+                               sample_table = sample.table,
+                               otu_table    = otu.table,
+                               tax_table    = tax.table,
+                               phylo_tree   = tax.tree,
+                               rep_fasta    = rep.seqs.tax4fun,
+                               auto_tidy    = T)
+dataset.keg.culi <- microtable$new(
+                               sample_table = samp.tab.culi,
+                               otu_table    = otu.culi,
+                               tax_table    = tax.table,
+                               phylo_tree   = tax.tree,
+                               rep_fasta    = rep.seqs.tax4fun,
+                               auto_tidy    = T)
+dataset.keg.warb <- microtable$new(
+                               sample_table = samp.tab.warb,
+                               otu_table    = otu.warb,
+                               tax_table    = tax.table,
+                               phylo_tree   = tax.tree,
+                               rep_fasta    = rep.seqs.tax4fun,
+                               auto_tidy    = T)
+```
+
+
+```{r, message=FALSE}
+dataset.keg.main$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
+dataset.keg.culi$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
+dataset.keg.warb$rarefy_samples(method = methods_16s$loris$norm, sample.size = methods_16s$loris$rarefy)
+```
+
+```{r}
+dataset.keg.main <- dataset.keg.main$merge_samples("subject_day")
+dataset.keg.culi <- dataset.keg.culi$merge_samples("subject_day")
+dataset.keg.warb <- dataset.keg.warb$merge_samples("subject_day")
+```
+
+```{r}
+dataset.keg.main$sample_table <- data.frame(dataset.keg.main$sample_table, sample.table.merged[rownames(dataset.keg.main$sample_table), ])
+dataset.keg.culi$sample_table <- data.frame(dataset.keg.culi$sample_table, sample.table.merged[rownames(dataset.keg.culi$sample_table), ])
+dataset.keg.warb$sample_table <- data.frame(dataset.keg.warb$sample_table, sample.table.merged[rownames(dataset.keg.warb$sample_table), ])
+```
+
+
+```{r, message=FALSE}
+dataset.keg.main$cal_abund()
+dataset.keg.culi$cal_abund()
+dataset.keg.warb$cal_abund()
+```
+
+
+```{r, message=FALSE}
+dataset.keg.main$filter_taxa(
+                         rel_abund      = methods_16s$loris$min_abund, 
+                         freq           = methods_16s$loris$min_freq, 
+                         include_lowest = TRUE)
+dataset.keg.culi$filter_taxa(
+                         rel_abund      = methods_16s$loris$min_abund, 
+                         freq           = methods_16s$loris$min_freq, 
+                         include_lowest = TRUE)
+dataset.keg.warb$filter_taxa(
+                         rel_abund      = methods_16s$loris$min_abund, 
+                         freq           = methods_16s$loris$min_freq, 
+                         include_lowest = TRUE)
+```
+
+
+```{r, message=F}
+keg.main <- trans_func$new(dataset.keg.main)
+keg.culi <- trans_func$new(dataset.keg.culi)
+keg.warb <- trans_func$new(dataset.keg.warb)
+```
+
+### Run Tax4Fun2 Algorithm
+
+```{r, eval=FALSE, message=FALSE}
+keg.main$cal_tax4fun2(
+          blast_tool_path           = micro$blast,
+          path_to_reference_data    = micro$tax4fun,
+          database_mode             = methods_16s$loris$tax4fun_db, 
+          path_to_temp_folder       = micro$test_prediction,
+          num_threads               = parallel::detectCores() - 1)
+keg.culi$cal_tax4fun2(
+          blast_tool_path           = micro$blast,
+          path_to_reference_data    = micro$tax4fun,
+          database_mode             = methods_16s$loris$tax4fun_db, 
+          path_to_temp_folder       = micro$test_prediction,
+          num_threads               = parallel::detectCores() - 1)
+keg.warb$cal_tax4fun2(
+          blast_tool_path           = micro$blast,
+          path_to_reference_data    = micro$tax4fun,
+          database_mode             = methods_16s$loris$tax4fun_db, 
+          path_to_temp_folder       = micro$test_prediction,
+          num_threads               = parallel::detectCores() - 1)
+```
+
+#### Estimate Functional Redundancy
+
+The functional redundancy step estimates the Functional Redundancy Index (FRI), which measures the overlap of functional potential among taxa within a community. Higher redundancy suggests that multiple taxa perform similar functions, contributing to ecosystem stability and resilience. This analysis helps evaluate the robustness of microbial communities and their ability to maintain functional roles under environmental changes.  
+  
+>Note that this step is more memory intensive and can take some time for large datasets. That is why I choose to source this as an external script that I run as a background job within R Studio. Find more information about how to do that [here.](https://docs.posit.co/ide/user/ide/guide/tools/jobs.html)
+
+```{r, eval = FALSE, message = FALSE}
+keg.main$cal_tax4fun2_FRI()
+keg.culi$cal_tax4fun2_FRI()
+keg.warb$cal_tax4fun2_FRI()
+```
+
+#### Converting to Dataset Objects
+
+Now I will convert these results back into microeco datasets so that they work easily within our other functions. Note that I am calling in the Tax4Fun2_KEGG dataset from the R data repository to use as the taxonomy table.
+
+```{r, eval = FALSE}
+data(Tax4Fun2_KEGG)
+
+keg.data.main <- microtable$new(   
+                          otu_table    = keg.main$res_tax4fun2_pathway, 
+                          tax_table    = Tax4Fun2_KEGG$ptw_desc, 
+                          sample_table = dataset.main$sample_table)
+keg.data.culi <- microtable$new(   
+                          otu_table    = keg.culi$res_tax4fun2_pathway, 
+                          tax_table    = Tax4Fun2_KEGG$ptw_desc, 
+                          sample_table = dataset.culi$sample_table)
+keg.data.warb <- microtable$new(   
+                          otu_table    = keg.warb$res_tax4fun2_pathway, 
+                          tax_table    = Tax4Fun2_KEGG$ptw_desc, 
+                          sample_table = dataset.warb$sample_table)
+
+keg.data.main$tidy_dataset()
+keg.data.culi$tidy_dataset()
+keg.data.warb$tidy_dataset()
+```
+
+```{r}
+dataset.keg.main$sample_table <- data.frame(dataset.keg.main$sample_table, sample.table.merged[rownames(dataset.keg.main$sample_table), ])
+dataset.keg.culi$sample_table <- data.frame(dataset.keg.culi$sample_table, sample.table.merged[rownames(dataset.keg.culi$sample_table), ])
+dataset.keg.warb$sample_table <- data.frame(dataset.keg.warb$sample_table, sample.table.merged[rownames(dataset.keg.warb$sample_table), ])
+```
+
+
+
+
+```{r, eval = FALSE}
+keg.data.main$cal_abund()
+keg.data.culi$cal_abund()
+keg.data.warb$cal_abund()
+
+keg.data.main$cal_alphadiv()
+keg.data.culi$cal_alphadiv()
+keg.data.warb$cal_alphadiv()
+keg.data.main$cal_betadiv(method = methods_16s$loris$betadiv)
+keg.data.culi$cal_betadiv(method = methods_16s$loris$betadiv)
+keg.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
+```
+
+#### Export Datasets for Further Analysis
+
+```{r, eval=FALSE}
+
+keg.data.main$save_table(path$microeco$dataset$main$kegg, sep = "\t")
+keg.data.culi$save_table(path$microeco$dataset$culi$kegg, sep = "\t")
+keg.data.warb$save_table(path$microeco$dataset$warb$kegg, sep = "\t")
+
+```
+
+##### Table Version of Basic Stats
+
+```{r, eval=FALSE}
+  keg.data.main$save_abund(path$microeco$abund$main$kegg, sep = "\t")
+  keg.data.culi$save_abund(path$microeco$abund$culi$kegg, sep = "\t")
+  keg.data.warb$save_abund(path$microeco$abund$warb$kegg, sep = "\t")
+keg.data.main$save_betadiv(path$microeco$beta$main$kegg)
+keg.data.culi$save_betadiv(path$microeco$beta$culi$kegg)
+keg.data.warb$save_betadiv(path$microeco$beta$warb$kegg)
+```
+
+## FAPROTAX
+
+[FAPROTAX](https://pages.uoregon.edu/slouca/LoucaLab/archive/FAPROTAX/lib/php/index.php) links prokaryotic taxa to specific ecological roles, such as carbon fixation, methanogenesis, and nitrate reduction, based on curated databases. Unlike pathway-based methods, FAPROTAX focuses on ecological functions inferred from taxonomy, providing valuable insights into the environmental roles of microbial communities. This option is especially useful for studies on ecosystem processes and biogeochemical cycling.
+
+>Note that we do not have to create new datasets for functional profile calculations with FAPROTAX or NJC19.
+
+```{r, message=FALSE}
+fpt.main <- trans_func$new(dataset.main)
+fpt.culi <- trans_func$new(dataset.culi)
+fpt.warb <- trans_func$new(dataset.warb)
+
+fpt.main$cal_spe_func(prok_database = "FAPROTAX")
+fpt.culi$cal_spe_func(prok_database = "FAPROTAX")
+fpt.warb$cal_spe_func(prok_database = "FAPROTAX")
+
+fpt.main$cal_spe_func_perc(abundance_weighted = T)
+fpt.culi$cal_spe_func_perc(abundance_weighted = T)
+fpt.warb$cal_spe_func_perc(abundance_weighted = T)
+```
+
+### Add Results to new Datasets and Transposed Dataframes
+
+```{r, message=FALSE}
+fpt.main$trans_spe_func_perc()
+fpt.culi$trans_spe_func_perc()
+fpt.warb$trans_spe_func_perc()
+
+fpt.main.df <- as.data.frame(t(fpt.main$res_spe_func_perc), check.names = F)
+fpt.culi.df <- as.data.frame(t(fpt.culi$res_spe_func_perc), check.names = F)
+fpt.warb.df <- as.data.frame(t(fpt.warb$res_spe_func_perc), check.names = F)
+
+fpt.main.tax <- as.data.frame(rownames(fpt.main.df), nm = c("Function")) %>% mutate(func_name = str_glue("fpt", "{row_number()}")) 
+fpt.culi.tax <- as.data.frame(rownames(fpt.culi.df), nm = c("Function")) %>% mutate(func_name = str_glue("fpt", "{row_number()}")) 
+fpt.warb.tax <- as.data.frame(rownames(fpt.warb.df), nm = c("Function")) %>% mutate(func_name = str_glue("fpt", "{row_number()}")) 
+
+fpt.main.otu <- fpt.main.df %>% rownames_to_column("Function") %>% left_join(fpt.main.tax) %>% column_to_rownames("func_name") %>% select(-Function)
+fpt.culi.otu <- fpt.culi.df %>% rownames_to_column("Function") %>% left_join(fpt.culi.tax) %>% column_to_rownames("func_name") %>% select(-Function)
+fpt.warb.otu <- fpt.warb.df %>% rownames_to_column("Function") %>% left_join(fpt.warb.tax) %>% column_to_rownames("func_name") %>% select(-Function)
+
+fpt.main.tax <- fpt.main.tax %>% column_to_rownames("func_name")
+fpt.culi.tax <- fpt.culi.tax %>% column_to_rownames("func_name")
+fpt.warb.tax <- fpt.warb.tax %>% column_to_rownames("func_name")
+```
+
+
+```{r, message=FALSE}
+fpt.data.main <- microtable$new(otu_table    = fpt.main.otu, 
+                                tax_table    = fpt.main.tax, 
+                                sample_table = dataset.main$sample_table)
+fpt.data.culi <- microtable$new(otu_table    = fpt.culi.otu, 
+                                tax_table    = fpt.culi.tax, 
+                                sample_table = dataset.culi$sample_table)
+fpt.data.warb <- microtable$new(otu_table    = fpt.warb.otu, 
+                                tax_table    = fpt.warb.tax, 
+                                sample_table = dataset.warb$sample_table)
+
+fpt.data.main$tidy_dataset()
+fpt.data.culi$tidy_dataset()
+fpt.data.warb$tidy_dataset()
+
+fpt.data.main$cal_abund()
+fpt.data.culi$cal_abund()
+fpt.data.warb$cal_abund()
+
+fpt.data.main$cal_alphadiv()
+fpt.data.culi$cal_alphadiv()
+fpt.data.warb$cal_alphadiv()
+
+fpt.data.main$cal_betadiv(method = methods_16s$loris$betadiv)
+fpt.data.culi$cal_betadiv(method = methods_16s$loris$betadiv)
+fpt.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
+```
+
+#### Export Dataset for Further Analysis
+
+```{r, message=FALSE}
+
+fpt.data.main$save_table(path$microeco$dataset$main$fpt, sep = "\t")
+fpt.data.culi$save_table(path$microeco$dataset$culi$fpt, sep = "\t")
+fpt.data.warb$save_table(path$microeco$dataset$warb$fpt, sep = "\t")
+
+```
+
+##### Table Version of Basic Stats
+
+```{r, message=FALSE}
+fpt.data.main$save_abund(path$microeco$abund$main$fpt, sep = "\t")
+fpt.data.culi$save_abund(path$microeco$abund$culi$fpt, sep = "\t")
+fpt.data.warb$save_abund(path$microeco$abund$warb$fpt, sep = "\t")
+fpt.data.main$save_betadiv(path$microeco$beta$main$fpt)
+fpt.data.culi$save_betadiv(path$microeco$beta$culi$fpt)
+fpt.data.warb$save_betadiv(path$microeco$beta$warb$fpt)
+```
+
+## NJC19
+
+The [NJC19 database](https://www.nature.com/articles/s41597-020-0516-5) focuses on metabolic interactions within microbial communities, particularly in the mouse and human gut microbiota. Unlike broader functional profiling tools, NJC19 operates at the species level, requiring highly precise taxonomic assignments to ensure accurate functional predictions (one of the advantages of long-read sequencing approaches like ours over short-read). This precision allows NJC19 to provide detailed insights into metabolic roles and interactions within microbial communities, making it especially valuable for studies on gut microbiota and host-microbe relationships.
+
+```{r, message=FALSE}
+njc.main <- trans_func$new(dataset.main)
+njc.culi <- trans_func$new(dataset.culi)
+njc.warb <- trans_func$new(dataset.warb)
+njc.main$cal_spe_func(prok_database = "NJC19")
+njc.culi$cal_spe_func(prok_database = "NJC19")
+njc.warb$cal_spe_func(prok_database = "NJC19")
+njc.main$cal_spe_func_perc(abundance_weighted = T)
+njc.culi$cal_spe_func_perc(abundance_weighted = T)
+njc.warb$cal_spe_func_perc(abundance_weighted = T)
+```
+
+### Add Results to new Datasets and Transposed Dataframes
+
+```{r, message=FALSE}
+njc.main$trans_spe_func_perc()
+njc.culi$trans_spe_func_perc()
+njc.warb$trans_spe_func_perc()
+njc.main.df  <-        as.data.frame(t(njc.main$res_spe_func_perc), check.names = F)
+njc.culi.df  <-        as.data.frame(t(njc.culi$res_spe_func_perc), check.names = F)
+njc.warb.df  <-        as.data.frame(t(njc.warb$res_spe_func_perc), check.names = F)
+njc.main.tax <- as.data.frame(rownames(njc.main.df), nm = c("Function")) %>% mutate(func_name = str_glue("njc", "{row_number()}")) 
+njc.culi.tax <- as.data.frame(rownames(njc.culi.df), nm = c("Function")) %>% mutate(func_name = str_glue("njc", "{row_number()}")) 
+njc.warb.tax <- as.data.frame(rownames(njc.warb.df), nm = c("Function")) %>% mutate(func_name = str_glue("njc", "{row_number()}")) 
+njc.main.otu <- njc.main.df %>% rownames_to_column("Function") %>% left_join(njc.main.tax) %>% column_to_rownames("func_name") %>% select(-Function)
+njc.culi.otu <- njc.culi.df %>% rownames_to_column("Function") %>% left_join(njc.culi.tax) %>% column_to_rownames("func_name") %>% select(-Function)
+njc.warb.otu <- njc.warb.df %>% rownames_to_column("Function") %>% left_join(njc.warb.tax) %>% column_to_rownames("func_name") %>% select(-Function)
+njc.main.tax <- njc.main.tax %>% column_to_rownames("func_name")
+njc.culi.tax <- njc.culi.tax %>% column_to_rownames("func_name")
+njc.warb.tax <- njc.warb.tax %>% column_to_rownames("func_name")
+```
+
+
+```{r, message=FALSE}
+njc.data.main <- microtable$new(otu_table    = njc.main.otu, 
+                                tax_table    = njc.main.tax, 
+                                sample_table = dataset.main$sample_table)
+njc.data.culi <- microtable$new(otu_table    = njc.culi.otu, 
+                                tax_table    = njc.culi.tax, 
+                                sample_table = dataset.culi$sample_table)
+njc.data.warb <- microtable$new(otu_table    = njc.warb.otu, 
+                                tax_table    = njc.warb.tax, 
+                                sample_table = dataset.warb$sample_table)
+njc.data.main$tidy_dataset()
+njc.data.culi$tidy_dataset()
+njc.data.warb$tidy_dataset()
+njc.data.main$cal_abund()
+njc.data.culi$cal_abund()
+njc.data.warb$cal_abund()
+njc.data.main$cal_alphadiv()
+njc.data.culi$cal_alphadiv()
+njc.data.warb$cal_alphadiv()
+njc.data.main$cal_betadiv(method = methods_16s$loris$betadiv)
+njc.data.culi$cal_betadiv(method = methods_16s$loris$betadiv)
+njc.data.warb$cal_betadiv(method = methods_16s$loris$betadiv)
+```
+
+#### Export Dataset for Further Analysis
+
+```{r, message=FALSE}
+
+njc.data.main$save_table(path$microeco$dataset$main$njc, sep = "\t")
+njc.data.culi$save_table(path$microeco$dataset$culi$njc, sep = "\t")
+njc.data.warb$save_table(path$microeco$dataset$warb$njc, sep = "\t")
+
+```
+
+##### Table Version of Basic Stats
+
+```{r, message=FALSE}
+njc.data.main$save_abund(path$microeco$abund$main$njc, sep = "\t")
+njc.data.culi$save_abund(path$microeco$abund$culi$njc, sep = "\t")
+njc.data.warb$save_abund(path$microeco$abund$warb$njc, sep = "\t")
+njc.data.main$save_betadiv(path$microeco$beta$main$njc)
+njc.data.culi$save_betadiv(path$microeco$beta$culi$njc)
+njc.data.warb$save_betadiv(path$microeco$beta$warb$njc)
+```
+
+
+# Next Steps
+
+Next, you should proceed to the Exploratory16SData workflow, where you will begin constructing summary tables and graphics to help you set up some more informative models and results.

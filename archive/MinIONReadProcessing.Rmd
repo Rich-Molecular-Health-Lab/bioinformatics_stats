@@ -1,0 +1,454 @@
+---
+title: "Post-Sequencing Raw ONT Read Processing Workflow"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_location: "before"
+    toc_depth: 4
+    number_sections: false
+    toc_float: true
+    code_folding: "hide"
+    fig_caption: true
+params:
+  sampleset: "loris"
+  seqrun: "hdz1"
+  
+---
+
+```{r, message=FALSE}
+global      <- config::get(config = "default")
+
+here::i_am("MinIONReadProcessing.Rmd")
+source(here::here(global$setup))
+source(here(swan$functions))
+
+```
+
+
+```{r, message=FALSE}
+opts_chunk$set(
+               message = FALSE,
+               warning = FALSE,
+               echo    = FALSE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+```
+
+
+# Intro {.tabset}
+
+## This Workflow
+
+This is the current recommended pipeline for processing **raw reads obtained from the MinION Sequencer**. The ONT sequencers basically measure electrical signals as strands of DNA pass through each nanopore. The MinKNOW software uses an algorithm to convert each signal to its estimated sequence of A's/G's/C's/T's in real time, but those on-the-fly basecalls are quite messy. It is standard practice to take the original signal data after the run has completed and use a slower, more precise algorithm to re-basecall the data with greater precision.  
+
+### Intro to High Performance Computing (HPC)
+
+The basecalling step is the most memory-intensive stage of our bioinformatic pipelines. Most local hard drives cannot handle the task, especially for the maximum-precision algorithm we use.  High-Performance Computing (HPC) systems and remote clusters (like the Holland Computing Center's (HCC) remote server known as *Swan*) are powerful computers designed to handle big tasks that are too demanding for personal computers. These systems allow us to connect remotely and use their resources to process large amounts of data quickly and efficiently. For steps like ONT basecalling, which require a lot of memory and processing power, HPC systems are essential to get the job done without overwhelming our own computers.  
+
+### Getting Started with the Holland Computing Center (HCC)
+
+Any UNO/UNMC/UNL student affiliated with an established HCC research group can sign up for a free account to access the system. [Follow the instructions here](https://hcc.unl.edu/docs/accounts/) and enter "richlab" as your group. I will receive an email to approve your membership, and then your account will become active. You should look through the rest of the HCC's manual to learn some of the basics before you begin using it. Begin by working through the following:  
+
+1. [Connecting to the Clusters](https://hcc.unl.edu/docs/connecting/)
+  - My preferred method for step 2 (*Open a terminal or SSH client*) is to use the terminal window inside R Studio. That makes it easier to move smoothly between code languages and servers within a single R Markdown script like this one.
+2. [Handling Data](https://hcc.unl.edu/docs/handling_data/)
+  - The most important storage guidelines are those explaining when/how to use your home vs. work directories and the overall limits that we share as a group across every member's accounts.
+  - Data transfer can initially trip people up, and you have several options. I used to use cyber duck for uploading/downloading files, but more recently I switched to Globus Connect.
+3.  [Submitting Jobs](https://hcc.unl.edu/docs/submitting_jobs/)
+  - This workflow references modularized bash scripts that you can upload to your working directory and submit according to the instructions on the HCC site. You do not need to worry as much about understanding how to find/select/use different apps/modules on the server (I have taken care of that for our pipelines), but you do need to know how to take the scripts I have written, edit a few of the parameters, and tell the HCC when/how to run it for you.  
+
+### Files to Use
+
+After a sequencing run you MinKNOW will drop many different files and subdirectories into a parent directory labeled with the name of your run. Here is what you should do with some of the main files you need to carry forward:
+
+```{r}
+minion_files <- tibble(
+  Relative_Paths = c(
+"**/pod5/*.pod5",
+"barcode_alignment_*.tsv",
+"**/dataframes/sample_sheet/*/*_sample_sheet.csv"),
+
+Description = c(
+"Uncalled reads that passed initial quality control parameters on the MinKNOW local software.",
+"Output stats for multiplexed/barcoded sequencing runs summarized by barcode",
+"Dorado-formatted samplesheets created in the SampleInventory workflow using the barcode_alignment tables."),
+
+Use = c(
+"Your input for the basecalling step you take first.",
+"We change the filename with your Library Code (e.g. hdz1) as a prefix and remove the really long string after 'alignment_' before folding the file into our SampleInventory script for preparing the demultiplexing sample sheets.",
+"After the SampleInventory workflow, you should have one sample sheet for each sequencing run (with the run name/code as the file prefix) that dorado can use for matching sample/sequence names to barcodes (note: this is only necessary if you are working with multiplexed/barcoded libraries)."),
+
+Destination = c(
+"Working directory on HCC/Swan that you will call in your script.",
+"These files must be properly renamed and then place in the bioinformatics-stats repository under the subdirectory dataframes/barcodes/.",
+"Working directory on HCC/Swan that you will call in your script."
+)
+
+) %>%
+  gt(rowname_col = "Relative_Paths") %>%
+  tab_stubhead("Relative Paths") %>%
+  cols_width(Description ~ px(100),
+             Use         ~ px(350),
+             Destination ~ px(250)) %>%
+  tab_style(style = cell_text(v_align = "top"),
+            locations = list(cells_body(), cells_stub())) %>%
+  opt_stylize(style = 3, color = "cyan")
+
+minion_files
+```
+
+### Syntax of this Workflow
+
+If you see a step involving the code "sbatch", that means I am referencing a separate file with the extension .sh as a complete batch script that runs from the HCC's SLURM server. You should transfer your version of that script to the local working directory before running the sbatch code. Sometimes I also run shorter jobs as an [interactive job](https://hcc.unl.edu/docs/submitting_jobs/creating_an_interactive_job/). You can read more about that on the HCC manual if you want to try it.  
+
+I also use a custom language engine in this script that I named "terminal." If you see a chunk of code with {terminal, warning = FALSE} written where you would usually see {r} at the top of the chunk, then running the chunk should only print that code as a text string in this document. This just makes it easier for me to copy and paste the code directly into the terminal panel that I use in my R Studio window when running code through a remote server instead of my local R console. There are ways to set R Studio up to run code through multiple servers, but I find this the simplest way to switch back and forth while still keeping a record of the code that have used or changes I have made to it.  
+
+#### Methods Parameters
+
+I keep track of my paremeters for workflows using the config package and file. Below is my full-length config.yml file. Scroll down to "methods_16s" to see the parameters I use for 16S microbiome sequences generated with ONT's rapid 16S kit. This allows us to modify parameters in one central location that we reference in all other scripts, avoiding any inconsistences across bioinformatic stages and giving us one place to check when reporting the methods for manuscripts or presentations.  
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide Config File (config.yml)",
+        tagList(tags$pre(includeText("config.yml")))
+    )
+  )
+)
+```
+
+# First Time Steps: Setting Up your Working Swan Environment
+
+## Download Dorado Model
+
+You should have some basic understanding of which models Dorado provides for basecalling ONT reads by looking over [this page](https://github.com/nanoporetech/dorado#dna-models). I use the config package or parameters in the yaml header to track and source the models that I am using. You will need to report details like this in the methods section of any paper produced by your results.  
+
+**We will almost always choose the newest SUP model available on the HCC with the 10.4.1. kit chemistry.**  
+
+For some reason dorado's automatic sourcing and use of models does not seem to work from the GPU nodes on the HCC, so we will download a stable version of our current wording model. - *This file needs to be in your working directory where you run the dorado basecaller command or script.*
+
+```{terminal, warning = FALSE}
+cd swan$ont_reads
+
+module load dorado
+
+dorado download methods_16s$dorado_model
+```
+
+## Create Conda Environments
+
+We need to use some modules/packages that the HCC does not pre-install for us on Swan. We will create a mirror of those packages using the storage handler program Anaconda. Once you create an environment and load all the necessary packages, you can call and reopen that environment any time, and the same group of packages will be available to you. We will create two environments to reuse for our quality control and data filtering steps: **pycoQC** and **filter**. I named the former for its only package, but the latter actually uses the package **chopper**.
+
+## pycoQC
+
+```{terminal, warning = FALSE}
+module load anaconda
+conda create -n pycoQC python=3.6
+conda activate pycoQC
+mamba install pycoqc
+conda deactivate
+```
+
+## filter
+
+```{terminal, warning = FALSE}
+conda create -n filter
+conda activate filter
+mamba install chopper
+conda deactivate
+```
+
+# Every Time Steps
+
+## Preparing Reads for Analysis
+
+For many of the following steps I will provide you both a batch script template to submit as a normal job and the code with parameters to open an interactive job. The batch script templates are found as separate files in a subdirectory, but you can also run the chunk to autopopulate with your parameters and then paste into a file with the .sh suffix to submit.  
+
+### Basecalling Step {.tabset}
+
+This step can be the most glitchy and time-consuming because of the more intensive memory requirements of the Dorado basecaller (see [here](https://github.com/nanoporetech/dorado?tab=readme-ov-file#platforms)). We can't use just any of the nodes on the Swan sever - we have to use a GPU node, and so we must also load a specific version of the dorado package provided by the HCC team.
+
+#### Batch Script Header
+
+```{terminal, warning = FALSE}
+#!/bin/bash
+#SBATCH --time=2:00:00
+#SBATCH --job-name=basecall_params$seqrun
+#SBATCH --error=swan$logs/basecall_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/basecall_params$seqrun_%A_%a.out
+#SBATCH --partition=gpu,guest_gpu
+#SBATCH --constraint='gpu_v100|gpu_t4'
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=200GB
+#SBATCH --gres=gpu:1
+```
+
+#### Open Interactive Job
+
+```{terminal, warning = FALSE}
+srun --partition=gpu,guest_gpu --time=2:30:00 --nodes=1 --ntasks=1 --cpus-per-task=8 --mem=256GB --gres=gpu:1 --job-name=basecall_params$seqrun --pty $SHELL
+```
+
+#### Code to Use
+
+```{terminal, warning = FALSE}
+module purge
+module load dorado-gpu/0.7
+
+pod5="swan$raw_loris_mb/params$seqrun/"
+basecalled="swan$basecalled_loris_mb/params$seqrun"
+mkdir -p $basecalled
+
+algo="swan$dorado_model"
+
+dorado basecaller "$algo" \
+    "$pod5" \
+    --recursive \
+    --no-trim \
+    > "$basecalled/params$seqrun.bam" && \
+dorado summary "$basecalled/params$seqrun.bam" > "$basecalled/params$seqrun_basecall_summary.tsv"
+
+```
+
+#### Submit Batch Script
+
+```{terminal, warning = FALSE}
+cd swan$scripts
+sbatch basecall_params$seqrun.sh
+```
+
+### Demultiplex and Trim {.tabset}
+
+Now we need to trim away the adapters and barcodes that we attached to our libraries before sequencing. The code below will also demultiplex your reads, but keep in mind that this is only necessary if you have pooled multiple barcoded samples into a single sequencing run (multiplexing). Dorado has algorithms that know the sequence of every ONT kit's barcodes attached to our libraries before pooling, and now it will use that information to assign a SampleID to every read.  
+
+You do not need to use the GPU nodes for this or any of the other jobs in this workflow (though it is fine if you already are in one). It is faster and easier to grab any of the available nodes and use the CPUs instead.  
+
+#### Batch Script Header
+
+```{terminal, warning = FALSE}
+#!/bin/bash
+#SBATCH --time=00:45:00
+#SBATCH --job-name=demux_trim_params$seqrun
+#SBATCH --error=swan$logs/demux_trim_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/demux_trim_params$seqrun_%A_%a.out
+#SBATCH --partition=guest
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --mem=100GB
+```
+
+#### Open Interactive Job
+
+```{terminal, warning = FALSE}
+srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=params$seqrundemux_trim --mem=100GB --time=0:45:00 --pty $SHELL
+```
+
+#### Code to Use
+
+```{terminal, warning = FALSE}
+module purge
+module load dorado/0.7
+
+cd swan$bioinformatics_stats
+
+basecalled="swan$basecalled_loris_mb/params$seqrun"
+sample_sheet="swan$samplesheets/params$sampleset/params$seqrun_sample_sheet.csv"
+trimmed="swan$trimmed_loris_mb/params$seqrun"
+
+mkdir -p $trimmed
+
+dorado demux "$basecalled" \
+    --output-dir "$trimmed" \
+    --kit-name "methods_16s$kit_name" \
+    --sample-sheet "$sample_sheet" \
+    --emit-fastq --emit-summary
+
+```
+
+#### Submit Batch Script
+
+```{terminal, warning = FALSE}
+cd swan$scripts
+sbatch demux_trim_params$seqrun.sh
+```
+
+### Quality Control {.tabset}
+
+Now we need to trim away the messy ends of our reads (they are kind of like the first pancake - never as precise as the middle regions) and filter out any reads with a lower quality score than our threshold. Again, these parameters will be important things to note in the methods of any results you publish/present, so I keep a record of my working parameters in the yaml header or my config file, which you will see below.
+
+#### Batch Script Header
+
+```{terminal, warning = FALSE}
+#!/bin/bash
+#SBATCH --time=00:45:00
+#SBATCH --job-name=qc_params$seqrun
+#SBATCH --error=swan$logs/qc_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/qc_params$seqrun_%A_%a.out
+#SBATCH --partition=guest
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --mem=100GB
+```
+
+#### Open Interactive Job
+
+```{terminal, warning = FALSE}
+srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=qc_params$seqrun --mem=100GB --time=0:45:00 --pty $SHELL
+```
+
+#### Code to Use
+
+>Note: the batch script actually has two distinct parts, so if you run this as an interactive job, I recommend you paste the first code chunk and then run the second one when it is done. If you use a batch script, just paste both chunks in order into your .sh file.
+
+##### Part 1
+
+```{terminal, warning = FALSE}
+module purge
+module load anaconda
+
+conda activate filter
+
+trimmed="swan$trimmed_loris_mb/params$seqrun"
+filtered="swan$filtered_loris_mb/params$seqrun"
+
+mkdir -p $filtered
+
+cd $trimmed
+
+
+for file in "$trimmed"/*.fastq; do
+    
+    if [ -f "$file" ]; then
+       
+        base_filename=$(basename "$file")
+
+        chopper --maxlength methods_16s$max_length --minlength methods_16s$min_length --quality methods_16s$min_qual --input "$file" > "$filtered/$base_filename"
+
+        echo "Processed $file"
+    else
+        echo "Error: File $file does not exist or is not a regular file."
+    fi
+done
+
+```
+
+##### Part 2
+
+>This part just reorganizes the files so that they are in the proper structure for the EPI2ME Workflows that we use next to easily locate them.
+
+```{terminal, warning = FALSE}
+cd $filtered
+
+for file in "$filtered"/*.fastq; do
+    if [ -f "$file" ]; then
+        base_filename=$(basename "$file" .fastq)
+        
+        mkdir -p "$filtered/$base_filename"
+        
+        mv "$file" "$filtered/$base_filename/${base_filename}.fastq"
+        
+        echo "Organized $file"
+    else
+        echo "Error: File $file does not exist or is not a regular file."
+    fi
+done
+
+```
+
+
+#### Submit Batch Script
+
+```{terminal, warning = FALSE}
+cd swan$scripts
+sbatch qc_params$seqrun.sh
+```
+
+## Final Processing Step: Alignment, Sorting, Etc.
+
+Now we can think of all our reads as some more cleanly filtered and sorted puzzle pieces all lumped into buckets by SampleID. We want to turn those pieces into puzzles, but the final product will depend on which broader pipeline you are working with. In most cases, we will use one of the EPI2ME workflows provided by ONT and tailored specifically to long-read sequences like ours.  
+
+Most EPI2ME workflows use a program called NextFlow, which basically packages all the dependencies needed for a multi-step pipeline into a single mirror (kind of like Anaconda). NextFlow uses a language called *Groovy*, so if you have never worked with it, there can be a bit of a learning curve. The scripts I provide should work out of the box, but let me know if you need help troubleshooting a NextFlow script of your own. See [here](https://www.nextflow.io/docs/latest/index.html) and [here](https://labs.epi2me.io/wfindex/) for more help or options.  
+
+I am going to provide an example below that we use for microbiome data. Our puzzle assembly steps for each mutliplex run of rapid16s-prepped libraries looks like this:  
+
+1. Filter and Trim once more for good measure.
+2. Align each individual read to a database of publicly-available reference sequences.
+3. Assign a taxonomic identity to each read based on which reference sequence it best aligns to, so long as the similarity surpasses our threshold.
+4. Generate a list of all taxa represented by each SampleID's reads and count how many total reads for that sample have been assigned to teach taxon.  
+
+We will use the wf-16s pipeline by EPI2ME to do this. You should have a look at all the options and steps described [here](https://github.com/epi2me-labs/wf-16s) if you use this workflow. Work out which options I have selected or left to default in the script provided, because you will need to mention those details in the methods of anything published/presented.  
+
+### Batch Script Header
+
+>Notice that this is a more memory- and time-intensive job than the others. You will need to scale up time for more samples/reads or longer reads.
+
+```{terminal, warning = FALSE}
+#!/bin/bash
+#SBATCH --time=03:00:00
+#SBATCH --job-name=wf16s_params$seqrun
+#SBATCH --error=swan$logs/wf16s_params$seqrun_%A_%a.err
+#SBATCH --output=swan$logs/wf16s_params$seqrun_%A_%a.out
+#SBATCH --partition=guest
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=350GB
+```
+
+### Open Interactive Job
+
+```{terminal, warning = FALSE}
+srun --partition=guest --nodes=1 --ntasks-per-node=1 --job-name=wf16s_params$seqrun --mem=350GB --time=03:00:00 --cpus-per-task=32 --pty $SHELL
+```
+
+### Code to Use
+
+```{terminal, warning = FALSE}
+module purge
+module load dorado/0.7
+
+filtered="swan$filtered_loris_mb/params$seqrun"
+
+cd "swan$bioinformatics_stats/"
+
+processed="path$outputs_wf16sparams$seqrun"
+
+mkdir -p $processed
+
+module load "nextflow"
+
+nextflow run epi2me-labs/wf-16s \
+-profile singularity \
+--fastq "$filtered" \
+--taxonomic_rank methods_16s$tax_rank \
+--keep_bam \
+--minimap2_by_reference \
+--out_dir "$processed" \
+--min_len methods_16s$min_length \
+--max_len methods_16s$max_length \
+--abundance_threshold methods_16s$abund_threshold \
+--min_read_qual methods_16s$min_qual \
+--min_percent_identity methods_16s$min_id \
+--min_ref_coverage methods_16s$min_cov \
+--n_taxa_barplot methods_16s$n_taxa_barplot \
+--threads 32
+
+```
+
+### Submit Batch Script
+
+```{terminal, warning = FALSE}
+cd swan$scripts
+sbatch wf16s_params$seqrun.sh
+```
+
+# Next Steps
+
+Once your run finishes you should move onto the next workflow. If you are working with 16S data then that will be the MicroEcoDataPrep.Rmd.
