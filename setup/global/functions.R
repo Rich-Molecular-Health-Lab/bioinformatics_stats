@@ -120,40 +120,6 @@ read.csvs <- function(file) {
   return(data)
 }
 
-yes.no.aggregated <- function(col) {
-  JS("
-  function(cellInfo) {
-        const values = cellInfo.subRows.map(function(row) { 
-        return row['col'] === 'no' ? '\u274c No' : '\u2714\ufe0f Yes' 
-        })
-      
-      // Count occurrences of each value
-      const counts = values.reduce(function(acc, v) {
-        acc[v] = (acc[v] || 0) + 1;
-        return acc;
-      }, {});
-      
-      // Format the counts as a string
-      return Object.entries(counts)
-        .map(([key, count]) => `${key}: ${count}`)
-        .join(', ');
-  }
-  ")
-}
-
-relative_values <- function(col, col2) {
-  col2 = col/max(col)
-}
-
-wide_subtables <- function(tbl, class) {
-  tbl %>% select(identifier, subject, class) %>% 
-    unnest(class) %>% 
-    select(identifier, subject, nutrient, fed) %>%
-    pivot_wider(id_cols     = c("identifier", "subject"), 
-                names_from  = "nutrient", 
-                values_from = "fed") %>%
-    rename_with( ~ paste0(class, "_", .x), total)
-}
 
 rescale_dose <- function(col, max) {
   col = case_when(col == 0   ~ 0,

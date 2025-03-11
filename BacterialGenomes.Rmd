@@ -1,0 +1,56 @@
+---
+title: "Exploring Whole Bacterial Genome Assemblies"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  email: "'aliciarich@unomaha.edu'"
+  sampleset: "isolates"
+  seqrun: "salci1"
+  
+---
+
+```{r, message = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("BacterialGenomes.Rmd")
+source(here::here(global$setup))
+
+
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+```
+
+
+```{r}
+flye <- read.table(path[[paste0(params$seqrun)]]$flye, sep = "\t", header = T)
+```
+
+Notes on Sample:
+
+1.5M Lithium Chloride solution
+- LB medium
+- forms small, yellow colonies
+
+
+Nesterenkonia is closest genus hit
+All from soda lakes
+
+
+Vitamin B12 uptake genes are abundant
+
+Quibalamine
+
+The goal is to determine whether they are pulling lithium out of the environment and how we can exploit that function
+

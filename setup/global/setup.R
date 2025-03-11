@@ -70,3 +70,11 @@ opts_chunk$set(message = FALSE,
                eval    = TRUE,
                comment = "")
 
+
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+
+font_add_google("Noto Sans Symbols", family = "NotoSym")
+showtext_auto()
+

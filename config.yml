@@ -79,6 +79,11 @@ loris:
   sequencing:
     coverage: "visuals/loris_depth_summary.html"
     depth_plot: "visuals/loris_depth_hist.html"
+  AZAstudbooks:
+    living25: "metadata/loris/Studbook/LivingPop_2025.csv"
+    living21: "metadata/loris/Studbook/LivingPop_2021.csv"
+    historic21: "metadata/loris/Studbook/HistoricPop_2021.csv"
+    institutions: "metadata/loris/Studbook/CurrentInstitutions_2025.csv"
   metadata: 
     scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/diet_schedule.R")
     bristol: "metadata/loris/bristols.tsv"
