@@ -128,10 +128,6 @@ page_fluid(
       title = "Other External Setup Scripts",
       open = FALSE,
       accordion_panel(
-        "knit_engines.R",
-        tagList(tags$pre(includeText(here(global$knit_engines))))
-    ),
-      accordion_panel(
         "conflicts.R",
         tagList(tags$pre(includeText(here(global$conflicts))))
     ),

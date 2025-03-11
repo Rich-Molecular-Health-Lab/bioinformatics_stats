@@ -1,6 +1,5 @@
 default:
   setup: "setup/global/setup.R"
-  knit_engines: "setup/global/knit_engines.R"
   conflicts: "setup/global/conflicts.R"
   functions: "setup/global/functions.R"
   packages: "setup/global/packages.R"
@@ -8,18 +7,12 @@ default:
   fonts: "setup/global/fonts/FA6_Free-Solid-900.otf"
   test_prediction: "setup/microbiome/test_prediction/"
   visuals: "visuals/"
-  summaries:
-    metadata: "../summaries/metadata/"
   tmp_tsv: "tmp/tmp_table.tsv"
   tmp_downloads: "tmp/downloads/"
   tmp_fetch: "tmp/fetch_references.txt"
   tmp_fasta3: "tmp/tmp3.fasta"
   tmp_fasta4: "tmp/tmp4.fasta"
-  
-modules:
-  generate_alignment_stats: "modules/generate_alignment_stats.R"
-  reactable_functions: "modules/reactable_functions.R"
-  reactable_columns: "modules/reactable_columns.R"
+  git_url: "https://rich-molecular-health-lab.github.io/"
   
 isolates:
   samplesets: "salci" 
@@ -58,14 +51,15 @@ swan:
   loris_mb_aligned: "/work/richlab/aliciarich/bioinformatics_stats/data/loris/taxonomy/refseqs_aligned.fasta"
   loris_mb_tree: "/work/richlab/aliciarich/bioinformatics_stats/data/loris/taxonomy/refseqs_tree.newick"
 
-<<<<<<< HEAD
-isolates:
-  samplesets: "salci"
-=======
 bats:
   sequencing:
     coverage: "visuals/bats_16s_depth_summary.html"
     depth_plot: "visuals/bats_16s_depth_hist.html"
+  metadata:
+    summary: "metadata/bats/samples_metadata.tsv"
+    key: "metadata/bats/metadata_key.R"
+    factors: "metadata/bats/factors.R"
+    scripts: !expr list("metadata/bats/colors.R", "metadata/bats/metadata_key.R", "metadata/bats/factors.R")
   inventories:
     all_stages: "../read_processing/samples/inventories/bats/compilation_bats.tsv"
     collection: "../read_processing/samples/inventories/bats/samples_bats.csv"
@@ -79,8 +73,6 @@ bats:
     tree: "data/bats/taxonomy/refseqs_tree.newick"
     table: "data/bats/taxonomy/tax_table.tsv"
 
->>>>>>> 68a4a01 (checking for updates)
-
 loris:
   day1: "2023-10-26"
   last: "2024-10-25"
@@ -88,7 +80,7 @@ loris:
     coverage: "visuals/loris_depth_summary.html"
     depth_plot: "visuals/loris_depth_hist.html"
   metadata: 
-    scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/nutrition.R", "metadata/loris/hdz_loris_log.R", "metadata/loris/diet_tables.R")
+    scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/diet_schedule.R")
     bristol: "metadata/loris/bristols.tsv"
     studbook: "metadata/loris/subjects_loris.csv"
     summary: "metadata/loris/samples_metadata.tsv"
@@ -180,7 +172,6 @@ loris:
         samples: "microeco/loris/datasets/main/sample_table.tsv"
         taxa:    "microeco/loris/datasets/main/tax_table.tsv"
       culi: 
-<<<<<<< HEAD
         feature: "microeco/loris/datasets/culi/feature_table.tsv"
         tree:    "microeco/loris/datasets/culi/phylo_tree.tre"
         fasta:   "microeco/loris/datasets/culi/rep_fasta.fasta"
@@ -192,207 +183,6 @@ loris:
         fasta:   "microeco/loris/datasets/warb/rep_fasta.fasta"
         samples: "microeco/loris/datasets/warb/sample_table.tsv"
         taxa:    "microeco/loris/datasets/warb/tax_table.tsv"
-
-=======
-        phylum: 
-          feature: "microeco/loris/datasets/culi/phy_dataset_culi/feature_table.tsv"
-          tree:    "microeco/loris/datasets/culi/phy_dataset_culi/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/culi/phy_dataset_culi/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/culi/phy_dataset_culi/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/culi/phy_dataset_culi/tax_table.tsv"
-        class:  
-          feature: "microeco/loris/datasets/culi/cla_dataset_culi/feature_table.tsv"
-          tree:    "microeco/loris/datasets/culi/cla_dataset_culi/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/culi/cla_dataset_culi/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/culi/cla_dataset_culi/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/culi/cla_dataset_culi/tax_table.tsv"
-        order:  
-          feature: "microeco/loris/datasets/culi/ord_dataset_culi/feature_table.tsv"
-          tree:    "microeco/loris/datasets/culi/ord_dataset_culi/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/culi/ord_dataset_culi/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/culi/ord_dataset_culi/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/culi/ord_dataset_culi/tax_table.tsv"
-        family: 
-          feature: "microeco/loris/datasets/culi/fam_dataset_culi/feature_table.tsv"
-          tree:    "microeco/loris/datasets/culi/fam_dataset_culi/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/culi/fam_dataset_culi/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/culi/fam_dataset_culi/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/culi/fam_dataset_culi/tax_table.tsv"
-        genus:  
-          feature: "microeco/loris/datasets/culi/gen_dataset_culi/feature_table.tsv"
-          tree:    "microeco/loris/datasets/culi/gen_dataset_culi/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/culi/gen_dataset_culi/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/culi/gen_dataset_culi/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/culi/gen_dataset_culi/tax_table.tsv"
-        species: 
-          feature: "microeco/loris/datasets/culi/spe_dataset_culi/feature_table.tsv"
-          tree:    "microeco/loris/datasets/culi/spe_dataset_culi/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/culi/spe_dataset_culi/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/culi/spe_dataset_culi/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/culi/spe_dataset_culi/tax_table.tsv"
-      warb: 
-        phylum: 
-          feature: "microeco/loris/datasets/warb/phy_dataset_warb/feature_table.tsv"
-          tree:    "microeco/loris/datasets/warb/phy_dataset_warb/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/warb/phy_dataset_warb/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/warb/phy_dataset_warb/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/warb/phy_dataset_warb/tax_table.tsv"
-        class:  
-          feature: "microeco/loris/datasets/warb/cla_dataset_warb/feature_table.tsv"
-          tree:    "microeco/loris/datasets/warb/cla_dataset_warb/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/warb/cla_dataset_warb/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/warb/cla_dataset_warb/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/warb/cla_dataset_warb/tax_table.tsv"
-        order:  
-          feature: "microeco/loris/datasets/warb/ord_dataset_warb/feature_table.tsv"
-          tree:    "microeco/loris/datasets/warb/ord_dataset_warb/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/warb/ord_dataset_warb/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/warb/ord_dataset_warb/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/warb/ord_dataset_warb/tax_table.tsv"
-        family: 
-          feature: "microeco/loris/datasets/warb/fam_dataset_warb/feature_table.tsv"
-          tree:    "microeco/loris/datasets/warb/fam_dataset_warb/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/warb/fam_dataset_warb/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/warb/fam_dataset_warb/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/warb/fam_dataset_warb/tax_table.tsv"
-        genus:  
-          feature: "microeco/loris/datasets/warb/gen_dataset_warb/feature_table.tsv"
-          tree:    "microeco/loris/datasets/warb/gen_dataset_warb/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/warb/gen_dataset_warb/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/warb/gen_dataset_warb/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/warb/gen_dataset_warb/tax_table.tsv"
-        species: 
-          feature: "microeco/loris/datasets/warb/spe_dataset_warb/feature_table.tsv"
-          tree:    "microeco/loris/datasets/warb/spe_dataset_warb/phylo_tree.tre"
-          fasta:   "microeco/loris/datasets/warb/spe_dataset_warb/rep_fasta.fasta"
-          samples: "microeco/loris/datasets/warb/spe_dataset_warb/sample_table.tsv"
-          taxa:    "microeco/loris/datasets/warb/spe_dataset_warb/tax_table.tsv"
-    
-marmoset:
-  extracts: "dataframes/sample_inventories/extracts_marmoset.tsv"
-  libraries: "dataframes/sample_inventories/libraries_marmoset.tsv"
-  samples: "dataframes/sample_inventories/samples_marmoset.tsv"
-  compilation: "dataframes/sample_inventories/compilation_marmoset.tsv"
-  libraries_csv: "../data/libraries_marmoset.csv"
-  seqruns_csv: "../data/seqruns_marmoset.csv"
-  compilation_csv: "../data/compilation_marmoset.csv"
-  extracts_csv: "../data/extracts_marmoset.csv"
-  samples_csv: "../data/samples_marmoset.csv"
-  barcodes_output: "dataframes/barcodes/marmoset/"
-  barcode_alignments: "../labwork/minion_data/barcode_alignments/marmoset/"
-  sample_sheet: "marmoset/dataframes/sample_sheet/"
-  taxonomy_list: "marmoset/dataframes/taxonomy_list/"
-  microeco: 
-    abund:
-      main:
-        phylum:  "microeco/marmoset/abundance/main/phy_abund_main/Phylum_abund.tsv"
-        class:   "microeco/marmoset/abundance/main/cla_abund_main/Class_abund.tsv"
-        order:   "microeco/marmoset/abundance/main/ord_abund_main/Order_abund.tsv"
-        family:  "microeco/marmoset/abundance/main/fam_abund_main/Family_abund.tsv"
-        genus:   "microeco/marmoset/abundance/main/gen_abund_main/Genus_abund.tsv"
-        species: "microeco/marmoset/abundance/main/spe_abund_main/Species_abund.tsv"
-      bysubj:
-        phylum:  "microeco/marmoset/abundance/bysubject/phylum/"
-        class:   "microeco/marmoset/abundance/bysubject/class/"
-        order:   "microeco/marmoset/abundance/bysubject/order/"
-        family:  "microeco/marmoset/abundance/bysubject/family/"
-        genus:   "microeco/marmoset/abundance/bysubject/genus/"
-        species: "microeco/marmoset/abundance/bysubject/species/"
-    alpha:
-      main:
-        phylum:  "microeco/marmoset/alphadiversity/main/phy_alphadiv_main/alpha_diversity.csv"
-        class:   "microeco/marmoset/alphadiversity/main/cla_alphadiv_main/alpha_diversity.csv"
-        order:   "microeco/marmoset/alphadiversity/main/ord_alphadiv_main/alpha_diversity.csv"
-        family:  "microeco/marmoset/alphadiversity/main/fam_alphadiv_main/alpha_diversity.csv"
-        genus:   "microeco/marmoset/alphadiversity/main/gen_alphadiv_main/alpha_diversity.csv"
-        species: "microeco/marmoset/alphadiversity/main/spe_alphadiv_main/alpha_diversity.csv"
-      bysubj:
-        phylum:  "microeco/marmoset/alphadiversity/bysubject/phylum/"
-        class:   "microeco/marmoset/alphadiversity/bysubject/class/"
-        order:   "microeco/marmoset/alphadiversity/bysubject/order/"
-        family:  "microeco/marmoset/alphadiversity/bysubject/family/"
-        genus:   "microeco/marmoset/alphadiversity/bysubject/genus/"
-        species: "microeco/marmoset/alphadiversity/bysubject/species/"
-    beta:
-      main:
-        phylum: 
-          canber:    "microeco/marmoset/betadiversity/main/phy_betadiv_main/canberra.csv"
-          unifrac_u: "microeco/marmoset/betadiversity/main/phy_betadiv_main/unwei_unifrac.csv"
-          unifrac_w: "microeco/marmoset/betadiversity/main/phy_betadiv_main/wei_unifrac.csv"
-        class:  
-          canber:    "microeco/marmoset/betadiversity/main/cla_betadiv_main/canberra.csv"
-          unifrac_u: "microeco/marmoset/betadiversity/main/cla_betadiv_main/unwei_unifrac.csv"
-          unifrac_w: "microeco/marmoset/betadiversity/main/cla_betadiv_main/wei_unifrac.csv"
-        order:  
-          canber:    "microeco/marmoset/betadiversity/main/ord_betadiv_main/canberra.csv"
-          unifrac_u: "microeco/marmoset/betadiversity/main/ord_betadiv_main/unwei_unifrac.csv"
-          unifrac_w: "microeco/marmoset/betadiversity/main/ord_betadiv_main/wei_unifrac.csv"
-        family: 
-          canber:    "microeco/marmoset/betadiversity/main/fam_betadiv_main/canberra.csv"
-          unifrac_u: "microeco/marmoset/betadiversity/main/fam_betadiv_main/unwei_unifrac.csv"
-          unifrac_w: "microeco/marmoset/betadiversity/main/fam_betadiv_main/wei_unifrac.csv"
-        genus:  
-          canber:    "microeco/marmoset/betadiversity/main/gen_betadiv_main/canberra.csv"
-          unifrac_u: "microeco/marmoset/betadiversity/main/gen_betadiv_main/unwei_unifrac.csv"
-          unifrac_w: "microeco/marmoset/betadiversity/main/gen_betadiv_main/wei_unifrac.csv"
-        species:
-          canber:    "microeco/marmoset/betadiversity/main/spe_betadiv_main/canberra.csv"
-          unifrac_u: "microeco/marmoset/betadiversity/main/spe_betadiv_main/unwei_unifrac.csv"
-          unifrac_w: "microeco/marmoset/betadiversity/main/spe_betadiv_main/wei_unifrac.csv"
-      bysubj:
-        phylum:  "microeco/marmoset/betadiversity/bysubject/phylum/"
-        class:   "microeco/marmoset/betadiversity/bysubject/class/"
-        order:   "microeco/marmoset/betadiversity/bysubject/order/"
-        family:  "microeco/marmoset/betadiversity/bysubject/family/"
-        genus:   "microeco/marmoset/betadiversity/bysubject/genus/"
-        species: "microeco/marmoset/betadiversity/bysubject/species/"
-    data:
-      main:
-        phylum: 
-          feature: "microeco/marmoset/datasets/main/phy_dataset_main/feature_table.tsv"
-          tree:    "microeco/marmoset/datasets/main/phy_dataset_main/phylo_tree.tre"
-          fasta:   "microeco/marmoset/datasets/main/phy_dataset_main/rep_fasta.fasta"
-          samples: "microeco/marmoset/datasets/main/phy_dataset_main/sample_table.tsv"
-          taxa:    "microeco/marmoset/datasets/main/phy_dataset_main/tax_table.tsv"
-        class:  
-          feature: "microeco/marmoset/datasets/main/cla_dataset_main/feature_table.tsv"
-          tree:    "microeco/marmoset/datasets/main/cla_dataset_main/phylo_tree.tre"
-          fasta:   "microeco/marmoset/datasets/main/cla_dataset_main/rep_fasta.fasta"
-          samples: "microeco/marmoset/datasets/main/cla_dataset_main/sample_table.tsv"
-          taxa:    "microeco/marmoset/datasets/main/cla_dataset_main/tax_table.tsv"
-        order:  
-          feature: "microeco/marmoset/datasets/main/ord_dataset_main/feature_table.tsv"
-          tree:    "microeco/marmoset/datasets/main/ord_dataset_main/phylo_tree.tre"
-          fasta:   "microeco/marmoset/datasets/main/ord_dataset_main/rep_fasta.fasta"
-          samples: "microeco/marmoset/datasets/main/ord_dataset_main/sample_table.tsv"
-          taxa:    "microeco/marmoset/datasets/main/ord_dataset_main/tax_table.tsv"
-        family: 
-          feature: "microeco/marmoset/datasets/main/fam_dataset_main/feature_table.tsv"
-          tree:    "microeco/marmoset/datasets/main/fam_dataset_main/phylo_tree.tre"
-          fasta:   "microeco/marmoset/datasets/main/fam_dataset_main/rep_fasta.fasta"
-          samples: "microeco/marmoset/datasets/main/fam_dataset_main/sample_table.tsv"
-          taxa:    "microeco/marmoset/datasets/main/fam_dataset_main/tax_table.tsv"
-        genus:  
-          feature: "microeco/marmoset/datasets/main/gen_dataset_main/feature_table.tsv"
-          tree:    "microeco/marmoset/datasets/main/gen_dataset_main/phylo_tree.tre"
-          fasta:   "microeco/marmoset/datasets/main/gen_dataset_main/rep_fasta.fasta"
-          samples: "microeco/marmoset/datasets/main/gen_dataset_main/sample_table.tsv"
-          taxa:    "microeco/marmoset/datasets/main/gen_dataset_main/tax_table.tsv"
-        species: 
-          feature: "microeco/marmoset/datasets/main/spe_dataset_main/feature_table.tsv"
-          tree:    "microeco/marmoset/datasets/main/spe_dataset_main/phylo_tree.tre"
-          fasta:   "microeco/marmoset/datasets/main/spe_dataset_main/rep_fasta.fasta"
-          samples: "microeco/marmoset/datasets/main/spe_dataset_main/sample_table.tsv"
-          taxa:    "microeco/marmoset/datasets/main/spe_dataset_main/tax_table.tsv"
-      bysubj:
-        phylum:  "microeco/marmoset/datasets/bysubject/phylum/"
-        class:   "microeco/marmoset/datasets/bysubject/class/"
-        order:   "microeco/marmoset/datasets/bysubject/order/"
-        family:  "microeco/marmoset/datasets/bysubject/family/"
-        genus:   "microeco/marmoset/datasets/bysubject/genus/"
-        species: "microeco/marmoset/datasets/bysubject/species/"
-        
->>>>>>> 68a4a01 (checking for updates)
 
 sample_sheets:
   compilations:
@@ -522,3 +312,126 @@ methods_16s:
     loris_rarefy: 4500
     keg_minID: 97
     
+marmoset:
+  extracts: "dataframes/sample_inventories/extracts_marmoset.tsv"
+  libraries: "dataframes/sample_inventories/libraries_marmoset.tsv"
+  samples: "dataframes/sample_inventories/samples_marmoset.tsv"
+  compilation: "dataframes/sample_inventories/compilation_marmoset.tsv"
+  libraries_csv: "../data/libraries_marmoset.csv"
+  seqruns_csv: "../data/seqruns_marmoset.csv"
+  compilation_csv: "../data/compilation_marmoset.csv"
+  extracts_csv: "../data/extracts_marmoset.csv"
+  samples_csv: "../data/samples_marmoset.csv"
+  barcodes_output: "dataframes/barcodes/marmoset/"
+  barcode_alignments: "../labwork/minion_data/barcode_alignments/marmoset/"
+  sample_sheet: "marmoset/dataframes/sample_sheet/"
+  taxonomy_list: "marmoset/dataframes/taxonomy_list/"
+  microeco: 
+    abund:
+      main:
+        phylum:  "microeco/marmoset/abundance/main/phy_abund_main/Phylum_abund.tsv"
+        class:   "microeco/marmoset/abundance/main/cla_abund_main/Class_abund.tsv"
+        order:   "microeco/marmoset/abundance/main/ord_abund_main/Order_abund.tsv"
+        family:  "microeco/marmoset/abundance/main/fam_abund_main/Family_abund.tsv"
+        genus:   "microeco/marmoset/abundance/main/gen_abund_main/Genus_abund.tsv"
+        species: "microeco/marmoset/abundance/main/spe_abund_main/Species_abund.tsv"
+      bysubj:
+        phylum:  "microeco/marmoset/abundance/bysubject/phylum/"
+        class:   "microeco/marmoset/abundance/bysubject/class/"
+        order:   "microeco/marmoset/abundance/bysubject/order/"
+        family:  "microeco/marmoset/abundance/bysubject/family/"
+        genus:   "microeco/marmoset/abundance/bysubject/genus/"
+        species: "microeco/marmoset/abundance/bysubject/species/"
+    alpha:
+      main:
+        phylum:  "microeco/marmoset/alphadiversity/main/phy_alphadiv_main/alpha_diversity.csv"
+        class:   "microeco/marmoset/alphadiversity/main/cla_alphadiv_main/alpha_diversity.csv"
+        order:   "microeco/marmoset/alphadiversity/main/ord_alphadiv_main/alpha_diversity.csv"
+        family:  "microeco/marmoset/alphadiversity/main/fam_alphadiv_main/alpha_diversity.csv"
+        genus:   "microeco/marmoset/alphadiversity/main/gen_alphadiv_main/alpha_diversity.csv"
+        species: "microeco/marmoset/alphadiversity/main/spe_alphadiv_main/alpha_diversity.csv"
+      bysubj:
+        phylum:  "microeco/marmoset/alphadiversity/bysubject/phylum/"
+        class:   "microeco/marmoset/alphadiversity/bysubject/class/"
+        order:   "microeco/marmoset/alphadiversity/bysubject/order/"
+        family:  "microeco/marmoset/alphadiversity/bysubject/family/"
+        genus:   "microeco/marmoset/alphadiversity/bysubject/genus/"
+        species: "microeco/marmoset/alphadiversity/bysubject/species/"
+    beta:
+      main:
+        phylum: 
+          canber:    "microeco/marmoset/betadiversity/main/phy_betadiv_main/canberra.csv"
+          unifrac_u: "microeco/marmoset/betadiversity/main/phy_betadiv_main/unwei_unifrac.csv"
+          unifrac_w: "microeco/marmoset/betadiversity/main/phy_betadiv_main/wei_unifrac.csv"
+        class:  
+          canber:    "microeco/marmoset/betadiversity/main/cla_betadiv_main/canberra.csv"
+          unifrac_u: "microeco/marmoset/betadiversity/main/cla_betadiv_main/unwei_unifrac.csv"
+          unifrac_w: "microeco/marmoset/betadiversity/main/cla_betadiv_main/wei_unifrac.csv"
+        order:  
+          canber:    "microeco/marmoset/betadiversity/main/ord_betadiv_main/canberra.csv"
+          unifrac_u: "microeco/marmoset/betadiversity/main/ord_betadiv_main/unwei_unifrac.csv"
+          unifrac_w: "microeco/marmoset/betadiversity/main/ord_betadiv_main/wei_unifrac.csv"
+        family: 
+          canber:    "microeco/marmoset/betadiversity/main/fam_betadiv_main/canberra.csv"
+          unifrac_u: "microeco/marmoset/betadiversity/main/fam_betadiv_main/unwei_unifrac.csv"
+          unifrac_w: "microeco/marmoset/betadiversity/main/fam_betadiv_main/wei_unifrac.csv"
+        genus:  
+          canber:    "microeco/marmoset/betadiversity/main/gen_betadiv_main/canberra.csv"
+          unifrac_u: "microeco/marmoset/betadiversity/main/gen_betadiv_main/unwei_unifrac.csv"
+          unifrac_w: "microeco/marmoset/betadiversity/main/gen_betadiv_main/wei_unifrac.csv"
+        species:
+          canber:    "microeco/marmoset/betadiversity/main/spe_betadiv_main/canberra.csv"
+          unifrac_u: "microeco/marmoset/betadiversity/main/spe_betadiv_main/unwei_unifrac.csv"
+          unifrac_w: "microeco/marmoset/betadiversity/main/spe_betadiv_main/wei_unifrac.csv"
+      bysubj:
+        phylum:  "microeco/marmoset/betadiversity/bysubject/phylum/"
+        class:   "microeco/marmoset/betadiversity/bysubject/class/"
+        order:   "microeco/marmoset/betadiversity/bysubject/order/"
+        family:  "microeco/marmoset/betadiversity/bysubject/family/"
+        genus:   "microeco/marmoset/betadiversity/bysubject/genus/"
+        species: "microeco/marmoset/betadiversity/bysubject/species/"
+    data:
+      main:
+        phylum: 
+          feature: "microeco/marmoset/datasets/main/phy_dataset_main/feature_table.tsv"
+          tree:    "microeco/marmoset/datasets/main/phy_dataset_main/phylo_tree.tre"
+          fasta:   "microeco/marmoset/datasets/main/phy_dataset_main/rep_fasta.fasta"
+          samples: "microeco/marmoset/datasets/main/phy_dataset_main/sample_table.tsv"
+          taxa:    "microeco/marmoset/datasets/main/phy_dataset_main/tax_table.tsv"
+        class:  
+          feature: "microeco/marmoset/datasets/main/cla_dataset_main/feature_table.tsv"
+          tree:    "microeco/marmoset/datasets/main/cla_dataset_main/phylo_tree.tre"
+          fasta:   "microeco/marmoset/datasets/main/cla_dataset_main/rep_fasta.fasta"
+          samples: "microeco/marmoset/datasets/main/cla_dataset_main/sample_table.tsv"
+          taxa:    "microeco/marmoset/datasets/main/cla_dataset_main/tax_table.tsv"
+        order:  
+          feature: "microeco/marmoset/datasets/main/ord_dataset_main/feature_table.tsv"
+          tree:    "microeco/marmoset/datasets/main/ord_dataset_main/phylo_tree.tre"
+          fasta:   "microeco/marmoset/datasets/main/ord_dataset_main/rep_fasta.fasta"
+          samples: "microeco/marmoset/datasets/main/ord_dataset_main/sample_table.tsv"
+          taxa:    "microeco/marmoset/datasets/main/ord_dataset_main/tax_table.tsv"
+        family: 
+          feature: "microeco/marmoset/datasets/main/fam_dataset_main/feature_table.tsv"
+          tree:    "microeco/marmoset/datasets/main/fam_dataset_main/phylo_tree.tre"
+          fasta:   "microeco/marmoset/datasets/main/fam_dataset_main/rep_fasta.fasta"
+          samples: "microeco/marmoset/datasets/main/fam_dataset_main/sample_table.tsv"
+          taxa:    "microeco/marmoset/datasets/main/fam_dataset_main/tax_table.tsv"
+        genus:  
+          feature: "microeco/marmoset/datasets/main/gen_dataset_main/feature_table.tsv"
+          tree:    "microeco/marmoset/datasets/main/gen_dataset_main/phylo_tree.tre"
+          fasta:   "microeco/marmoset/datasets/main/gen_dataset_main/rep_fasta.fasta"
+          samples: "microeco/marmoset/datasets/main/gen_dataset_main/sample_table.tsv"
+          taxa:    "microeco/marmoset/datasets/main/gen_dataset_main/tax_table.tsv"
+        species: 
+          feature: "microeco/marmoset/datasets/main/spe_dataset_main/feature_table.tsv"
+          tree:    "microeco/marmoset/datasets/main/spe_dataset_main/phylo_tree.tre"
+          fasta:   "microeco/marmoset/datasets/main/spe_dataset_main/rep_fasta.fasta"
+          samples: "microeco/marmoset/datasets/main/spe_dataset_main/sample_table.tsv"
+          taxa:    "microeco/marmoset/datasets/main/spe_dataset_main/tax_table.tsv"
+      bysubj:
+        phylum:  "microeco/marmoset/datasets/bysubject/phylum/"
+        class:   "microeco/marmoset/datasets/bysubject/class/"
+        order:   "microeco/marmoset/datasets/bysubject/order/"
+        family:  "microeco/marmoset/datasets/bysubject/family/"
+        genus:   "microeco/marmoset/datasets/bysubject/genus/"
+        species: "microeco/marmoset/datasets/bysubject/species/"

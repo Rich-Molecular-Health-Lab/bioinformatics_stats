@@ -1,0 +1,176 @@
+---
+title: "Wrangling Tidy Microbiome Datasets"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  email: "'aliciarich@unomaha.edu'"
+  sampleset: "loris"
+  seqrun: "hdz18"
+  
+---
+
+
+```{r, message = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("TidyData_Microbiome.Rmd")
+source(here::here(global$setup))
+
+
+for (file in micro$micro_scripts) {
+  source(here(file))
+}
+
+
+dataset_dir <- path$microeco$dataset
+
+
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+```
+
+```{r}
+source(here(path$metadata$key))
+source(here(path$metadata$factors))
+```
+
+# Intro
+
+## This Workflow
+
+This is the current recommended pipeline for processing **full-length 16S reads and count data** generated from the EPI2ME Labs wf-16s workflow.  
+
+>Before this script you should have processed your raw sequencing reads by following one of the following two Read Processing scripts:
+>>[`16S_ReadProcessing_RemotelyHCC`](https://rich-molecular-health-lab.github.io/read_processing/16S_ReadProcessing_RemotelyHCC.html)
+>>[`16S_ReadProcessing_Locally`](https://rich-molecular-health-lab.github.io/read_processing/16S_ReadProcessing_Locally.html)
+>You also should have prepared a tidy-formatted metadata file using the following script:
+>>[`MetadataSetup`](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html)
+
+## First Use
+
+### `Microeco` Package
+
+If this is your first time using MicroEco, you should start with the script  [`microeco_first_use`](https://rich-molecular-health-lab.github.io/bioinformatics_stats/setup/microbiome/microeco_first_use.html) before returning to this one to proceed.
+
+### HCC Swan Cluster
+
+This script switches back and forth between local R console commands and code that you will use in your terminal both to access local directories and to send scripts to the Swan server on the HCC. For more information on accessing the HCC and using the terminal language engine in this script, please see the script  [RemoteHCC_FirstUse](https://rich-molecular-health-lab.github.io/read_processing/RemoteHCC_FirstUse.html).  
+
+## Notes on Syntax/Functions
+
+This script uses some fairly complex custom functions that I wrote for reproducibility. Those functions should automatically load in a separate .R script sourced in the setup chunk above. One of those scripts will also load some factor variables and other parameters that I use to keep this script tidy.  
+
+## The Data Used Here
+
+I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original `.Rmd` script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
+
+# Other Configuration Settings
+
+## Sampleset in Params
+
+You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. So long as the same name is used consistently, this should automatically filter for that name (e.g., `loris` or `bats`). 
+
+## File Paths
+
+Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. This also shows the paths to different files and directories I reference throughout this script relative to the repository home. 
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External File",
+        tagList(tags$pre(includeText(here("config.yml"))))
+    )
+  )
+)
+```
+
+## Setup Scripts
+
+Note that I also include paths to files that this script will create. If the file is already there, then it will be overwritten, if not, it will be created there. Run the code below to set up your paths from the config file for the working sampleset you identified in the header:
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide External Script",
+        tagList(tags$pre(includeText(here(global$setup))))
+    )
+  )
+)
+```
+
+### Sequencing Run Lists
+
+The code in the chunk above also generated a list of formatted codes for each available sequencing run to date, separated by taxa/samplesets. Make sure the end number matches the highest integer we have for that sampleset to date (*you should see this if you check the text from the setup script above*).
+
+### Other Setup Scripts
+
+The script that I pasted above sources additional scripts that I run routinely at the start of any work to bring in functions and other inputs with shorter code chunks. You can flip through the text from those scripts below.
+
+```{r, echo = FALSE}
+page_fluid(
+    accordion(
+      title = "Other External Setup Scripts",
+      open = FALSE,
+      accordion_panel(
+        "conflicts.R",
+        tagList(tags$pre(includeText(here(global$conflicts))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(global$functions))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(global$packages))))
+    ),
+      accordion_panel(
+        "inputs.R",
+        tagList(tags$pre(includeText(here(micro$inputs))))
+    ),
+      accordion_panel(
+        "packages.R",
+        tagList(tags$pre(includeText(here(micro$packages))))
+    ),
+      accordion_panel(
+        "functions.R",
+        tagList(tags$pre(includeText(here(micro$functions))))
+    )
+  )
+)
+```
+
+# Load Data
+
+## Sample Metadata
+
+You should have already completed the [SampleInventory](https://rich-molecular-health-lab.github.io/read_processing/SampleInventory.html) and [MetadataSetup](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
+
+```{r}
+metadata <- read.table(path$metadata$summary, header = T, sep = "\t")  %>%
+  filter(steps_remaining == "sample extracted and sequenced") %>%
+  filter(!is.na(CollectionDate)) %>%
+  select(all_of(microeco_cols)) %>%
+  mutate(across(all_of(date.vars),   ~ ymd(.)),
+         across(all_of(yn.vars),     ~ str_to_lower(as.character(.))),
+         across(all_of(ids),         ~ str_to_lower(.))) %>%
+  mutate(Subject        = str_to_lower(subject)) %>%
+  arrange(study_day, Subject)
+
+```
+

@@ -14,6 +14,7 @@ output:
     df_print: paged
 params:
   sampleset: "loris"
+  seqrun: "hdz18"
                      
 ---
 
@@ -22,6 +23,10 @@ global             <- config::get(config = "default")
 
 here::i_am("MetadataSetup.Rmd")
 source(here::here(global$setup))
+```
+
+
+```{r, include = F}
 source(here(swan$functions))
 for (file in path$metadata$scripts) {
   source(here(file))
@@ -29,14 +34,13 @@ for (file in path$metadata$scripts) {
 
 ```
 
-
 # Intro
 
 The purpose of a metadata file is to organize the potential independent or predictor variables for your analysis into a single table with one row per SampleID. Then, when you produce a set of potential dependent or outcome values, you organize those into a similar structure with the SampleIDs organized rowwise to streamline the process of matching predictor variables to outcome variables by SampleID. It's good practice to keep as much of your information in one tidy table as possible so that you can keep pulling from that source to further filter, wrangle and analyze without losing track of different versions and datasets over time. That means you should brainstorm as many possible predictor variables you might use in downstream analysis as possible and organize them into one tidy table where each SampleID is matched to a value for every variable. You will end up ignoring most of these variables as you construct individual tests and visuals later, so consider this simply a rough draft of your information of interest. I am going to do this with the Pygmy Loris dataset for this tutorial. You may have a very different set of variables to organize for your own project.  
 
 ## Previous Scripts
 
-Before this, you should use the SampleInventory script to create the file compilation.tsv.  
+Before this, you should use the [`SampleInventory`](https://rich-molecular-health-lab.github.io/read_processing/SampleInventory.html) script to create the file `compilation.tsv`.  
 
 ## Other Configuration Settings
 
@@ -46,7 +50,7 @@ You can use the sampleset setting under params in the header of this script to s
 
 ### File Paths
 
-Next, you should make sure your config.yml file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. 
+Next, you should make sure your `config.yml` file contains the path to locate each of the files you will be using. Below is an example excerpt from my config file. 
 
 ```{r, echo = FALSE}
 page_fluid(
@@ -54,7 +58,7 @@ page_fluid(
       open = FALSE,
       accordion_panel(
         "Show/Hide External File",
-        tagList(tags$pre(includeText("config.yml")))
+        tagList(tags$pre(includeText(here("config.yml"))))
     )
   )
 )
@@ -88,10 +92,6 @@ page_fluid(
       title = "Other External Setup Scripts",
       open = FALSE,
       accordion_panel(
-        "knit_engines.R",
-        tagList(tags$pre(includeText(here(global$knit_engines))))
-    ),
-      accordion_panel(
         "conflicts.R",
         tagList(tags$pre(includeText(here(global$conflicts))))
     ),
@@ -118,6 +118,10 @@ page_fluid(
       title = "External Metadata Scripts",
       open = FALSE,
       accordion_panel(
+        "Render a Key for Metadata Variables with Descriptions",
+        tagList(tags$pre(includeText(here("metadata/loris/metadata_key.R"))))
+       ),
+      accordion_panel(
         "Nutrition Data from HDZ",
         tagList(tags$pre(includeText(here("metadata/loris/nutrition.R"))))
     ),
@@ -132,14 +136,6 @@ page_fluid(
       accordion_panel(
         "Assign colors and titles to factors for visualization",
         tagList(tags$pre(includeText(here("metadata/loris/factors.R"))))
-       ),
-      accordion_panel(
-        "Render a Key for Metadata Variables with Descriptions",
-        tagList(tags$pre(includeText(here("metadata/loris/metadata_key.R"))))
-       ),
-      accordion_panel(
-        "Design a visual table to render as a summary of metadata by sample.",
-        tagList(tags$pre(includeText(here("metadata/loris/reactable_rendering.R"))))
        )
     )
   )
@@ -148,6 +144,118 @@ page_fluid(
 
 
 # Script
+
+## Organizing Dates
+
+The toughest variables to match and wrange in R are often dates, especially when you are dealing with both states (start and end dates for intervals) and events (single dates). For studies like this one based around daily sample collection, I find it easiest to start by populating a blank dataframe with one row per sample collection day. Then I match date-based variables to this dataframe and join my SampleIDs to it.  
+  
+Once we combine all the pieces together, we will have a metadata table with one row per day for each subject. Then we can match every sample to subject and day using the same table.
+
+```{r}
+sample.days <- tibble(CollectionDate = seq.Date(
+                                from = ymd(path$day1), 
+                                to   = today(), 
+                                by   = "day")
+                      ) %>%
+  expand(CollectionDate, subject_list) %>%
+  mutate(subject = str_to_lower(subject_list), .keep = "unused") %>%
+  group_by(subject) %>%
+  mutate(study_day = row_number()) %>% ungroup()
+```
+
+
+## Sample Inventory
+
+First I will read in the sample inventory, which is actually already a metadata table itself. Later we will join this to our daily metadata table to create one large dataframe with all our variable scores matched to a sample.
+
+```{r}
+samples <- read.table(here(path$inventories$all_stages), 
+                      header = T, 
+                      sep = "\t") %>%
+            filter(!is.na(CollectionDate)) %>%
+  mutate(across(any_of(date.vars),   ~ ymd(.)),
+         across(any_of(yn.vars),     ~ str_to_lower(as.character(.))),
+         across(any_of(ids),         ~ str_to_lower(.)),
+         subject = str_to_lower(Subject), .keep = "unused") %>%
+            mutate(identifier = case_when(
+              !is.na(SequenceID)                    ~ SequenceID,
+              is.na(SequenceID) & !is.na(ExtractID) ~ ExtractID,
+              is.na(ExtractID)  & !is.na(SampleID)  ~ SampleID,
+              .default = SampleID
+            )) %>% relocate(identifier) %>%
+  left_join(sample.days, by = join_by(CollectionDate, subject)) %>%
+  mutate(subject = fct(subject),
+         subj_day = fct(str_glue("{subject}", "_", "{study_day}"))) %>%
+  mutate(holding = case_when(
+    CollectionDate < new_holding_start$culi   & subject == "culi"   ~ "old",
+    CollectionDate < new_holding_start$warble & subject == "warble" ~ "old",
+                             .default = "new"))
+
+print(head(samples))
+
+```
+
+### Ordered Sample Lists for Subsetting
+
+```{r}
+sample.list <- samples %>% 
+               distinct(identifier, subject, CollectionDate) %>%
+               arrange(subject, CollectionDate) %>%
+               distinct(identifier) %>%
+                   map(\(x) as.list(x)) %>%
+  list_flatten(name_spec = "")
+
+sample.vecs <- sample.list %>% unlist()
+
+samp.list.culi  <- samples %>% 
+                   filter(subject == "culi") %>%
+                   distinct(identifier, CollectionDate) %>%
+                   arrange(CollectionDate) %>%
+                   distinct(identifier) %>%
+                   map(\(x) as.list(x)) %>%
+  list_flatten(name_spec = "")
+
+samples.culi       <- samp.list.culi %>% unlist()
+
+samp.list.warb  <- samples %>% 
+                   filter(subject == "warble") %>%
+                   distinct(identifier, CollectionDate) %>%
+                   arrange(CollectionDate) %>%
+                   distinct(identifier) %>%
+                   map(\(x) as.list(x)) %>%
+  list_flatten(name_spec = "")
+
+samples.warb <- samp.list.warb %>% unlist()
+
+libraries <- samples %>%
+  arrange(LibPrepDate) %>%
+  select(LibraryCode, identifier) %>%
+  group_by(LibraryCode) %>%
+  group_map(~ {
+    setNames(list(as.list(.x$identifier)), .y$LibraryCode)
+  }, .keep = TRUE) %>%
+  flatten()
+
+working_libraries <- libraries %>%
+  keep_at(paste0(params$seqrun)) %>%
+  list_c()
+```
+
+### Subset Versions
+
+I am also going to create a sample table version that I can easily add back into my dataset after I merge technical and biological replicates by subject and day.
+
+```{r}
+identifier.key <- samples %>%
+  select(subj_day, identifier, SampleID, ExtractID, SequenceID)
+
+write.table(identifier.key, 
+            path$metadata$sample_table$identifier, 
+            row.names = F, 
+            sep       = "\t") 
+```
+
+
 
 ## Construct Variables
 
@@ -160,30 +268,96 @@ I organized the schedule of diet trials into a nested list based on the day that
 Note that the script I am drawing from for this table also nested more detailed tables into individual columns. This is a way to organize our multi-level nutritional data into a single source that is easier to manipulate and restructure, depending on the scale or variables we want to include. So each row will represent one day, and each column represents a value for one of our variables. The nested columns contain a single table linking that day to that dataset, and additional rows organized by other variables.  
 
 ```{r}
-diet_daily <- enframe(diet_trials, name = NULL) %>%
+nutrients <- read.csv("metadata/loris/nutrients_bydiet.csv", header = TRUE) %>%
+  select(diet_name = Diet,
+         class     = Nutrient.Class,
+         item      = Nutrient,
+         fed       = X,
+         units     = X.1) %>%
+  filter(!is.na(fed)) %>%
+  mutate(item = case_when(str_detect(units, "DM") ~ "Dry Matter", 
+                          str_detect(units, "kcal") ~"KCal",
+                          .default = item),
+         fed   = if_else(units == "g" | units == "g as fed" | units == "g DM", fed*1000, fed)) %>%
+  mutate(units = case_when(units == "g" | units == "g as fed" | units == "g DM" ~ "mg", 
+                           item == "Ca:P" ~ "ratio",
+                           .default = units)) %>%
+  group_by(class, item) %>%
+  mutate(relative    = fed/max(fed),
+         relative_to = "item_max") %>% ungroup()
+
+nutrition <- read.csv("metadata/loris/foods_bydiet.csv", header = TRUE) %>%
+  mutate(item  = str_to_sentence(Feeds),
+         fed   = Fed..g. * 1000,
+         class = "Foods",
+         units = "mg") %>%
+  select(diet_name = Diet,
+         class,
+         item,
+         fed,
+         units) %>%
+  group_by(diet_name) %>%
+  mutate(total_diet = sum(fed)) %>%
+  ungroup() %>% rowwise() %>%
+  mutate(relative    = fed/total_diet,
+         relative_to = "diet_total") %>% ungroup() %>%
+  select(-total_diet) %>%
+  bind_rows(nutrients)
+
+write.table(nutrition, 
+            "metadata/loris/nutrition.tsv", 
+            sep       = "\t", 
+            row.names = FALSE)
+```
+
+
+```{r}
+nutrition_wide <- nutrition %>%
+  select(diet_name, class, item, relative) %>%
+  mutate(
+    across(c(class, item), 
+                ~ str_replace_all(.,
+              "\\s|:", "_")),
+    across(c(class, item), 
+                ~ str_remove_all(., "[(),+]"))) %>%
+  mutate(item = if_else(item == "Total", 
+                        str_glue("{item}", "{class}", .sep = "_"),
+                        item)) %>%
+  pivot_wider(id_cols     = "diet_name",
+              names_from  = "item",
+              values_from = "relative",
+              values_fill = 0,
+              names_sep   = "_") %>%
+  relocate(
+    ends_with("_Total"),
+    starts_with("Total_"), .after = "diet_name") %>%
+  rename(Total_rel_max = Total_Total)
+```
+
+```{r}
+diet <- enframe(diet_trials, name = NULL) %>%
   unnest_wider(value) %>%
-  mutate(diet_name = diet, subject = "culi", .keep = "unused") %>%
-  mutate(end = if_else(begin < max(begin), lead(begin) - days(1), today())) %>%
+  mutate(diet_name = diet, 
+         subject   = "culi", .keep = "unused") %>%
+  mutate(end = if_else(begin < max(begin), 
+                       lead(begin) - days(1), 
+                       today())) %>%
   bind_rows(warble_trials) %>%
-  left_join(diet_nested, by = join_by(diet_name)) %>%
   mutate(date = map2(begin, end, seq, by = "day")) %>%  
   unnest(date) %>%
   select(-c(begin, end)) %>%
-  relocate(date) %>% distinct()
+  relocate(date) %>% distinct() %>%
+  left_join(nutrition_wide, by = join_by(diet_name))
 
-print(head(diet_daily))
+print(head(diet))
 ```
 
-Now we will do the same for the list that I created for each medication or supplement administered. Because these all have different dosage units and relative effects, I will adjust the dose units to represent the proportion of the max dosage administered. This makes the data easier to interpret and relate.
+Now we will do the same for the list that I created for each medication or supplement administered. Because these all have different dosage units and relative effects, I will adjust the dose units to represent the proportion of the max dosage administered. This makes the data easier to interpret and relate.  
   
 Finally, I will join the data on nutrition content, diet schedules, and medications/supplements into a single table with one row for each day.
 
 ```{r}
-supplement_info <- enframe(supplement_details, name = "supplement") %>%
-  unnest_wider(value) %>% 
-  select(supplement, supplement_rx = rx, dose_units = units)
-
-diet_supplements_daily <- enframe(supplements, name = NULL) %>%
+diet_supplements <- enframe(supplements, name = NULL) %>%
   unnest_wider(value) %>%
   mutate(end = if_else(
     begin < max(begin), 
@@ -193,8 +367,9 @@ diet_supplements_daily <- enframe(supplements, name = NULL) %>%
   pivot_longer(cols      = c(probiotic:antidiarrheal),
                names_to  = "supplement",
                values_to = "dose") %>%
-  left_join(supplement_info, by = join_by(supplement)) %>%
-  select(begin, end, subject, supplement, dose, dose_units) %>%
+  select(begin, end, subject, supplement, dose) %>%
+  group_by(supplement) %>%
+  mutate(dose = dose/max(dose)) %>% ungroup() %>%
   pivot_wider(id_cols     = c("begin", "end", "subject"),
               names_from  = "supplement",
               values_from = "dose") %>%
@@ -202,9 +377,9 @@ diet_supplements_daily <- enframe(supplements, name = NULL) %>%
   unnest(date) %>%
   select(-c(begin, end)) %>%
   relocate(date) %>%
-  right_join(diet_daily, by = join_by(subject, date)) %>% distinct()
+  right_join(diet, by = join_by(subject, date)) %>% distinct()
 
-print(head(diet_supplements_daily))
+print(head(diet_supplements))
 ```
 
 ## Subject Info
@@ -237,116 +412,41 @@ studbook.info <- read.csv(here(path$metadata$studbook),
 ## Bristol Scores
 
 ```{r}
-bristols <- read.table(here(path$metadata$bristol), header = TRUE, sep = "\t") %>%
+bristols <- read.table(here(path$metadata$bristol), 
+                       header = TRUE, 
+                       sep    = "\t") %>%
   mutate(date = ymd(date))
 print(head(bristols))
 ```
 
 
-## Organizing Dates
-
-The toughest variables to match and wrange in R are often dates, especially when you are dealing with both states (start and end dates for intervals) and events (single dates). For studies like this one based around daily sample collection, I find it easiest to start by populating a blank dataframe with one row per sample collection day. Then I match date-based variables to this dataframe and join my SampleIDs to it.  
-  
-Once we combine all the pieces together, we will have a metadata table with one row per day for each subject. Then we can match every sample to subject and day using the same table.
-
-```{r}
-metadata_daily <- tibble(date = seq.Date(from = ymd(path$day1), 
-                                     to   = today(), 
-                                     by = "day")) %>%
-  expand(date, subject_list) %>%
-  mutate(subject = str_to_lower(subject_list), .keep = "unused") %>%
-  group_by(subject) %>%
-  mutate(study_day = row_number()) %>% ungroup()  %>%
-  mutate(holding = case_when(date < new_holding_start$culi   & subject == "culi"   ~ "old",
-                             date < new_holding_start$warble & subject == "warble" ~ "old",
-                             .default = "new")) %>%
-  left_join(studbook.info, by = join_by(subject)) %>%
-  mutate(subject_age = year(date) - BirthYear) %>% select(-BirthYear) %>%
-  left_join(bristols    , by = join_by(subject, date)) %>%
-  left_join(keeper_notes, by = join_by(subject, date)) %>%
-  left_join(cycle_dates , by = join_by(date)) %>%
-  left_join(access_dates, by = join_by(date)) %>%
-  mutate(warb_status = replace_na(warb_status, "anestrus"),
-         pair_access = replace_na(pair_access, "n")) %>%
-  left_join(diet_supplements_daily, by = join_by(subject, date)) %>% distinct()
-print(head(metadata_daily))
-```
-
-## Sample Inventory
-
-Now I will read in the sample inventory, which is actually already a metadata table itself. We will join this to our daily metadata table to create one large dataframe with all our variable scores matched to a sample.
-
-```{r}
-samples <- read.table(here(path$inventories$all_stages), 
-                      header = T, 
-                      sep = "\t") %>%
-            mutate(CollectionDate = ymd(CollectionDate),
-                   subject        = str_to_lower(Subject), .keep = "unused") %>%
-            mutate(identifier = case_when(
-              !is.na(SequenceID)                    ~ SequenceID,
-              is.na(SequenceID) & !is.na(ExtractID) ~ ExtractID,
-              is.na(ExtractID)  & !is.na(SampleID)  ~ SampleID,
-              .default = SampleID
-            )) %>% relocate(identifier)
-
-print(head(samples))
-
-```
-
 ## Complete Metadata Table
 
 ```{r}
-metadata <- samples %>% 
-  left_join(metadata_daily,
-            by           = join_by(subject, CollectionDate == date), 
-            relationship = "many-to-many") %>%
-  relocate(all_of(ordered_variables)) %>% 
-  filter(!is.na(study_day) & !is.na(subject)) %>% 
+metadata <- samples %>%
+  left_join(studbook.info, by = join_by(subject)) %>%
+  mutate(subject_age = year(CollectionDate) - BirthYear) %>% 
+  select(-BirthYear) %>%
+  left_join(bristols    , by = join_by(subject, CollectionDate == date)) %>%
+  left_join(keeper_notes, by = join_by(subject, CollectionDate == date)) %>%
+  left_join(cycle_dates , by = join_by(CollectionDate == date)) %>%
+  left_join(access_dates, by = join_by(CollectionDate == date)) %>%
+  mutate(warb_status = replace_na(warb_status, "anestrus"),
+         pair_access = replace_na(pair_access, "n")) %>%
+  left_join(diet_supplements, by = join_by(subject, CollectionDate == date)) %>% 
   distinct() %>%
-  mutate(SampleSet = params$sampleset) %>%
+  arrange(study_day) %>%
+  group_by(subject) %>%
+  fill(bristol_mean) %>%
+  ungroup() %>%
+  mutate(SampleSet = params$sampleset, bristol = bristol_mean) %>%
   arrange(study_day, subject, identifier) %>%
-  select(any_of(ordered_variables))
+  select(any_of(meta.vars.ordered))
+
+write.table(metadata, path$metadata$summary , row.names = F, sep = "\t")
+
+
 print(head(metadata))
-
-```
-
-```{r, warning = FALSE}
-compact_nutrients <-  select(
-                   filter(expand_subtables(metadata, "proteins"), nutrient == "Total"), identifier, protein_fed = fed) %>%
-  left_join(select(filter(expand_subtables(metadata, "fats")    , nutrient == "Total"), identifier, fat_fed     = fed    ), by = join_by(identifier)) %>%
-  left_join(select(filter(expand_subtables(metadata, "CHOs")    , nutrient == "Total"), identifier, CHO_fed     = fed    ), by = join_by(identifier))  %>%
-  left_join(select(filter(expand_subtables(metadata, "Ash")     , nutrient == "Total"), identifier, mineral_fed = fed)    , by = join_by(identifier)) 
-
-metadata_export <- metadata %>%
-  select(-c(foods, fats, proteins, CHOs, Ash, vitamins)) %>%
-  left_join(compact_nutrients, by = join_by(identifier))
-print(head(metadata_export))
-
-```
-
-
-### Export
-
-```{r}
-fats_expand      <- expand_subtables(metadata, "fats")     %>% filter(nutrient != "Total")
-proteins_expand  <- expand_subtables(metadata, "proteins") %>% filter(nutrient != "Total")
-CHOs_expand      <- expand_subtables(metadata, "CHOs")     %>% filter(nutrient != "Total")
-Ash_expand       <- expand_subtables(metadata, "Ash")      %>% filter(nutrient != "Total")
-vitamins_expand  <- expand_subtables(metadata, "vitamins") %>% filter(nutrient != "Total")
-
-foods_expand     <- metadata %>% 
-  select(identifier, foods   ) %>% 
-  unnest(foods   ) %>%
-  mutate(food = fct_recode(food, !!!rename_foods))
-
-write.table(metadata_export, path$metadata$summary , row.names = F, sep = "\t")
-write.table(foods_expand   , path$metadata$foods   , row.names = F, sep = "\t")
-write.table(fats_expand    , path$metadata$fats    , row.names = F, sep = "\t")
-write.table(proteins_expand, path$metadata$proteins, row.names = F, sep = "\t")
-write.table(CHOs_expand    , path$metadata$CHOs    , row.names = F, sep = "\t")
-write.table(Ash_expand     , path$metadata$Ash     , row.names = F, sep = "\t")
-write.table(vitamins_expand, path$metadata$vitamins, row.names = F, sep = "\t")
-
 ```
 
 
@@ -354,31 +454,298 @@ write.table(vitamins_expand, path$metadata$vitamins, row.names = F, sep = "\t")
 ### Visual Metadata Summary
 
 
-```{r, warning = FALSE}
-metadata_summary <- metadata %>% 
-  left_join(compact_nutrients, by = join_by(identifier)) %>%
-  mutate(
-  diet_color            = as.character(fct_recode(diet_name, !!!diet_colors)),
-  holding_color         = as.character(fct_recode(holding, !!!holding_colors)),
-  warb_status_color     = as.character(fct_recode(warb_status, !!!warb_status_colors)),
-  icon_steps_remaining  = as.character(fct_recode(steps_remaining, !!!steps_remaining_icons)),
-  color_steps_remaining = as.character(fct_recode(steps_remaining, !!!steps_remaining_colors)),
-  color_Subj_Certainty  = as.character(fct_recode(Subj_Certainty, !!!certainty_colors)),
-  icon_Subj_Certainty   = as.character(fct_recode(Subj_Certainty, !!!certainty_icons)),
-  color_pair_access     = as.character(fct_recode(pair_access, !!!pair_access_colors)),
-  icon_pair_access      = as.character(fct_recode(pair_access, !!!pair_access_icons)),
-  color_subject         = as.character(fct_recode(subject, !!!subj_colors)),
-  icon_subject          = as.character(fct_recode(subject, !!!subj_icons)),
-  icon_vitamins        = "square-caret-down"
-  ) %>%
-  mutate(diet_name    = fct_recode(diet_name, !!!rename_diets),
-         subject      = str_to_title(subject),
+```{r}
+metadata_summary <- metadata %>%
+  mutate(diet_num             = as.integer(factor(diet_name)),
+         holding_num          = as.integer(factor(holding)),
+         warb_status_num      = as.integer(factor(warb_status)),
+         steps_remaining_num  = as.integer(factor(steps_remaining, levels = steps_remaining_factors)),
+         pair_access_num      = as.integer(factor(pair_access))
+         )  %>%
+  mutate(subject      = str_to_title(subject),
          holding      = str_to_title(holding),
          pair_access  = str_to_title(pair_access),
          warb_status  = str_to_title(warb_status),
          across(all_of(dose_cols), ~ rescale_dose(.x, max(.x)))) %>%
-  relocate(ends_with("fed"), .after = "total_mg_dry")
+  select(all_of(summary_variables))
 ```
+
+
+```{r}
+food_subtable <- filter(nutrition, class == "Foods") %>%
+  select(diet_name, item, relative)
+
+nutrient_subtable <- filter(nutrition, class != "Foods") %>%
+  select(diet_name, class, item, relative)
+```
+
+```{r}
+library(htmltools)
+
+rating_stars <- function(rating, max_rating = 5) {
+  star_icon <- function(empty = FALSE) {
+    tagAppendAttributes(shiny::icon("star"),
+      style = paste("color:", if (empty) "#edf0f2" else "orange"),
+      "aria-hidden" = "true"
+    )
+  }
+  rounded_rating <- floor(rating + 0.5)  # always round up
+  stars <- lapply(seq_len(max_rating), function(i) {
+    if (i <= rounded_rating) star_icon() else star_icon(empty = TRUE)
+  })
+  label <- sprintf("%s out of %s stars", rating, max_rating)
+  div(title = label, role = "img", stars)
+}
+
+ratings <- data.frame(
+  Movie = c("Silent Serpent", "Nowhere to Hyde", "The Ape-Man Goes to Mars", "A Menace in Venice"),
+  Rating = c(3.65, 2.35, 4.5, 1.4),
+  Votes = c(115, 37, 60, 99)
+)
+
+reactable(ratings, columns = list(
+  Rating = colDef(cell = function(value) rating_stars(value))
+))
+```
+
+
+```{r}
+rating_bristol <- function(bristol, max_score = 6) {
+  poop_icon <- function(empty = FALSE) {
+    tagAppendAttributes(icon("poop"),
+      style = paste("color:", if (empty) "#edf0f2" else "#734939FF"),
+      "aria-hidden" = "true"
+    )
+  }
+  rounded_bristol <- floor(bristol + 0.5)  # always round up
+  icons <- lapply(seq_len(max_score), function(i) {
+    if (i <= rounded_bristol) poop_icon() else poop_icon(empty = TRUE)
+  })
+  label <- sprintf("%s out of %s score", bristol, max_score)
+  div(title = label, role = "img", icons)
+}
+```
+
+```{r}
+rating_dose <- function(dose, max_dose = 2) {
+  dose_icon <- function(empty = FALSE) {
+    tagAppendAttributes(icon("vial"),
+      style = paste("color:", if (empty) "#edf0f2" else "#2C6184FF"),
+      "aria-hidden" = "true"
+    )
+  }
+  doubled_dose <- score*2  # .5 becomes 1 and 1 becomes 2
+  doses <- lapply(seq_len(max_dose), function(i) {
+    if (i <= doubled_dose) rating_dose() else rating_dose(empty = TRUE)
+  })
+  label <- sprintf("%s out of %s dose", dose, max_dose)
+  div(title = label, role = "img", doses)
+}
+```
+
+
+
+```{r}
+vis_metadata <- reactable(
+  metadata_summary,
+    compact             = T,
+    sortable            = T,
+    showPageSizeOptions = T,
+    showSortable        = T,
+    height              = 600,
+    theme               = flatly(),
+    details             = function(index, value) {
+    nutrients <- filter(nutrient_subtable, diet_name == metadata_summary$diet_name[index])
+    foods     <- filter(food_subtable    , diet_name == metadata_summary$diet_name[index])
+      nutr.tbl <- reactable(
+        nutrients,
+        fullWidth     = FALSE,
+        theme         = flatly(),
+        columns       = list(
+                      diet_name = colDef(show = FALSE),
+                      class     = colDef(name = "Class",
+                            style = JS("function(rowInfo, column, state) {
+             const firstSorted = state.sorted[0]
+             if (!firstSorted || firstSorted.id === 'class') {
+               const prevRow = state.pageRows[rowInfo.viewIndex - 1]
+                          if (prevRow && rowInfo.values['class'] === prevRow['class']) {
+                            return { visibility: 'hidden' }
+                          }
+                        }
+                      }")),
+                      item      = colDef(name = "Nutrient"),
+                      relative  = colDef(header = tippy(
+            "Amount Fed", tooltip = "As proportion of the max fed for that nutrient over study period."),
+            cell  = data_bars(
+                 nutrients, 
+                 text_position = "outside-base", 
+                 box_shadow    = TRUE,
+                 fill_color    = paletteer_d("PNWColors::Starfish"),
+                 max_value     = 1,
+                 background    = 'transparent',
+                 number_fmt    = label_percent()
+                 ))
+        )
+        
+      )
+      
+      food.tbl <- reactable(
+        foods,
+        fullWidth     = FALSE,
+        theme         = flatly(),
+        columns       = list(
+          diet_name = colDef(show = FALSE),
+          item      = colDef(name = "Food"),
+          relative  = colDef(header = tippy(
+            "Amount Fed", tooltip = "As proportion of the total weight of that day's diet."),
+            cell  = data_bars(
+                 foods, 
+                 text_position = "outside-base", 
+                 box_shadow    = TRUE,
+                 fill_color    = paletteer_d("PNWColors::Starfish"),
+                 max_value     = 1,
+                 background    = 'transparent',
+                 number_fmt    = label_percent()
+                 )
+            )
+            
+        )
+        
+      )
+      div(class="container", style = list(margin = "8px 50px"), 
+          div(style = list(margin = "5px 5px"), food.tbl), 
+          div(style = list(margin = "5px 5px"), nutr.tbl)
+          )
+    },
+  columns = list(
+    study_day             = colDef(name = "Day"),
+    CollectionDate        = colDef(show = FALSE),
+    Subj_Certainty        = colDef(show = FALSE),
+    subject               = colDef(name = "Subject", 
+          cell = function(value, index) {
+            Subj_Certainty <- metadata_summary$Subj_Certainty[index]
+            icon           <- if(value == "Warble") icon("venus", style = "color: #BA7999FF") else if (value == "Culi") icon("mars", style = "color: #2C6184FF") else ""
+            certain        <- if(Subj_Certainty == "yes") icon("check", style = "color: #4A9152FF") else if (Subj_Certainty == "no") icon("question", style = "color: #EB7F54FF") else ""
+
+            div(class="container", div(class="container", div(certain), div(icon)), div(value))
+            
+                     }),
+    identifier            = colDef(name = "Sample ID"),
+    steps_remaining       = colDef(
+                           header   = tippy_lab_stage(),
+                           maxWidth = 60,
+                           cell     = function(value, index) {
+          icon <-  if(value == "sample not extracted") icon("poop", style = "color: #F2AF4AFF") else if (value == "extract not sequenced") icon("vial", style = "color: #C36377FF") else if (value == "sample extracted and sequenced") icon("dna", style = "color: #1D457FFF") else ""
+          div(icon)
+                           }
+    ),
+    
+  bristol         = colDef(header = tippy_bristol(),    cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "poop",
+    fill_color  = "#734939FF",
+    empty_color = "#FDF5F1FF"
+  )),
+  probiotic       = colDef(header = tippy_probiotic() , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  fiber           = colDef(header = tippy_fiber()     , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  steroid         = colDef(header = tippy_steroid()   , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  antibiotic      = colDef(header = tippy_antibiotic(), maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  antidiarrheal   = colDef(header = tippy_antidiar()  , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  holding         = colDef(header = tippy_enclosure() , maxWidth = 70,
+                           cell = color_tiles(metadata_summary, 
+                                              colors   = paletteer_d("PNWColors::Starfish"), 
+                                              color_by = "holding_num")),
+  warb_status     = colDef(header = tippy_warb_status(),
+                           cell = color_tiles(metadata_summary, 
+                                              colors   = paletteer_d("PNWColors::Starfish"), 
+                                              color_by = "warb_status_num")),
+  pair_access     = colDef(header = tippy_pair_access(),
+                           cell = color_tiles(metadata_summary, 
+                                              colors   = paletteer_d("PNWColors::Starfish"), 
+                                              color_by = "pair_access_num"),
+                           maxWidth = 50),
+  keeper_note     = colDef(header = tippy_keeper_note()),
+  diet_name       = colDef(header = tippy_diet(),
+                           cell = color_tiles(metadata_summary,
+                                              colors     = paletteer_d("PNWColors::Starfish"),
+                                              color_by   = "diet_num",
+                                              opacity    = 0.7,
+                                              box_shadow = TRUE,
+                                              bold_text  = TRUE)),
+    Total_rel_max         = colDef(header = tippy(
+      "Relative Diet Weight", 
+      tooltip = "As proportion of maximum total diet weight over study period"),
+      align   = "center",
+      cell    = bubble_grid(data      = metadata_summary, 
+                         colors        = paletteer_d("PNWColors::Starfish"), 
+                         max_value = 1)),
+    Total_Protein         = colDef(),
+    Total_Fat             = colDef(),
+    Total_CHO_by_diff     = colDef(),
+    Total_Ash             = colDef() ,
+  subject_age       = colDef(header = tippy_subj_age(),
+                             maxWidth = 50),
+  StudbookID        = colDef(header = tippy_studbook(),
+                             maxWidth = 50),
+  SampleID          = colDef(header = tippy_sampID()),
+  SampleNotes       = colDef(header = tippy_collectNotes()),
+  ExtractID         = colDef(header = tippy_extractID()),
+  ExtractDate       = colDef(header = tippy_extractDate(),
+                             format = colFormat(date = TRUE)),
+  ExtractConc       = colDef(header = tippy_extractConc(),
+                             cell = concentration_cell(metadata_summary)),
+  ExtractKit        = colDef(header = tippy_extractKit()),
+  ExtractBox        = colDef(header = tippy_extractBox()),
+  ExtractNotes      = colDef(header = tippy_extractNotes()),
+  SequenceID        = colDef(header = tippy_seqID()),
+  LibPrepDate       = colDef(header = tippy_libprepDate(),
+                             format = colFormat(date = TRUE)),
+  LibraryCode       = colDef(header = tippy_libprepID(),
+                             maxWidth = 70),
+  LibPrepKit        = colDef(header = tippy_libprepKit()),
+  LibraryBarcode    = colDef(header = tippy_barcode(),
+                             maxWidth = 50),
+  Conc_QC2          = colDef(header = tippy_finalConc()),
+  SeqDate           = colDef(header = tippy_seqDate(),
+                             format = colFormat(date = TRUE)),
+  FlowCellType      = colDef(header = tippy_flowcell()),
+  SeqDevice         = colDef(header = tippy_seqDevice()),
+  reads_unclassified= colDef(header = tippy_reads_unclass(),
+                             cell = reads_unclass_cell(metadata_summary))
+  )
+)
+```
+
 
 ```{r}
 vis_metadata <- metadata_summary %>% 
@@ -386,12 +753,10 @@ vis_metadata <- metadata_summary %>%
   reactable(
     compact             = T,
     sortable            = T,
-    pagination          = T,
     showPageSizeOptions = T,
     showSortable        = T,
-    height              = 800,
+    height              = 600,
     theme               = flatly(),
-    defaultPageSize     = 25,
     columns             = list(
   study_day       = colDef(header   = tippy_study_day(),
                            maxWidth = 50),
@@ -406,7 +771,7 @@ vis_metadata <- metadata_summary %>%
   steps_remaining = colDef(header   = tippy_lab_stage(),
                            cell     = steps_remain_cell(metadata_summary),
                            maxWidth = 60),
-  bristol_mean    = colDef(header = tippy_bristol(),
+  bristol    = colDef(header = tippy_bristol(),
                            cell = bristol_cell(metadata_summary)),
   diet_name       = colDef(header = tippy_diet(),
                            cell = color_tiles(metadata_summary,
@@ -419,10 +784,10 @@ vis_metadata <- metadata_summary %>%
   total_mg        = colDef(header = tippy_total_mg(),
                            cell = nutrient_cell(metadata_summary),
                            details = function(index) {food_subtab(metadata_summary, index)}),
-  protein_fed     = colDef(header = tippy_protein(),
+  total_proteins     = colDef(header = tippy_protein(),
                            cell = nutrient_cell(metadata_summary),
                            details = function(index) {nutrient_details(metadata_summary, index, proteins_expand)}),
-  fat_fed         = colDef(header = tippy_fat(),
+  total_fats         = colDef(header = tippy_fat(),
                            cell = nutrient_cell(metadata_summary),
                            details = function(index) {nutrient_details(metadata_summary, index, fats_expand)}),
   CHO_fed         = colDef(header = tippy_chos(),

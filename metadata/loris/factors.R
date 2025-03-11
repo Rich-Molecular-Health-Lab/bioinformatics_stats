@@ -18,7 +18,20 @@ diet_factors <- c(
   "baseline",
   "oatgel",
   "biscuit_elim",
-  "lessBug_moreEgg"
+  "lessBug_moreEgg",
+  "seasonals",
+  "low_lectin",
+  "gum36_veg37_invert27",
+  "water31_root31_protein19_gum19"
+)
+
+rename_classes <- c(
+ "Proteins"         = "proteins", 
+ "Fats"             = "fats", 
+ "Carbohydrates"    = "CHOs", 
+ "Mineral Content"  = "Ash", 
+ "Vitamins"         = "vitamins", 
+ "Total Diet"       = "total"
 )
 
 dose_cols <- c(
@@ -27,34 +40,6 @@ dose_cols <- c(
   "steroid",
   "antibiotic",
   "antidiarrheal"
-)
-
-probiotic_factors <- c(
-  "none" = "0",
-  "low"  = "5",
-  "max"  = "10"
-)
-
-steroid_factors <- c(
-  "none" = "0",
-  "low"  = "0.1",
-  "max"  = "0.2"
-)
-
-fiber_factors <- c(
-  "none" = "0",
-  "low"  = "0.5",
-  "max"  = "1"
-)
-
-antibiotic_factors <- c(
-  "none" = "0",
-  "max"  = "12.5"
-)
-
-antidiarrheal_factors <- c(
-  "none" = "0",
-  "max"  = "0.08"
 )
 
 
@@ -86,16 +71,22 @@ steps_remaining_icons <- c(
  "dna"  = "sample extracted and sequenced" 
 )
 
+steps_remaining_factors <- c(
+  "sample not extracted"           ,
+  "extract not sequenced"          ,
+  "sample extracted and sequenced" 
+)
+
 
 diet_colors <- c(
-   "#8C8C8CFF" = "baseline"                      ,
-   "#88BDE6FF" = "oatgel"                        ,
-   "#FBB258FF" = "biscuit_elim"                  ,
-   "#90CD97FF" = "lessBug_moreEgg"               ,
-   "#BFA554FF" = "seasonals"                     ,
-   "#BC99C7FF" = "low_lectin"                    ,
-   "#EDDD46FF" = "gum36_veg37_invert27"          ,
-   "#F07E6EFF" = "water31_root31_protein19_gum19"
+   "#8C8C8CFF" =  "Baseline"                                              ,
+   "#88BDE6FF" =  "Biscuit elimination"                                   ,
+   "#FBB258FF" =  "Less bugs, more egg"                                   ,
+   "#90CD97FF" =  "Sweet potato, green beans, carrots, pumpkin"           ,
+   "#BFA554FF" =  "36% gum, 37% veg, 27% insects"                         ,
+   "#BC99C7FF" =  "31% watery veg, 31% root veg, 19% insects/egg, 19% gum",
+   "#EDDD46FF" =  "Low lectin"                                            ,
+   "#F07E6EFF" =  "Oatmeal Gel"  
 )
 
 warb_status_colors <- c(
@@ -155,13 +146,28 @@ rename_diets <- c(
 )
 
 rename_foods <- c(
- "Biscuit"                   = "biscuit", 
- "Oat Gel"                   = "HDZ_oatgel", 
- "Invertebrates"             = "invertebrates",  
- "Protein Rotation"          = "protein_rotate", 
- "Gum Arabic"                =  "gum_arabic", 
- "Seasonal Veggie Rotation"  = "seasonal_veggies"
+ "Biscuit"                      = "biscuit", 
+ "Oat Gel"                      = "HDZ_oatgel", 
+ "Invertebrates"                = "invertebrates",  
+ "Protein Rotation"             = "protein_rotate", 
+ "Egg (whole, cooked)"          = "egg_whole_cooked"       ,
+ "Egg (whole, raw)"             = "egg_whole_raw"          ,
+ "Egg Whites (cooked)"          = "egg_white_cooked"       ,
+ "Gum Arabic"                   = "gum_arabic", 
+ "Canned Pumpkin"               = "canned_pumpkin"         ,
+ "Carrot"                       = "carrot"                 ,
+ "Green Beans (fresh)"          = "green_bean_fresh"       ,
+ "Seasonal Veggies (Standard)"  = "seasonal_veggies",
+ "Seasonal Veggies (Root)"      = "seasonal_veggies_root"  ,
+ "Sweet Potato (raw)"           = "sweet_potato_raw"       ,
+ "Sweet Potato (cooked)"        = "sweet_potato_cooked"    ,
+ "Seasonal Veggies (Watery)"    = "seasonal_veggies_watery",
+ "Lettuce (romaine)"            = "lettuce_romaine"        ,
+ "Celery"                       = "celery"                 
 )
+
+   
+
 
 rename_nutrients <- c(
  "Methionine"                   = "methionine", 
@@ -277,65 +283,7 @@ ordered_variables = c(
   "reads_unclassified"
 )
 
-summary_variables <- c(
-  "study_day",
-  "CollectionDate",
-  "Subj_Certainty",
-  "subject",
-  "identifier",
-  "steps_remaining",
-  "bristol_mean",
-  "diet_name",
-  "total_kcal",
-  "total_mg",
-  "protein_fed",
-  "fat_fed",
-  "CHO_fed",
-  "mineral_fed",
-  "vitamins",
-  "probiotic",
-  "fiber",
-  "steroid",
-  "antibiotic",
-  "antidiarrheal",
-  "holding",
-  "warb_status",
-  "pair_access",
-  "keeper_note",
-  "Sex",
-  "subject_age",
-  "StudbookID",
-  "SampleID",
-  "SampleNotes",
-  "ExtractID",
-  "ExtractDate",
-  "ExtractConc",
-  "ExtractKit",
-  "ExtractBox",
-  "ExtractNotes",
-  "SequenceID",
-  "LibPrepDate",
-  "LibraryCode",
-  "LibPrepKit",
-  "LibraryBarcode",
-  "Conc_QC2",
-  "SeqDate",
-  "FlowCellType",
-  "SeqDevice",
-  "reads_unclassified",
-  "diet_color",
-  "icon_steps_remaining",
-  "color_steps_remaining",
-  "holding_color",
-  "warb_status_color",
-  "icon_Subj_Certainty",
-  "color_Subj_Certainty",
-  "icon_pair_access",
-  "color_pair_access",
-  "icon_subject",
-  "color_subject",
-  "icon_vitamins"
-)
+
 
 microeco_cols <- c(
   "study_day",
@@ -833,7 +781,181 @@ env_vars <- list(
 )
 
 
-
+meta.vars.ordered <- c(
+  "study_day",
+  "subject",
+  "identifier",
+  "steps_remaining",
+  "diet_name",                 
+  "Total_rel_max"                ,
+  "Total_Protein"                ,
+  "Total_Fat"                    ,
+  "Total_CHO_by_diff"            ,
+  "Total_Ash"                    ,
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "bristol",
+  "Biscuit_rotation"             ,
+  "Invertebrate_misc"            ,
+  "Mazuri_enrich_gum_arabic_5b35",
+  "Protein_rotation"             ,
+  "Seasonal_vegetables"          ,
+  "Egg_whole_cooked_meat_prep"   ,
+  "Potato_sweet"                 ,
+  "Bean_green_fresh"             ,
+  "Carrot"                       ,
+  "Pumpkin_canned"               ,
+  "Egg_whole_raw_meat_prep"      ,
+  "Seasonal_vegetables_root"     ,
+  "Seasonal_vegetables_non-root" ,
+  "Egg_white_only_cooked"        ,
+  "Potato_sweet_cooked"          ,
+  "Celery"                       ,
+  "Lettuce_romaine"              ,
+  "Ohdz_oatmeal_gel"             ,
+  "Dry_Matter"                   ,
+  "KCal"                         ,
+  "Taurine"                      ,
+  "Methionine"                   ,
+  "Omega_3_ALA__EPA__DHA"        ,
+  "Omega_6_LA__GLA__AA"          ,
+  "Starch"                       ,
+  "NDF"                          ,
+  "ADF"                          ,
+  "Crude_Fiber"                  ,
+  "TDF"                          ,
+  "Calcium"                      ,
+  "Phosphorus"                   ,
+  "Potassium"                    ,
+  "Magnesium"                    ,
+  "Copper"                       ,
+  "Iron"                         ,
+  "Zinc"                         ,
+  "Manganese"                    ,
+  "Iodine"                       ,
+  "Ca_P"                         ,
+  "Vit_A_IU"                     ,
+  "Vit_D3"                       ,
+  "Vit_E"                        ,
+  "Vit_K"                        ,
+  "Vit_B1_Thiamin"               ,
+  "Vit_B2_Riboflavin"            ,
+  "Vit_B3_Niacin"                ,
+  "Choline"                      ,
+  "Vit_B5_Pantothenic_Acid"      ,
+  "Vit_B6_Pyridoxine"            ,
+  "Vit_B7_Biotin"                ,
+  "Folic_Acid"                   ,
+  "Vit_B12"                      ,
+  "Vit_C"                        ,
+  "Beta_carotene"                ,
+  "Lycopene"                     ,
+  "holding",
+  "pair_access",
+  "warb_status",
+  "keeper_note",
+  "Subj_Certainty",
+  "Sex",
+  "subject_age",
+  "StudbookID",
+  "MotherID",
+  "FatherID",
+  "BirthLocation",
+  "SampleID",
+  "CollectionDate",
+  "SampleSet",
+  "SampleCollectedBy",
+  "SampleNotes",
+  "ExtractID",
+  "ExtractDate",
+  "ExtractConc",
+  "ExtractKit",
+  "ExtractBox",
+  "ExtractedBy",
+  "ExtractNotes",
+  "SequenceID",
+  "LibPrepDate",
+  "LibPrepWorkflow",
+  "LibraryCode",
+  "protocol_group_id",
+  "LibPrepKit",
+  "LibraryTube",
+  "TemplateVolPrep",
+  "LibraryBarcode",
+  "fragment_type",
+  "strands",
+  "Length",
+  "InputMassStart",
+  "Conc_QC2",
+  "PoolSamples",
+  "SampVolPool",
+  "BeadVol",
+  "TotalPoolVol",
+  "InputMassFinal",
+  "SeqRunID",
+  "SeqDate",
+  "SeqDateTime",
+  "FlowCellType",
+  "FlowCellSerial",
+  "FlongleAdapter",
+  "SeqDevice",
+  "reads_unclassified"
+)
      
+
+summary_variables <- c(
+  "study_day",
+  "CollectionDate",
+  "Subj_Certainty",
+  "subject",
+  "identifier",
+  "steps_remaining",
+  "bristol",
+  "probiotic",
+  "fiber",
+  "steroid",
+  "antibiotic",
+  "antidiarrheal",
+  "diet_name",                 
+  "Total_rel_max"                ,
+  "Total_Protein"                ,
+  "Total_Fat"                    ,
+  "Total_CHO_by_diff"            ,
+  "Total_Ash"                    ,
+  "holding",
+  "warb_status",
+  "pair_access",
+  "keeper_note",
+  "Sex",
+  "subject_age",
+  "StudbookID",
+  "SampleID",
+  "SampleNotes",
+  "ExtractID",
+  "ExtractDate",
+  "ExtractConc",
+  "ExtractKit",
+  "ExtractBox",
+  "ExtractNotes",
+  "SequenceID",
+  "LibPrepDate",
+  "LibraryCode",
+  "LibPrepKit",
+  "LibraryBarcode",
+  "Conc_QC2",
+  "SeqDate",
+  "FlowCellType",
+  "SeqDevice",
+  "reads_unclassified",
+  "diet_num"           , 
+  "holding_num"        , 
+  "warb_status_num"    , 
+  "steps_remaining_num" 
+)
+
+
 
 source(here("metadata/loris/reactable_rendering.R"))
