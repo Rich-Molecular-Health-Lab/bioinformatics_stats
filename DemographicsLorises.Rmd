@@ -68,7 +68,13 @@ locationsCurrent21 <- read.csv(here(path$AZAstudbooks$institutions$current21)) %
   select(Name  = Institution.Name, Label = Mnemonic, Country)
 
 locationsHistoric21 <- read.csv(here(path$AZAstudbooks$institutions$historic21)) %>%
-  select(Name  = Institution.Name, Label = Mnemonic, Country)
+  select(Name  = Institution.Name, Label = Mnemonic, Country) %>%
+  add_row(Name = "Wild"     , Label = "VIETNAM"                     , Country = "Vietnam") %>%
+  add_row(Name = "Wild"     , Label = "LAOPEOPLESDEMOCRATICREPUBLIC", Country = "Laos") %>%
+  add_row(Name = "Wild"     , Label = "UNDETERMINED"                , Country = "Undetermined") %>%
+  add_row(Name = "Wild"     , Label = "ASIA"                        , Country = "Undetermined") %>%
+  add_row(Name = "Private Owner", Label = "GREENWICH"              , Country = "United Kingdom") %>%
+  add_row(Name = "Virginia Safari Park", Label = "VASAFARI"              , Country = "United States")
 
 locations <- bind_rows(locationsCurrent21, locationsHistoric21, locationsCurrent25) %>% 
   mutate(across(where(is.character), ~na_if(., "")),
@@ -91,7 +97,8 @@ location.key <- sample(palettes_d$palettesForR$Cranes,
                        replace = FALSE) %>%
   as.list() %>%
   set_names(., map(as.list(unique(locations$Abbrev)), \(x) paste0(x))) %>%
-  enframe(name = "Abbrev", value = "colorLoc") %>%
+  enframe(name = "Abbrev", value = "colorLoc")  %>% 
+  mutate(colorLoc = as.character(colorLoc)) %>%
   right_join(locations, by = join_by(Abbrev)) %>%
   mutate(iconLoc = case_when(
     Country == "United States"             ~ "\U1F1FA\U1F1F8",
@@ -106,6 +113,7 @@ location.key <- sample(palettes_d$palettesForR$Cranes,
     Country == "Switzerland"               ~ "\U1F1E8\U1F1ED",
     Country == "Taiwan"                    ~ "\U1F1F9\U1F1FC",
     Country == "Thailand"                  ~ "\U1F1F9\U1F1ED",
+    Country == "Laos"                      ~ "\U1F1F1\U1F1E6",
     Country == "Undetermined"              ~ "\U1F6A9",
     is.na(Country)                         ~ "\U1F6A9"
   ))
@@ -117,49 +125,76 @@ location.key <- sample(palettes_d$palettesForR$Cranes,
 ```{r}
 living.25 <- read.csv(here(path$AZAstudbooks$living25)) %>%
   select(ID = Studbook.ID,
-         LocationCurrent = Current.Location,
          Sex             = Sex.Type,
          Status          = Current.Status,
          Sire,
          Dam,
-         TypeBirth       = Birth.Type,
          TypeEvent       = Event.Type,
          Date,
          Location) %>%
   filter( str_detect(TypeEvent, "\\w+.+")) %>%
   mutate(Date = dmy(str_extract(Date, "\\d{1,2}/\\w{3}/\\d{2,4}")),
-         across(c("Sire", "Dam"), ~ as.character(.))) %>%
+         across(c("Sire", "Dam"),   ~ as.character(.)),
+         across(where(is.character), ~ na_if(., "")),
+         across(c("Sex", "Status"), ~ str_sub(., 1L, 1L)),
+         TypeEvent = fct_recode(str_to_title(TypeEvent), 
+                           Capture  = "Wild Capture",
+                           Birth    = "Birth/Hatch",
+                           Transfer = "Transfer"  ,
+                           LTF      = "Go Ltf"     ,
+                           Death    = "Death" 
+                           )
+         ) %>%
+  mutate(across(c("Sire", "Dam"),   ~ if_else(str_detect(., "^[^\\d+]"), NA, .))) %>%
   fill(ID) %>%
-  mutate(record = "living25") %>%
   group_by(ID) %>%
-  mutate(OrderEvent = row_number()) %>% ungroup()
+  fill(Sire, Dam, Sex, Status) %>%
+  mutate(OrderEvent = paste0("l25_", row_number())) %>% ungroup()
+
+alive       <- filter(living.25, Status == "A") %>% pull(ID) %>% unique()
+current_pop <- pull(living.25, ID) %>% unique()
 
 living.21 <- read.csv(here(path$AZAstudbooks$living21)) %>%
   select(ID = Studbook.ID,
-         LocationCurrent = Current.Location,
          Sex             = Sex.Type,
-         Status          = Current.Status,
          Sire,
          Dam,
-         TypeBirth       = Birth.Type,
          TypeEvent       = Event.Type,
          Date,
          Location) %>%
   filter( str_detect(TypeEvent, "\\w+.+")) %>%
   mutate(Date = dmy(str_extract(Date, "\\d{1,2}/\\w{3}/\\d{2,4}")),
-         across(c("Sire", "Dam"), ~ as.character(.))) %>%
+         across(c("Sire", "Dam"),    ~ as.character(.)),
+         across(where(is.character), ~ na_if(., "")),
+         Sex = str_sub(Sex, 1L, 1L),
+         TypeEvent = fct_recode(str_to_title(TypeEvent), 
+                           Capture  = "Wild Capture",
+                           Birth    = "Birth/Hatch",
+                           Transfer = "Transfer"  ,
+                           LTF      = "Go Ltf"     ,
+                           Death    = "Death" 
+                           )
+         ) %>%
+  mutate(across(c("Sire", "Dam"),   ~ if_else(str_detect(., "^[^\\d+]"), NA, .))) %>%
   fill(ID) %>%
-  mutate(record = "living21") %>%
+  mutate(Status = if_else(ID %in% alive, "A", "D")) %>%
   group_by(ID) %>%
-  mutate(OrderEvent = row_number()) %>% ungroup()
+  fill(Sire, Dam, Sex) %>%
+  mutate(OrderEvent = paste0("l21_", row_number())) %>% ungroup()
 
+living <- bind_rows(living.21, living.25) %>%
+  arrange(ID) %>%
+  group_by(ID) %>%
+  mutate(Sex = if_else(Sex == "U" & !is.na(lead(Sex)) & lead(Sex) != "U", lead(Sex), Sex))
+```
+
+
+```{r}
 historic.21 <- read.csv(here(path$AZAstudbooks$historic21)) %>%
-  select(ID = Studbook.ID,
-         LocationCurrent = Current.Location,
+  select(ID              = Studbook.ID,
          Sex             = Sex.Type,
          Sire,
          Dam,
-         TypeBirth       = Birth.Type,
          DateBirth       = Birth.Date,
          TypeEvent       = Event.Type,
          Date,
@@ -167,47 +202,224 @@ historic.21 <- read.csv(here(path$AZAstudbooks$historic21)) %>%
   filter( str_detect(TypeEvent, "\\w+.+")) %>%
   mutate(across(c("Date", "DateBirth"),
                 ~ dmy(str_extract(., "\\d{1,2}/\\w{3}/\\d{2,4}"))),
-         across(c("Sire", "Dam"), ~ as.character(.)),
-         Status = "Deceased") %>%
+         across(c("Sire", "Dam"),    ~ as.character(.)),
+         across(where(is.character), ~ na_if(., "")),
+         Sex       = str_sub(Sex, 1L, 1L),
+         TypeEvent = fct_recode(str_to_title(TypeEvent), 
+                           Capture  = "Wild Capture",
+                           Birth    = "Birth/Hatch",
+                           Transfer = "Transfer"  ,
+                           LTF      = "Go Ltf"     ,
+                           Death    = "Death" 
+                           )) %>%
+  mutate(Location = str_to_upper(str_remove_all(Location, "[^\\w+]"))) %>%
+  mutate(across(c("Sire", "Dam"),   ~ if_else(str_detect(., "^[^\\d+]"), NA, .))) %>%
   fill(ID) %>%
-  mutate(record = "historic21") %>%
+  mutate(Status = if_else(ID %in% alive, "A", "D")) %>%
   group_by(ID) %>%
-  mutate(OrderEvent = row_number()) %>% ungroup()
+  fill(Sire, Dam, Sex, Status, DateBirth) %>%
+  mutate(Date       = if_else(is.na(Date) & !is.na(DateBirth) & TypeEvent == "Birth|Capture", DateBirth, Date),
+         DateBirth  = if_else(is.na(DateBirth) & !is.na(Date) & TypeEvent == "Birth|Capture", Date, DateBirth),
+         OrderEvent = paste0("h21_", row_number()))  %>%
+  fill(DateBirth, .direction = "downup") %>% ungroup()
 ```
 
 
 ```{r}
-records <- bind_rows(living.25, living.21, historic.21) %>%
-  mutate(record = fct(record, levels = c("living25", "living21", "historic21"))) %>%
-  arrange(desc(ID), record, OrderEvent) %>%
-  mutate(across(c("Location", "LocationCurrent"), 
-                ~ str_to_upper(str_remove_all(., "[^\\w+]"))),
-         Sex = str_remove_all(Sex, "[^\\w+]")) %>%
-  mutate(across(c("Sire", "Dam"), ~ case_when(
-           str_detect(., "WILD") ~ "0",
-           str_detect(., "\\d+") ~ .,
-           .default = NA))) %>%
-  mutate(across(where(is.character), ~ na_if(., ""))) %>%
+studbook <- bind_rows(living, historic.21) %>% arrange(ID) %>% distinct() %>% 
+  mutate(Location = na_if(Location, ""),
+         Location = str_replace_all(Location, "\\n|\\t", " "),
+         Location = str_trim(Location)) %>%
+  mutate(Location = str_remove_all(Location, "[^\\w+]")) %>%
+  mutate(Location = str_to_upper(Location))  %>%
+  left_join(select(location.key, 
+                   LocAbbrev = Abbrev, 
+                   Label, 
+                   colorLoc, 
+                   NameLoc = Name, 
+                   Country, 
+                   iconLoc), 
+            by = join_by(Location == Label))
+```
+
+
+```{r}
+deceased <- filter(studbook, Status == "D") %>% pull(ID) %>% unique()
+```
+
+
+```{r}
+N_records <- sum(length(deceased), length(alive))
+
+print(N_records)
+```
+
+```{r}
+births <- filter(studbook, TypeEvent == "Birth" | TypeEvent == "Capture") %>%
+  select(ID, Sex, Sire, Dam, DateBirth, TypeEvent, Date, Location = LocAbbrev) %>%
+  distinct() %>%
+  pivot_wider(
+    id_cols = c(
+      "ID",
+      "Sex",
+      "Sire",
+      "Dam",
+      "DateBirth"
+    ),
+    names_from  = "TypeEvent",
+    names_sep   = "_",
+    values_from = c("Date", "Location")
+  ) %>%
+  mutate(
+  Date = case_when(
+    is.na(DateBirth) & is.na(Date_Capture) & !is.na(Date_Birth) ~ Date_Birth,
+    is.na(DateBirth) & !is.na(Date_Capture) & is.na(Date_Birth) ~ Date_Capture,
+    !is.na(DateBirth) ~ DateBirth
+  ),
+  Location = case_when(
+    is.na(Location_Birth) & !is.na(Location_Capture) ~ Location_Capture,
+    !is.na(Location_Birth) ~ Location_Birth
+  ),
+  TypeEvent = "Birth",
+  .keep = "unused") %>% distinct()  %>%
   group_by(ID) %>%
-  fill(LocationCurrent, Sex, Sire, Dam, TypeBirth, DateBirth) %>%
-  mutate(Date = if_else(is.na(Date) & !is.na(DateBirth) & str_detect(TypeEvent, "Birth"),
-                        DateBirth, Date),
-         DateBirth = if_else(is.na(DateBirth) & !is.na(Date) & str_detect(TypeEvent, "Birth"),
-                        Date, DateBirth),
-         Status = case_when(
-           !is.na(Status)                                      ~ Status,
-           OrderEvent = max(OrderEvent) & TypeEvent != "Death" ~ "Alive",
-           TypeEvent == "Death"                                ~ "Deceased"
-         )) %>%
-  fill(Status, DateBirth, .direction = "downup") %>%
-  mutate(Date = if_else(is.na(Date) & str_detect(TypeEvent, "Capture"), DateBirth, Date)) %>%
-  select(-c(record, OrderEvent)) %>% arrange(desc(ID), Date) %>% distinct() %>%
-  mutate(LocationBorn = if_else(str_detect(TypeEvent, "Birth"), Location, NA)) %>%
-  fill(LocationBorn, .direction = "downup") %>%
-  mutate(ID = as.character(ID),
-         TypeEvent = str_to_sentence(TypeEvent)) %>% arrange(ID) %>%
+  arrange(ID, desc(Sex)) %>%
+  mutate(Sex = if_else(Sex == "U" & !is.na(lead(Sex)) & lead(Sex) != "U", lead(Sex), Sex)) %>%
+  ungroup() %>% distinct() %>%
+  left_join(select(living.25, ID, Sex_revised = Sex), by = join_by(ID)) %>%
+  mutate(Sex = if_else(!is.na(Sex_revised) & Sex != Sex_revised, Sex_revised, Sex), .keep = "unused") %>% 
+  distinct()
+
+duplicates <- births %>% filter(ID == lead(ID) | ID == lag(ID))
+
+breeding <- select(births,
+                   OffspringID = ID,
+                   Sire,
+                   Dam,
+                   Date,
+                   Location) %>%
+  pivot_longer(cols      = c("Sire", "Dam"),
+               names_to  = "Sex",
+               values_to = "ID") %>%
+  mutate(Sex       = if_else(Sex == "Sire", "M", "F"),
+         TypeEvent = "Breed", ID = as.integer(ID)) %>%
+  filter(!is.na(ID)) %>% distinct() %>%
+  group_by(ID) %>% arrange(ID, Date) %>%
+  distinct() %>%
+  mutate(OrderBreed = row_number())
+```
+
+
+```{r}
+deaths <- filter(studbook, TypeEvent == "Death" | TypeEvent == "LTF") %>%
+  select(ID, TypeEvent, Date, Location) %>%
+  distinct() %>%
+  pivot_wider(
+    id_cols     = "ID",
+    names_from  = "TypeEvent",
+    names_sep   = "_",
+    values_from = c("Date", "Location")
+  ) %>%
+  mutate(
+  Date = case_when(
+    is.na(Date_Death) & !is.na(Date_LTF) ~ Date_LTF,
+    is.na(Date_LTF) & !is.na(Date_Death) ~ Date_Death
+  ),
+  Location = case_when(
+    is.na(Location_Death) & !is.na(Location_LTF) ~ Location_LTF,
+    is.na(Location_LTF) & !is.na(Location_Death) ~ Location_Death
+  ),
+  TypeEvent = "Death",
+  .keep = "unused") %>% distinct()
+
+duplicates <- deaths %>% filter(ID == lead(ID) | ID == lag(ID))
+
+```
+
+```{r}
+transfers <- filter(studbook, TypeEvent == "Transfer") %>%
+  select(ID, TypeEvent, Date, Location, OrderEvent) %>%
+  distinct() %>%
+  mutate(record     = str_sub(OrderEvent, 1L, 1L),
+         OrderEvent = str_extract_all(OrderEvent, "(?<=\\w\\d{2}_)\\d+")) %>%
+  group_by(ID) %>%
+  arrange(ID, record, OrderEvent) %>%
+  select(-c(OrderEvent, record)) %>% distinct() %>%
+  mutate(OrderTrans = row_number()) %>%
+  ungroup() %>%
+  left_join(select(births, ID, DateBirth = Date, LocBirth = Location), by = join_by(ID)) %>%
+  group_by(ID) %>%
+  mutate(From      = lag(Location),
+         To        = Location,
+         .keep     = "unused") %>%
+  mutate(From = if_else(is.na(From) & OrderTrans == 1, LocBirth, From)) %>%
+  select(-LocBirth) %>%
+  left_join(select(breeding, ID, DateBreed = Date, Location), by = join_by(ID, To == Location)) %>%
+  left_join(select(deaths  , ID, DateDeath = Date, LocDeath = Location), by = join_by(ID)) %>%
+  arrange(ID, OrderTrans, DateBreed) %>%
+  group_by(ID, To) %>%
+  mutate(Date = case_when(
+    is.na(Date) & (OrderTrans > 1 |  max(OrderTrans) == 1)     ~ min(DateBreed) - days(2),
+    is.na(Date) & OrderTrans == 1 & is.na(DateBreed)  ~ DateBirth + months(2),
+    is.na(Date) & To  == LocDeath & is.na(DateBreed)  ~ DateDeath - months(2),
+    is.na(Date) & To  == LocDeath & !is.na(DateBreed) ~ min(DateBreed) - days(2),
+    .default = Date
+  )) %>%
+  ungroup() %>% group_by(ID) %>%
+  mutate(Date = if_else(is.na(Date) & To  != LocDeath & is.na(DateBreed), lead(Date) - months(2), Date)) %>%
   ungroup()
 ```
+
+
+```{r}
+births.v2 <- transfers %>%
+  select(ID, DateTrans = Date, OrderTrans, DateBirth) %>%
+  group_by(ID) %>%
+  slice_min(order_by = OrderTrans, n = 1) %>% select(-OrderTrans) %>% ungroup() %>%
+  distinct() %>%
+  mutate(DateBirth = if_else(is.na(DateBirth), DateTrans - months(2), DateBirth)) %>%
+  select(-DateTrans) %>%
+  right_join(births, by = join_by(ID)) %>%
+  mutate(Date = if_else(is.na(Date), DateBirth, Date), .keep = "unused")
+```
+
+```{r}
+deaths.v2 <- transfers %>%
+  select(ID, DateTrans = Date, OrderTrans, DateDeath, Location = To, LocDeath, DateBreed) %>%
+  filter(ID %in% deceased) %>%
+  group_by(ID) %>%
+  filter(OrderTrans == max(OrderTrans)) %>%
+  slice_max(order_by = DateBreed, n = 1) %>%
+  ungroup() %>%
+  select(-OrderTrans) %>%
+  distinct() %>%
+  mutate(DateDeath = case_when(
+    is.na(DateDeath) & !is.na(DateBreed) ~ DateBreed + months(2),
+    is.na(DateDeath) & is.na(DateBreed)  ~ DateTrans + months(2),
+    .default = DateDeath
+      ),
+    LocDeath = if_else(is.na(LocDeath), Location, LocDeath),
+    .keep = "unused"
+    )
+```
+
+
+```{r}
+endRecord <- transfers %>%
+  select(ID, OrderTrans, LocLast = To)  %>%
+  filter(ID %in% alive) %>%
+  group_by(ID) %>%
+  filter(OrderTrans == max(OrderTrans)) %>% ungroup() %>%
+  select(-OrderTrans) %>% distinct() %>%
+  mutate(DateLast = today()) %>%
+  bind_rows(select(deaths.v2, ID, DateLast = DateDeath, LocLast = LocDeath)) %>%
+  arrange(ID) %>% distinct() %>%
+  full_join(select(births.v2, ID, LocBirth = Location), by = join_by(ID))
+
+duplicates <- endRecord %>% filter(ID == lead(ID) | ID == lag(ID))
+
+```
+
 
 ```{r}
 sires   <- select(records,
