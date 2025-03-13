@@ -87,6 +87,7 @@ loris:
       current25: "metadata/loris/Studbook/CurrentInstitutions_2025.csv"
       current21: "metadata/loris/Studbook/CurrentInstitutions_2021.csv"
       historic21: "metadata/loris/Studbook/HistoricInstitutions_2021.csv"
+    working: "metadata/loris/Studbook/working_studbook_loris25.tsv"
   metadata: 
     scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/diet_schedule.R")
     bristol: "metadata/loris/bristols.tsv"
