@@ -23,941 +23,311 @@ global             <- config::get(config = "default")
 
 here::i_am("DemographicsLorises.Rmd")
 source(here::here(global$setup))
+
+source(here(path$AZAstudbooks$functions))
+source(here(path$AZAstudbooks$add))
+```
+
+```{r, warning = FALSE}
+alive <- read.csv(here(path$AZAstudbooks$living25)) %>% 
+  filter(Current.Status == "Alive") %>% 
+  pull(Studbook.ID) %>% c(2638)
+
+locations <- bind_rows(read.csv(here(path$AZAstudbooks$institutions$current25)), 
+                       read.csv(here(path$AZAstudbooks$institutions$current21)), 
+                       read.csv(here(path$AZAstudbooks$institutions$historic21)),
+                       loc.extra) %>% clean.locations() %>% enhance.locations()
+
+living.25   <- read.csv(here(path$AZAstudbooks$living25))   %>% 
+  clean_studbook(., alive, locations)
+
+living.21   <- read.csv(here(path$AZAstudbooks$living21))   %>% 
+  clean_studbook(., alive, locations) %>%
+  filter(!(ID %in% pull(living.25, ID)))
+
+historic.21 <- read.csv(here(path$AZAstudbooks$historic21)) %>% 
+  clean_studbook(., alive, locations) %>%
+  filter(!(ID %in% pull(living.25, ID))) %>%
+  filter(!(ID %in% pull(living.21, ID)))
+
 ```
 
 ```{r}
-locationsCurrent25 <- read.csv(here(path$AZAstudbooks$institutions$current25)) %>%
-  select(Name    = Institution.Name, Label   = Mnemonic) %>%
-  mutate(Country = "United States")
-
-locationsCurrent21 <- read.csv(here(path$AZAstudbooks$institutions$current21)) %>%
-  select(Name  = Institution.Name, Label = Mnemonic, Country)
-
-locationsHistoric21 <- read.csv(here(path$AZAstudbooks$institutions$historic21)) %>%
-  select(Name  = Institution.Name, Label = Mnemonic, Country) %>%
-  add_row(Name = "Wild"     , Label = "VIETNAM"                     , Country = "Vietnam") %>%
-  add_row(Name = "Wild"     , Label = "THAILAND"                    , Country = "Thailand") %>%
-  add_row(Name = "Wild"     , Label = "LAOPEOPLESDEMOCRATICREPUBLIC", Country = "Laos") %>%
-  add_row(Name = "SWITZRLND: Invalid use of GeoRef", 
-          Label = "SWITZRLNDINVALIDUSEOFGEOREF", 
-          Country = "Switzerland") %>%
-  add_row(Name = "Wild"     , Label = "UNDETERMINED"                , Country = "Undetermined") %>%
-  add_row(Name = "Wild"     , Label = "ASIA"                        , Country = "Undetermined") %>%
-  add_row(Name = "Private Owner", Label = "GREENWICH"              , Country = "United Kingdom") %>%
-  add_row(Name = "Virginia Safari Park", Label = "VASAFARI"              , Country = "United States")
-
-locations <- bind_rows(locationsCurrent21, locationsHistoric21, locationsCurrent25) %>% 
-  mutate(across(where(is.character), ~na_if(., "")),
-         across(where(is.character), ~str_replace_all(., "\\n|\\t", " ")),
-         across(where(is.character), ~str_trim(.))) %>%
-  mutate(Label = if_else(is.na(Label), str_remove_all(Name, "(?<=.)(\\s\\w+){1,}"), Label)) %>%
-  mutate(Label = str_remove_all(Label, "[^\\w+]")) %>%
-  mutate(Label = str_to_upper(Label)) %>%
+studbook <- bind_rows(living.25, 
+                      living.21, 
+                      historic.21, 
+                      missing) %>%
+  mutate(TypeEvent = fct(TypeEvent, 
+                         levels = c("Birth", "Transfer", "End")),
+         across(c(Sire, Dam), ~ na_if(., 0))) %>%
+  arrange(ID, OrderLoc, TypeEvent) %>%
   distinct() %>%
-  mutate(Abbrev  = as.character(str_sub(Label,  1L,  3L)),
-         Abbrev2 = as.character(str_sub(Label, -2L, -1L))) %>%
-  mutate(Abbrev = if_else(!is.na(lead(Abbrev)) & Abbrev == lead(Abbrev), 
-                          str_replace(Abbrev, "(?<=^\\w)\\w{2}$", 
-                                      Abbrev2), Abbrev), .keep = "unused") %>%
-  arrange(Country, Name)
-
-
-location.key <- sample(palettes_d$palettesForR$Cranes, 
-                       size = length(unique(locations$Abbrev)), 
-                       replace = FALSE) %>%
-  as.list() %>%
-  set_names(., map(as.list(unique(locations$Abbrev)), \(x) paste0(x))) %>%
-  enframe(name = "Abbrev", value = "colorLoc")  %>% 
-  mutate(colorLoc = as.character(colorLoc)) %>%
-  right_join(locations, by = join_by(Abbrev)) %>%
-  mutate(iconLoc = case_when(
-    Country == "United States"             ~ "\U1F1FA\U1F1F8",
-    Country == "United Kingdom"            ~ "\U1F1EC\U1F1E7",
-    Country == "Vietnam"                   ~ "\U1F1FB\U1F1F3",
-    Country == "Canada"                    ~ "\U1F1E8\U1F1E6",
-    Country == "Denmark"                   ~ "\U1F1E9\U1F1F0",
-    Country == "Germany"                   ~ "\U1F1E9\U1F1EA",
-    Country == "Poland"                    ~ "\U1F1F5\U1F1F1",
-    Country == "Russian Federation"        ~ "\U1F1F7\U1F1FA",
-    Country == "Sweden"                    ~ "\U1F1F8\U1F1EA",
-    Country == "Switzerland"               ~ "\U1F1E8\U1F1ED",
-    Country == "Taiwan"                    ~ "\U1F1F9\U1F1FC",
-    Country == "Thailand"                  ~ "\U1F1F9\U1F1ED",
-    Country == "Laos"                      ~ "\U1F1F1\U1F1E6",
-    Country == "Undetermined"              ~ "\U1F6A9",
-    is.na(Country)                         ~ "\U1F6A9"
-  ))
-
-```
-
-
-```{r}
-hypotheticals <- list(
-    "12108" = list(
-      "Sex"         = "M",
-      "OffspringID" = 2108,
-      "Date"        = ymd("1987-04-10"),
-      "DateBirth"   = ymd("1987-04-10"),
-      "Location"    = "IRCHEL", 
-      "Note"        = "To represent likely wild caught sire of SB# 2108, which was born at IRCHEL in Switzerland on 4/10/1989."
-    ),
-    "12717" = list(
-      "Sex"         = "M",
-      "OffspringID" = 2717,
-      "Date"        = ymd("2019-06-12"),
-      "DateBirth"   = ymd("2019-06-12"),
-      "Location"    = "GREENWICH",
-      "Note"        = "Created to represent parents of 2717, which is likely unrelated to the rest of the population due to origin."),
-    "22717" = list(
-      "Sex"         = "F",
-      "OffspringID" = 2717,
-      "Date"        = ymd("2019-06-12"),
-      "DateBirth"   = ymd("2019-06-12"),
-      "Location"    = "GREENWICH",
-      "Note"        = "Created to represent parents of 2717, which is likely unrelated to the rest of the population due to origin.")
-  ) %>%
-  enframe(name = "ID") %>%
-  unnest_wider(value) %>%
-  mutate(Status    = "H",
-         TypeEvent = "Birth",
-         ID        = as.character(ID),
-         IDnum     = as.integer(ID))
-
-hyp.sires <- filter(hypotheticals, Sex == "M") %>% 
-  select(ID = OffspringID, HypSire = ID)
-hyp.dams  <- filter(hypotheticals, Sex == "F") %>% 
-  select(ID = OffspringID, HypDam  = ID)
-```
-
-```{r}
-living.25 <- read.csv(here(path$AZAstudbooks$living25)) %>%
-  select(ID = Studbook.ID,
-         Sex             = Sex.Type,
-         Status          = Current.Status,
-         Sire,
-         Dam,
-         TypeEvent       = Event.Type,
-         Date,
-         Location) %>%
-  filter( str_detect(TypeEvent, "\\w+.+")) %>%
-  mutate(Date = dmy(str_extract(Date, "\\d{1,2}/\\w{3}/\\d{2,4}")),
-         across(c("Sire", "Dam"),   ~ as.character(.)),
-         across(where(is.character), ~ na_if(., "")),
-         across(c("Sex", "Status"), ~ str_sub(., 1L, 1L)),
-         TypeEvent = fct_recode(str_to_title(TypeEvent), 
-                           Capture  = "Wild Capture",
-                           Birth    = "Birth/Hatch",
-                           Transfer = "Transfer"  ,
-                           LTF      = "Go Ltf"     ,
-                           Death    = "Death" 
-                           )
-         ) %>%
-  mutate(across(c("Sire", "Dam"),   ~ if_else(str_detect(., "^[^\\d+]"), NA, .))) %>%
-  fill(ID) %>%
   group_by(ID) %>%
-  fill(Sire, Dam, Sex, Status) %>% ungroup()
-
-alive       <- filter(living.25, Status == "A") %>% pull(ID) %>% unique()
-current_pop <- pull(living.25, ID) %>% unique()
-
-living.21 <- read.csv(here(path$AZAstudbooks$living21)) %>%
-  select(ID = Studbook.ID,
-         Sex             = Sex.Type,
-         Sire,
-         Dam,
-         TypeEvent       = Event.Type,
-         Date,
-         Location) %>%
-  filter( str_detect(TypeEvent, "\\w+.+")) %>%
-  mutate(Date = dmy(str_extract(Date, "\\d{1,2}/\\w{3}/\\d{2,4}")),
-         across(c("Sire", "Dam"),    ~ as.character(.)),
-         across(where(is.character), ~ na_if(., "")),
-         Sex = str_sub(Sex, 1L, 1L),
-         TypeEvent = fct_recode(str_to_title(TypeEvent), 
-                           Capture  = "Wild Capture",
-                           Birth    = "Birth/Hatch",
-                           Transfer = "Transfer"  ,
-                           LTF      = "Go Ltf"     ,
-                           Death    = "Death" 
-                           )
-         ) %>%
-  mutate(across(c("Sire", "Dam"),   ~ if_else(str_detect(., "^[^\\d+]"), NA, .))) %>%
-  fill(ID) %>%
-  mutate(Status = if_else(ID %in% alive, "A", "D")) %>%
-  group_by(ID) %>%
-  fill(Sire, Dam, Sex) %>% ungroup()
-```
-
-
-```{r}
-living <- bind_rows(living.21, living.25) %>%
-  arrange(ID) %>%
-  group_by(ID) %>%
-  mutate(Sex = if_else(Sex == "U" & !is.na(lead(Sex)) & lead(Sex) != "U", lead(Sex), Sex)) %>%
-  left_join(hyp.sires, by = join_by(ID)) %>%
-  left_join(hyp.dams, by = join_by(ID))  %>%
-  mutate(Sire = if_else(!is.na(HypSire), HypSire, Sire),
-         Dam  = if_else(!is.na(HypDam) , HypDam , Dam), .keep = "unused") %>% 
-  arrange(ID, TypeEvent, Date) %>% distinct() %>% 
-  mutate(OrderLoc = row_number(),
-         Location = na_if(Location, ""),
-         Location = str_replace_all(Location, "\\n|\\t", " "),
-         Location = str_trim(Location)) %>%
-  mutate(Location = str_remove_all(Location, "[^\\w+]")) %>% 
-  left_join(select(location.key, 
-                   LocAbbrev = Abbrev, 
-                   Label, 
-                   colorLoc, 
-                   NameLoc = Name, 
-                   Country, 
-                   iconLoc), 
-            by = join_by(Location == Label)) %>%
-  mutate(Location = LocAbbrev, .keep = "unused")
-```
-
-```{r}
-historic.21 <- read.csv(here(path$AZAstudbooks$historic21)) %>%
-  select(ID              = Studbook.ID,
-         Sex             = Sex.Type,
-         Sire,
-         Dam,
-         DateBirth       = Birth.Date,
-         TypeEvent       = Event.Type,
-         Date,
-         Location) %>%
-  filter( str_detect(TypeEvent, "\\w+.+")) %>%
-  mutate(across(c("Date", "DateBirth"),
-                ~ dmy(str_extract(., "\\d{1,2}/\\w{3}/\\d{2,4}"))),
-         across(c("Sire", "Dam"),    ~ as.character(.)),
-         across(where(is.character), ~ na_if(., "")),
-         Sex       = str_sub(Sex, 1L, 1L),
-         TypeEvent = fct_recode(str_to_title(TypeEvent), 
-                           Capture  = "Wild Capture",
-                           Birth    = "Birth/Hatch",
-                           Transfer = "Transfer"  ,
-                           LTF      = "Go Ltf"     ,
-                           Death    = "Death" 
-                           )) %>%
-  mutate(Location = str_to_upper(str_remove_all(Location, "[^\\w+]"))) %>%
-  mutate(across(c("Sire", "Dam"),   ~ if_else(str_detect(., "^[^\\d+]"), NA, .))) %>%
-  fill(ID) %>%
-  mutate(Status = if_else(ID %in% alive, "A", "D")) %>%
-  bind_rows(select(hypotheticals, 
-                   Location ,
-                   Status   ,
-                   TypeEvent,
-                   DateBirth,
-                   Date,
-                   ID = IDnum,
-                   Sex)) %>%
-  mutate(TypeEvent = fct(TypeEvent, levels = c("Capture", "Birth", "Transfer", "LTF", "Death"))) %>%
-  group_by(ID) %>%
-  arrange(ID, TypeEvent, Date) %>% distinct() %>% 
-  fill(Sire, Dam, Sex, Status, DateBirth, .direction = "downup") %>%
-  mutate(OrderLoc = row_number(),
-         Location = na_if(Location, ""),
-         Location = str_replace_all(Location, "\\n|\\t", " "),
-         Location = str_trim(Location)) %>%
-  mutate(Location = str_remove_all(Location, "[^\\w+]")) %>% 
-  left_join(select(location.key, 
-                   LocAbbrev = Abbrev, 
-                   Label, 
-                   colorLoc, 
-                   NameLoc = Name, 
-                   Country, 
-                   iconLoc), 
-            by = join_by(Location == Label)) %>%
-  mutate(Location = LocAbbrev, .keep = "unused")
-```
-
-
-```{r}
-BirthsLiving <- filter(living, TypeEvent == "Birth" | TypeEvent == "Capture")
-
-BirthsH21 <- filter(historic.21, TypeEvent == "Birth" | TypeEvent == "Capture") %>%
-  group_by(ID) %>%
-  fill(Sire,
-       Dam,
-       DateBirth,
-       Date,
-       Location,
-       Status,
-       colorLoc,
-       NameLoc,
-       Country,
-       iconLoc, .direction = "downup") %>%
-  mutate(OrderLoc = 1, TypeEvent = "Birth") %>% 
-  ungroup() %>% distinct()
-
-historic <- filter(historic.21, TypeEvent != "Birth" & TypeEvent != "Capture") %>%
-  bind_rows(BirthsH21) %>%
-  arrange(ID, OrderLoc) %>%
-  group_by(ID) %>%
-  mutate(OrderLoc = row_number()) %>% ungroup()
-
-```
-
-```{r}
-studbook <- bind_rows(
-  living %>% mutate(source = "living"),
-  historic %>% mutate(source = "historic")
-)  %>%
-  arrange(ID, OrderLoc) %>%
-  group_by(ID) %>%
-  mutate(
-    Date_imputed = case_when(
-      TypeEvent == "Birth" & is.na(Date) ~ coalesce(DateBirth, Date),
-      TypeEvent == "Transfer" & is.na(Date) ~ as.Date((as.numeric(lag(Date)) + as.numeric(lead(Date)))/2, origin = "1970-01-01"),
-      TRUE ~ Date
-    )
-  ) %>%
-  ungroup()
-```
-
-```{r}
-location_intervals <- studbook %>%
-  group_by(ID, Location) %>%
-  summarise(
-    LocStart = if (all(is.na(Date_imputed))) as.Date(NA) else min(Date_imputed, na.rm = TRUE),
-    LocEnd   = if (all(is.na(Date_imputed))) as.Date(NA) else max(Date_imputed, na.rm = TRUE),
-    .groups = "drop"
-  )
-```
-
-```{r}
-offspring <- studbook %>%
-  filter(TypeEvent == "Birth") %>%
-  select(ID, Sex, Date_imputed, Sire, Dam)
-
-sire_intervals <- location_intervals %>% 
-  rename(Sire          = ID, 
-         Sire_LocStart = LocStart, 
-         Sire_LocEnd   = LocEnd)
-
-dam_intervals <- location_intervals %>% 
-  rename(Dam          = ID, 
-         Dam_LocStart = LocStart, 
-         Dam_LocEnd   = LocEnd)
-
-offspring <- offspring %>%
-  mutate(Sire = as.integer(Sire), 
-         Dam  = as.integer(Dam)) %>%
-  left_join(sire_intervals, by = "Sire") %>%
-  mutate(
-    sire_valid = if_else(!is.na(Sire) & (Date_imputed > Sire_LocStart), TRUE, FALSE)
-  ) %>%
-  left_join(dam_intervals, by = "Dam") %>%
-  mutate(
-    dam_valid = if_else(!is.na(Dam) & (Date_imputed > Dam_LocStart), TRUE, FALSE)
-  ) %>% distinct()
-
-
-offspring  %>%
-  summarise(
-    n_total = n(),
-    n_missing_dates = sum(is.na(Date_imputed)),
-    n_invalid_sire = sum(!sire_valid, na.rm = TRUE),
-    n_invalid_dam = sum(!dam_valid, na.rm = TRUE)
-  )
-```
-
-
-
-
-```{r}
-LocsLiving <- select(living,
-                     ID,
-                     TypeEvent,
-                     Date,
-                     OrderLoc,
-                     Location) %>%
-  mutate(LocRank = as.character(str_glue("{Location}", "{OrderLoc}")))
-```
-
-```{r}
-Births <- BirthsH21 %>%
-  filter(!(ID %in% pull(BirthsLiving, ID))) %>%
-  bind_rows(BirthsLiving) %>% arrange(ID) %>%
-  mutate(OrderLoc = 1, 
-         LocRank  = as.character(str_glue("{Location}", "1")))
-
-Sires <- select(Births, 
-                ID          = Sire, 
-                OffspringID = ID,
-                MateID      = Dam,
-                Date,
-                Location) %>%
-  filter(!is.na(ID)) %>%
-  mutate(Sex = "M", ID = as.integer(ID))
-
-Dams <- select(Births, 
-                ID          = Dam, 
-                OffspringID = ID,
-                MateID      = Sire,
-                Date,
-                Location) %>%
-  filter(!is.na(ID)) %>%
-  mutate(Sex = "F", ID = as.integer(ID))
-```
-
-```{r}
-LocsOrder <- select(historic,
-                     ID,
-                     TypeEvent,
-                     Date,
-                     OrderLoc,
-                     Location) %>%
-  mutate(LocRank = as.character(str_glue("{Location}", "{OrderLoc}"))) %>%
-  bind_rows(LocsLiving) %>% distinct() %>% arrange(ID, OrderLoc) %>%
-  group_by(ID) %>%
-  mutate(LocRank = if_else(
-    TypeEvent == "Death" | TypeEvent == "LTF" & Location == lag(Location),
-    lag(LocRank), LocRank
-    ),
-    OrderLoc = if_else(
-    TypeEvent == "Death" | TypeEvent == "LTF" & Location == lag(Location),
-    lag(OrderLoc), OrderLoc
-    )) %>% 
-  mutate(LocStart = if_else(TypeEvent == "Death" | TypeEvent == "LTF", lag(Date), Date), 
-         LocEnd   = if_else(TypeEvent == "Death" | TypeEvent == "LTF", Date     , lead(Date))
-  ) %>%
-  ungroup() %>% group_by(ID, LocRank) %>%
-  fill(LocStart, Date, LocEnd, .direction = "downup") %>%
-  ungroup() %>%
-  select(
-    ID,
-    LocRank,
-    Location,
-    LocStart,
-    Date,
-    LocEnd
-  ) %>% distinct() %>%
-  mutate(TypeEvent = "Transfer")
-
-Parents <- bind_rows(Sires, Dams) %>%
-  arrange(ID, Date) %>%
-fuzzy_left_join(
-  select(LocsOrder, -c(Date, TypeEvent)),
-  by = c(
-    "ID"       = "ID",
-    "Location" = "Location",
-    "Date"     = "LocStart",
-    "Date"     = "LocEnd"   
-  ),
-  match_fun = list(
-    `==`, 
-    `==`, 
-    function(x, y) { is.na(y) | x >= y },
-    function(x, y) { is.na(y) | x <= y }
-  )
-) %>%
-  select(
-    ID           = ID.x,
-    Location     = Location.x,
-    LocRank,
-    Date,
-    LocStart,
-    LocEnd,
-    Sex,
-    MateID,
-    OffspringID
-  ) %>% distinct()
-```
-
-```{r}
-LocsEvents <- select(
-                   Parents,
-                   ID,
-                   LocRank,
-                   LocStart,
-                   Date,
-                   LocEnd
-                   ) %>%
-  mutate(TypeEvent = "Breed") %>%
-  bind_rows(LocsOrder) %>%
-  mutate(Order    = as.integer(str_sub(LocRank, -1L, -1L)) + 1,
-         Location = as.character(str_sub(LocRank, 1L, 3L))) %>%
-  arrange(ID, Order, LocRank, Date) %>%
-  distinct() %>%
-  bind_rows(select(Births,
-                   ID,
-                   Date,
-                   Order = OrderLoc,
-                   Location,
-                   TypeEvent,
-                   Status,
-                   LocRank)) %>%
-  mutate(TypeEvent = fct(TypeEvent, levels = c("Birth", "Transfer", "Breed"))) %>%
-  arrange(ID, TypeEvent, Order, LocRank, Date) %>%
-  group_by(ID, LocRank) %>%
-  fill(LocStart, LocEnd, .direction = "downup") %>%
-  ungroup() %>% group_by(ID) %>%
-  fill(Status) %>%
-  select(-Order) %>% distinct() %>%
-  mutate(Order = row_number()) %>%
-  mutate(LocEnd = if_else(
-    is.na(LocEnd) & Status == "A" & Order == max(Order), today(), LocEnd)
-    ) %>% ungroup() %>%
-  filter(!(TypeEvent == "Transfer" & lag(TypeEvent) == "Birth")) 
-```
-
-
-```{r}
-
- %>%
-  group_by(ID) %>%
-mutate(LocEnd = case_when(
-    is.na(LocEnd) & !is.na(lead(LocStart)) ~ lead(LocStart)
-  ))
-```
-
-
-
-```{r}
-studbook <- bind_rows(living, historic.21) %>% arrange(ID) %>% distinct() %>% 
-  left_join(select(location.key, 
-                   LocAbbrev = Abbrev, 
-                   Label, 
-                   colorLoc, 
-                   NameLoc = Name, 
-                   Country, 
-                   iconLoc), 
-            by = join_by(Location == Label)) %>%
-  mutate(Location = LocAbbrev, .keep = "unused") %>%
-  mutate(TypeEvent = fct(TypeEvent, levels = c("Capture", "Birth", "Transfer", "LTF", "Death"))) %>%
-  group_by(ID) %>%
-  mutate(Order = row_number()) %>% relocate(Order, .after = TypeEvent)
-```
-
-
-```{r}
-location.orders <- select(studbook, ID, Order, Location, TypeEvent, Date) %>%
-  arrange(ID, Order) %>%
-  filter(TypeEvent == "Transfer") %>%
-  group_by(ID) %>%
-  mutate(LocOrder = row_number()) %>% ungroup %>% select(-Order)
-
-deceased <- filter(studbook, Status == "D" | Status == "H") %>% pull(ID) %>% unique()
-N_records <- sum(length(deceased), length(alive))
-print(N_records)
-```
-
-```{r}
-births <- filter(studbook, TypeEvent == "Birth" | TypeEvent == "Capture") %>%
-  select(ID, Sex, Sire, Dam, DateBirth, TypeEvent, Date, Location) %>%
-  distinct() %>%
-  pivot_wider(
-    id_cols = c(
-      "ID",
-      "Sex",
-      "Sire",
-      "Dam",
-      "DateBirth"
-    ),
-    names_from  = "TypeEvent",
-    names_sep   = "_",
-    values_from = c("Date", "Location")
-  ) %>%
-  mutate(
-  Date = case_when(
-    is.na(DateBirth) & is.na(Date_Capture) & !is.na(Date_Birth) ~ Date_Birth,
-    is.na(DateBirth) & !is.na(Date_Capture) & is.na(Date_Birth) ~ Date_Capture,
-    !is.na(DateBirth) ~ DateBirth
-  ),
-  Location = case_when(
-    is.na(Location_Birth) & !is.na(Location_Capture) ~ Location_Capture,
-    !is.na(Location_Birth) ~ Location_Birth
-  ),
-  TypeEvent = "Birth",
-  Order     = 1,
-  From      = "Birth",
-  .keep = "unused") %>% distinct()  %>%
-  group_by(ID) %>%
-  arrange(ID, desc(Sex)) %>%
-  mutate(Sex = if_else(Sex == "U" & !is.na(lead(Sex)) & lead(Sex) != "U", lead(Sex), Sex)) %>%
-  ungroup() %>% distinct() %>%
-  left_join(select(living.25, ID, Sex_revised = Sex), by = join_by(ID)) %>%
-  mutate(Sex = if_else(!is.na(Sex_revised) & Sex != Sex_revised, Sex_revised, Sex), .keep = "unused") %>% 
-  distinct() %>% left_join(select(studbook, -c(Sex, Sire, Dam, Date, Location, Order, OrderEvent, DateBirth)), 
-                           by = join_by(ID, TypeEvent)) %>% distinct() %>% mutate(DateBirth = Date)
-
-duplicates <- births %>% filter(ID == lead(ID) | ID == lag(ID))
-```
-
-
-```{r}
-breeding <- select(births,
-                   OffspringID = ID,
-                   Sire,
-                   Dam,
-                   Date,
-                   Location) %>%
-  pivot_longer(cols      = c("Sire", "Dam"),
-               names_to  = "Sex",
-               values_to = "ID") %>%
-  mutate(Sex       = if_else(Sex == "Sire", "M", "F"),
-         TypeEvent = "Breed", ID = as.integer(ID)) %>%
-  relocate(ID) %>%
-  filter(!is.na(ID)) %>% distinct() %>%
-  left_join(select(studbook, -c(Sex, Date, TypeEvent, OrderEvent)), 
-                           by = join_by(ID, Location)) %>% 
-  group_by(ID) %>% arrange(ID, Location, Date) %>%
-  fill(DateBirth, .direction = "downup") %>%
-  ungroup() %>% select(-Order) %>%
-  distinct() %>%
-  group_by(ID, Location) %>%
-  mutate(OrderBreed = row_number()) %>%  
-  distinct() %>% 
-  ungroup()
-```
-
-```{r}
-deaths.v1 <- filter(studbook, TypeEvent == "Death" | TypeEvent == "LTF") %>%
-  select(ID, TypeEvent, Date, Location, Status) %>%
-  distinct() %>%
-  pivot_wider(
-    id_cols     = c("ID", "Status"),
-    names_from  = "TypeEvent",
-    names_sep   = "_",
-    values_from = c("Date", "Location")
-  ) %>%
-  mutate(
-  TypeEvent = case_when(
-    is.na(Date_Death) ~ "LTF",
-    !is.na(Date_Death) ~ "Death"
-  ),
-  Date = case_when(
-    is.na(Date_Death) & !is.na(Date_LTF) ~ Date_LTF,
-    is.na(Date_LTF) & !is.na(Date_Death) ~ Date_Death
-  ),
-  Location = case_when(
-    is.na(Location_Death) & !is.na(Location_LTF) ~ Location_LTF,
-    is.na(Location_LTF) & !is.na(Location_Death) ~ Location_Death
-  ),
-  .keep = "unused") %>% distinct()
-
-GoLTFs <- filter(studbook, ID %in% setdiff(deceased, pull(deaths.v1, ID))) %>%
-  select(ID, TypeEvent, Date, Location, Status) %>%
-  group_by(ID) %>%
-  slice_max(order_by = Date, n = 1) %>%
-  mutate(TypeEvent = "LTF") %>%
-  ungroup() %>%
-  select(ID, TypeEvent, Location, Status) %>% distinct()
-
-deaths <- deaths.v1 %>% bind_rows(GoLTFs) %>% arrange(ID) %>% 
-  left_join(select(studbook, -c(Date, Location, OrderEvent, DateBirth)), 
-                           by = join_by(ID, TypeEvent, Status)) %>% distinct() %>% 
-  mutate(DateDeath = Date)
-  
-
-duplicates <- deaths %>% filter(ID == lead(ID) | ID == lag(ID))
-
-```
-
-```{r}
-studbook.v2 <- filter(studbook, TypeEvent == "Transfer") %>%
-  bind_rows(births) %>%
-  bind_rows(deaths) %>%
-  mutate(TypeEvent = fct(TypeEvent, levels = c("Birth", "Transfer", "LTF", "Death"))) %>%
-  arrange(ID, TypeEvent, Date) %>%
-  group_by(ID) %>%
-  mutate(Order = row_number()) %>%
+  mutate(StartLoc = if_else(TypeEvent != "End", Date, lag(Date)),
+         EndLoc   = if_else(TypeEvent == "End", Date, lead(Date))) %>%
   select(
     ID,
     Status,
-    Sex,
-    Sire,
-    Dam,
+    OrderLoc,
     Location,
     TypeEvent,
-    Order,
+    StartLoc,
     Date,
-    DateBirth,
-    DateDeath,
-    colorLoc,
+    EndLoc,
     NameLoc,
     Country,
-    iconLoc
-  )  %>%
-  fill(Sex, Sire, Dam, DateBirth, DateDeath, .direction = "downup") %>% ungroup()
-
-transfers <- studbook.v2 %>% 
-  arrange(ID, Order) %>%
-  group_by(ID) %>%
-  mutate(From = lag(Location)) %>%
-  filter(TypeEvent == "Transfer" | TypeEvent == "Birth") %>%
-  select(ID, TypeEvent, Date, From, To = Location) %>%
-  mutate(LocOrder = row_number()) %>%
-  ungroup() %>% filter(TypeEvent == "Transfer") %>%
-  distinct()
-
-repro.events <- breeding %>%
-  select(ID, OrderBreed, Date, To = Location, TypeEvent) %>%
-  mutate(From = To) %>% distinct() %>% arrange(ID, Date, OrderBreed)
-
-end.records <- deaths %>%
-  select(ID, Date, From = Location, TypeEvent) %>%
-  mutate(To = "End") %>% distinct() %>% arrange(ID)
-```
-
-```{r}
-records <- select(births,
-                  ID,
-                  TypeEvent,
-                  Order,
-                  Date,
-                  From,
-                  To = Location,
-                  Status) %>%
-  arrange(ID, Order) %>%
-  mutate(LocOrder = 1) %>%
-  bind_rows(transfers) %>%
-  arrange(ID, LocOrder) %>%
-  bind_rows(repro.events) %>%
-  mutate(TypeEvent = fct(TypeEvent, levels = c("Birth", "Transfer", "Breed", "End"))) %>%
-  arrange(ID, LocOrder, TypeEvent, OrderBreed) %>%
-  relocate(LocOrder, OrderBreed, .after = Order) %>%
-  group_by(ID) %>% fill(Status) %>% 
-  mutate(Status = replace_na(Status, "A"),
-         Order  = row_number())
+    Sex,
+    Sire,
+    Dam
+  ) %>% ungroup()
 
 
-gaps <- filter(records, !is.na(Date)) %>%
-  group_by(ID) %>%
-  mutate(Lag  = int_length(interval(lag(Date), Date)),
-         Lead = int_length(interval(Date, lead(Date))))
+end.records <- studbook %>%
+  select(ID,
+         Status,
+         OrderLoc,
+         Location,
+         TypeEvent,
+         StartLoc,
+         Date,
+         EndLoc
+  ) %>%
+  slice_tail(n = 1, by = ID) %>%
+  filter(TypeEvent != "End") %>%
+  mutate(Date = if_else(Status == "A", today(), NA),
+         TypeEvent = "End") %>% 
+  mutate(EndLoc = Date) %>%
+  select(-Status) %>% distinct()
 ```
 
 
+```{r, warning = FALSE}
+timeline <- studbook %>%
+  filter(TypeEvent == "Birth" & !is.na(Sire)) %>%
+  select(ID      = Sire,
+         OffspID = ID,
+         Location,
+         Date) %>%
+  bind_rows(select(filter(studbook, TypeEvent == "Birth" & !is.na(Dam)),
+                   ID      = Dam,
+                   OffspID = ID,
+                   Location,
+                   Date)) %>%
+  left_join(select(studbook,
+                   ID,
+                   OrderLoc,
+                   Location,
+                   StartLoc,
+                   EndLoc
+                   ), by = join_by(ID, Location)) %>%
+  mutate(check = if_else(
+    between(Date, StartLoc, EndLoc) | 
+      is.na(StartLoc) & Date < EndLoc | 
+      is.na(EndLoc) & Date > StartLoc | 
+      (is.na(StartLoc) & is.na(EndLoc)) | is.na(Date),
+    "keep",
+    "discard"
+  )) %>% filter(check == "keep") %>%
+  mutate(TypeEvent = "Breed") %>%
+  select(-c(check, OffspID)) %>% 
+  bind_rows(end.records) %>%
+  distinct() %>% 
+  arrange(ID, 
+          OrderLoc,
+          Date) %>%
+  bind_rows(select(studbook,
+                   ID,
+                   OrderLoc,
+                   Location,
+                   TypeEvent,
+                   StartLoc,
+                   Date,
+                   EndLoc)) %>% 
+  distinct() %>% 
+  mutate(TypeEvent = fct(TypeEvent, levels = c(
+    "Birth",
+    "Transfer",
+    "Breed",
+    "End"
+  ))) %>%
+  arrange(ID, 
+          OrderLoc,
+          TypeEvent,
+          Date) %>%
+  select(ID,
+         OrderLoc,
+         Location,
+         StartLoc,
+         TypeEvent,
+         Date,
+         EndLoc) %>%
+  group_by(ID) %>%
+  mutate(Date = case_when(
+    is.na(Date) & TypeEvent != "End"  & TypeEvent != "Breed" ~ StartLoc,
+    is.na(Date) & TypeEvent == "End"  ~ EndLoc,
+    is.na(Date) & TypeEvent == "Birth" ~ lead(Date) - years(1),
+    is.na(Date) & TypeEvent == "Transfer" & lead(TypeEvent) != "End" ~
+      lag(Date) + days(floor(as.numeric(as.period((interval(lag(Date), lead(Date))), unit = "days"), "days")/2)),
+    .default = Date
+  )) %>%
   mutate(Date = if_else(
-    is.na(Date) & Order == 1, lead(Date) - months(2), Date
-    ))
-```{r}
-records <- studbook.v2 %>%
-  filter(TypeEvent == "Birth") %>%
-  select(ID, Date, To = Location, TypeEvent) %>%
-  mutate(From = "Birth", TransOrder = 1) %>%
-  bind_rows(transfers) %>%
-  arrange(ID, TransOrder) %>%
-  group_by(ID) %>%
-  mutate(TransOrder = case_when(
-    is.na(TransOrder), lag(TransOrder) + 1, TransOrder)) %>%
-  mutate(From = if_else(is.na(From), lag(To), From)) %>%
-  select(ID, TransOrder, TypeEvent, Date, From, To) %>%
-  bind_rows(repro.events) %>%
-  arrange(ID, To, Date) %>%
-  fill(TransOrder) %>%
-  ungroup() %>%
-  group_by(ID, To) %>%
-  mutate(LocOrder = row_number())
-  
-```
-
-
-```{r}
- %>%
-  arrange(ID, Order, Date) %>%
-  mutate(Order = row_number()) %>%
-  bind_rows(end.records) %>%
-  arrange(ID, Order, Date) %>%
-  mutate(Order = if_else(TypeEvent == "LTF" | TypeEvent == "Death", lag(Order) + 1, Order))  %>%
-  mutate(TypeEvent = if_else(TypeEvent == "Death" | TypeEvent == "LTF", "End", TypeEvent))  %>%
-  mutate(From = if_else(
-    From == "UND" & TypeEvent == "End" & lag(To) != "UND", lag(To), From),
-    To = if_else(To == "UND" & TypeEvent == "End" & lag(To) != "UND", lag(To), To)) %>%
-  mutate(Date = if_else(is.na(Date) & TypeEvent == "End"  , lag(Date) + months(2), Date)) %>%
-  mutate(Date = if_else(is.na(Date) & TypeEvent == "Birth", lead(Date) - months(2), Date))
-```
-
-
-
-```{r}
-records <- births %>%
-  select(ID, Date, To = Location, TypeEvent) %>%
-  mutate(From = "Birth", Order = 1) %>%
-  bind_rows(transfers) %>%
-  arrange(ID, Order) %>%
-  group_by(ID) %>%
-  mutate(From = if_else(is.na(From), lag(To), From)) %>%
-  select(ID, Order, TypeEvent, Date, From, To) %>%
-  bind_rows(repro.events) %>%
-  arrange(ID, Date) %>%
-  group_by(ID) %>%
-  mutate(Order = if_else(is.na(Order), lag(Order) + 1, Order)) %>%
-  arrange(ID, Order, Date) %>%
-  mutate(Order = row_number()) %>%
-  bind_rows(end.records) %>%
-  arrange(ID, Order, Date) %>%
-  mutate(Order = if_else(TypeEvent == "LTF" | TypeEvent == "Death", lag(Order) + 1, Order)) %>%
-  mutate(DateEst = if_else(is.na(Date), "Y", "N")) %>%
-  mutate(Date = case_when(
-    is.na(Date) & TypeEvent == "Birth"                       ~ lead(Date) - months(2),
-    is.na(Date) & TypeEvent == "LTF" | TypeEvent == "Death"  ~ lag(Date) + months(2),
-    is.na(Date) & TypeEvent == "Transfer" & is.na(lag(Date)) ~ lead(Date) - months(2),
-    is.na(Date) & TypeEvent == "Transfer" & is.na(lead(Date)) ~ lag(Date) + months(2),
-    is.na(Date) & TypeEvent == "Transfer" & !is.na(lead(Date)) & !is.na(lag(Date)) ~ 
-     lag(Date) + (lead(Date) - lag(Date)) / 2,
-    .default = Date
+    is.na(Date) & TypeEvent == "Transfer" & lead(TypeEvent) != "End",
+    lag(Date) + days(floor(as.numeric(as.period((interval(lag(Date), lead(Date))), unit = "days"), "days")/2)),
+    Date
+  )) %>%
+  mutate(Date = if_else(
+    is.na(Date) & lag(TypeEvent) == "Birth" & is.na(lag(Date)),
+    lead(Date) - years(1), Date
   )) %>%
   mutate(Date = case_when(
-    is.na(Date) & TypeEvent == "Birth"                       ~ lead(Date) - months(2),
-    is.na(Date) & TypeEvent == "LTF" | TypeEvent == "Death"  ~ lag(Date) + months(2),
-    is.na(Date) & TypeEvent == "Transfer" & is.na(lag(Date)) ~ lead(Date) - months(2),
-    is.na(Date) & TypeEvent == "Transfer" & is.na(lead(Date)) ~ lag(Date) + months(2),
-    is.na(Date) & TypeEvent == "Transfer" & !is.na(lead(Date)) & !is.na(lag(Date)) ~ 
-     lag(Date) + (lead(Date) - lag(Date)) / 2,
-    .default = Date
-  )) %>%
+    is.na(Date) & TypeEvent == "Birth" ~ lead(Date) - years(1),
+    is.na(Date) & TypeEvent == "End" & !(ID %in% alive) ~ lag(Date) + years(1),
+    .default = Date)) %>%
+  mutate(
+    StartLoc = case_when(
+      TypeEvent == "Breed" ~ lag(StartLoc),
+      TypeEvent != "End" & TypeEvent != "Breed" ~ Date,
+      TypeEvent == "End" & lag(TypeEvent) != "Breed" ~ lag(Date),
+      .default = StartLoc
+      ),
+    EndLoc = case_when(
+      TypeEvent == "Breed" & Location == lead(Location) ~ lead(EndLoc),
+      lead(TypeEvent) == "Transfer" | lead(TypeEvent) == "End" ~ lead(Date),
+      TypeEvent == "End" ~ Date,
+      .default = EndLoc
+      )
+    ) %>% group_by(ID, Location) %>%
+  fill(StartLoc, EndLoc, .direction = "updown") %>%
   ungroup()
 ```
 
+```{r, warning = FALSE}
+studbook.revised <- timeline %>%
+  filter(TypeEvent != "Breed") %>%
+  left_join(select(
+    studbook,
+    ID,
+    Status,
+    OrderLoc,
+    Location,
+    NameLoc,
+    Country,
+    Sex,
+    Sire,
+    Dam
+  ), by = join_by(ID, OrderLoc, Location)) %>% distinct() %>%
+  mutate(DateBirth = if_else(TypeEvent == "Birth", Date, NA)) %>%
+  group_by(ID) %>% fill(DateBirth) %>% ungroup()
 
-```{r}
-studbook.working <- records %>%
-  filter(TypeEvent == "Birth" | TypeEvent == "End") %>%
-  rename(Location = To) %>%
-  pivot_wider(id_cols     = ID,
-              names_from  = TypeEvent,
-              names_sep   = "_",
-              values_from = c("Date", "Location")) %>%
-  right_join(filter(records, TypeEvent != "Birth" & TypeEvent != "End"), by = join_by(ID)) %>%
+```
+
+
+```{r, warning = FALSE}
+location.dates <- studbook.revised %>%
   select(
-    ID, 
-    DateBirth = Date_Birth, 
-    LocBirth  = Location_Birth, 
-    DateLast  = Date_End, 
-    LocLast   = Location_End, 
-    TypeEvent,
-    DateEvent = Date, 
-    DateEst, 
-    LocEvent  = To
-  ) %>%
-  left_join(select(births,
-                   ID,
-                   Sex,
-                   Sire,
-                   Dam,
-                   Status), by = join_by(ID)) %>%
-  left_join(select(breeding,
-                   ID,
-                   OffspringID,
-                   Date,
-                   Location,
-                   TypeEvent), by = join_by(ID, 
-                                            DateEvent == Date, 
-                                            LocEvent  == Location, 
-                                            TypeEvent)) %>%
-  left_join(select(filter(records, TypeEvent == "Birth"),
-                   OffspringID = ID,
-                   DateBreed = Date), by = join_by(OffspringID)) %>%
-  mutate(DateEvent = if_else(is.na(DateEvent) & TypeEvent == "Breed", DateBreed, DateEvent)) %>%
-  select(-DateBreed) %>%
-  mutate(DateLast  = if_else(is.na(DateLast ) & Status == "H", DateEvent, DateLast),
-         DateBirth = if_else(is.na(DateBirth) & Status == "H", DateEvent - years(2), DateBirth)) %>%
+    ID,
+    Sex,
+    Location,
+    DateBirth,
+    StartLoc,
+    EndLoc
+  ) %>% distinct()
+
+monthly.census <- pmap(
+  list(
+    pull(location.dates, StartLoc),
+    pull(location.dates, EndLoc),
+    pull(location.dates, DateBirth),
+    pull(location.dates, Location),
+    pull(location.dates, Sex),
+    pull(location.dates, ID)
+  ), census_by_month) %>%
+  bind_rows() %>%
+  group_by(Date, Location) %>%
+  summarise(Individuals = list(
+    tibble(ID, Sex, Age)), 
+    .groups = "drop") %>%
+  group_by(Date) %>%
+  summarise(Locations = split(Individuals, 
+                              Location), 
+            .groups = "drop") %>%
+  split(.$Date) %>%
+  map(~ .x$Locations)
+```
+
+
+```{r, warning = FALSE}
+find.sires <- whoisthedaddy(studbook.revised, monthly.census)
+find.dams  <- whoisthemommy(studbook.revised, monthly.census)
+```
+
+```{r}
+final.studbook <- studbook.revised %>%
+  mutate(Sire = case_match(ID, 
+                           1047 ~ 1012, 
+                           2645 ~ 1131, .default = Sire)) %>%
+  add.hypotheticals(c(1045, 1046), "Sire") %>%
+  add.hypotheticals(c(2423, 2424), "Sire") %>%
+  add.hypotheticals(c(2108), "Sire") %>%
+  add.hypotheticals(c(2717), "Dam") %>%
+  add.hypotheticals(c(2717), "Sire")
+
+write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
+```
+
+```{r}
+visual.studbook <- final.studbook %>%
   group_by(ID) %>%
-  mutate(EventOrder = row_number()) %>%
-  relocate(EventOrder, .before = TypeEvent) %>%
-  mutate(LocLast = if_else(is.na(LocLast) & EventOrder == max(EventOrder), LocEvent, LocLast)) %>%
-  fill(LocLast, .direction = "up") %>%
-  mutate(DateLast = if_else(ID %in% alive, today(), DateLast)) %>%
-  left_join(select(location.key, 
-                   IconBirth  = iconLoc, 
-                   ColorBirth = colorLoc, 
-                   LocBirth   = Abbrev), 
-      by = join_by(LocBirth)) %>%
-  left_join(select(location.key, 
-                   IconLocEvent  = iconLoc, 
-                   ColorLocEvent = colorLoc, 
-                   LocEvent      = Abbrev), 
-      by = join_by(LocEvent)) %>%
-  left_join(select(location.key, 
-                   IconLocLast   = iconLoc, 
-                   ColorLocLast  = colorLoc, 
-                   LocLastName   = Name,
-                   LocLast       = Abbrev), 
-      by = join_by(LocLast)) %>%
-  ungroup() %>% distinct()
-
-write.table(studbook.working, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
+  mutate(Age  = calculate_age(DateBirth, Date),
+         Year = year(Date)) %>%
+  left_join(select(locations, -Label), by = join_by(
+    Location == LocAbbrev,
+    Country,
+    NameLoc
+  )) %>%
+  mutate(color = case_match(Sex, 
+                            "F" ~ colors$f, 
+                            "M" ~ colors$m, 
+                            "U" ~ colors$u))
 ```
 
-```{r}
-timeline.locs <- select(studbook.working, 
-                      ID,
-                      Start    = DateBirth,
-                      Location = LocBirth) %>%
-               bind_rows(
-                 select(filter(studbook.working, TypeEvent == "Transfer"), 
-                        ID,
-                        Start    = DateEvent,
-                        Location = LocEvent)
-                 ) %>%
-               left_join(
-                 select(studbook.working,
-                        ID,
-                        DateLast), by = join_by(ID)
-               ) %>%
-               distinct() %>%
-               group_by(ID) %>%
-               arrange(ID, Start) %>%
-               mutate(Order = row_number()) %>%
-               mutate(End   = if_else(Order == max(Order), DateLast, lead(Start))) %>%
-               ungroup() %>% select(
-                 ID,
-                 Location,
-                 Start,
-                 End
-               ) %>%
-               distinct()
+```{css, echo = FALSE}
 
-write.table(timeline.locs, here(path$AZAstudbooks$timeline), sep = "\t", row.names = F)
+.flag {
+  height: 1.3rem;
+  border: 1px solid #f0f0f0;
+}
+
+.LocAbbrev {
+  font-family: "Bungee Inline", sans-serif;
+  font-size: 1.25rem;
+}
+
+.Names {
+  font-family: "News Cycle", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 300;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.location-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
 
 ```
 
 ```{r}
-LocStarts <- timeline.locs %>%
-  select(Location, Start) %>%
-  group_by(Location) %>%
-  slice_min(order_by = Start, n = 1) %>%
-  ungroup() %>% distinct()
-
-LocEnds <- timeline.locs %>%
-  select(Location, End) %>%
-  group_by(Location) %>%
-  slice_max(order_by = End, n = 1) %>%
-  ungroup() %>% distinct()
-
-LocIntervals <- LocStarts %>% 
-  left_join(LocEnds, by = join_by(Location)) %>%
-  mutate(across(c("Start", "End"), ~ floor_date(., "months"))) %>%
-  arrange(Start, End)
-```
-
-
-```{r}
-minMonth <- floor_date(min(pull(timeline.locs, Start)), "month")
-maxMonth <- floor_date(today(), "month")
-
-Monthly <- as.list(seq(minMonth, maxMonth, by = "months")) %>%
-  pmap(as.list())
 
 ```
-
-
-```{r}
-Monthly <- timeline.locs %>%
-  mutate(month = map2(Start, End, ~ seq(from = floor_date(.x, "month"),
-                                        to   = floor_date(.y, "month"),
-                                        by   = "months"))) %>%
-  unnest(month)
-
-census <- Monthly %>%
-  group_by(month, Location) %>%
-  summarise(IDs = list(unique(ID)), .groups = "drop") %>%
-  nest(data     = c(Location, IDs))
-
-```
-
 
 
 

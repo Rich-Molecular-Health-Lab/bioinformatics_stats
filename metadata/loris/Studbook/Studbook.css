@@ -1,0 +1,31 @@
+.flag {
+  height: 1.3rem;
+  border: 1px solid #f0f0f0;
+}
+
+.LocAbbrev {
+  font-family: "Bungee Inline", sans-serif;
+  font-size: 0.75rem;
+  font-style: normal;
+  margin-right: 0.25rem;
+  padding: 0 0.25rem;
+}
+
+.Names {
+  font-family: "News Cycle", sans-serif;
+  font-weight: 300;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.location-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}

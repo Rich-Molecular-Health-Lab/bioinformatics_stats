@@ -81,6 +81,7 @@ loris:
     depth_plot: "visuals/loris_depth_hist.html"
   AZAstudbooks:
     functions: "metadata/loris/studbookFunctions.R"
+    add: "metadata/loris/Studbook/AddData.R"
     living25: "metadata/loris/Studbook/LivingPop_2025.csv"
     living21: "metadata/loris/Studbook/LivingPop_2021.csv"
     historic21: "metadata/loris/Studbook/HistoricPop_2021.csv"
