@@ -5,6 +5,7 @@ output:
   html_document:
     theme:
       bootswatch: litera
+      css: "Studbook.css"
     toc: true
     toc_float:
       collapsed: true
@@ -26,7 +27,10 @@ source(here::here(global$setup))
 
 source(here(path$AZAstudbooks$functions))
 source(here(path$AZAstudbooks$add))
+source(here(path$AZAstudbooks$reactables))
 ```
+
+# Read in Data
 
 ```{r, warning = FALSE}
 alive <- read.csv(here(path$AZAstudbooks$living25)) %>% 
@@ -51,6 +55,8 @@ historic.21 <- read.csv(here(path$AZAstudbooks$historic21)) %>%
   filter(!(ID %in% pull(living.21, ID)))
 
 ```
+
+# Build Studbook
 
 ```{r}
 studbook <- bind_rows(living.25, 
@@ -100,6 +106,7 @@ end.records <- studbook %>%
   select(-Status) %>% distinct()
 ```
 
+## Organize by Dates
 
 ```{r, warning = FALSE}
 timeline <- studbook %>%
@@ -201,6 +208,8 @@ timeline <- studbook %>%
   ungroup()
 ```
 
+## Revise Studbook
+
 ```{r, warning = FALSE}
 studbook.revised <- timeline %>%
   filter(TypeEvent != "Breed") %>%
@@ -221,6 +230,7 @@ studbook.revised <- timeline %>%
 
 ```
 
+## Create Nested List by Months
 
 ```{r, warning = FALSE}
 location.dates <- studbook.revised %>%
@@ -275,7 +285,9 @@ final.studbook <- studbook.revised %>%
 write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
 ```
 
+
 ```{r}
+
 visual.studbook <- final.studbook %>%
   group_by(ID) %>%
   mutate(Age  = calculate_age(DateBirth, Date),
@@ -285,49 +297,426 @@ visual.studbook <- final.studbook %>%
     Country,
     NameLoc
   )) %>%
-  mutate(color = case_match(Sex, 
+  mutate(
+        color      = case_match(Sex, 
                             "F" ~ colors$f, 
                             "M" ~ colors$m, 
-                            "U" ~ colors$u))
+                            "U" ~ colors$u),
+        Status      = case_match(Status,
+                                 "D" ~ "Deceased",
+                                 "A" ~ "Alive",
+                                 "H" ~ "Hypothetical"
+                                 ),
+         across(c(Sire, Dam), ~ replace_na(., 0)),
+         colorEvent = case_match(TypeEvent,
+                            "Birth"    ~ "#3B7C70FF",
+                            "Transfer" ~ "#CE9642FF",
+                            "End"      ~ "#898E9FFF",
+         )) %>%
+  select(
+    Status    ,
+    ID        ,
+    Sire      ,
+    Dam       ,
+    Location  ,
+    TypeEvent ,
+    Date      ,
+    NameLoc   ,
+    Country   ,
+    DateBirth ,
+    Sex       ,
+    Age       ,
+    EndLoc    ,
+    StartLoc  ,
+    OrderLoc  ,
+    colorLoc  ,
+    iconLoc   ,
+    color     ,
+    Year      ,
+    colorEvent
+  ) %>%
+  studbook.react(., studbook.cols(.), groupBy = "Status")
+
+visual.studbook
 ```
 
-```{css, echo = FALSE}
+# Plotting
 
-.flag {
-  height: 1.3rem;
-  border: 1px solid #f0f0f0;
-}
+## Time Series Plots of Demographic Trends
 
-.LocAbbrev {
-  font-family: "Bungee Inline", sans-serif;
-  font-size: 1.25rem;
-}
-
-.Names {
-  font-family: "News Cycle", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 300;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.cell-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.location-cell {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-```
+We first extract monthly population counts grouped by sex and event type.
 
 ```{r}
-
+monthly_byLocation <- bind_rows(
+  map_dfr(names(monthly.census), function(date) {
+    locations <- monthly.census[[date]]
+    
+    bind_rows(map_dfr(names(locations), function(location) {
+      individuals <- locations[[location]][[1]] 
+      tibble(Date           = as.Date(date),
+             Location       = location,
+             Population     = nrow(individuals),
+             Males          = sum(individuals$Sex == "M", na.rm = TRUE),
+             Females        = sum(individuals$Sex == "F", na.rm = TRUE),
+             Undetermined   = sum(individuals$Sex == "U", na.rm = TRUE))
+    }))
+  })
+) %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1"))) %>%
+  rename(Month = Date)
 ```
 
+
+```{r}
+monthly_Total <- monthly_byLocation %>%
+  group_by(Month) %>%
+  summarize(
+    Population   = sum(Population  ),
+    Males        = sum(Males       ),
+    Females      = sum(Females     ),
+    Undetermined = sum(Undetermined)
+  ) %>% ungroup() %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3))
+
+demographics_byLocation <- studbook.revised %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1")) & ID < 10000 & TypeEvent != "Transfer") %>%
+  mutate(Month = floor_date(Date, "months"),
+         TypeEvent = if_else(TypeEvent == "End", "Deaths", "Births")) %>%
+  group_by(Month, Location, TypeEvent) %>%
+  summarize(Count = n()) %>% ungroup() %>%
+  pivot_wider(
+    id_cols     = c("Month", "Location"),
+    names_from  = "TypeEvent",
+    values_from = "Count"
+  ) %>%
+  arrange(Month) %>%
+  mutate(across(where(is.numeric), ~ replace_na(., 0)))
+
+demographics_Total <- demographics_byLocation %>%
+  group_by(Month) %>%
+  summarize(Births = sum(Births),
+            Deaths = sum(Deaths)) %>% ungroup() %>%
+  left_join(monthly_Total, by = join_by(Month)) %>%
+  mutate(FertilityRate = round(Births/Females   , digits = 3),
+         MortalityRate = round(Deaths/Population, digits = 3))
+
+demographics_byLocation <- demographics_byLocation %>%
+  left_join(monthly_byLocation, by = join_by(Month, Location)) %>%
+  mutate(FertilityRate = round(Births/Females   , digits = 3),
+         MortalityRate = round(Deaths/Population, digits = 3),
+         Year          = year(Month)) %>%
+  group_by(Location) %>%
+  mutate(LocationMonths = length(unique(Month)))
+```
+
+
+```{r}
+Means_byLocation <- demographics_byLocation %>%
+  group_by(Year, Location) %>%
+  summarize()
+```
+
+```{r, out.width="100%"}
+fills           <- map_depth(colors, 1, \(x) gsub("FF", "33", x))
+plot.population <- plot_ly(monthly_Total,
+                           mode        = "lines",
+                           type        = "scatter",
+                           stackgroup  = "one",
+                           x           = ~Date, 
+                           y           = ~Undetermined,
+                           name        = "Undetermined",
+                           legendgroup = "By Sex",
+                           mode        = "lines",
+                           line        = list(color = colors$u),
+                           fillcolor   = fills$u
+                           ) %>%
+                 add_trace(x           = ~Date, 
+                           y           = ~Females,
+                           name        = "Females",
+                           legendgroup = "By Sex",
+                           mode        = "lines",
+                           stackgroup  = "one",
+                           line        = list(color = colors$f),
+                           fillcolor   = fills$f
+                           ) %>%
+                 add_trace(x           = ~Date, 
+                           y           = ~Males,
+                           name        = "Males",
+                           legendgroup = "By Sex",
+                           mode        = "lines",
+                           stackgroup  = "one",
+                           line        = list(color = colors$m),
+                           fillcolor   = fills$m
+                           )   %>%
+                 add_trace(x           = ~Date, 
+                           y           = ~Population,
+                           name        = "Total count",
+                           legendgroup = "Total",
+                           mode        = "lines",
+                           stackgroup  = "one",
+                           line        = list(color = colors$emph),
+                           fillcolor   = fills$emph
+                           )  %>%
+                 plotly::layout(showlegend = T, 
+                                title      = "Population Growth over Time",
+                                yaxis      = list(title = "Count"),
+                                xaxis      = list(rangeslider = list(visible = T)))
+
+plot.population <- plot.population %>%
+  plotly::layout(
+         xaxis = list(zerolinecolor = "#fffff",
+                      zerolinewidth = 1,
+                      gridcolor     = "#fffff",
+                      showgrid = F),
+         yaxis = list(zerolinecolor = "#fffff",
+                      zerolinewidth = 1,
+                      showgrid = F),
+         plot_bgcolor = "#ffffff", 
+         width        = 900)
+
+
+saveWidget(plot.population, paste0(path$visuals$demographics, "/PopulationGrowth_Overall.html"))
+plot.population
+```
+
+
+```{r}
+hline <- function(y = 0, color = colors$emph) {
+  list(
+    type = "line",
+    y0   = y,
+    y1   = y,
+    yref = "paper",
+    x0   = 0,
+    x1   = 1,
+    line = list(color = color, dash="dot")
+  )
+}
+
+plot.sexratio <- plot_ly(monthly_Total,
+                           type        = "scatter",
+                           x           = ~Date, 
+                           y           = ~SexRatio,
+                           name        = "Male:Female Ratio",
+                           mode        = "lines+markers",
+                           line        = list(
+                             color     = colors$u,
+                             width     = 1.5
+                             ),
+                           marker      = list(
+                             color     = fills$u,
+                             size      = 5,
+                             opacity   = 0.7,
+                             line      = list(
+                               color   = colors$u,
+                               width   = 1.0
+                               )
+                             )) %>%
+  layout(shapes       = list(hline(0.5), 
+                             list(type      = "rect",
+                                  fillcolor = fills$m,
+                                  line      = list(color = colors$emph),
+                                  opacity   = 0.5,
+                                  y0        = 0.5, 
+                                  y1        = 1.0, 
+                                  x0        = 0, 
+                                  x1        = "2025-4-1"
+                                  ), 
+                             list(type      = "rect",
+                                  fillcolor = fills$f,
+                                  line      = list(color = colors$emph),
+                                  opacity   = 0.5,
+                                  y0        = 0.0, 
+                                  y1        = 0.5, 
+                                  x0        = 0, 
+                                  x1        = "2025-4-1"
+                                  )
+                             )
+         
+         ) %>%
+                  plotly::layout(
+                      xaxis         = list(zerolinecolor = "#fffff",
+                      zerolinewidth = 1,
+                      gridcolor     = "#fffff",
+                      showgrid      = F,
+                      range         = list("1983-2-1", "2025-4-1")),
+         yaxis = list(zerolinecolor = "#fffff",
+                      zerolinewidth = 1,
+                      showgrid      = F,
+                      range         = list(0.25, 0.75)),
+         plot_bgcolor = "#ffffff", 
+         width        = 900)
+
+saveWidget(plot.sexratio, paste0(path$visuals$demographics, "/PopulationSexRatio.html"))
+
+plot.sexratio
+```
+
+### Birth Rates
+
+#### Crude Birth Rate (CBR):
+
+- This is a measure of the number of live births per 1,000 N in a population over a year. 
+  - CBR = (Number of live births / Estimated midyear Population) * 1,000 
+
+#### Midyear Population:
+
+- This is the estimated average population for the year, typically taken around July 1st. 
+  - Example:
+    - If there were 672 live births in a population of 107,619, the crude birth rate would be (672/107,619) * 1000 = 6.25 per 1,000 people 
+
+#### Other Birth Rates:
+
+- **General Fertility Rate:**
+  - This is the number of live births per 1,000 females. 
+- **Age-Specific Birth Rate:**
+  - This is the number of live births to females in a specific age group per 1,000 females in that age group. 
+- **Singleton Delivery Rate:**
+  - This is the number of singleton live births divided by all live births, multiplied by 100. 
+
+```{r}
+fertility_rate <- studbook.revised %>%
+  filter(TypeEvent == "Birth" & Date > "1983-2-1") %>%
+  count(Date       = floor_date(Date, "month")) %>%
+  rename(Births    = n)  %>%
+  right_join(filter(monthly_Total, Date < "2022-3-1"), by = join_by(Date)) %>%
+  arrange(Date) %>%
+  mutate(Births        = replace_na(Births, 0)) %>%
+  mutate(FertilityRate = Births/Females, Year = year(Date)) %>%
+  group_by(Year) %>%
+  summarize(
+    Males          = mean(Males),
+    Females        = mean(Females),
+    Undetermined   = mean(Undetermined),
+    SexRatio       = mean(SexRatio) ,
+    Births         = mean(Births),
+    FertilityRate  = mean(FertilityRate)
+  ) %>% ungroup() %>% mutate(across(where(is.numeric), ~round(., digits = 2)))
+
+mortality_rate <- studbook.revised %>%
+  filter(TypeEvent == "End" & between(Date, "1983-2-1", "2022-3-1") & ID < 10000) %>%
+  count(Date       = floor_date(Date, "month")) %>%
+  rename(Deaths    = n)  %>%
+  right_join(filter(monthly_Total, between(Date, "1983-2-1", "2022-3-1")), by = join_by(Date)) %>%
+  arrange(Date) %>%
+  mutate(Births        = replace_na(Births, 0)) %>%
+  mutate(FertilityRate = Births/Females, Year = year(Date)) %>%
+  group_by(Year) %>%
+  summarize(
+    Males          = mean(Males),
+    Females        = mean(Females),
+    Undetermined   = mean(Undetermined),
+    SexRatio       = mean(SexRatio) ,
+    Births         = mean(Births),
+    FertilityRate  = mean(FertilityRate)
+  ) %>% ungroup() %>% mutate(across(where(is.numeric), ~round(., digits = 2)))
+```
+
+
+```{r}
+birth_rate <- studbook.revised %>%
+  filter(TypeEvent == "Birth" & Date > "1983-2-1") %>%
+  count(DateBirth  = floor_date(DateBirth, "month")) %>%
+  rename(Births    = n)
+
+monthly_birthrate <- left_join(monthly_Total, 
+                               birth_rate, 
+                               by = c("Date" = "DateBirth")) %>%
+  mutate(BirthRate = Births / lag(Population, default = first(Population)))
+```
+
+
+```{r}
+ggplot(monthly_birthrate, aes(x = Date, y = BirthRate)) +
+  geom_line(color = "#68855CFF", size = 1) +
+  labs(title = "Birth Rate Over Time",
+       x     = "Year",
+       y     = "Births per Individual") +
+  theme_minimal()
+```
+
+### Mortality Rate by Month
+
+To compute mortality rate, count deaths per month.
+
+```{r}
+mortality_rate <- studbook.revised %>%
+  filter(TypeEvent == "End" & Date < "2025-2-1") %>%
+  count(DateDeath = floor_date(Date, "month")) %>%
+  rename(Deaths = n)
+
+monthly_mortality <- left_join(monthly_birthrate, mortality_rate, by = c("Date" = "DateDeath")) %>%
+  mutate(MortalityRate = Deaths / lag(Population, default = first(Population)))
+
+ggplot(monthly_mortality, aes(x = Date, y = MortalityRate)) +
+  geom_line(color = "#AF6458FF", size = 1) +
+  labs(title = "Mortality Rate Over Time",
+       x     = "Year",
+       y     = "Deaths per Individual") +
+  theme_minimal()
+```
+
+
+### Analyzing Reproductive Skew Over Time for Males and Females
+
+To analyze reproductive skew, we need to:
+
+1.	Exclude founders (individuals whose Sire or Dam is NA).
+2.	Count offspring per parent for both males (sires) and females (dams) over time.
+3.	Visualize the distribution of reproductive success across individuals.
+4.	Assess reproductive skew by location (i.e., which locations contribute most to births).
+
+#### Step 1 Count Offspring Per Parent (Ignoring Founders)
+
+```{r}
+offspring_data <- studbook.revised %>%
+  filter(!is.na(Sire) & !is.na(Dam)) %>%
+  select(ID, Sire, Dam, DateBirth, Location)
+
+sire_offspring <- offspring_data %>%
+  count(Sire, DateBirth = floor_date(DateBirth, "year")) %>%
+  rename(OffspringCount = n)
+
+dam_offspring <- offspring_data %>%
+  count(Dam, DateBirth = floor_date(DateBirth, "year")) %>%
+  rename(OffspringCount = n)
+```
+
+#### Step 2: Visualizing Reproductive Skew for Males (Sires)
+
+```{r}
+ggplot(sire_offspring, aes(x = DateBirth, y = OffspringCount, group = Sire)) +
+  geom_boxplot(fill = colors$m, alpha = 0.5) +
+  labs(title = "Reproductive Skew in Males Over Time",
+       x     = "Year",
+       y     = "Offspring Count per Male") +
+  theme_minimal()
+```
+
+#### Step 3: Visualizing Reproductive Skew for Females (Dams)
+
+```{r}
+ggplot(dam_offspring, aes(x = DateBirth, y = OffspringCount, group = Dam)) +
+  geom_boxplot(fill = colors$f, alpha = 0.5) +
+  labs(title = "Reproductive Skew in Females Over Time",
+       x = "Year",
+       y = "Offspring Count per Female") +
+  theme_minimal()
+```
+
+####  Step 4: Assessing Reproductive Output by Location
+
+```{r}
+location_births <- offspring_data %>%
+  count(Location, DateBirth = floor_date(DateBirth, "year")) %>%
+  rename(BirthCount = n)
+
+ggplot(location_births, aes(x = DateBirth, y = BirthCount, color = Location)) +
+  geom_line(size = 1) +
+  labs(title = "Reproductive Output by Location",
+       x     = "Year",
+       y     = "Number of Births") +
+  theme_minimal()
+```
 
 

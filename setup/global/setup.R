@@ -76,9 +76,7 @@ thematic_rmd()
 thematic_on(accent = "#8785B2FF", fg = "black")
 
 font_add_google("Noto Sans Symbols", family = "NotoSym")
-font_add_google("Bungee Inline", family = "Bungee Inline")
 font_add_google("Six Caps", family = "Six Caps")
-font_add_google("News Cycle", family = "News Cycle")
 font_add_google("Gafata", family = "Gafata")
 showtext_auto()
 
