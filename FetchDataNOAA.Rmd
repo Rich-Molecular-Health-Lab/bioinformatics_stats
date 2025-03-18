@@ -1,0 +1,148 @@
+---
+title: "Fetching Environmental Data from NOAA Repositories"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "bats"
+                     
+---
+
+```{r global, message = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("FetchDataNOAA.Rmd")
+source(here::here(global$setup))
+
+```
+
+# Advice from ChatGPT
+
+To access **long-term temperature data from NOAA** (from 1985 to the present) for North Carolina, you can use NOAA’s **National Centers for Environmental Information (NCEI)** repositories, specifically:
+
+1.	**Climate Data Online (CDO) API** – Provides historical climate data in JSON or CSV format.
+2.	**Global Historical Climatology Network (GHCN)** – Offers daily and monthly climate summaries.
+3.	**NOAA’s ERDDAP Server** – Allows querying and downloading datasets in various formats.
+
+## Best Approach: Python vs. Bash
+
+- Python is the better option because:
+- It has libraries like requests and pandas for API access and data manipulation.
+- It can handle JSON/CSV responses efficiently.
+- It integrates well with data visualization and analysis libraries.
+- NOAA provides API endpoints that are easier to work with in Python.
+- Bash can be used for simple wget or curl requests but lacks flexibility for processing and automating data parsing.
+
+## Python Implementation
+
+Here’s how you can pull NOAA temperature data using Python:
+
+### Get an API Token
+
+You need to request an API token from NOAA [here.](https://www.ncdc.noaa.gov/cdo-web/token)
+
+### Use Python to Retrieve Data
+
+```{python eval=FALSE}
+import requests
+import pandas as pd
+
+# Set your NOAA API token
+API_TOKEN = "your_api_token_here"
+
+# Base URL for the API
+BASE_URL = "https://www.ncdc.noaa.gov/cdo-web/api/v2/data"
+
+# Define parameters for the request
+params = {
+    "datasetid": "GHCND",  # Global Historical Climatology Network - Daily
+    "datatypeid": "TMAX",  # Max temperature (use "TMIN" for min temperature)
+    "locationid": "FIPS:37",  # FIPS code for North Carolina
+    "startdate": "1985-01-01",
+    "enddate": "2025-01-01",
+    "limit": 1000,  # API limit (paginate if needed)
+    "units": "metric"  # Celsius
+}
+
+# Set headers
+headers = {"token": API_TOKEN}
+
+# Make the request
+response = requests.get(BASE_URL, params=params, headers=headers)
+
+# Parse response
+if response.status_code == 200:
+    data = response.json()
+    records = data.get("results", [])
+    
+    # Convert to DataFrame
+    df = pd.DataFrame(records)
+    
+    # Display DataFrame
+    import ace_tools as tools
+    tools.display_dataframe_to_user(name="NOAA Temperature Data", dataframe=df)
+else:
+    print(f"Error: {response.status_code}, {response.text}")
+```
+
+
+
+#### Handling Pagination
+
+NOAA’s API **limits responses to 1000 records per request**. To fetch full datasets, iterate over time windows:
+
+```{python eval=FALSE}
+
+from datetime import datetime, timedelta
+
+start_date = datetime(1985, 1, 1)
+end_date = datetime(2025, 1, 1)
+date_step = timedelta(days=365)  # Fetch one year at a time
+
+all_data = []
+
+while start_date < end_date:
+    next_date = min(start_date + date_step, end_date)
+    params["startdate"] = start_date.strftime("%Y-%m-%d")
+    params["enddate"] = next_date.strftime("%Y-%m-%d")
+
+    response = requests.get(BASE_URL, params=params, headers=headers)
+
+    if response.status_code == 200:
+        all_data.extend(response.json().get("results", []))
+    
+    start_date = next_date  # Move to next time window
+    
+# Convert to DataFrame
+df = pd.DataFrame(all_data)
+tools.display_dataframe_to_user(name="NOAA Temperature Data", dataframe=df)
+
+
+```
+
+
+## Alternative: Download from NOAA FTP (Bash)
+
+If you prefer working in Bash, you can use wget to download bulk datasets from NOAA’s FTP servers:
+
+```{bash eval=FALSE}
+wget ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_state/NC.csv.gz
+gunzip NC.csv.gz
+```
+
+This method is fast but requires manual parsing.
+
+## Final Recommendation
+
+- Use Python if you need flexible queries, automation, and integration with your analysis workflow.
+- Use Bash only if downloading raw data for later processing.
+

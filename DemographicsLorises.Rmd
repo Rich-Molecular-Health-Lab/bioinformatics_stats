@@ -243,7 +243,25 @@ location.dates <- studbook.revised %>%
     EndLoc
   ) %>% distinct()
 
-monthly.census <- pmap(
+births.deaths <- studbook.revised %>%
+  select(
+    ID,
+    Status,
+    Sex,
+    Date = StartLoc,
+    TypeEvent
+  ) %>%
+  filter(TypeEvent != "Transfer") %>%
+  pivot_wider(
+    id_cols     = c("ID", "Status", "Sex"),
+    names_from  = "TypeEvent",
+    values_from = "Date"
+  )
+```
+
+
+```{r, warning = FALSE}
+monthly.census.location <- pmap(
   list(
     pull(location.dates, StartLoc),
     pull(location.dates, EndLoc),
@@ -253,7 +271,28 @@ monthly.census <- pmap(
     pull(location.dates, ID)
   ), census_by_month) %>%
   bind_rows() %>%
+  filter(Location != "UND") %>%
   group_by(Date, Location) %>%
+  summarise(Individuals = list(
+    tibble(ID, Sex, Age)), 
+    .groups = "drop") %>%
+  group_by(Date) %>%
+  summarise(Locations = split(Individuals, 
+                              Location), 
+            .groups = "drop") %>%
+  split(.$Date) %>%
+  map(~ .x$Locations)
+
+monthly.census.total <- pmap(
+  list(
+    pull(location.dates, StartLoc),
+    pull(location.dates, EndLoc),
+    pull(location.dates, DateBirth),
+    pull(location.dates, Sex),
+    pull(location.dates, ID)
+  ), census_by_month) %>%
+  bind_rows() %>%
+  group_by(Date) %>%
   summarise(Individuals = list(
     tibble(ID, Sex, Age)), 
     .groups = "drop") %>%
@@ -364,6 +403,24 @@ monthly_byLocation <- bind_rows(
 ) %>%
   filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1"))) %>%
   rename(Month = Date)
+
+monthly_Total <- bind_rows(
+  map_dfr(names(monthly.census), function(date) {
+    locations <- monthly.census[[date]]
+    
+    bind_rows(map_dfr(names(locations), function(location) {
+      individuals <- locations[[location]][[1]] 
+      tibble(Date           = as.Date(date),
+             Location       = location,
+             Population     = nrow(individuals),
+             Males          = sum(individuals$Sex == "M", na.rm = TRUE),
+             Females        = sum(individuals$Sex == "F", na.rm = TRUE),
+             Undetermined   = sum(individuals$Sex == "U", na.rm = TRUE))
+    }))
+  })
+) %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1"))) %>%
+  rename(Month = Date)
 ```
 
 
@@ -379,7 +436,7 @@ monthly_Total <- monthly_byLocation %>%
   mutate(SexRatio = round(Males / (Males + Females), digits = 3))
 
 demographics_byLocation <- studbook.revised %>%
-  filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1")) & ID < 10000 & TypeEvent != "Transfer") %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1")) & ID < 10000 & TypeEvent != "Transfer" & Location != "UND") %>%
   mutate(Month = floor_date(Date, "months"),
          TypeEvent = if_else(TypeEvent == "End", "Deaths", "Births")) %>%
   group_by(Month, Location, TypeEvent) %>%
@@ -392,10 +449,19 @@ demographics_byLocation <- studbook.revised %>%
   arrange(Month) %>%
   mutate(across(where(is.numeric), ~ replace_na(., 0)))
 
-demographics_Total <- demographics_byLocation %>%
-  group_by(Month) %>%
-  summarize(Births = sum(Births),
-            Deaths = sum(Deaths)) %>% ungroup() %>%
+demographics_Total <- studbook.revised %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2024-3-1")) & ID < 10000 & TypeEvent != "Transfer") %>%
+  mutate(Month = floor_date(Date, "months"),
+         TypeEvent = if_else(TypeEvent == "End", "Deaths", "Births")) %>%
+  group_by(Month, TypeEvent) %>%
+  summarize(Count = n()) %>% ungroup() %>%
+  pivot_wider(
+    id_cols     = c("Month", "Location"),
+    names_from  = "TypeEvent",
+    values_from = "Count"
+  ) %>%
+  arrange(Month) %>%
+  mutate(across(where(is.numeric), ~ replace_na(., 0))) %>%
   left_join(monthly_Total, by = join_by(Month)) %>%
   mutate(FertilityRate = round(Births/Females   , digits = 3),
          MortalityRate = round(Deaths/Population, digits = 3))

@@ -125,7 +125,7 @@ calculate_age <- function(birth, date) {
   floor(as.numeric(as.period(interval(birth, date), unit = "years"), "years"))
 }
 
-census_by_month <- function(StartLoc, EndLoc, DateBirth, Location, Sex, ID) {
+census_by_location <- function(StartLoc, EndLoc, DateBirth, Location, Sex, ID) {
   if (is.na(StartLoc)) return(NULL)
   
   StartLoc <- floor_date(StartLoc, "month")
@@ -156,6 +156,28 @@ census_by_month <- function(StartLoc, EndLoc, DateBirth, Location, Sex, ID) {
   ) %>% arrange(Sex, desc(Age))
   
 }
+
+census_by_month <- function(Birth, End, Sex, ID) {
+  if (is.na(Birth)) return(NULL)
+  
+  Birth <- floor_date(Birth, "month")
+  
+  if(is.na(End)) return(NULL)
+  
+  End <- ceiling_date(End, "month")
+  
+  if (Birth > End) return(NULL)
+  
+  
+  tibble(Date     = seq(Birth, 
+                        End, 
+                        by = "months"),
+         ID       = ID,
+         Sex      = Sex
+  ) %>% arrange(Sex)
+  
+}
+
 
 inspect <- function(df, location, studbook) {
   left_join(df, select(studbook,
