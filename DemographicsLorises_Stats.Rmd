@@ -1,0 +1,82 @@
+
+
+# Lambda or Population Growth Rate
+
+The proportional change in population size from one year to the next. 
+
+- A lambda of 1.11 means an 11% per year increase
+- a lambda of 0.97 means a 3% decline in size per year.
+
+The three lambdas highlighted in the BTP are:
+
+1.  **Life Table**, from the PMx life tables
+  - the change in the population based on the demographic regional and date window exported from the studbook
+  - the life table lambda is the rate at which the population would be expected to grow (in the future) given the birth and death rates reported in the life tables and assuming a stable age distribution 
+  - does NOT factor in imports or exports
+
+2.  **5-year**, from the studbook census
+  - the 5-year lambda is calculated from observed changes in population size over the last 5 years and includes births, deaths, imports and exports
+
+3.  **Projected**, from the PMx stochastic 20-year projections
+  - includes confidence intervals
+  - models how the population is predicted to grow or decline over the next 20 years given the birth and death rates from the life tables and the age structure of the current population.
+
+# Lx, Age-Specific Survivorship
+
+The probability that a new individual (e.g., age 0) is alive at the beginning of age x.
+
+- Alternatively, the proportion of individuals which survive from birth to the beginning of a specific age class.
+
+
+# Mean Generation Time (T)
+
+The average time elapsing from reproduction in one generation to the time the next generation reproduces.
+
+- Also, the average age at which a female (or male) produces offspring. 
+- **It is not the age of first reproduction.**
+- Males and females often have different generation times.
+
+# Median Life Expectancy (MLE)
+
+The ‘typical’ age at which an average animal is expected to live
+
+- 50% will die before the median life expectancy and 50% die after.
+- The MLE reported in Breeding and Transfer Plans (BTPs) and Survival Stats Reports, does exclude individuals that did not survive to their first birthday.
+- The MLE obtained from population management software (PM2000, PMx, ZooRisk) or from life tables in BTPs (e.g., where Lx = 0.5) will be lower because they include those individuals that did not survive to their first birthday in order to project the correct number of births needed.
+- A Survival Statistics Library is maintained for most AZA Animal Programs on the [AZA website.](https://www.aza.org/species-survival-statistics)
+
+# Maximum Longevity
+
+The maximum age at which we have observed a species to live.
+
+- If the oldest observed animal is currently living, we do not yet know the maximum longevity.
+
+# Mx, Fecundity
+
+The average number of same-sexed offspring born to animals in that age class.
+
+- Because studbooks typically have relatively small sample sizes, studbook software calculates Mx as 1/2 the average number of offspring born to animals in that age class.
+  - This provides a somewhat less "noisy" estimate of Mx, though it does not allow for unusual sex ratios.
+- The fecundity rates provide information on the age of first, last, and maximum reproduction.
+
+# Px, Age-Specific Survival
+
+The probability that an individual of age x survives an age class
+
+- is conditional on an individual being alive at the beginning of the age class.
+- Alternatively, the proportion of individuals that survive from the beginning of one age class to the next.
+
+# Qx, Mortality
+
+The probability that an individual of age x dies during an age class (Qx = 1-Px).
+
+- Alternatively, the proportion of individuals that die during an age class.
+  - This is the BTP Observed first year mortality rate (Qx)
+- It is calculated from the number of animals that die during an age class divided by the number of animals that were alive at the beginning of the age class (i.e., "at risk").
+
+# Risk (Qx or Mx)
+
+The number of individuals that have lived during an age class.
+
+- The number “at risk” is used to calculate Mx and Qx by dividing the number of births and deaths that occurred during an age class by the number of animals at risk of dying and reproducing during that age class.
+  

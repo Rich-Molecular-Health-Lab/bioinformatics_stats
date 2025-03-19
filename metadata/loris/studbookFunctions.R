@@ -132,7 +132,7 @@ census_by_location <- function(StartLoc, EndLoc, DateBirth, Location, Sex, ID) {
   
   if(is.na(EndLoc)) return(NULL)
   
-  EndLoc <- ceiling_date(EndLoc, "month")
+  EndLoc <- floor_date(EndLoc, "month")
   
   if (StartLoc > EndLoc) return(NULL)
   
@@ -157,6 +157,39 @@ census_by_location <- function(StartLoc, EndLoc, DateBirth, Location, Sex, ID) {
   
 }
 
+census_by_location_year <- function(StartLoc, EndLoc, DateBirth, Location, Sex, ID) {
+  if (is.na(StartLoc)) return(NULL)
+  
+  StartLoc <- floor_date(StartLoc, "year")
+  
+  if(is.na(EndLoc)) return(NULL)
+  
+  EndLoc   <- floor_date(EndLoc, "year")
+  
+  if (StartLoc > EndLoc) return(NULL)
+  
+  
+  tibble(Date     = seq(StartLoc, 
+                        EndLoc, 
+                        by = "years"),
+         Location = Location,
+         ID       = ID,
+         Sex      = Sex,
+         Age      = floor(
+           as.numeric(
+             as.period(
+               interval(
+                 DateBirth, 
+                 seq(StartLoc, 
+                     EndLoc, 
+                     by = "years")), 
+               unit = "years"), 
+             "years"))
+  ) %>% arrange(Sex, desc(Age))
+  
+}
+
+
 census_by_month <- function(Birth, End, Sex, ID) {
   if (is.na(Birth)) return(NULL)
   
@@ -164,7 +197,7 @@ census_by_month <- function(Birth, End, Sex, ID) {
   
   if(is.na(End)) return(NULL)
   
-  End <- ceiling_date(End, "month")
+  End   <- floor_date(End, "month")
   
   if (Birth > End) return(NULL)
   
@@ -175,6 +208,28 @@ census_by_month <- function(Birth, End, Sex, ID) {
          ID       = ID,
          Sex      = Sex
   ) %>% arrange(Sex)
+  
+}
+
+
+census_by_year <- function(Birth, End, Sex, ID) {
+  if (is.na(Birth)) return(NULL)
+  
+  Birth <- floor_date(Birth, "year")
+  
+  if(is.na(End)) return(NULL)
+  
+  End   <- floor_date(End, "year")
+  
+  if (Birth > End) return(NULL)
+  
+  
+  tibble(Date     = seq(Birth, 
+                        End, 
+                        by = "years"),
+         ID       = ID,
+         Sex      = Sex
+  ) %>% distinct %>% arrange(Sex)
   
 }
 
