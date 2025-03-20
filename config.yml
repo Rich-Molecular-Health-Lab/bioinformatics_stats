@@ -81,9 +81,11 @@ loris:
     coverage: "visuals/loris_depth_summary.html"
     depth_plot: "visuals/loris_depth_hist.html"
   AZAstudbooks:
+    btp: "metadata/loris/Studbook/BTP25.R"
+    btp_current: "metadata/loris/Studbook/BTP25.tsv"
+    load_data: "metadata/loris/Studbook/LoadStudbookData.R"
     functions: "metadata/loris/studbookFunctions.R"
     reactables: "metadata/loris/Studbook/reactables.R"
-    add: "metadata/loris/Studbook/AddData.R"
     living25: "metadata/loris/Studbook/LivingPop_2025.csv"
     living21: "metadata/loris/Studbook/LivingPop_2021.csv"
     historic21: "metadata/loris/Studbook/HistoricPop_2021.csv"

@@ -1,6 +1,378 @@
+---
+title: "Demographic Data Summaries for AZA Pygmy Loris Provisional SSP"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+      css: "Studbook.css"
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "loris"
+  dataset: "culi"
+                     
+---
+
+```{r global, message = FALSE, warning = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("DemographicsLorises_Stats.Rmd")
+source(here::here(global$setup))
+
+source(here(path$AZAstudbooks$functions))
+source(here(path$AZAstudbooks$btp))
+
+source(here(path$AZAstudbooks$load_data))
+source(here(path$AZAstudbooks$reactables))
+```
+
+# Wrangle Studbook Data
+
+```{r, warning = FALSE}
+timeline <- assemble_timeline(studbook) %>%
+  mutate(Date = case_when(
+    is.na(Date) & TypeEvent == "End"   & ID %in% deaths.21_24 ~ ymd("2023-1-1"), 
+    is.na(Date) & TypeEvent == "End"   & ID %in% deaths.24    ~ ymd("2025-1-1"), 
+    .default = Date)) %>%  
+  fill_dates_timeline()
+```
+
+## Revise Studbook
+
+```{r, warning = FALSE}
+studbook.revised <- timeline %>%
+  filter(TypeEvent != "Breed") %>%
+  left_join(select(
+    studbook,
+    ID,
+    Status,
+    OrderLoc,
+    Location,
+    NameLoc,
+    Country,
+    Sex,
+    Sire,
+    Dam
+  ), by = join_by(ID, OrderLoc, Location)) %>% distinct() %>%
+  mutate(DateBirth = if_else(TypeEvent == "Birth", Date, NA)) %>%
+  group_by(ID) %>% fill(DateBirth) %>% ungroup()
+```
+
+## Create Monthly Census by Location
+
+```{r, warning = FALSE}
+monthly.census.location <- census.location(studbook.revised, "month")
+```
+
+## Fill Missing Parentage Assignments
+
+```{r, warning = FALSE}
+find.sires <- whoisthedaddy(studbook.revised, monthly.census.location)
+find.dams  <- whoisthemommy(studbook.revised, monthly.census.location)
+```
+
+### Create Hypothetical IDs for Missing Parents
+
+```{r}
+final.studbook <- studbook.revised %>%
+  mutate(Sire = case_match(ID, 
+                           1047 ~ 1012, 
+                           2645 ~ 1131, 
+                           2738 ~ 2622, .default = Sire)) %>%
+  mutate(Dam  = if_else(ID == 2738, 2630, Dam)) %>%
+  add.hypotheticals(c(1045, 1046), "Sire") %>%
+  add.hypotheticals(c(2423, 2424), "Sire") %>%
+  add.hypotheticals(c(2108), "Sire") %>%
+  add.hypotheticals(c(2717), "Dam") %>%
+  add.hypotheticals(c(2717), "Sire")
+
+write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
+
+deceased <- filter(final.studbook, Status == "D") %>%
+  pull(ID)
+```
+
+## Update the BTP Table
+
+```{r, warning = FALSE}
+btp.current <- final.studbook %>%
+  filter(Status == "A" | ID %in% pull(btp25, ID)) %>%
+  select(ID,
+         OrderLoc,
+         Location,
+         StartLoc,
+         TypeEvent,
+         Date,
+         EndLoc,
+         NameLoc,
+         Sire,
+         Dam,
+         DateBirth
+         ) %>%
+  left_join(btp25, by = join_by(ID)) %>%
+  mutate(Plan    = replace_na(Plan, "Include"),
+         AgeBTP  = Age,
+         AgeReal = calculate_age(DateBirth, today())) %>%
+  select(-Age) %>%
+  filter(TypeEvent != "End") %>%
+  distinct()
+
+write.table(btp.current, here(path$AZAstudbooks$btp_current), sep = "\t", row.names = F)
+```
+
+```{r}
+monthly.presence <- final.studbook %>%
+  select(
+    ID,
+    Sex,
+    StartLoc,
+    EndLoc,
+    TypeEvent
+  ) %>% 
+  filter(TypeEvent != "Transfer") %>%
+  mutate(Date = case_match(TypeEvent, 
+                           "Birth" ~ StartLoc, 
+                           "End"   ~ EndLoc)) %>%
+  select(ID, 
+         Sex, 
+         TypeEvent, 
+         Date) %>%
+  pivot_wider(id_cols     = c("ID", "Sex"),
+              names_from  = "TypeEvent",
+              values_from = "Date") %>%
+  distinct()
+```
+
+## Update Timeline
+
+```{r}
+age.timeline <- assemble_timeline(final.studbook) %>%
+  group_by(ID, TypeEvent) %>%
+  mutate(EventRep     = row_number(),
+         DateBirth = if_else(TypeEvent == "Birth", Date, NA),
+         LocBirth  = if_else(TypeEvent == "Birth", Location, NA)) %>% 
+  ungroup() %>%
+  mutate(Event = case_when(
+    TypeEvent == "End" & ID %in% deceased          ~ "Death", 
+    TypeEvent == "Transfer" | TypeEvent == "Breed" ~ TypeEvent,
+    .default = NA
+    )) %>%
+  group_by(ID) %>%
+  fill(DateBirth, LocBirth) %>%
+  filter(!(is.na(Event) & TypeEvent == "End") & TypeEvent != "Birth") %>%
+  mutate(OrderEvent = row_number(),
+         AgeEvent   = calculate_age(DateBirth, Date)) %>%
+  ungroup() %>%
+  left_join(select(final.studbook,
+                   ID,
+                   Sex), by = join_by(ID)) %>%
+  distinct() %>%
+  select(
+    ID,
+    Sex,
+    OrderEvent,
+    Location,
+    Date,
+    AgeEvent,
+    Event,
+    EventRep
+  )
+```
 
 
-# Lambda or Population Growth Rate
+```{r}
+ages.births.deaths <- age.timeline %>%
+  group_by(ID) %>%
+  mutate(Month = floor_date(Date, "month"),
+         Year  = floor_date(Date, "year"),
+         Event = case_when(
+        Event == "Breed" & EventRep == 1 ~ "First Birth",
+        Event == "Breed" & max(EventRep) > 1 & EventRep == max(EventRep) ~ "Last Birth",
+                           .default = Event)) %>%
+  filter(Event != "Transfer") %>%
+  ungroup()
+```
+
+
+```{r}
+counts.births.deaths <- ages.births.deaths %>%
+  group_by(AgeEvent, Month, Event) %>%
+  summarize(Count = n()) %>%
+  ungroup() %>%
+  pivot_wider(id_cols     = c("AgeEvent", "Month"),
+              names_from  = "Event",
+              values_from = "Count",
+              values_fill = 0) %>%
+  select(Month, 
+         AgeEvent, 
+         Deaths       = Death, 
+         FirstBirths  = "First Birth", 
+         MiddleBirths = Breed,
+         LastBirths   = "Last Birth") %>%
+  arrange(Month, AgeEvent)
+```
+
+
+```{r}
+monthlyCensus <- census(monthly.presence, "month")
+```
+
+
+# Summary Statistics
+
+## Count Data
+
+### Totals
+
+```{r}
+monthly.mortality <- final.studbook %>%
+  select(
+    ID,
+    Sex,
+    Date,
+    TypeEvent
+  ) %>% 
+  filter(TypeEvent == "End" & ID %in% deceased) %>%
+  mutate(Date = floor_date(Date, "month")) %>%
+  select(ID, 
+         Sex, 
+         Date) %>%
+  group_by(Date) %>%
+  summarize(Deaths = n())
+
+monthly.births <- final.studbook %>%
+  filter(TypeEvent == "Birth" & !is.na(Dam) & Status != "H") %>%
+  mutate(Date = floor_date(Date, "month")) %>%
+  select(ID, 
+         Sex, 
+         Date) %>%
+  group_by(Date) %>%
+  summarize(Births = n())
+
+annual.births <- monthly.births %>%
+  mutate(Date = floor_date(Date, "year")) %>%
+  group_by(Date) %>%
+  summarize(Births = sum(Births))
+
+annual.mortality <- monthly.mortality %>%
+  mutate(Date = floor_date(Date, "year")) %>%
+  group_by(Date) %>%
+  summarize(Deaths = sum(Deaths))
+```
+
+
+```{r}
+annual_Total <- census(monthly.presence, "year") %>% 
+  count_census() %>%
+  filter(between(Date, ymd("1983-1-1"), ymd("2025-1-1"))) %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  left_join(annual.births, by = join_by(Date)) %>%
+  left_join(annual.mortality, by = join_by(Date)) %>%
+  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+```
+
+
+```{r}
+monthly_Total <- census(monthly.presence, "month") %>% 
+  count_census() %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2025-3-1"))) %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  left_join(monthly.births, by = join_by(Date)) %>%
+  left_join(monthly.mortality, by = join_by(Date)) %>%
+  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+```
+
+### By Location
+
+```{r}
+monthly.loc.mortality <- final.studbook %>%
+  select(
+    ID,
+    Sex,
+    Date,
+    Location,
+    TypeEvent
+  ) %>% 
+  filter(TypeEvent == "End" & ID %in% deceased) %>%
+  mutate(Date = floor_date(Date, "month")) %>%
+  select(ID, 
+         Sex, 
+         Location,
+         Date) %>%
+  group_by(Date, Location) %>%
+  summarize(Deaths = n()) %>%
+  ungroup()
+
+monthly.loc.births <- final.studbook %>%
+  filter(TypeEvent == "Birth" & !is.na(Dam) & Status != "H") %>%
+  mutate(Date = floor_date(Date, "month")) %>%
+  select(ID, 
+         Sex,
+         Location, 
+         Date) %>%
+  group_by(Date, Location) %>%
+  summarize(Births = n()) %>%
+  ungroup()
+
+annual.loc.births <- monthly.loc.births %>%
+  mutate(Date = floor_date(Date, "year")) %>%
+  group_by(Date, Location) %>%
+  summarize(Births = sum(Births)) %>%
+  ungroup()
+
+annual.loc.mortality <- monthly.loc.mortality %>%
+  mutate(Date = floor_date(Date, "year")) %>%
+  group_by(Date, Location) %>%
+  summarize(Deaths = sum(Deaths)) %>%
+  ungroup()
+```
+
+
+```{r, warning = FALSE}
+annually_byLocation <- census.location(final.studbook, "year") %>%
+  count_census_location() %>%
+  filter(between(Date, ymd("1983-1-1"), ymd("2025-1-1"))) %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  left_join(annual.loc.births, by = join_by(Location, Date)) %>%
+  left_join(annual.loc.mortality, by = join_by(Location, Date)) %>%
+  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+```
+
+```{r, warning = FALSE}
+monthly_byLocation <- census.location(final.studbook, "month") %>%
+  count_census_location() %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2025-3-1"))) %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  left_join(monthly.loc.births, by = join_by(Location, Date)) %>%
+  left_join(monthly.loc.mortality, by = join_by(Location, Date)) %>%
+  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+```
+
+# Standard Demographic Metrics
+
+```{r}
+library(popbio)
+library(demogR)
+library(survival)
+library(vital)
+```
+
+```{r}
+annual <- as_tsibble(annual_Total, 
+                     index = Date,
+                     key   = c(Total, Births, Deaths)) %>%
+  life_table()
+```
+
+
+
+## Lambda or Population Growth Rate
 
 The proportional change in population size from one year to the next. 
 
@@ -16,6 +388,13 @@ The three lambdas highlighted in the BTP are:
 
 2.  **5-year**, from the studbook census
   - the 5-year lambda is calculated from observed changes in population size over the last 5 years and includes births, deaths, imports and exports
+  
+```{r}
+lambda_5 <- lambda(5, annual_Total)
+
+print_lambda(lambda_5)
+```
+
 
 3.  **Projected**, from the PMx stochastic 20-year projections
   - includes confidence intervals
@@ -28,7 +407,7 @@ The probability that a new individual (e.g., age 0) is alive at the beginning of
 - Alternatively, the proportion of individuals which survive from birth to the beginning of a specific age class.
 
 
-# Mean Generation Time (T)
+## Mean Generation Time (T)
 
 The average time elapsing from reproduction in one generation to the time the next generation reproduces.
 
@@ -36,7 +415,7 @@ The average time elapsing from reproduction in one generation to the time the ne
 - **It is not the age of first reproduction.**
 - Males and females often have different generation times.
 
-# Median Life Expectancy (MLE)
+## Median Life Expectancy (MLE)
 
 The ‘typical’ age at which an average animal is expected to live
 
@@ -45,13 +424,13 @@ The ‘typical’ age at which an average animal is expected to live
 - The MLE obtained from population management software (PM2000, PMx, ZooRisk) or from life tables in BTPs (e.g., where Lx = 0.5) will be lower because they include those individuals that did not survive to their first birthday in order to project the correct number of births needed.
 - A Survival Statistics Library is maintained for most AZA Animal Programs on the [AZA website.](https://www.aza.org/species-survival-statistics)
 
-# Maximum Longevity
+## Maximum Longevity
 
 The maximum age at which we have observed a species to live.
 
 - If the oldest observed animal is currently living, we do not yet know the maximum longevity.
 
-# Mx, Fecundity
+## Mx, Fecundity
 
 The average number of same-sexed offspring born to animals in that age class.
 
@@ -59,14 +438,14 @@ The average number of same-sexed offspring born to animals in that age class.
   - This provides a somewhat less "noisy" estimate of Mx, though it does not allow for unusual sex ratios.
 - The fecundity rates provide information on the age of first, last, and maximum reproduction.
 
-# Px, Age-Specific Survival
+## Px, Age-Specific Survival
 
 The probability that an individual of age x survives an age class
 
 - is conditional on an individual being alive at the beginning of the age class.
 - Alternatively, the proportion of individuals that survive from the beginning of one age class to the next.
 
-# Qx, Mortality
+## Qx, Mortality
 
 The probability that an individual of age x dies during an age class (Qx = 1-Px).
 
@@ -74,7 +453,7 @@ The probability that an individual of age x dies during an age class (Qx = 1-Px)
   - This is the BTP Observed first year mortality rate (Qx)
 - It is calculated from the number of animals that die during an age class divided by the number of animals that were alive at the beginning of the age class (i.e., "at risk").
 
-# Risk (Qx or Mx)
+## Risk (Qx or Mx)
 
 The number of individuals that have lived during an age class.
 
