@@ -1,0 +1,37 @@
+```{r}
+timeline.revised <- assemble_timeline(final.studbook) %>%
+  mutate(TypeEvent = if_else(TypeEvent == "End" & ID %in% deceased, "Death", TypeEvent)) %>%
+  filter(TypeEvent != "End") %>%
+  select(ID, Location, TypeEvent, Date) %>%
+  distinct()
+```
+
+```{r}
+births <- timeline.revised %>%
+  filter(TypeEvent == "Birth") %>%
+  as_tsibble(key = Date, index = ID, regular = FALSE)
+```
+
+```{r}
+biographic <- final.studbook %>%
+  group_by(ID) %>%
+  mutate(DateLast = max(Date),
+         LocBirth = if_else(TypeEvent == "Birth"     , Location, NA),
+         LocLast  = if_else(OrderLoc == max(OrderLoc), Location, NA)) %>%
+  mutate(AgeLast = calculate_age(DateBirth, DateLast)) %>%
+  fill(LocBirth) %>%
+  fill(LocLast, .direction = "up") %>%
+  select(
+    ID,
+    Status,
+    AgeLast,
+    Sex,
+    Sire,
+    Dam,
+    DateBirth,
+    LocBirth,
+    DateLast,
+    LocLast
+  ) %>% distinct() %>%
+  left_join(select(btp25), by = join_by())
+```
