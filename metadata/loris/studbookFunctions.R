@@ -232,12 +232,6 @@ assemble_timeline <- function(studbook) {
 
 fill_dates_timeline <- function(df) {
   df %>%
-    mutate(TypeEvent = fct(TypeEvent, levels = c(
-      "Birth",
-      "Transfer",
-      "Breed",
-      "End"
-    ))) %>%
     arrange(ID, 
             OrderLoc,
             TypeEvent,
@@ -331,7 +325,7 @@ census.location <- function(df, interval) {
     map(~ .x$Locations)
 }
 
-census <- function(df, interval) {
+census <- function(df, interval, groups) {
   if (interval == "month") {
     records <- df %>%
       mutate(Birth = floor_date(Birth, "month"),
@@ -348,44 +342,67 @@ census <- function(df, interval) {
                 pull(records, End), 
                 pull(records, Sex), 
                 pull(records, ID))
-  pmap(list, \(w, x, y, z) tibble(
-    Date = seq(w, x, by = seqby),
-    ID   = z,
-    Sex  = y
-  )) %>%
-    map_depth(., 1, \(x) distinct(x)) %>%
+  census <- pmap(list, \(w, x, y, z) tibble(
+    Date   = seq(w, x, by = seqby),
+    ID     = z,
+    Sex    = y,
+    Cohort = year(w),
+    Age    =  calculate_age(w, seq(w, x, by = seqby))
+  )) %>% map_depth(., 1, \(x) distinct(x)) %>%
     map_depth(., 1, \(x) arrange(x, Sex, ID)) %>% 
-    bind_rows() %>% group_by(Date) %>%
-    summarise(Individuals = list(tibble(ID, Sex)), .groups = "drop") %>%
-    split(.$Date)
+    bind_rows()
+  
+  if (groups == "age") {
+    census %>%
+      group_by(Date, Age) %>%
+      summarise(Individuals = list(
+        tibble(ID, Sex)), 
+        .groups = "drop") %>%
+      group_by(Date) %>%
+      summarise(Ages = split(Individuals, 
+                             Age), 
+                .groups = "drop") %>%
+      split(.$Date) %>%
+      map(~ .x$Ages)
+  } else if (groups == "cohort") {
+    census %>%
+      group_by(Date, Cohort) %>%
+      summarise(Individuals = list(
+        tibble(ID, Sex)), 
+        .groups = "drop") %>%
+      group_by(Date) %>%
+      summarise(Cohorts = split(Individuals, 
+                             Cohort), 
+                .groups = "drop") %>%
+      split(.$Date) %>%
+      map(~ .x$Cohorts)
+  } else if (groups == "none") {
+    census %>%
+      group_by(Date) %>%
+      summarise(Individuals = list(tibble(ID, Sex, Age)),
+                .groups = "drop") %>%
+      split(.$Date)
+  }
+    
 }
 
-tally_events <- function(df, interval) {
-  if (interval == "month") {
-    records <- df %>%
-      mutate(Date = floor_date(Date, "month"))
-    seqby <- paste0("months")
-  } else if (interval == "year") {
-    records <- df %>%
-      mutate(Date = floor_date(Date, "year"))
-    seqby <- paste0("years")
-  }
-  
-  list <-  list(pull(records, ID),
-                pull(records, Sex), 
-                pull(records, Date))
-  pmap(list, \(x, y, z) tibble(
-    Date = seq(y, by = seqby),
-    ID   = x,
-    Sex  = z
-  )) %>%
-    map_depth(., 1, \(x) distinct(x)) %>%
-    map_depth(., 1, \(x) arrange(x, Sex, ID)) %>% 
-    bind_rows() %>% group_by(Date) %>%
-    summarise(Individuals = list(tibble(ID, Sex)), .groups = "drop") %>%
-    split(.$Date)
-  
+count_census_grouped <- function(census, groups) {
+  bind_rows(
+    map_dfr(names(census), function(date) {
+      groups <- census[[date]]
+      bind_rows(map_dfr(names(groups), function(group) {
+        individuals <- groups[[group]][[1]] 
+        tibble(Date           = as.Date(date),
+               Group          = group,
+               Total          = nrow(individuals),
+               Males          = sum(individuals$Sex == "M", na.rm = TRUE),
+               Females        = sum(individuals$Sex == "F", na.rm = TRUE),
+               Undetermined   = sum(individuals$Sex == "U", na.rm = TRUE))
+      }))
+    })
+  )
 }
+
 
 count_census <- function(census) {
   bind_rows(
@@ -399,22 +416,6 @@ count_census <- function(census) {
     }))
 }
 
-count_census_location <- function(census) {
-   bind_rows(
-    map_dfr(names(census), function(date) {
-      locations <- census[[date]]
-      bind_rows(map_dfr(names(locations), function(location) {
-        individuals <- locations[[location]][[1]] 
-        tibble(Date           = as.Date(date),
-               Location       = location,
-               Total          = nrow(individuals),
-               Males          = sum(individuals$Sex == "M", na.rm = TRUE),
-               Females        = sum(individuals$Sex == "F", na.rm = TRUE),
-               Undetermined   = sum(individuals$Sex == "U", na.rm = TRUE))
-      }))
-    })
-  )
-}
 
 inspect <- function(df, location, studbook) {
   left_join(df, select(studbook,

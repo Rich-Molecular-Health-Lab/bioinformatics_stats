@@ -90,7 +90,8 @@ final.studbook <- studbook.revised %>%
   add.hypotheticals(c(2423, 2424), "Sire") %>%
   add.hypotheticals(c(2108), "Sire") %>%
   add.hypotheticals(c(2717), "Dam") %>%
-  add.hypotheticals(c(2717), "Sire")
+  add.hypotheticals(c(2717), "Sire") %>%
+  mutate(Cohort = year(DateBirth))
 
 write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
 
@@ -104,6 +105,7 @@ deceased <- filter(final.studbook, Status == "D") %>%
 btp.current <- final.studbook %>%
   filter(Status == "A" | ID %in% pull(btp25, ID)) %>%
   select(ID,
+         Cohort,
          OrderLoc,
          Location,
          StartLoc,
@@ -125,6 +127,58 @@ btp.current <- final.studbook %>%
 
 write.table(btp.current, here(path$AZAstudbooks$btp_current), sep = "\t", row.names = F)
 ```
+
+# Summary Statistics
+
+## Count Data
+
+### Totals
+
+```{r}
+monthly.mortality <- final.studbook %>%
+  select(
+    ID,
+    Sex,
+    Date,
+    TypeEvent,
+    Cohort
+  ) %>% 
+  filter(TypeEvent == "End" & ID %in% deceased) %>%
+  mutate(Date = floor_date(Date, "month")) %>%
+  select(ID, 
+         Sex,
+         Cohort,
+         Date) %>%
+  group_by(Date, Cohort) %>%
+  summarize(Deaths = n())
+```
+
+
+```{r}
+monthly.births <- final.studbook %>%
+  filter(TypeEvent == "Birth" & !is.na(Dam) & Status != "H") %>%
+  mutate(Date = floor_date(Date, "month")) %>%
+  select(ID, 
+         Sex, 
+         Cohort,
+         Date) %>%
+  group_by(Date, Cohort) %>%
+  summarize(Births = n())
+```
+
+
+```{r}
+annual.births <- monthly.births %>%
+  mutate(Date = floor_date(Date, "year")) %>%
+  group_by(Date, Cohort) %>%
+  summarize(Births = sum(Births))
+
+annual.mortality <- monthly.mortality %>%
+  mutate(Date = floor_date(Date, "year")) %>%
+  group_by(Date, Cohort) %>%
+  summarize(Deaths = sum(Deaths))
+```
+
 
 ```{r}
 monthly.presence <- final.studbook %>%
@@ -149,7 +203,29 @@ monthly.presence <- final.studbook %>%
   distinct()
 ```
 
-## Update Timeline
+
+```{r}
+annual_Total <- census(monthly.presence, "year", "none") %>% 
+  count_census() %>%
+  filter(between(Date, ymd("1983-1-1"), ymd("2025-1-1"))) %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  left_join(annual.births, by = join_by(Date)) %>%
+  left_join(annual.mortality, by = join_by(Date)) %>%
+  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+```
+
+
+```{r}
+monthly_Total <- census(monthly.presence, "month", "none") %>% 
+  count_census() %>%
+  filter(between(Date, ymd("1983-2-1"), ymd("2025-3-1"))) %>% 
+  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  left_join(monthly.births, by = join_by(Date)) %>%
+  left_join(monthly.mortality, by = join_by(Date)) %>%
+  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+```
+
+### By Age Class
 
 ```{r}
 age.timeline <- assemble_timeline(final.studbook) %>%
@@ -167,7 +243,8 @@ age.timeline <- assemble_timeline(final.studbook) %>%
   fill(DateBirth, LocBirth) %>%
   filter(!(is.na(Event) & TypeEvent == "End") & TypeEvent != "Birth") %>%
   mutate(OrderEvent = row_number(),
-         AgeEvent   = calculate_age(DateBirth, Date)) %>%
+         AgeClass   = calculate_age(DateBirth, Date),
+         Cohort     = year(DateBirth)) %>%
   ungroup() %>%
   left_join(select(final.studbook,
                    ID,
@@ -176,10 +253,11 @@ age.timeline <- assemble_timeline(final.studbook) %>%
   select(
     ID,
     Sex,
+    Cohort,
     OrderEvent,
     Location,
     Date,
-    AgeEvent,
+    AgeClass,
     Event,
     EventRep
   )
@@ -187,7 +265,7 @@ age.timeline <- assemble_timeline(final.studbook) %>%
 
 
 ```{r}
-ages.births.deaths <- age.timeline %>%
+age.events_monthly <- age.timeline %>%
   group_by(ID) %>%
   mutate(Month = floor_date(Date, "month"),
          Year  = floor_date(Date, "year"),
@@ -196,101 +274,102 @@ ages.births.deaths <- age.timeline %>%
         Event == "Breed" & max(EventRep) > 1 & EventRep == max(EventRep) ~ "Last Birth",
                            .default = Event)) %>%
   filter(Event != "Transfer") %>%
-  ungroup()
-```
-
-
-```{r}
-counts.births.deaths <- ages.births.deaths %>%
-  group_by(AgeEvent, Month, Event) %>%
+  ungroup() %>%
+  group_by(AgeClass, Cohort, Sex, Month, Event) %>%
   summarize(Count = n()) %>%
   ungroup() %>%
-  pivot_wider(id_cols     = c("AgeEvent", "Month"),
+  pivot_wider(id_cols     = c("AgeClass", "Cohort", "Sex", "Month"),
               names_from  = "Event",
               values_from = "Count",
               values_fill = 0) %>%
   select(Month, 
-         AgeEvent, 
+         AgeClass, 
+         Cohort,
+         Sex,
          Deaths       = Death, 
          FirstBirths  = "First Birth", 
          MiddleBirths = Breed,
          LastBirths   = "Last Birth") %>%
-  arrange(Month, AgeEvent)
+  rowwise() %>%
+  mutate(TotalBirths = sum(FirstBirths, MiddleBirths, LastBirths)) %>%
+  ungroup() %>%
+  mutate(Sex = case_match(Sex, 
+                          "F" ~ "Female",
+                          "M" ~ "Male",
+                          "U" ~ "Undetermined")) %>%
+  arrange(Month, AgeClass, Sex)
+
+age.events_annual <- age.events_monthly %>%
+  mutate(Year = floor_date(Month, "year")) %>%
+  group_by(Year, AgeClass, Cohort, Sex) %>%
+  summarize(
+    Deaths       = sum(Deaths       ),
+    FirstBirths  = sum(FirstBirths  ),
+    MiddleBirths = sum(MiddleBirths ),
+    LastBirths   = sum(LastBirths   ),
+    TotalBirths  = sum(TotalBirths  )
+  ) %>%
+  arrange(Year, AgeClass, Sex)
 ```
 
-
 ```{r}
-monthlyCensus <- census(monthly.presence, "month")
+monthly_byAge <- census(monthly.presence, "month", "age") %>% 
+  count_census_grouped(., "age") %>%
+  filter(between(Date, ymd("1983-1-1"), ymd("2025-3-1"))) %>% 
+  mutate(AgeClass = as.integer(Group),
+         Month    = Date, .keep = "unused") %>%
+  select(-Total) %>%
+  pivot_longer(cols      = c("Males", "Females", "Undetermined"),
+               names_to  = "Sex",
+               values_to = "nx_Alive") %>%
+  mutate(Sex = case_match(Sex, 
+                          "Females"      ~ "Female",
+                          "Males"        ~ "Male",
+                          "Undetermined" ~ "Undetermined")) %>%
+  left_join(age.events_monthly, by = join_by(Month, Sex, AgeClass)) %>%
+  mutate(across(where(is.numeric), ~ replace_na(., 0)))
 ```
 
-
-# Summary Statistics
-
-## Count Data
-
-### Totals
-
 ```{r}
-monthly.mortality <- final.studbook %>%
-  select(
-    ID,
-    Sex,
-    Date,
-    TypeEvent
-  ) %>% 
-  filter(TypeEvent == "End" & ID %in% deceased) %>%
-  mutate(Date = floor_date(Date, "month")) %>%
-  select(ID, 
-         Sex, 
-         Date) %>%
-  group_by(Date) %>%
-  summarize(Deaths = n())
-
-monthly.births <- final.studbook %>%
-  filter(TypeEvent == "Birth" & !is.na(Dam) & Status != "H") %>%
-  mutate(Date = floor_date(Date, "month")) %>%
-  select(ID, 
-         Sex, 
-         Date) %>%
-  group_by(Date) %>%
-  summarize(Births = n())
-
-annual.births <- monthly.births %>%
-  mutate(Date = floor_date(Date, "year")) %>%
-  group_by(Date) %>%
-  summarize(Births = sum(Births))
-
-annual.mortality <- monthly.mortality %>%
-  mutate(Date = floor_date(Date, "year")) %>%
-  group_by(Date) %>%
-  summarize(Deaths = sum(Deaths))
-```
-
-
-```{r}
-annual_Total <- census(monthly.presence, "year") %>% 
-  count_census() %>%
+annual_byAge <- census(monthly.presence, "year", "age") %>% 
+  count_census_grouped(., "age") %>%
   filter(between(Date, ymd("1983-1-1"), ymd("2025-1-1"))) %>% 
-  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
-  left_join(annual.births, by = join_by(Date)) %>%
-  left_join(annual.mortality, by = join_by(Date)) %>%
-  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+  mutate(AgeClass = as.integer(Group),
+         Year     = Date, .keep = "unused") %>%
+  select(-Total) %>%
+  pivot_longer(cols      = c("Males", "Females", "Undetermined"),
+               names_to  = "Sex",
+               values_to = "nx_Alive") %>%
+  mutate(Sex = case_match(Sex, 
+                          "Females"      ~ "Female",
+                          "Males"        ~ "Male",
+                          "Undetermined" ~ "Undetermined")) %>%
+  left_join(age.events_annual, by = join_by(Year, Sex, AgeClass)) %>%
+  mutate(across(where(is.numeric), ~ replace_na(., 0)))
 ```
-
-
 ```{r}
-monthly_Total <- census(monthly.presence, "month") %>% 
-  count_census() %>%
-  filter(between(Date, ymd("1983-2-1"), ymd("2025-3-1"))) %>% 
-  mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
-  left_join(monthly.births, by = join_by(Date)) %>%
-  left_join(monthly.mortality, by = join_by(Date)) %>%
-  mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
+annual_cohorts <- census(monthly.presence, "year", "cohort") %>% 
+  count_census_grouped(., "cohort") %>%
+  mutate(Cohort   = as.integer(Group),
+         Year     = Date, .keep = "unused") %>%
+  select(-Total) %>%
+  pivot_longer(cols      = c("Males", "Females", "Undetermined"),
+               names_to  = "Sex",
+               values_to = "Alive") %>%
+  mutate(Sex = case_match(Sex, 
+                          "Females"      ~ "Female",
+                          "Males"        ~ "Male",
+                          "Undetermined" ~ "Undetermined")) %>%
+  left_join(age.events_annual, by = join_by(Year, Sex, Cohort)) %>%
+  mutate(Age = year(Year) - Cohort) %>%
+  select(-AgeClass) %>%
+  mutate(across(where(is.numeric), ~ replace_na(., 0)))
 ```
+
 
 ### By Location
 
-```{r}
+```{r warning = FALSE}
 monthly.loc.mortality <- final.studbook %>%
   select(
     ID,
@@ -336,9 +415,10 @@ annual.loc.mortality <- monthly.loc.mortality %>%
 
 ```{r, warning = FALSE}
 annually_byLocation <- census.location(final.studbook, "year") %>%
-  count_census_location() %>%
+  count_census_grouped("location") %>%
   filter(between(Date, ymd("1983-1-1"), ymd("2025-1-1"))) %>% 
   mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  rename(Location = Group) %>%
   left_join(annual.loc.births, by = join_by(Location, Date)) %>%
   left_join(annual.loc.mortality, by = join_by(Location, Date)) %>%
   mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
@@ -346,9 +426,10 @@ annually_byLocation <- census.location(final.studbook, "year") %>%
 
 ```{r, warning = FALSE}
 monthly_byLocation <- census.location(final.studbook, "month") %>%
-  count_census_location() %>%
+  count_census_grouped("location") %>%
   filter(between(Date, ymd("1983-2-1"), ymd("2025-3-1"))) %>% 
   mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
+  rename(Location = Group) %>%
   left_join(monthly.loc.births, by = join_by(Location, Date)) %>%
   left_join(monthly.loc.mortality, by = join_by(Location, Date)) %>%
   mutate(across(c(Births, Deaths), ~ replace_na(., 0)))
@@ -357,11 +438,106 @@ monthly_byLocation <- census.location(final.studbook, "month") %>%
 # Standard Demographic Metrics
 
 ```{r}
-library(popbio)
-library(demogR)
-library(survival)
-library(vital)
+demography_annual <- annual_byAge %>%
+    arrange(AgeClass, Year) %>%   
+    mutate(Year = year(Year)) %>%
+  select(Year,
+         Age        = AgeClass,
+         Sex,
+         Alive      = nx_Alive,
+         Births     = TotalBirths,
+         Deaths     = Deaths) %>%
+  group_by(Year, Sex) %>%
+  mutate(lx = Alive/first(Alive)) %>%
+  ungroup()  %>%
+  as_tsibble(key   = c(Age, Sex), 
+             index = Year) %>%
+  arrange(Age, Year) %>%
+  group_by_key() %>%
+  fill_gaps() %>%
+  mutate(across(where(is.numeric), ~replace_na(., 0))) %>%
+  mutate(
+      Lx   = (Alive + lead(Alive, default = 0)) / 2,  
+      mx   = if_else(Lx > 0, Deaths / Lx, 0)
+    ) %>%
+  ungroup()
 ```
+
+
+```{r}
+LifeTab <- demography_annual %>%
+  as_vital(
+        key         = c(Age, Sex),
+        index       = Year,
+        .age        = "Age",
+        .sex        = "Sex",
+        .deaths     = "Deaths",
+        .births     = "Births",
+        .population = "Alive")  %>%
+  filter(between(Year, 2019, 2024)) %>% life_table()
+```
+
+
+```{r}
+LifeTab_F <- demography_annual %>%
+  filter(Sex == "Female", between(Year, 2019, 2024)) %>%
+  as_vital(
+        key         = Age,
+        index       = Year,
+        .age        = "Age",
+        .sex        = "Sex",
+        .deaths     = "Deaths",
+        .births     = "Births",
+        .population = "Population") %>% life_table()
+  
+```
+
+
+```{r}
+scan_gaps(lifeTable)
+```
+
+
+```{r}
+
+
+
+     %>%
+%>%
+  as_vital(
+        key         = c(Age, Sex),
+        index       = Year,
+        .age        = "Age",
+        .sex        = "Sex",
+        .deaths     = "dx",
+        .births     = "bx",
+        .population = "nx") %>%
+  life_table()
+```
+
+
+```{r}
+mutate(Year = year(Year),
+         qx = if_else(nx_Alive > 0, Deaths / nx_Alive, 0)) %>%
+  replace_na(list(qx = 0)) %>%
+  select(Year,
+         Age = AgeClass,
+         Sex,
+         nx = nx_Alive,
+         bx = TotalBirths,
+         dx = Deaths,
+         qx) %>%
+  as_vital(
+        key         = c(Age, Sex),
+        index       = Year,
+        .age        = "Age",
+        .sex        = "Sex",
+        .deaths     = "dx",
+        .births     = "bx",
+        .population = "nx") %>%
+  life_table()
+```
+
 
 ```{r}
 annual <- as_tsibble(annual_Total, 
