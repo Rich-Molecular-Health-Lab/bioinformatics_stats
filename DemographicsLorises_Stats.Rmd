@@ -205,7 +205,7 @@ monthly.living <- final.studbook %>%
 
 
 ```{r}
-annual_Total <- census(monthly.presence, "year", "none") %>% 
+annual_Total <- census(monthly.living, "year", "none") %>% 
   count_census() %>%
   filter(between(Date, ymd("1983-1-1"), ymd("2025-1-1"))) %>% 
   mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
@@ -216,7 +216,7 @@ annual_Total <- census(monthly.presence, "year", "none") %>%
 
 
 ```{r}
-monthly_Total <- census(monthly.presence, "month", "none") %>% 
+monthly_Total <- census(monthly.living, "month", "none") %>% 
   count_census() %>%
   filter(between(Date, ymd("1983-2-1"), ymd("2025-3-1"))) %>% 
   mutate(SexRatio = round(Males / (Males + Females), digits = 3)) %>%
@@ -547,6 +547,11 @@ annual <- as_tsibble(annual_Total,
   life_table()
 ```
 
+```{r}
+lambda_5 <- lambda(5, annual_Total)
+
+print_lambda(lambda_5)
+```
 
 
 ## Lambda or Population Growth Rate
@@ -566,11 +571,6 @@ The three lambdas highlighted in the BTP are:
 2.  **5-year**, from the studbook census
   - the 5-year lambda is calculated from observed changes in population size over the last 5 years and includes births, deaths, imports and exports
   
-```{r}
-lambda_5 <- lambda(5, annual_Total)
-
-print_lambda(lambda_5)
-```
 
 
 3.  **Projected**, from the PMx stochastic 20-year projections

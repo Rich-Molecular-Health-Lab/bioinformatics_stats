@@ -205,6 +205,7 @@ assemble_timeline <- function(studbook) {
     studbook %>%
       select(
         ID,
+        Sex,
         OrderLoc,
         Location,
         TypeEvent,
@@ -226,7 +227,10 @@ assemble_timeline <- function(studbook) {
               Date) %>%
     distinct() %>%
       group_by(ID) %>%
+      fill(Sex, .direction = "downup") %>%
       mutate(OrderEvent = consecutive_id(TypeEvent)) %>%
+      mutate(Cohort = if_else(OrderEvent == 1, year(Date), NA)) %>%
+      fill(Cohort) %>%
       ungroup()
 }
 
@@ -524,7 +528,7 @@ add.hypotheticals <- function(studbook, ids, parent) {
  
 }
 
-lambda <- function(years, df) {
+my_lambda <- function(years, df) {
   N_final   <- filter(df, Date == floor_date(today(), "year")) %>% pull(Population)
   N_initial <- filter(df, Date == (floor_date(today(), "year") - years(years))) %>% pull(Population)
   
@@ -534,4 +538,120 @@ lambda <- function(years, df) {
 print_lambda <- function(lambda) {
  paste0(round((lambda*100) - 100, digits = 2), "% change")
 }
+
+cohort_grid <- function(df, maxAge, minYear) {
+  
+  cohorts <- minYear:2025
+  years   <- cohorts
+  sexes   <- c("Male", "Female", "Total")
+  
+ grid <-  expand_grid(
+    Year   = years,
+    Cohort = cohorts,
+    Sex    = sexes
+  )  %>%
+   filter(Year >= Cohort, (Year - Cohort) <= maxAge) %>%
+   mutate(Age = Year - Cohort) %>%
+   select(Cohort, Year, Sex, Age) %>%
+   arrange(Cohort, Sex, Age)
+ 
+ df %>% 
+   mutate(Year = year(Date)) %>%
+   right_join(grid, by = join_by(
+   Year, 
+   Age, 
+   Cohort, 
+   Sex
+ )) %>%
+   mutate(across(where(is.numeric), ~ replace_na(., 0)),
+          Date = make_date(year = Year, month = 1, day = 1)) %>%
+   arrange(Cohort, Sex, Age) %>%
+   relocate(Cohort, Sex, Year, Age)
+}
+
+mle_all <- function(lx, age) {
+
+    df <- tibble(lx = lx, age = age) %>%
+    filter(!is.na(lx))
+  
+  below <- df %>% filter(lx <= 0.5 & lx > 0) %>% slice_min(order_by = age, n = 1)
+  above <- df %>% filter(lx > 0.5)           %>% slice_max(order_by = age, n = 1)
+  
+  if (nrow(below) == 0 || nrow(above) == 0) {
+    return(NA_real_)
+  }
+  
+  ageLow  <- above$age
+  ageHigh <- below$age
+  lxLow   <- above$lx
+  lxHigh  <- below$lx
+  
+  ageMLE <- ageLow + ((0.5 - lxLow) / (lxHigh - lxLow)) * (ageHigh - ageLow)
+  return(ageMLE)
+  
+
+}
+
+mle_age1 <- function(lx, age) {
+  df <- tibble(lx = lx, age = age) %>%
+    filter(age >= 1, !is.na(lx), lx > 0)
+  
+  if (nrow(df) == 0) return(NA_real_)
+  
+  df <- df %>%
+    mutate(lx1 = lx / first(lx))
+  
+  below <- df %>% filter(lx1 <= 0.5) %>% slice_min(order_by = age, n = 1)
+  above <- df %>% filter(lx1 > 0.5)  %>% slice_max(order_by = age, n = 1)
+  
+  if (nrow(below) == 0 || nrow(above) == 0) return(NA_real_)
+  
+  ageLow  <- above$age
+  ageHigh <- below$age
+  lxLow   <- above$lx1
+  lxHigh  <- below$lx1
+  
+  ageMLE1 <- ageLow + ((0.5 - lxLow) / (lxHigh - lxLow)) * (ageHigh - ageLow)
+  return(ageMLE1)
+}
+
+lambda_5 <- function(Nx_vec, Year_vec) {
+  sapply(seq_along(Year_vec), function(i) {
+    y       <- Year_vec[i]
+    current <- Nx_vec[i]
+    
+    past_value <- Nx_vec[which(Year_vec == (y - 5))]
+    
+    if (length(past_value) > 0 && !is.na(past_value) && past_value > 0) {
+      (current / past_value)^(1/5)
+    } else {
+      NA_real_
+    }
+  })
+}
+
+build_leslie <- function(df, CohortStart, CohortEnd, Sex) {
+  
+  df <- filter(df, Cohort >= CohortStart & Cohort <= CohortEnd & Sex == Sex)  %>%
+    group_by(Age) %>%
+    summarise(
+      mx = mean(mx, na.rm = TRUE),
+      Px = mean(Px, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    arrange(Age)
+  
+  fecundity <- pull(df, mx)
+  survival  <- pull(df, Px)
+  n         <- length(fecundity)
+  L         <- matrix(0, nrow = n, ncol = n)
+  L[1, ]    <- fecundity
+  if (n > 1) {
+    for (i in 2:n) {
+      L[i, i - 1] <- survival[i - 1]
+    }
+  }
+  return(L)
+}
+
 

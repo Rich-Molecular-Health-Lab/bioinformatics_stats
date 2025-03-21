@@ -83,6 +83,7 @@ loris:
   AZAstudbooks:
     btp: "metadata/loris/Studbook/BTP25.R"
     btp_current: "metadata/loris/Studbook/BTP25.tsv"
+    lifetable: "metadata/loris/Studbook/lifetable25.tsv"
     load_data: "metadata/loris/Studbook/LoadStudbookData.R"
     functions: "metadata/loris/studbookFunctions.R"
     reactables: "metadata/loris/Studbook/reactables.R"
