@@ -181,7 +181,7 @@ annual.mortality <- monthly.mortality %>%
 
 
 ```{r}
-monthly.presence <- final.studbook %>%
+monthly.living <- final.studbook %>%
   select(
     ID,
     Sex,
@@ -347,6 +347,7 @@ annual_byAge <- census(monthly.presence, "year", "age") %>%
   left_join(age.events_annual, by = join_by(Year, Sex, AgeClass)) %>%
   mutate(across(where(is.numeric), ~ replace_na(., 0)))
 ```
+
 ```{r}
 annual_cohorts <- census(monthly.presence, "year", "cohort") %>% 
   count_census_grouped(., "cohort") %>%

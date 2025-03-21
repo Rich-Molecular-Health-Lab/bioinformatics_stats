@@ -1,0 +1,204 @@
+---
+title: "Demographic Data Summaries for AZA Pygmy Loris Provisional SSP"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+      css: "Studbook.css"
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "loris"
+  dataset: "culi"
+                     
+---
+
+```{r global, message = FALSE, warning = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("Demography.Rmd")
+source(here::here(global$setup))
+
+source(here(path$AZAstudbooks$functions))
+source(here(path$AZAstudbooks$btp))
+
+source(here(path$AZAstudbooks$load_data))
+source(here(path$AZAstudbooks$reactables))
+```
+
+# Wrangle Studbook Data
+
+```{r, warning = FALSE}
+timeline <- assemble_timeline(studbook) %>%
+  mutate(Date = case_when(
+    is.na(Date) & TypeEvent == "End"   & ID %in% deaths.21_24 ~ ymd("2023-1-1"), 
+    is.na(Date) & TypeEvent == "End"   & ID %in% deaths.24    ~ ymd("2025-1-1"), 
+    .default = Date)) %>%  
+  fill_dates_timeline()
+```
+
+## Revise Studbook
+
+```{r, warning = FALSE}
+studbook.revised <- timeline %>%
+  filter(TypeEvent != "Breed") %>%
+  left_join(select(
+    studbook,
+    ID,
+    Status,
+    OrderLoc,
+    Location,
+    NameLoc,
+    Country,
+    Sex,
+    Sire,
+    Dam
+  ), by = join_by(ID, OrderLoc, Location)) %>% distinct() %>%
+  mutate(DateBirth = if_else(TypeEvent == "Birth", Date, NA)) %>%
+  group_by(ID) %>% fill(DateBirth) %>% ungroup()
+```
+
+## Create Monthly Census by Location
+
+```{r, warning = FALSE}
+monthly.census.location <- census.location(studbook.revised, "month")
+```
+
+## Fill Missing Parentage Assignments
+
+```{r, warning = FALSE}
+find.sires <- whoisthedaddy(studbook.revised, monthly.census.location)
+find.dams  <- whoisthemommy(studbook.revised, monthly.census.location)
+```
+
+### Create Hypothetical IDs for Missing Parents
+
+```{r}
+final.studbook <- studbook.revised %>%
+  mutate(Sire = case_match(ID, 
+                           1047 ~ 1012, 
+                           2645 ~ 1131, 
+                           2738 ~ 2622, .default = Sire)) %>%
+  mutate(Dam  = if_else(ID == 2738, 2630, Dam)) %>%
+  add.hypotheticals(c(1045, 1046), "Sire") %>%
+  add.hypotheticals(c(2423, 2424), "Sire") %>%
+  add.hypotheticals(c(2108), "Sire") %>%
+  add.hypotheticals(c(2717), "Dam") %>%
+  add.hypotheticals(c(2717), "Sire") %>%
+  mutate(Cohort = year(DateBirth))
+
+write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
+
+deceased <- filter(final.studbook, Status == "D") %>%
+  pull(ID)
+```
+
+# Summary Statistics
+
+## Count Data
+
+### By Age Cohort
+
+```{r}
+years <- c(seq.Date(
+                   from = ymd("1982-1-1"),
+                   to   = floor_date(today(), "years"),
+                   by   = "year"))
+ages    <- c(seq.int(from = 0, to = 21, by = 1))
+cohorts <- c(seq.int(from = 1982, to = 2025, by = 1))
+sexes   <- c("Male", "Female", "Undetermined")
+
+years.cohorts <- expand_grid(
+  Year   = years,
+  Age    = ages,
+  Cohort = cohorts,
+  Sex    = sexes
+) %>%
+  filter(Cohort <= year(Year))
+
+```
+
+
+```{r}
+age.timeline <- assemble_timeline(final.studbook) %>%
+  group_by(ID, TypeEvent) %>%
+  mutate(EventRep     = row_number(),
+         DateBirth = if_else(TypeEvent == "Birth", Date, NA)) %>% 
+  ungroup() %>%
+  mutate(Event = case_when(
+    TypeEvent == "End" & ID %in% deceased          ~ "Death", 
+    TypeEvent == "Transfer" | TypeEvent == "Breed" ~ TypeEvent,
+    .default = NA
+    )) %>%
+  group_by(ID) %>%
+  fill(DateBirth) %>%
+  filter(!(is.na(Event) & TypeEvent == "End") & TypeEvent != "Birth") %>%
+  mutate(OrderEvent = row_number(),
+         Age        = calculate_age(DateBirth, Date),
+         Cohort     = year(DateBirth)) %>%
+  ungroup() %>%
+  left_join(select(final.studbook,
+                   ID,
+                   Sex), by = join_by(ID)) %>%
+  
+  distinct() %>%
+  select(
+    ID,
+    Sex,
+    Cohort,
+    OrderEvent,
+    Location,
+    Date,
+    Age,
+    Event,
+    EventRep
+  ) %>%
+  mutate(Month = floor_date(Date, "month"),
+         Year  = floor_date(Date, "year")) %>%
+  filter(Event != "Transfer")  %>%
+  group_by(Age, Cohort, Sex, Month, Event) %>%
+  summarize(Count = n()) %>%
+  ungroup() %>%
+  pivot_wider(id_cols     = c("Age", 
+                              "Cohort", 
+                              "Sex", 
+                              "Month"),
+              names_from  = "Event",
+              values_from = "Count",
+              values_fill = 0) %>%
+  select(Month, 
+         Age, 
+         Cohort,
+         Sex,
+         Deaths       = Death, 
+         Births       = Breed) %>%
+  mutate(Sex = case_match(Sex, 
+                          "F" ~ "Female",
+                          "M" ~ "Male",
+                          "U" ~ "Undetermined"))
+```
+
+
+```{r}
+age.annual <- age.timeline %>%
+  mutate(Year = floor_date(Month, "year")) %>%
+  group_by(Year, Age, Cohort, Sex) %>%
+  summarize(
+    Deaths       = sum(Deaths),
+    Births       = sum(Births)
+  ) %>%
+  arrange(Year, Age, Sex) %>%
+  ungroup() %>%
+  right_join(years.cohorts, by = join_by(Year, Age, Cohort, Sex)) %>%
+  arrange(Year, Age, Cohort, Sex) %>%
+  mutate(across(where(is.numeric), ~replace_na(., 0)))
+  
+```
+
+
