@@ -333,8 +333,8 @@ expand_timeline <- function(timeline, period, studbook) {
   if (period == "months") {
     timeline.long <- timeline %>% 
       mutate(StartLoc = floor_date(StartLoc, "months"),
-             EndLoc   = floor_date(EndLoc, "months")) %>%
-      mutate(Months = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "1 month"))) %>%
+             EndLoc   = celing_date(EndLoc, "months")) %>%
+      mutate(Months = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "months"))) %>%
       unnest(Months) %>%
       select(ID, 
              Date = Months, 
@@ -357,8 +357,8 @@ expand_timeline <- function(timeline, period, studbook) {
   } else if (period == "years") {
     timeline.new <- timeline %>% 
       mutate(StartLoc = floor_date(StartLoc, "years"),
-             EndLoc   = floor_date(EndLoc, "years")) %>%
-      mutate(Years = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "1 year"))) %>%
+             EndLoc   = celing_date(EndLoc, "years")) %>%
+      mutate(Years = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "years"))) %>%
       unnest(Years) %>%
       select(ID, 
              Date = Years, 
@@ -381,6 +381,18 @@ expand_timeline <- function(timeline, period, studbook) {
   
   return(timeline.long)
 
+}
+
+census_timeline <- function(timeline) {
+  timeline.new <- timeline %>%
+    filter(TypeEvent %in% c("Birth", "End")) %>%
+    select(ID, Date, TypeEvent) %>%
+    pivot_wider(id_cols     = "ID",
+                names_from  = "TypeEvent",
+                values_from = "Date") %>%
+    mutate(Birth = floor_date(Birth, "years"),
+           End   = celing_date(End, "years")) %>%
+    mutate(Years = pmap(list(Birth, End), \(x, y) seq(x, y, by = "year")))
 }
 
 nest_timeline <- function(timeline, groupBy = NULL) {
@@ -878,40 +890,38 @@ lighten_palette <- function(palette, hex) {
 
 }
 
-studbook_visual <- function(timeline, studbook, locations) {
+studbook_visual <- function(timeline, studbook, location.key) {
   end.records <- filter(timeline, TypeEvent == "End") %>%
     select(ID, LocLast = Location)
   
-  locations <- locations %>%
-    select(colorLoc,
-           Loc            = LocAbbrev,
-           NameLoc,
-           iconLoc,
-           Country)
+  locations <- location.key %>%
+    mutate(Label = str_glue("{NameLoc}", ", ", "{Country}")) %>%
+    select(LocAbbrev,
+           Label,
+           iconLoc)
   
-  studbook %>% left_join(end.records, by = join_by(ID)) %>%
+  studbook.new <- studbook %>% left_join(end.records, by = join_by(ID)) %>%
     mutate(DateLast = if_else(is.na(DateDeath), today(), DateDeath),
            AgeLast  = if_else(is.na(AgeDeath), 
                               calculate_age(DateBirth, today()), 
                               AgeDeath),
            Status   = case_match(Status,
                                  "D" ~ "Deceased",
-                                 "A" ~ "Alive"),
+                                 "A" ~ "Alive",
+                                 "H" ~ "Hypothetical Parent"),
            color    = case_match(Sex,
                                  "F" ~ colors$f,
                                  "M" ~ colors$m,
                                  "U" ~ colors$u)) %>%
     mutate(YearLast = year(DateLast), .keep = "unused") %>%
-    left_join(locations, by = join_by(LocBirth == Loc)) %>%
+    left_join(locations, by = join_by(LocBirth == LocAbbrev)) %>%
     rename(
-      LocBirth_color     = colorLoc,
-      LocBirth_name      = NameLoc,
+      LocBirth_name      = Label,
       LocBirth_icon      = iconLoc
     ) %>%
-    left_join(locations, by = join_by(LocLast == Loc)) %>%
+    left_join(locations, by = join_by(LocLast == LocAbbrev)) %>%
     rename(
-      LocLast_color     = colorLoc,
-      LocLast_name      = NameLoc,
+      LocLast_name      = Label,
       LocLast_icon      = iconLoc
     ) %>%
     arrange(Status, DateBirth, LocBirth) %>%
@@ -919,26 +929,26 @@ studbook_visual <- function(timeline, studbook, locations) {
       Status,
       ID,
       LocBirth      ,
-      DateBirth     ,
-      AgeLast       ,
-      DateDeath     ,
-      LocLast       ,
       Sire          ,
       Dam           ,
+      LocLast       ,
+      AgeLast       ,
       Sex           ,
       color         ,
+      DateBirth     ,
       BirthYear     ,
+      DateDeath     ,
       YearLast      ,
-      LocBirth_color,
-      LocLast_color ,
       LocBirth_icon ,
       LocLast_icon  ,
       LocBirth_name ,
       LocLast_name  
-    )
+    )  %>%
+    mutate(MonthBirth = month(DateBirth, label = TRUE, abbr = TRUE),
+           YearDeath  = if_else(Status == "Alive", Status, as.character(YearLast))) 
   
-  write.table(studbook, here(path$AZAstudbooks$reactable_ready), sep = "\t", row.names = F)  
+  write.table(studbook.new, here(path$AZAstudbooks$reactable_ready), sep = "\t", row.names = F)  
   
-  return(studbook)
+  return(studbook.new)
 }
 

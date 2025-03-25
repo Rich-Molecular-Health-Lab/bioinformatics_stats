@@ -33,10 +33,10 @@ DateBirth <- function(df) {
            data                = df,
            colors              = paletteer_d(colors$seq),
            opacity             = 0.4,
-           color_by            = "yr_birth",
+           color_by            = "BirthYear",
            brighten_text_color = "black",
            box_shadow          = TRUE,
-           number_fmt          = label_date_short()
+           number_fmt          = label_date()
            )
          )
 }
@@ -47,54 +47,65 @@ DateDeath <- function(df) {
            data       = df,
            colors     =  paletteer_d(colors$seq),
            opacity    = 0.4,
-           color_by   = "yr_last",
+           color_by   = "YearLast",
            brighten_text_color = "black",
            box_shadow = TRUE,
-           number_fmt = label_date_short()
+           number_fmt = label_date()
          ), maxWidth = 200)
 }
 
 LocBirth <- function(df) {
   colDef(header = tippy("Born",
                         tooltip = "Location of birth (captive-born) or capture (wild-born)"),
-         maxWidth     = 70,
-         cell         = pill_buttons(
-           data       = df,
-           opacity    = 0.6,
-           color_ref  = "Birth_loc_color",
-           box_shadow = TRUE
-         )
+         maxWidth     = 100,
+         cell     = function(value, index) {
+           flag <- df$LocBirth_icon[index]
+           name <- span(style = "text-decoration: underline; text-decoration-style: dotted",
+                       tippy(value, df$LocBirth_name[index]))
+           date <- div(style="display:inline",
+                       span(style = "font-weight: 600; font-size:12pt", df$BirthYear[index]),
+                       span(style = "font-size:10pt", " (", df$MonthBirth[index], ")"))
+           
+           div(style="display:grid; row-gap:2px", div(style="display:inline-block", flag, name), date)
+           
+         }
   )
 }
 
 LocLast <- function(df) {
-  colDef(header = tippy("Last Location",
-                        tooltip = "Current institution (Alive) or institution at time of death (Deceased)"),
-         maxWidth = 70,
-         cell         = pill_buttons(
-           data       = df,
-           opacity    = 0.6,
-           color_ref  = "Last_loc_color",
-           box_shadow = TRUE
-         )
+  colDef(header = tippy("Last",
+                        tooltip = "Current institution (Alive) or institution and date of death (Deceased)"),
+         maxWidth = 100,
+         cell     = function(value, index) {
+           flag <- df$LocLast_icon[index]
+           name <- span(style = "text-decoration: underline; text-decoration-style: dotted",
+                        tippy(value, df$LocLast_name[index]))
+           date <- div(style = "font-weight: 600; font-size:12pt", df$YearDeath[index])
+           
+           div(style="display:grid; row-gap:2px", div(style="display:inline-block", flag, name), date)
+ 
+         }
   )
 }
+
 
 Current_Location <- function(df) {
   colDef(header = tippy("Current Location",
                         tooltip = "Current institution"),
          maxWidth = 70,
-         cell         = pill_buttons(
-           data       = df,
-           opacity    = 0.6,
-           color_ref  = "Last_loc_color",
-           box_shadow = TRUE
-         ),
+         cell     = function(value, index) {
+           flag <- df$LocLast_icon[index]
+           name <- span(style = "text-decoration: underline; text-decoration-style: dotted",
+                        tippy(value, df$LocLast_name[index]))
+           
+           div(style="display:inline-block", flag, name)
+           
+         },
         style = JS("function(rowInfo, column, state) {
                         const firstSorted = state.sorted[0]
-                        if (!firstSorted || firstSorted.id === 'Current_Location') {
+                        if (!firstSorted || firstSorted.id === 'LocLast') {
                           const prevRow = state.pageRows[rowInfo.viewIndex - 1]
-                          if (prevRow && rowInfo.values['Current_Location'] === prevRow['Current_Location']) {
+                          if (prevRow && rowInfo.values['LocLast'] === prevRow['LocLast']) {
                             return { visibility: 'hidden' }
                           }
                         }
@@ -194,18 +205,18 @@ list(
   Status            = Status(),
   ID                = ID(df),
   LocBirth          = LocBirth(df),
-  DateBirth         = DateBirth(df),
   AgeLast           = AgeLast(df),
-  DateDeath         = DateDeath(df),
   LocLast           = LocLast(df),
   Sire              = Sire(df),
   Dam               = Dam(df),
+  DateDeath         = colDef(show = FALSE),
+  DateBirth         = colDef(show = FALSE),
   Sex               = colDef(show = FALSE),
   color             = colDef(show = FALSE),
   BirthYear         = colDef(show = FALSE),
+  MonthBirth        = colDef(show = FALSE),
   YearLast          = colDef(show = FALSE),
-  LocBirth_color    = colDef(show = FALSE),
-  LocLast_color     = colDef(show = FALSE),
+  YearDeath         = colDef(show = FALSE),
   LocBirth_icon     = colDef(show = FALSE),
   LocLast_icon      = colDef(show = FALSE),
   LocBirth_name     = colDef(show = FALSE),
@@ -215,29 +226,36 @@ list(
 
 founder.cols <- function(df) {
   list(
+    Status            = Status(),
     ID                = ID(df),
-    Birth_Location    = Birth_Location(df),
-    Birth_Date        = Birth_Date(df),
-    Age_Death         = Age(df),
-    Death             = Last_Date(df),
-    Last_Location     = Last_Location(df),
+    LocBirth          = LocBirth(df),
+    AgeLast           = AgeLast(df),
+    LocLast           = LocLast(df),
+    Sire              = Sire(df),
+    Dam               = Dam(df),
     Rel_Contribution  = Rel_Contribution(df),
+    DateDeath         = colDef(show = FALSE),
+    DateBirth         = colDef(show = FALSE),
     Sex               = colDef(show = FALSE),
     color             = colDef(show = FALSE),
-    yr_birth          = colDef(show = FALSE),
-    yr_last           = colDef(show = FALSE),
-    Birth_loc_color   = colDef(show = FALSE),
-    Last_loc_color    = colDef(show = FALSE)
+    BirthYear         = colDef(show = FALSE),
+    MonthBirth        = colDef(show = FALSE),
+    YearLast          = colDef(show = FALSE),
+    YearDeath         = colDef(show = FALSE),
+    LocBirth_icon     = colDef(show = FALSE),
+    LocLast_icon      = colDef(show = FALSE),
+    LocBirth_name     = colDef(show = FALSE),
+    LocLast_name      = colDef(show = FALSE)
   )
 }
 
 living.cols <- function(df) {
   list(
     ID                = ID(df),
-    Birth_Location    = Birth_Location(df),
-    Birth_Date        = Birth_Date(df),
-    Age               = Age(df),
-    Current_Location  = Current_Location(df),
+    LocBirth          = LocBirth(df),
+    DateBirth         = DateBirth(df),
+    AgeLast           = AgeLast(df),
+    LocLast           = Current_Location(df),
     Sire              = Sire(df),
     Dam               = Dam(df),
     inbred            = inbred(df),
@@ -247,10 +265,14 @@ living.cols <- function(df) {
     N_Siblings        = bubble_count(df, "Siblings"),
     Sex               = colDef(show = FALSE),
     color             = colDef(show = FALSE),
-    yr_birth          = colDef(show = FALSE),
-    yr_last           = colDef(show = FALSE),
-    Birth_loc_color   = colDef(show = FALSE),
-    Last_loc_color    = colDef(show = FALSE)
+    BirthYear         = colDef(show = FALSE),
+    YearLast          = colDef(show = FALSE),
+    LocBirth_color    = colDef(show = FALSE),
+    LocLast_color     = colDef(show = FALSE),
+    LocBirth_icon     = colDef(show = FALSE),
+    LocLast_icon      = colDef(show = FALSE),
+    LocBirth_name     = colDef(show = FALSE),
+    LocLast_name      = colDef(show = FALSE)
   )
 }
 
@@ -261,7 +283,7 @@ living.groups <- list(
 
 
 studbook.react <- function(df, cols, ...) {
-  df %>%
+ df.react <- df %>%
     reactable(
       theme               = flatly(centered = TRUE),
       height              = 900,
@@ -275,6 +297,9 @@ studbook.react <- function(df, cols, ...) {
       columns             = cols,
       ...
     )
+  
+ save_reactable_test(df.react, paste0("StudbookA_", params$group, ".html"))
+ return(df.react)
 }
 
 lambda.hover <- "Growth rate: Finite rate of population growth calculated as the geometric mean of changes in total population size over the past 5 years"

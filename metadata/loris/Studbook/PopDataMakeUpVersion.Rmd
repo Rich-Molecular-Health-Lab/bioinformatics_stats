@@ -78,9 +78,9 @@ conflicts_prefer(purrr::discard)
 conflicts_prefer(ribd::kinship)
 conflicts_prefer(plotly::layout)
 
-here::i_am("PopulationData.Rmd")
+here::i_am("PopDataMakeupVersion.Rmd")
 
-source("reactables.R")
+source("reactables_PopDataMakeup.R")
 
 theme_set(theme_classic())
 thematic_rmd()
@@ -107,6 +107,11 @@ colors <- list(
   rand = "khroma::stratigraphy"
 )
 
+col.pal <- keep_at(colors, c("f", "m", "u")) %>% unlist()
+col.pal <- setNames(col.pal, c("F", "M", "U"))
+fills   <- gsub("FF", "33", col.pal)
+
+
 deceased.col <- function(color) {
   gsub("FF", "33", color)
 }
@@ -123,9 +128,194 @@ Run the code below to automatically import and format studbook data for the Pygm
 
 ```{r}
 source(here(path$AZAstudbooks$functions))
-source(here(path$AZAstudbooks$btp))
-
-studbook <- read.table(here("working_studbook_loris25.tsv"), sep = "\t", row.names = F)
-timeline <- read.table(here("working_timeline_loris25.tsv"), sep = "\t", row.names = F)
+source(here("metadata/loris/reactables_PopDataMakeup.R"))
 ```
+
+
+```{r}
+studbook        <- read.table(here("metadata/loris/Studbook/studbook_loris_reactableReady.tsv"), sep = "\t", header = TRUE) %>%
+  mutate(DateBirth = ymd(DateBirth))
+timeline        <- read.table(here("metadata/loris/Studbook/working_timeline_loris25.tsv"), sep = "\t", header = TRUE) %>%
+  mutate(across(c(StartLoc, Date, EndLoc), ~ ymd(.)))
+```
+
+```{r}
+source(here("metadata/loris/reactables_PopDataMakeup.R"))
+```
+
+
+## View Formatted File
+
+Let's take a glimpse of our formatted studbook now.
+
+```{r, out.width="100%"}
+studbook.tbl <- studbook %>%
+  studbook.react(., studbook.cols(.), groupBy = "Status")
+
+studbook.tbl
+```
+
+# Population Viability Analysis
+
+## Demographic Trends
+
+Let's look at the basic population size over time to begin quantifying growth rate and assessing overall population viability.
+
+```{r}
+raw.counts <- timeline %>%
+    filter(TypeEvent %in% c("Birth", "End")) %>%
+    distinct(ID, Date, TypeEvent) %>%
+    pivot_wider(id_cols     = "ID",
+                names_from  = "TypeEvent",
+                values_from = "Date") %>%
+    distinct() %>%
+    mutate(Birth = floor_date(Birth, "years"),
+           End   = ceiling_date(End, "years")) %>%
+    mutate(Years = pmap(list(Birth, End), \(x, y) seq(x, y, by = "year"))) %>%
+  unnest(Years) %>%
+  select(ID, Year = Years) %>%
+  mutate(Age = row_number() - 1, .by = ID) %>%
+  left_join(select(studbook,
+                   ID,
+                   Sex), by = join_by(ID)) %>%
+  summarize(N = n(), .by = c(Sex, Year)) %>%
+  distinct() %>%
+  arrange(Year)
+```
+
+```{r}
+population.plot <- plot_ly(
+    data        = raw.counts,
+    type        = "scatter",
+    x           = ~Year,
+    y           = ~N,
+    color       = ~Sex,
+    colors      = col.pal,
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      shape     = "spline",
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.0
+        )
+   )) %>%
+  layout(title        = "Pygmy Loris Population Trends 1966-2025",
+         plot_bgcolor = "#ffffff", 
+         yaxis = list(title         = "Individuals Alive",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = F),
+         xaxis = list(title         = "Date",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = T,
+                      rangeslider   = list(visible = T)))
+
+saveWidget(population.plot, paste0("PopulationTrends_", params$group, ".html"))
+
+population.plot
+```
+
+
+
+
+
+## Life Table Calculations
+
+Now we will use annual birth counts to follow the standard method for computing a normalized rate of growth over the past 5 years compared to all years.
+
+```{r}
+life.table.sexes <- count_births(timeline, studbook) %>%
+      summarize(Births = sum(Births),
+                Nx     = n(), 
+                .by    = c(BirthYear, Sex, Age)
+                ) %>%
+      ungroup() %>%
+  make_cohorts(., 1985, 2024, 5, 22, TRUE) %>%
+  summarize(Births = sum(Births),
+           Nx      = sum(Nx), 
+           .by     = c(CohortLabel, BirthCohort, Sex, Cohort, Age)) %>%
+  arrange(BirthCohort, Sex, Age) %>%
+  lifeTab()
+
+lifeTab.5yrs <- count_births(timeline, studbook) %>%
+      summarize(Births = sum(Births),
+                Nx     = n(), 
+                .by    = c(BirthYear, Age)
+                ) %>%
+      ungroup() %>%
+  make_cohorts(., 1985, 2024, 5, 22, FALSE) %>%
+  summarize(Births = sum(Births),
+           Nx      = sum(Nx), 
+           .by     = c(CohortLabel, BirthCohort, Cohort, Sex, Age)) %>%
+  arrange(BirthCohort, Age) %>%
+  lifeTab() %>%
+  bind_rows(life.table.sexes) %>%
+  arrange(BirthCohort, Age, Sex)
+
+lifeTab.static <- lifeTab_static(lifeTab.5yrs) %>%
+  annotate_lambda()
+```
+
+```{r}
+lambda.plot <- plot_ly(
+    data        = filter(lifeTab.static, Sex != "Total"),
+    type        = "scatter",
+    x           = ~CohortLabel,
+    y           = ~lambda,
+    color       = ~Sex,
+    colors      = col.pal,
+    text        = ~hover_lambda,
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      shape     = "spline",
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.0
+        )
+   )) %>%
+  layout(title        = "Pygmy Loris Population Growth 1985-2024",
+         plot_bgcolor = "#ffffff", 
+         barmode      = "grouped",
+         shapes       = list(hline(1.0)),
+         annotations  = lambda.annotation,
+         yaxis = list(title         = "Lambda (\u03BB)",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = T))
+
+saveWidget(lambda.plot, paste0("PopulationGrowth_", params$group, ".html"))
+lambda.plot
+```
+
 

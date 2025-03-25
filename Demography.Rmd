@@ -79,6 +79,7 @@ final.studbook <- studbook %>%
 write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
 
 timeline.revised <- update_timeline(timeline, studbook, final.studbook)
+studtbl          <- studbook_visual(timeline.revised, final.studbook, locations)
 ```
 
 
