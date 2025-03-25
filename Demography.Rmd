@@ -38,57 +38,33 @@ opts_chunk$set(message = FALSE,
                eval    = TRUE,
                comment = "")
 
+subjects <- list(culi = 2652, warble = 2677)
+
 ```
 
-# Wrangle Studbook Data
+# Fill in Studbook Data
 
 ```{r, warning = FALSE}
-timeline <- assemble_timeline(studbook) %>%
-  mutate(Date = case_when(
-    is.na(Date) & TypeEvent == "End"   & ID %in% deaths.21_24 ~ ymd("2023-1-1"), 
-    is.na(Date) & TypeEvent == "End"   & ID %in% deaths.24    ~ ymd("2025-1-1"), 
-    .default = Date)) %>%  
-  fill_dates_timeline()
+timeline <- assemble_timeline(studbook) %>% fill_dates_timeline()
+
+studbook <- revise_studbook(studbook, timeline)
 ```
 
-## Revise Studbook
+## Fill Missing Parentage Assignments
 
 ```{r, warning = FALSE}
-studbook.revised <- timeline %>%
-  filter(TypeEvent != "Breed") %>%
-  left_join(select(
-    studbook,
-    ID,
-    Status,
-    OrderLoc,
-    Location,
-    NameLoc,
-    Country,
-    Sex,
-    Sire,
-    Dam
-  ), by = join_by(ID, OrderLoc, Location)) %>% distinct() %>%
-  mutate(DateBirth = if_else(TypeEvent == "Birth", Date, NA)) %>%
-  group_by(ID) %>% fill(DateBirth) %>% ungroup()
+locate.parents <- expand_timeline(timeline, "months", studbook) %>%
+  arrange(Sex, BirthYear) %>%
+  nest_timeline(., groupBy = "Location")
+
+find.sires <- whoisthedaddy(studbook, locate.parents)
+find.dams  <- whoisthemommy(studbook, locate.parents)
 ```
 
-### Create Monthly Census by Location
-
-```{r, warning = FALSE}
-monthly.census.location <- census.location(studbook.revised, "month")
-```
-
-### Fill Missing Parentage Assignments
-
-```{r, warning = FALSE}
-find.sires <- whoisthedaddy(studbook.revised, monthly.census.location)
-find.dams  <- whoisthemommy(studbook.revised, monthly.census.location)
-```
-
-#### Create Hypothetical IDs and Add Missing Parents
+## Create Hypothetical IDs and Add Missing Parents
 
 ```{r}
-final.studbook <- studbook.revised %>%
+final.studbook <- studbook %>%
   mutate(Sire = case_match(ID, 
                            1047 ~ 1012, 
                            2645 ~ 1131, 
@@ -98,277 +74,543 @@ final.studbook <- studbook.revised %>%
   add.hypotheticals(c(2423, 2424), "Sire") %>%
   add.hypotheticals(c(2108), "Sire") %>%
   add.hypotheticals(c(2717), "Dam") %>%
-  add.hypotheticals(c(2717), "Sire") %>%
-  mutate(Cohort = year(DateBirth))
+  add.hypotheticals(c(2717), "Sire")
 
 write.table(final.studbook, here(path$AZAstudbooks$working), sep = "\t", row.names = F)
 
-deceased <- filter(final.studbook, Status == "D") %>%
-  pull(ID)
-```
-
-## Revised Summaries to Carry Forward
-
-```{r}
-status.summary <- final.studbook %>%
-  mutate(LastDate = if_else(TypeEvent == "End", Date, NA),
-         LastLoc  = if_else(TypeEvent == "End", Location, NA),
-         FirstLoc = if_else(OrderLoc == 1, Location, NA)) %>%
-  group_by(ID) %>%
-  fill(LastDate, LastLoc, .direction = "up") %>%
-  fill(FirstLoc) %>%
-  mutate(maxAge = calculate_age(DateBirth, LastDate)) %>%
-  ungroup() %>%
-  select(ID,
-         Cohort,
-         Sex,
-         Status,
-         maxAge,
-         DateBirth,
-         Sire,
-         Dam,
-         FirstLoc,
-         LastLoc,
-         LastDate
-         ) %>%
-  distinct()
-
-max_age <- slice_max(status.summary, order_by = maxAge, with_ties = TRUE)
-
-timeline.revised <- assemble_timeline(final.studbook) %>%
-  mutate(
-    Date  = floor_date(Date, "years"),
-    Event = case_when(
-    TypeEvent == "End" & ID %in% deceased          ~ "Death", 
-    TypeEvent == "Transfer" | TypeEvent == "Breed" ~ TypeEvent,
-    .default = NA
-    )) %>%
-  mutate(Age = year(Date) - Cohort) %>%
-  filter(!(is.na(Event) & TypeEvent == "End") & TypeEvent != "Birth") %>%
-  select(Cohort, Sex, Event, Date, Age, Location) %>%
-  distinct()
+timeline.revised <- update_timeline(timeline, studbook, final.studbook)
 ```
 
 
 # Summary Statistics
 
-## Life & Repro Table
-
 ```{r}
-births.deaths <- timeline.revised %>%
-  group_by(Age, Cohort, Sex, Date, Event) %>%
-  summarize(Count = n()) %>%
-  ungroup() %>%
-  pivot_wider(id_cols     = c("Age", 
-                              "Cohort", 
-                              "Sex", 
-                              "Date"),
-              names_from  = "Event",
-              values_from = "Count",
-              values_fill = 0) %>%
-  select(
-         Cohort,
-         Sex,
-         Date,
-         Age,
-         Deaths       = Death, 
-         Births       = Breed) %>%
-  mutate(Sex = case_match(Sex, 
-                          "F" ~ "Female",
-                          "M" ~ "Male",
-                          "U" ~ "Undetermined")) %>%
-  arrange(Cohort, Sex, Age) 
+life.table.sexes <- count_births(timeline.revised, final.studbook) %>%
+      summarize(Births = sum(Births),
+                Nx     = n(), 
+                .by    = c(BirthYear, Sex, Age)
+                ) %>%
+      ungroup() %>%
+  make_cohorts(., 1985, 2024, 10, 22, TRUE) %>%
+  summarize(Births = sum(Births),
+           Nx      = sum(Nx), 
+           .by     = c(CohortLabel, BirthCohort, Sex, Cohort, Age)) %>%
+  arrange(BirthCohort, Sex, Age) %>%
+  lifeTab()
 
-births.deaths.total <- births.deaths %>%
-  group_by(Cohort, Date, Age) %>%
-  summarize(Deaths = sum(Deaths),
-            Births = sum(Births)) %>%
-  mutate(Sex = "Total") %>%
-  ungroup() %>%
-  bind_rows(births.deaths) %>%
-  arrange(Cohort, Sex, Age) %>%
-  filter(Sex != "Undetermined")
-```
-
-
-```{r}
-life.table <- final.studbook %>%
-  select(
-    ID,
-    Sex,
-    StartLoc,
-    EndLoc,
-    TypeEvent
-  ) %>% 
-  filter(TypeEvent != "Transfer") %>%
-  mutate(Date = case_match(TypeEvent, 
-                           "Birth" ~ StartLoc, 
-                           "End"   ~ EndLoc)) %>%
-  select(ID, 
-         Sex, 
-         TypeEvent, 
-         Date) %>%
-  pivot_wider(id_cols     = c("ID", "Sex"),
-              names_from  = "TypeEvent",
-              values_from = "Date") %>%
-  distinct() %>%
-  census(., "year", "cohort") %>% 
-  count_census_grouped(., "cohort") %>%
-  mutate(Cohort   = as.integer(Group), .keep = "unused") %>%
-  pivot_longer(cols      = c("Males", "Females", "Undetermined", "Total"),
-               names_to  = "Sex",
-               values_to = "Alive") %>%
-  filter(Sex != "Undetermined") %>%
-  mutate(Sex = case_match(Sex, 
-                          "Females"      ~ "Female",
-                          "Males"        ~ "Male",
-                          "Total"        ~ "Total"),
-         Age = year(Date) - Cohort)  %>%
-  cohort_grid(., 21, 1988) %>%
-  left_join(births.deaths.total, by = join_by(Cohort, Sex, Age, Date)) %>%
-  mutate(across(where(is.numeric), ~replace_na(., 0))) %>%
-  arrange(Cohort, Sex, Age)  %>%
-  group_by(Cohort, Sex) %>%
-  mutate(ax   = if_else(Age == 0, 0, lag(Deaths)),
-         N0   = if_else(Age == 0, Alive, NA),
-         Risk = (Alive + lead(Alive, default = 0)) / 2) %>%
-  fill(N0) %>%
-  ungroup() %>%
-  mutate(lx = if_else(N0 > 0, Alive/N0, 0)) %>%
-  group_by(Cohort, Sex) %>%
-  mutate(Lx_life = if_else(Age == max(Age), 0, (lx + lead(lx))/2),
-         Px      = if_else(Age == max(Age) | lx == 0, 0, lead(lx)/lx)) %>%
-  arrange(Cohort, Sex, desc(Age)) %>%
-  mutate(Tx = cumsum(Lx_life)) %>%
-  ungroup() %>%
-  mutate(ex = if_else(lx > 0, Tx / lx, 0),
-         qx = if_else(Risk > 0, Deaths / Risk, 0),
-         mx = if_else(Risk > 0, 0.5 * Births / Risk, 0)) %>%
-  arrange(Cohort, Sex, Age) %>%
-  mutate(Fx    = lx * mx) %>%
-  mutate(numT  = Age * Fx) %>%
-  group_by(Cohort, Sex) %>%
-  mutate(R0   = sum(Fx),
-         Tnum = sum(numT)) %>%
-  ungroup() %>%
-  mutate(T = if_else(R0 > 0, Tnum/R0, 0)) %>%
-  mutate(lambda_life = if_else(R0 > 0 & T > 0, R0^(1/T), 0)) %>%
-  group_by(Cohort, Sex) %>%
-  mutate(mleAll     = mle_all(lx, Age),
-         mleAge1    = mle_age1(lx, Age),
-         FirstRepro = min(Age[mx>0], na.rm = TRUE),
-         LastRepro  = max(Age[mx>0], na.rm = TRUE)) %>%
-  arrange(Year) %>%
-  mutate(lambda_5 = lambda_5(Alive, Year)) %>%
-  ungroup() %>%
-  arrange(Cohort, Sex, Age) %>%
-  mutate(across(where(is.numeric), ~replace_na(., 0))) %>%
-  select(
-    Cohort,
-    Sex,
-    N0,
-    Date,
-    Year,
-    Age,
-    Nx = Alive,
-    lx,
-    Px,
-    qx,
-    ax,
-    Lx_life,
-    Risk,
-    Tx,
-    ex,
-    Births,
-    mx,
-    Fx,
-    R0,
-    T,
-    lambda_life,
-    lambda_5,
-    mleAll,
-    mleAge1,
-    FirstRepro,
-    LastRepro
-  )
+lifeTab.decades <- count_births(timeline.revised, final.studbook) %>%
+      summarize(Births = sum(Births),
+                Nx     = n(), 
+                .by    = c(BirthYear, Age)
+                ) %>%
+      ungroup() %>%
+  make_cohorts(., 1985, 2024, 10, 22, FALSE) %>%
+  summarize(Births = sum(Births),
+           Nx      = sum(Nx), 
+           .by     = c(CohortLabel, BirthCohort, Cohort, Sex, Age)) %>%
+  arrange(BirthCohort, Age) %>%
+  lifeTab() %>%
+  bind_rows(life.table.sexes) %>%
+  arrange(BirthCohort, Age, Sex)
 
 write.table(life.table, here(path$AZAstudbooks$lifetable), sep = "\t", row.names = F)
 ```
 
-
-# Projections
-
-## Subsetting Cohorts
-
-We are going to compare three different grouped cohorts based on birth years:
-
-1.  2020 - 2024
-2.  2005 - 2009
-3.  1990 - 1994
-
-And then run three versions of these time-based subsets:
-
-A.  Females Only
-B.  Males Only
-C.  Pooled Dynamics
-
-## Build a Leslie Matrix
-
 ```{r}
-test <- filter(life.table, Cohort >= 2015 & Cohort <= 2024 & Sex == "Female")
-```
+life.table.sexes <- count_births(timeline.revised, final.studbook) %>%
+      summarize(Births = sum(Births),
+                Nx     = n(), 
+                .by    = c(BirthYear, Sex, Age)
+                ) %>%
+      ungroup() %>%
+  make_cohorts(., 1985, 2024, 5, 22, TRUE) %>%
+  summarize(Births = sum(Births),
+           Nx      = sum(Nx), 
+           .by     = c(CohortLabel, BirthCohort, Sex, Cohort, Age)) %>%
+  arrange(BirthCohort, Sex, Age) %>%
+  lifeTab()
 
-
-```{r}
-A1 <- build_leslie(life.table, 2015, 2024, "Female")
-A2 <- build_leslie(life.table, 2005, 2014, "Female")
-A3 <- build_leslie(life.table, 1995, 2004, "Female")
-B1 <- build_leslie(life.table, 2015, 2024, "Male"  )
-B2 <- build_leslie(life.table, 2005, 2014, "Male"  )
-B3 <- build_leslie(life.table, 1995, 2004, "Male"  )
-C1 <- build_leslie(life.table, 2015, 2024, "Total" )
-C2 <- build_leslie(life.table, 2005, 2014, "Total" )
-C3 <- build_leslie(life.table, 1995, 2004, "Total" )
+lifeTab.5yrs <- count_births(timeline.revised, final.studbook) %>%
+      summarize(Births = sum(Births),
+                Nx     = n(), 
+                .by    = c(BirthYear, Age)
+                ) %>%
+      ungroup() %>%
+  make_cohorts(., 1985, 2024, 5, 22, FALSE) %>%
+  summarize(Births = sum(Births),
+           Nx      = sum(Nx), 
+           .by     = c(CohortLabel, BirthCohort, Cohort, Sex, Age)) %>%
+  arrange(BirthCohort, Age) %>%
+  lifeTab() %>%
+  bind_rows(life.table.sexes) %>%
+  arrange(BirthCohort, Age, Sex)
 
 ```
 
 ```{r}
-projections <- tibble(
-  Sex       = rep(c("Females", "Males", "Pooled"), each       = 3),
-  Cohorts   = rep(1:3, length.out = 9),
-  lambda    = c(
-                lambda(A1), 
-                lambda(A2), 
-                lambda(A3), 
-                lambda(B1), 
-                lambda(B2), 
-                lambda(B3), 
-                lambda(C1), 
-                lambda(C2), 
-                lambda(C3)
-                ),
-  genTime  = c(
-                generation.time(A1), 
-                generation.time(A2), 
-                generation.time(A3), 
-                generation.time(B1), 
-                generation.time(B2), 
-                generation.time(B3), 
-                generation.time(C1), 
-                generation.time(C2), 
-                generation.time(C3)
-                ),
-  netReproRate  = c(
-                net.reproductive.rate(A1), 
-                net.reproductive.rate(A2), 
-                net.reproductive.rate(A3), 
-                net.reproductive.rate(B1), 
-                net.reproductive.rate(B2), 
-                net.reproductive.rate(B3), 
-                net.reproductive.rate(C1), 
-                net.reproductive.rate(C2), 
-                net.reproductive.rate(C3))
-) %>%
-  arrange(Cohorts, Sex)
+lifeTab.static <- lifeTab_static(lifeTab.5yrs) %>%
+  annotate_lambda()
 ```
+
+
+
+
+## Visuals
+
+```{r}
+col.pal <- keep_at(colors, c("f", "m", "u")) %>% unlist()
+col.pal <- setNames(col.pal, c("F", "M", "Total"))
+fills   <- gsub("FF", "33", col.pal)
+
+```
+
+```{r}
+repro.plot <- plot_ly(
+    data        = filter(lifeTab.static, Sex != "Total"),
+    type        = "scatter",
+    x           = ~CohortLabel,
+    y           = ~R0,
+    color       = ~Sex,
+    colors      = col.pal,
+    name        = "Reproductive Rate (R0) by Sex",
+    text        = ~hover_lambda,
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      shape     = "spline",
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.0
+        )
+   )) %>%
+  add_trace(
+    data        = filter(lifeTab.static, Sex == "Total"),
+    x           = ~CohortLabel,
+    y           = ~Qx1,
+    color       = "#90A4AEFF",
+    name        = "Infant Mortality (Qx1)",
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      dash      = "dot",
+      shape     = "spline",
+    color       = "#90A4AEFF",
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 3,
+      opacity   = 0.3,
+      line      = list(
+      color     = "#90A4AEFF",
+      width     = 0.5
+        )
+   )
+    
+  ) %>%
+  layout(title        = "Pygmy Loris Reproductive Trends 1985-2024",
+         plot_bgcolor = "#ffffff", 
+         yaxis = list(title         = "Rate",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = T))
+
+repro.plot
+```
+
+
+```{r}
+lambda.plot <- plot_ly(
+    data        = filter(lifeTab.static, Sex != "Total"),
+    type        = "scatter",
+    x           = ~CohortLabel,
+    y           = ~lambda,
+    color       = ~Sex,
+    colors      = col.pal,
+    text        = ~hover_lambda,
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      shape     = "spline",
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.0
+        )
+   )) %>%
+  layout(title        = "Pygmy Loris Population Growth 1985-2024",
+         plot_bgcolor = "#ffffff", 
+         barmode      = "grouped",
+         shapes       = list(hline(1.0)),
+         annotations  = lambda.annotation,
+         yaxis = list(title         = "Lambda (\u03BB)",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showline      = T,
+                      zerolinewidth = 2,
+                      zerolinecolor = "black",
+                      showgrid      = T))
+
+saveWidget(lambda.plot, paste0(path$visuals$demographics, "/Lambda_Cohorts.html"))
+lambda.plot
+```
+
+
+
+```{r}
+r0.plot <- plot_ly(
+    data        = filter(lifeTab.static, Sex != "Total"),
+    type        = "scatter",
+    x           = ~CohortLabel,
+    y           = ~R0,
+    color       = ~Sex,
+    colors      = col.pal,
+    text        = ~hover_lambda,
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      shape     = "spline",
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.0
+        )
+   )) %>%
+  layout(title        = "Pygmy Loris Reproductive Rates 1985-2024",
+         plot_bgcolor = "#ffffff", 
+         barmode      = "grouped",
+         yaxis = list(title         = "Reproductive Rate (R0)",
+                      showline      = T,
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showline      = T,
+                      showgrid      = T))
+
+
+
+saveWidget(r0.plot, paste0(path$visuals$demographics, "/R0_Cohorts.html"))
+r0.plot
+
+```
+
+```{r}
+qx1.plot <- plot_ly(
+    data        = filter(lifeTab.static, Sex != "Total"),
+    type        = "scatter",
+    x           = ~CohortLabel,
+    y           = ~Qx1,
+    color       = ~Sex,
+    colors      = col.pal,
+    text        = ~hover_lambda,
+    mode        = "lines+markers",
+    connectgaps = TRUE,
+    line        = list(
+      shape     = "spline",
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      color     = ~Sex,
+      colors    = col.pal,
+      width     = 1.0
+        )
+   )) %>%
+  layout(title        = "Pygmy Loris Infant Mortality 1985-2024",
+         plot_bgcolor = "#ffffff", 
+         barmode      = "grouped",
+         yaxis = list(title         = "Infant Mortality Rate (Qx1)",
+                      showline      = T,
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showline      = T,
+                      showgrid      = T))
+
+
+
+saveWidget(qx1.plot, paste0(path$visuals$demographics, "/Qx1_Cohorts.html"))
+qx1.plot
+
+```
+
+
+```{r}
+mle.t.plot <- plot_ly(
+  data          = filter(lifeTab.static, Sex != "Total"),
+  type          = "scatter",
+    color       = ~Sex,
+    colors      = col.pal,
+    mode        = "lines+markers",
+    connectgaps = TRUE
+  ) %>%
+  add_trace(
+    x           = ~CohortLabel,
+    y           = ~MLE,
+    inherit     = TRUE,
+    name        = "Median Life Expectancy (MLE)",
+    line        = list(
+      shape     = "spline",
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      width     = 1.0
+      ))
+    ) %>%
+  add_trace(
+    x           = ~CohortLabel,
+    y           = ~T,
+    inherit     = TRUE,
+    name        = "Mean Generation Time (T)",
+    line        = list(
+      dash      = "dot",
+      shape     = "spline",
+      width     = 1.5
+      ),
+    marker      = list(
+      fill      = ~Sex,
+      colors    = fills,
+      symbol    = "square",
+      size      = 6,
+      opacity   = 0.7,
+      line      = list(
+      width     = 1.0
+      ))
+    ) %>%
+  layout(title        = "Pygmy Loris Life History 1985-2024",
+         plot_bgcolor = "#ffffff", 
+         yaxis = list(title         = "Years",
+                      showline      = T,
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showline      = T,
+                      showgrid      = T)
+         )
+
+mle.t.plot
+  
+```
+
+
+```{r}
+fills           <- map_depth(colors, 1, \(x) gsub("FF", "12", x))
+
+repro.plot <- plot_ly(
+  data          = filter(lifeTab.static, Sex == "Total"),
+  type          = "scatter",
+    mode        = "lines",
+    connectgaps = TRUE
+  ) %>%
+  add_trace(
+    x             = ~CohortLabel,
+    y             = ~MaxLongev,
+    name          = "Maximum Longevity",
+    showlegend    = TRUE,
+    line          = list(
+      dash        = "dot",
+      color       = "#444444",
+      shape       = "spline",
+      width       = 0.5,
+      showlegend  = FALSE
+      )) %>%
+  add_trace(
+    x             = ~CohortLabel,
+    y             = ~MLE,
+    name          = "Median Life Expectancy",
+    fill          = "tonexty",
+    fillcolor     = "#eeeeee",
+    line          = list(
+      shape     = "spline",
+      color     = "#444444",
+      width     = 2
+      ),
+    marker      = list(
+      fillcolor = "#44444444",
+      size      = 8,
+      opacity   = 0.8,
+      line      = list(
+      color     = "#444444",
+      width     = 1
+      ))
+    ) %>%
+  add_trace(
+    x             = ~CohortLabel,
+    y             = ~FirstRepro,
+    name          = "Age at First Birth",
+      showlegend  = TRUE,
+    line          = list(
+      dash        = "dot",
+      color       = colors$u,
+      shape       = "spline",
+      width       = 0.8,
+      showlegend  = FALSE
+      )
+    ) %>%
+  add_trace(
+    x             = ~CohortLabel,
+    y             = ~T,
+    name          = "Mean Generation Time (T)",
+    fill          = "tonexty",
+    fillcolor     = fills$u,
+    line          = list(
+      shape     = "spline",
+      color     = colors$u,
+      width     = 2.5
+      ),
+    marker      = list(
+      fillcolor = fills$u,
+      size      = 8,
+      opacity   = 0.7,
+      line      = list(
+      color     = "black",
+      width     = 1.5
+      ))
+    ) %>%
+  add_trace(
+    x             = ~CohortLabel,
+    y             = ~LastRepro,
+    name          = "Age at Last Birth",
+      showlegend  = TRUE,
+    fill          = "tonexty",
+    fillcolor     = fills$u,
+    line          = list(
+      dash        = "dot",
+      color       = colors$u,
+      shape       = "spline",
+      width       = 0.8,
+      showlegend  = FALSE
+      )
+    ) %>%
+  layout(plot_bgcolor = "#ffffff", 
+         yaxis = list(title         = "Years",
+                      showline      = T,
+                      showgrid      = F),
+         xaxis = list(title         = "Birth Cohort",
+                      showgrid      = T
+                      )
+         )
+
+repro.plot
+  
+```
+
+
+```{r}
+decade.cols <- c(
+  "A" = "#CFD8DCFF", 
+  "B" = "#90A4AEFF", 
+  "D" = "#607D8BFF")
+
+c("#E4E4E4FF", "#CBCBD6FF", "#B3B2C9FF", "#9A9ABCFF", "#8281AFFF", "#6968A2FF", "#515095FF", "#383788FF", "#201F7BFF")
+```
+
+
+```{r}
+
+col.pal     <- c("#E4E4E4FF", "#CBCBD6FF", "#B3B2C9FF", "#201F7BFF")
+
+decade.cols <- setNames(col.pal, c("A", "B", "D", "C"))
+
+lx1.plot <- plot_ly(
+  data          = filter(lifeTab.decades, Sex == "Total"),
+  type          = "scatter",
+  mode          = "lines+markers",
+    color = ~BirthCohort,
+    colors = decade.cols,
+  connectgaps   = TRUE
+                   ) %>%
+  add_trace(
+    data = filter(lifeTab.decades, Sex == "Total" & BirthCohort != "C"),
+    x    = ~Age,
+    y    = ~Lx1,
+    name = ~CohortLabel,
+    line          = list(
+      dash      = "dot",
+      shape     = "spline",
+      width     = 1.5
+      ),
+    marker      = list(
+      size      = 2,
+      opacity   = 0.5,
+      line      = list(
+      width     = 0.8
+      )
+    )
+  ) %>%
+  add_trace(
+    data = filter(lifeTab.decades, Sex == "Total" & BirthCohort == "C"),
+    x    = ~Age,
+    y    = ~Lx1,
+    name = ~CohortLabel,
+    line          = list(
+      shape     = "spline",
+      width     = 2
+      ),
+    marker      = list(
+    color = ~BirthCohort,
+    colors = decade.cols,
+      size      = 8,
+      opacity   = 0.8,
+      line      = list(
+      width     = 1
+      ))
+  ) %>%
+  layout(plot_bgcolor = "#ffffff", 
+         yaxis = list(title         = "Survivorship (Lx1)",
+                      showgrid      = F),
+         xaxis = list(title         = "Age Class (years)",
+                      showgrid      = F
+                      )
+         )
+
+lx1.plot
+```
+
 

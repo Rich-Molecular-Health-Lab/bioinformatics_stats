@@ -1,0 +1,131 @@
+---
+title: "Population Data Management Lab"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "hide"
+    fig_caption: true
+    df_print: paged
+params:
+  course: "zoobio"
+  semester: "spring25"
+  group: "MakeupVersion"
+  
+---
+
+
+```{r, include = FALSE}
+library(knitr)
+library(conflicted)
+library(downloadthis)
+library(fontawesome)
+library(glue)
+library(ggplot2)
+library(ggtext)
+library(heatmaply)
+library(here)
+library(htmltools)
+library(htmlwidgets)
+library(kableExtra)
+library(kinship2)
+library(paletteer)
+library(pedtools)
+library(pedsuite)
+library(plotly)
+library(reactable)
+library(reactablefmtr)
+library(rmarkdown)
+library(scales)
+library(shiny)
+library(showtext)
+library(thematic)
+library(tidyverse)
+library(tippy)
+library(usethis)
+library(visNetwork)
+
+
+conflicts_prefer(here::here)
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::select)
+conflicts_prefer(dplyr::left_join)
+conflicts_prefer(dplyr::inner_join)
+conflicts_prefer(dplyr::full_join)
+conflicts_prefer(dplyr::semi_join)
+conflicts_prefer(dplyr::rename)
+conflicts_prefer(ggplot2::margin)
+conflicts_prefer(ggplot2::theme_classic)
+conflicts_prefer(ggplot2::ggplot)
+conflicts_prefer(ggplot2::theme_minimal)
+conflicts_prefer(ggplot2::aes)
+conflicts_prefer(dplyr::lag)
+conflicts_prefer(purrr::set_names)
+conflicts_prefer(purrr::flatten)
+conflicts_prefer(purrr::discard_at)
+conflicts_prefer(base::which.max)
+conflicts_prefer(lubridate::month)
+conflicts_prefer(lubridate::year)
+conflicts_prefer(lubridate::day)
+conflicts_prefer(base::as.data.frame)
+conflicts_prefer(htmltools::p)
+conflicts_prefer(purrr::discard)
+conflicts_prefer(ribd::kinship)
+conflicts_prefer(plotly::layout)
+
+here::i_am("PopulationData.Rmd")
+
+source("reactables.R")
+
+theme_set(theme_classic())
+thematic_rmd()
+thematic_on(accent = "#8785B2FF", fg = "black")
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+
+palette <- c("#D53288FF", "#DC8045FF", "#21B14BFF", "#008AC2FF", "#3F459BFF")
+
+colors <- list(
+  f = "#D53288FF",
+  m = "#3F459BFF",
+  u = "#21B14BFF",
+  sire = "#3F459B33",
+  dam  = "#D5328833",
+  emph = "#DC8045FF",
+  seq  = "rcartocolor::Sunset",
+  div  = "rcartocolor::Temps",
+  rand = "khroma::stratigraphy"
+)
+
+deceased.col <- function(color) {
+  gsub("FF", "33", color)
+}
+
+font_add_google("Noto Sans Symbols", family = "NotoSym")
+showtext_auto()
+
+```
+
+
+# Format Studbook Data
+
+Run the code below to automatically import and format studbook data for the Pygmy Slow Loris.
+
+```{r}
+source(here(path$AZAstudbooks$functions))
+source(here(path$AZAstudbooks$btp))
+
+studbook <- read.table(here("working_studbook_loris25.tsv"), sep = "\t", row.names = F)
+timeline <- read.table(here("working_timeline_loris25.tsv"), sep = "\t", row.names = F)
+```
+

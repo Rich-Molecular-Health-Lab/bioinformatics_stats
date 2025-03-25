@@ -1,1092 +1,362 @@
-"ID"	"OrderLoc"	"Location"	"StartLoc"	"TypeEvent"	"Date"	"EndLoc"	"Status"	"NameLoc"	"Country"	"Sex"	"Sire"	"Dam"	"DateBirth"	"Cohort"
-1000	1	"VIE"	1985-01-01	"Birth"	1985-01-01	1986-01-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1985-01-01	1985
-1000	2	"SKA"	1986-01-01	"Transfer"	1986-01-01	1987-12-01	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-01-01	1985
-1000	2	"SKA"	1986-01-01	"End"	1987-12-01	1987-12-01	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-01-01	1985
-1001	1	"VIE"	1984-01-01	"Birth"	1984-01-01	1985-01-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1984-01-01	1984
-1001	2	"SKA"	1985-01-01	"Transfer"	1985-01-01	1987-01-01	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1984-01-01	1984
-1001	2	"SKA"	1985-01-01	"End"	1987-01-01	1987-01-01	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1984-01-01	1984
-1002	1	"VIE"	1966-06-10	"Birth"	1966-06-10	1967-06-10	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1966-06-10	1966
-1002	2	"USD"	1967-06-10	"Transfer"	1967-06-10	1968-06-10	"D"	"US Dept of the Interior (USDI)"	"United States"	"M"	NA	NA	1966-06-10	1966
-1002	3	"HON"	1968-06-10	"Transfer"	1968-06-10	1984-04-28	"D"	"Honolulu Zoo"	"United States"	"M"	NA	NA	1966-06-10	1966
-1002	3	"HON"	1968-06-10	"End"	1984-04-28	1984-04-28	"D"	"Honolulu Zoo"	"United States"	"M"	NA	NA	1966-06-10	1966
-1003	1	"VIE"	1969-01-05	"Birth"	1969-01-05	1970-01-05	"D"	"Wild"	"Vietnam"	"U"	NA	NA	1969-01-05	1969
-1003	2	"HON"	1970-01-05	"Transfer"	1970-01-05	1982-01-29	"D"	"Honolulu Zoo"	"United States"	"U"	NA	NA	1969-01-05	1969
-1003	2	"HON"	1970-01-05	"End"	1982-01-29	1982-01-29	"D"	"Honolulu Zoo"	"United States"	"U"	NA	NA	1969-01-05	1969
-1004	1	"VIE"	1971-10-18	"Birth"	1971-10-18	1972-10-18	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1971-10-18	1971
-1004	2	"HON"	1972-10-18	"Transfer"	1972-10-18	1973-10-18	"D"	"Honolulu Zoo"	"United States"	"F"	NA	NA	1971-10-18	1971
-1004	2	"HON"	1972-10-18	"End"	1973-10-18	1973-10-18	"D"	"Honolulu Zoo"	"United States"	"F"	NA	NA	1971-10-18	1971
-1005	1	"VIE"	1971-10-18	"Birth"	1971-10-18	1972-10-18	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1971-10-18	1971
-1005	2	"HON"	1972-10-18	"Transfer"	1972-10-18	1973-10-18	"D"	"Honolulu Zoo"	"United States"	"F"	NA	NA	1971-10-18	1971
-1005	2	"HON"	1972-10-18	"End"	1973-10-18	1973-10-18	"D"	"Honolulu Zoo"	"United States"	"F"	NA	NA	1971-10-18	1971
-1006	1	"UND"	1989-01-01	"Birth"	1989-01-01	1989-01-01	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1989-01-01	1989
-1006	2	"PUB"	1989-01-01	"Transfer"	1989-01-01	1991-06-02	"D"	"General Public"	"Undetermined"	"M"	NA	NA	1989-01-01	1989
-1006	3	"FIT"	1991-06-02	"Transfer"	1991-06-02	1991-06-12	"D"	"Helena Fitch-Snyder (extinct)"	"United States"	"M"	NA	NA	1989-01-01	1989
-1006	3	"FIT"	1991-06-02	"End"	1991-06-12	1991-06-12	"D"	"Helena Fitch-Snyder (extinct)"	"United States"	"M"	NA	NA	1989-01-01	1989
-1007	1	"VIE"	1983-03-01	"Birth"	1983-03-01	1986-03-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1983-03-01	1983
-1007	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1983-03-01	1983
-1007	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1990-05-12	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1983-03-01	1983
-1007	3	"DUK"	1987-04-05	"End"	1990-05-12	1990-05-12	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1983-03-01	1983
-1008	1	"VIE"	1983-03-01	"Birth"	1983-03-01	1984-06-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1983-03-01	1983
-1008	2	"BAN"	1984-06-01	"Transfer"	1984-06-01	1986-12-19	"D"	"Dusit (Bangkok) Zoological Park"	"Thailand"	"F"	NA	NA	1983-03-01	1983
-1008	3	"SKA"	1986-12-19	"Transfer"	1986-12-19	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1983-03-01	1983
-1008	4	"DUK"	1987-04-05	"Transfer"	1987-04-05	1998-10-15	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1983-03-01	1983
-1008	4	"DUK"	1987-04-05	"End"	1998-10-15	1998-10-15	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1983-03-01	1983
-1009	1	"VIE"	1984-01-01	"Birth"	1984-01-01	1986-04-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1984-01-01	1984
-1009	2	"SKA"	1986-04-01	"Transfer"	1986-04-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1984-01-01	1984
-1009	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1990-09-28	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1984-01-01	1984
-1009	3	"DUK"	1987-04-05	"End"	1990-09-28	1990-09-28	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1984-01-01	1984
-1010	1	"VIE"	1984-01-01	"Birth"	1984-01-01	1986-04-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1984-01-01	1984
-1010	2	"SKA"	1986-04-01	"Transfer"	1986-04-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1984-01-01	1984
-1010	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1993-04-18	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1984-01-01	1984
-1010	3	"DUK"	1987-04-05	"End"	1993-04-18	1993-04-18	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1984-01-01	1984
-1011	1	"VIE"	1984-01-01	"Birth"	1984-01-01	1985-10-24	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1984-01-01	1984
-1011	2	"SKA"	1985-10-24	"Transfer"	1985-10-24	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1984-01-01	1984
-1011	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1989-05-19	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1984-01-01	1984
-1011	3	"DUK"	1987-04-05	"End"	1989-05-19	1989-05-19	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1984-01-01	1984
-1012	1	"VIE"	1984-01-01	"Birth"	1984-01-01	1986-04-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1984-01-01	1984
-1012	2	"SKA"	1986-04-01	"Transfer"	1986-04-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1984-01-01	1984
-1012	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1998-07-21	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1984-01-01	1984
-1012	3	"DUK"	1987-04-05	"End"	1998-07-21	1998-07-21	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1984-01-01	1984
-1013	1	"VIE"	1984-01-01	"Birth"	1984-01-01	1985-01-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1984-01-01	1984
-1013	2	"SKA"	1985-01-01	"Transfer"	1985-01-01	1987-01-01	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1984-01-01	1984
-1013	2	"SKA"	1985-01-01	"End"	1987-01-01	1987-01-01	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1984-01-01	1984
-1014	1	"VIE"	1985-05-01	"Birth"	1985-05-01	1986-05-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1985-05-01	1985
-1014	2	"SKA"	1986-05-01	"Transfer"	1986-05-01	1987-05-01	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-05-01	1985
-1014	3	"CRY"	1987-05-01	"Transfer"	1987-05-01	1995-12-31	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	NA	NA	1985-05-01	1985
-1014	3	"CRY"	1987-05-01	"End"	1995-12-31	1995-12-31	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	NA	NA	1985-05-01	1985
-1015	1	"VIE"	1985-05-01	"Birth"	1985-05-01	1986-05-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1985-05-01	1985
-1015	2	"SKA"	1986-05-01	"Transfer"	1986-05-01	1987-05-01	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-05-01	1985
-1015	3	"CRY"	1987-05-01	"Transfer"	1987-05-01	1994-12-07	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"M"	NA	NA	1985-05-01	1985
-1015	3	"CRY"	1987-05-01	"End"	1994-12-07	1994-12-07	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"M"	NA	NA	1985-05-01	1985
-1016	1	"UND"	1985-01-01	"Birth"	1985-01-01	1986-03-01	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1985-01-01	1985
-1016	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-01-01	1985
-1016	3	"SOZ"	1987-04-05	"Transfer"	1987-04-05	1993-04-22	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1985-01-01	1985
-1016	3	"SOZ"	1987-04-05	"End"	1993-04-22	1993-04-22	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1985-01-01	1985
-1017	1	"UND"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1985-03-01	1985
-1017	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-03-01	1985
-1017	3	"SOZ"	1987-04-05	"Transfer"	1987-04-05	1997-01-17	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1985-03-01	1985
-1017	3	"SOZ"	1987-04-05	"End"	1997-01-17	1997-01-17	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1985-03-01	1985
-1018	1	"UND"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1985-03-01	1985
-1018	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-03-01	1985
-1018	3	"SOZ"	1987-04-05	"Transfer"	1987-04-05	1993-11-01	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1985-03-01	1985
-1018	3	"SOZ"	1987-04-05	"End"	1993-11-01	1993-11-01	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1985-03-01	1985
-1019	1	"UND"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Undetermined"	"F"	NA	NA	1985-03-01	1985
-1019	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-03-01	1985
-1019	3	"SOZ"	1987-04-05	"Transfer"	1987-04-05	1995-03-02	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1019	3	"SOZ"	1987-04-05	"End"	1995-03-02	1995-03-02	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1020	1	"UND"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Undetermined"	"F"	NA	NA	1985-03-01	1985
-1020	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-03-01	1985
-1020	3	"SOZ"	1987-04-05	"Transfer"	1987-04-05	1990-12-05	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1020	3	"SOZ"	1987-04-05	"End"	1990-12-05	1990-12-05	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1021	1	"UND"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Undetermined"	"F"	NA	NA	1985-03-01	1985
-1021	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-03-01	1985
-1021	3	"SOZ"	1987-04-05	"Transfer"	1987-04-05	1999-07-08	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1021	3	"SOZ"	1987-04-05	"End"	1999-07-08	1999-07-08	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1022	1	"VIE"	1985-01-01	"Birth"	1985-01-01	1986-04-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1985-01-01	1985
-1022	2	"SKA"	1986-04-01	"Transfer"	1986-04-01	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-01-01	1985
-1022	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1998-06-23	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1985-01-01	1985
-1022	4	"MIN"	1998-06-23	"Transfer"	1998-06-23	2000-04-10	"D"	"Minnesota Zoological Garden"	"United States"	"M"	NA	NA	1985-01-01	1985
-1022	4	"MIN"	1998-06-23	"End"	2000-04-10	2000-04-10	"D"	"Minnesota Zoological Garden"	"United States"	"M"	NA	NA	1985-01-01	1985
-1023	1	"VIE"	1985-03-01	"Birth"	1985-03-01	1986-12-19	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1985-03-01	1985
-1023	2	"SKA"	1986-12-19	"Transfer"	1986-12-19	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-03-01	1985
-1023	3	"DUK"	1987-04-05	"Transfer"	1987-04-05	1996-05-31	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1985-03-01	1985
-1023	3	"DUK"	1987-04-05	"End"	1996-05-31	1996-05-31	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	1985-03-01	1985
-1024	1	"VIE"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1985-03-01	1985
-1024	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-03-01	1985
-1024	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1988-10-12	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-03-01	1985
-1024	4	"CBR"	1988-10-12	"Transfer"	1988-10-12	1990-06-29	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1024	4	"CBR"	1988-10-12	"End"	1990-06-29	1990-06-29	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	NA	NA	1985-03-01	1985
-1025	1	"VIE"	1985-01-01	"Birth"	1985-01-01	1986-09-25	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1985-01-01	1985
-1025	2	"SKA"	1986-09-25	"Transfer"	1986-09-25	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-01-01	1985
-1025	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1997-05-26	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-01-01	1985
-1025	3	"CIN"	1987-07-20	"End"	1997-05-26	1997-05-26	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-01-01	1985
-1026	1	"VIE"	1985-03-01	"Birth"	1985-03-01	1986-03-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1985-03-01	1985
-1026	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-03-01	1985
-1026	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1990-12-15	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-03-01	1985
-1026	3	"CIN"	1987-07-20	"End"	1990-12-15	1990-12-15	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-03-01	1985
-1029	1	"VIE"	1983-01-01	"Birth"	1983-01-01	1985-01-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1983-01-01	1983
-1029	2	"SKA"	1985-01-01	"Transfer"	1985-01-01	1987-12-01	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1983-01-01	1983
-1029	2	"SKA"	1985-01-01	"End"	1987-12-01	1987-12-01	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1983-01-01	1983
-1030	1	"VIE"	1986-01-01	"Birth"	1986-01-01	1986-09-25	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1986-01-01	1986
-1030	2	"SKA"	1986-09-25	"Transfer"	1986-09-25	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1986-01-01	1986
-1030	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1988-10-12	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1986-01-01	1986
-1030	4	"CBR"	1988-10-12	"Transfer"	1988-10-12	1989-06-01	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	NA	NA	1986-01-01	1986
-1030	4	"CBR"	1988-10-12	"End"	1989-06-01	1989-06-01	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	NA	NA	1986-01-01	1986
-1031	1	"VIE"	1986-01-01	"Birth"	1986-01-01	1986-09-25	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1986-01-01	1986
-1031	2	"SKA"	1986-09-25	"Transfer"	1986-09-25	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1986-01-01	1986
-1031	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1992-07-16	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1986-01-01	1986
-1031	4	"SEA"	1992-07-16	"Transfer"	1992-07-16	2004-01-19	"D"	"Woodland Park Zoo"	"United States"	"M"	NA	NA	1986-01-01	1986
-1031	4	"SEA"	1992-07-16	"End"	2004-01-19	2004-01-19	"D"	"Woodland Park Zoo"	"United States"	"M"	NA	NA	1986-01-01	1986
-1032	1	"VIE"	1985-01-01	"Birth"	1985-01-01	1986-03-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1985-01-01	1985
-1032	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1985-01-01	1985
-1032	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1997-03-11	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-01-01	1985
-1032	3	"CIN"	1987-07-20	"End"	1997-03-11	1997-03-11	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-01-01	1985
-1033	1	"VIE"	1986-01-01	"Birth"	1986-01-01	1986-03-01	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1986-01-01	1986
-1033	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"M"	NA	NA	1986-01-01	1986
-1033	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1988-07-27	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1986-01-01	1986
-1033	3	"CIN"	1987-07-20	"End"	1988-07-27	1988-07-27	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1986-01-01	1986
-1034	1	"LAO"	1985-01-01	"Birth"	1985-01-01	1985-12-30	"D"	"Wild"	"Laos"	"F"	NA	NA	1985-01-01	1985
-1034	2	"FOR"	1985-12-30	"Transfer"	1985-12-30	1986-12-29	"D"	"Zoo-Forss (Ingvar Forss) (extinct 1985)"	"Denmark"	"F"	NA	NA	1985-01-01	1985
-1034	3	"POZ"	1986-12-29	"Transfer"	1986-12-29	1987-03-14	"D"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"F"	NA	NA	1985-01-01	1985
-1034	4	"SKA"	1987-03-14	"Transfer"	1987-03-14	1987-04-14	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-01-01	1985
-1034	4	"SKA"	1987-04-14	"Transfer"	1987-04-14	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-01-01	1985
-1034	5	"CIN"	1987-07-20	"Transfer"	1987-07-20	1992-02-14	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-01-01	1985
-1034	5	"CIN"	1987-07-20	"End"	1992-02-14	1992-02-14	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-01-01	1985
-1035	1	"VIE"	1985-01-01	"Birth"	1985-01-01	1985-12-30	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1985-01-01	1985
-1035	2	"FOR"	1985-12-30	"Transfer"	1985-12-30	1986-12-29	"D"	"Zoo-Forss (Ingvar Forss) (extinct 1985)"	"Denmark"	"F"	NA	NA	1985-01-01	1985
-1035	3	"POZ"	1986-12-29	"Transfer"	1986-12-29	1987-03-14	"D"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"F"	NA	NA	1985-01-01	1985
-1035	4	"SKA"	1987-03-14	"Transfer"	1987-03-14	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-01-01	1985
-1035	5	"CIN"	1987-07-20	"Transfer"	1987-07-20	1990-11-23	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-01-01	1985
-1035	5	"CIN"	1987-07-20	"End"	1990-11-23	1990-11-23	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-01-01	1985
-1036	1	"VIE"	1986-01-01	"Birth"	1986-01-01	1986-07-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1986-01-01	1986
-1036	2	"FOR"	1986-07-01	"Transfer"	1986-07-01	1986-12-29	"D"	"Zoo-Forss (Ingvar Forss) (extinct 1985)"	"Denmark"	"F"	NA	NA	1986-01-01	1986
-1036	3	"POZ"	1986-12-29	"Transfer"	1986-12-29	1987-04-14	"D"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"F"	NA	NA	1986-01-01	1986
-1036	4	"SKA"	1987-04-14	"Transfer"	1987-04-14	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1986-01-01	1986
-1036	5	"CIN"	1987-07-20	"Transfer"	1987-07-20	1989-10-25	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1986-01-01	1986
-1036	5	"CIN"	1987-07-20	"End"	1989-10-25	1989-10-25	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1986-01-01	1986
-1037	1	"VIE"	1986-01-01	"Birth"	1986-01-01	1986-03-01	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1986-01-01	1986
-1037	2	"SKA"	1986-03-01	"Transfer"	1986-03-01	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1986-01-01	1986
-1037	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1990-06-01	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1986-01-01	1986
-1037	3	"CIN"	1987-07-20	"End"	1990-06-01	1990-06-01	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1986-01-01	1986
-1038	1	"VIE"	1985-05-11	"Birth"	1985-05-11	1986-05-11	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1985-05-11	1985
-1038	2	"SKA"	1986-05-11	"Transfer"	1986-05-11	1987-07-20	"D"	"Skansen Akvariet"	"Sweden"	"F"	NA	NA	1985-05-11	1985
-1038	3	"CIN"	1987-07-20	"Transfer"	1987-07-20	1989-07-13	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-05-11	1985
-1038	3	"CIN"	1987-07-20	"End"	1989-07-13	1989-07-13	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	NA	NA	1985-05-11	1985
-1039	1	"UND"	1985-10-15	"Birth"	1985-10-15	1986-10-15	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1985-10-15	1985
-1039	2	"WOR"	1986-10-15	"Transfer"	1986-10-15	1987-10-15	"D"	"Worldwide Primates (Matt Block)"	"United States"	"M"	NA	NA	1985-10-15	1985
-1039	3	"CIN"	1987-10-15	"Transfer"	1987-10-15	1990-11-28	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	NA	NA	1985-10-15	1985
-1039	4	"PHI"	1990-11-28	"Transfer"	1990-11-28	1997-05-18	"D"	"Philadelphia Zoo"	"United States"	"M"	NA	NA	1985-10-15	1985
-1039	4	"PHI"	1990-11-28	"End"	1997-05-18	1997-05-18	"D"	"Philadelphia Zoo"	"United States"	"M"	NA	NA	1985-10-15	1985
-1040	1	"SKA"	1986-01-01	"Birth"	1986-01-01	1988-10-11	"D"	"Skansen Akvariet"	"Sweden"	"F"	1013	1001	1986-01-01	1986
-1040	2	"PHI"	1988-10-11	"Transfer"	1988-10-11	2002-08-17	"D"	"Philadelphia Zoo"	"United States"	"F"	1013	1001	1986-01-01	1986
-1040	2	"PHI"	1988-10-11	"End"	2002-08-17	2002-08-17	"D"	"Philadelphia Zoo"	"United States"	"F"	1013	1001	1986-01-01	1986
-1041	1	"SKA"	1986-12-01	"Birth"	1986-12-01	1988-10-11	"D"	"Skansen Akvariet"	"Sweden"	"M"	1029	1000	1986-12-01	1986
-1041	2	"PHI"	1988-10-11	"Transfer"	1988-10-11	2001-04-07	"D"	"Philadelphia Zoo"	"United States"	"M"	1029	1000	1986-12-01	1986
-1041	2	"PHI"	1988-10-11	"End"	2001-04-07	2001-04-07	"D"	"Philadelphia Zoo"	"United States"	"M"	1029	1000	1986-12-01	1986
-1042	1	"UND"	1988-05-07	"Birth"	1988-05-07	1989-05-07	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1988-05-07	1988
-1042	2	"SAN"	1989-05-07	"Transfer"	1989-05-07	1989-08-15	"D"	"San Francisco Zoological Gardens"	"United States"	"M"	NA	NA	1988-05-07	1988
-1042	3	"HOU"	1989-08-15	"Transfer"	1989-08-15	1999-11-05	"D"	"Houston Zoo, Inc."	"United States"	"M"	NA	NA	1988-05-07	1988
-1042	3	"HOU"	1989-08-15	"End"	1999-11-05	1999-11-05	"D"	"Houston Zoo, Inc."	"United States"	"M"	NA	NA	1988-05-07	1988
-1043	1	"UND"	1987-08-20	"Birth"	1987-08-20	1988-08-20	"D"	"Wild"	"Undetermined"	"F"	NA	NA	1987-08-20	1987
-1043	2	"CAF"	1988-08-20	"Transfer"	1988-08-20	1989-08-20	"D"	"Calif. Fish & Game (San Diego)"	"United States"	"F"	NA	NA	1987-08-20	1987
-1043	3	"SEA"	1989-08-20	"Transfer"	1989-08-20	1996-09-15	"D"	"Woodland Park Zoo"	"United States"	"F"	NA	NA	1987-08-20	1987
-1043	3	"SEA"	1989-08-20	"End"	1996-09-15	1996-09-15	"D"	"Woodland Park Zoo"	"United States"	"F"	NA	NA	1987-08-20	1987
-1044	1	"THA"	1984-01-01	"Birth"	1984-01-01	1986-10-26	"D"	"Wild"	"Thailand"	"F"	NA	NA	1984-01-01	1984
-1044	2	"CAF"	1986-10-26	"Transfer"	1986-10-26	1989-08-20	"D"	"Calif. Fish & Game (San Diego)"	"United States"	"F"	NA	NA	1984-01-01	1984
-1044	3	"SEA"	1989-08-20	"Transfer"	1989-08-20	1992-06-18	"D"	"Woodland Park Zoo"	"United States"	"F"	NA	NA	1984-01-01	1984
-1044	4	"DUK"	1992-06-18	"Transfer"	1992-06-18	1997-04-24	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1984-01-01	1984
-1044	5	"HOU"	1997-04-24	"Transfer"	1997-04-24	2003-01-01	"D"	"Houston Zoo, Inc."	"United States"	"F"	NA	NA	1984-01-01	1984
-1044	5	"HOU"	1997-04-24	"End"	2003-01-01	2003-01-01	"D"	"Houston Zoo, Inc."	"United States"	"F"	NA	NA	1984-01-01	1984
-1045	1	"POZ"	1987-02-14	"Birth"	1987-02-14	1987-03-14	"D"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"M"	11045	1034	1987-02-14	1987
-1045	2	"SKA"	1987-03-14	"Transfer"	1987-03-14	1988-08-10	"D"	"Skansen Akvariet"	"Sweden"	"M"	11045	1034	1987-02-14	1987
-1045	3	"SAN"	1988-08-10	"Transfer"	1988-08-10	1989-08-15	"D"	"San Francisco Zoological Gardens"	"United States"	"M"	11045	1034	1987-02-14	1987
-1045	4	"HOU"	1989-08-15	"Transfer"	1989-08-15	1992-04-22	"D"	"Houston Zoo, Inc."	"United States"	"M"	11045	1034	1987-02-14	1987
-1045	5	"PUE"	1992-04-22	"Transfer"	1992-04-22	2004-11-09	"D"	"Pueblo Zoo"	"United States"	"M"	11045	1034	1987-02-14	1987
-1045	6	"HOU"	2004-11-09	"Transfer"	2004-11-09	2009-01-22	"D"	"Houston Zoo, Inc."	"United States"	"M"	11045	1034	1987-02-14	1987
-1045	6	"HOU"	2004-11-09	"End"	2009-01-22	2009-01-22	"D"	"Houston Zoo, Inc."	"United States"	"M"	11045	1034	1987-02-14	1987
-1046	1	"POZ"	1987-02-14	"Birth"	1987-02-14	1987-03-14	"D"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"F"	11045	1035	1987-02-14	1987
-1046	2	"SKA"	1987-03-14	"Transfer"	1987-03-14	1988-08-10	"D"	"Skansen Akvariet"	"Sweden"	"F"	11045	1035	1987-02-14	1987
-1046	3	"SAN"	1988-08-10	"Transfer"	1988-08-10	1989-08-15	"D"	"San Francisco Zoological Gardens"	"United States"	"F"	11045	1035	1987-02-14	1987
-1046	4	"HOU"	1989-08-15	"Transfer"	1989-08-15	1992-04-22	"D"	"Houston Zoo, Inc."	"United States"	"F"	11045	1035	1987-02-14	1987
-1046	5	"PUE"	1992-04-22	"Transfer"	1992-04-22	2004-11-09	"D"	"Pueblo Zoo"	"United States"	"F"	11045	1035	1987-02-14	1987
-1046	6	"HOU"	2004-11-09	"Transfer"	2004-11-09	2006-08-12	"D"	"Houston Zoo, Inc."	"United States"	"F"	11045	1035	1987-02-14	1987
-1046	6	"HOU"	2004-11-09	"End"	2006-08-12	2006-08-12	"D"	"Houston Zoo, Inc."	"United States"	"F"	11045	1035	1987-02-14	1987
-1047	1	"SKA"	1987-02-17	"Birth"	1987-02-17	1987-04-05	"D"	"Skansen Akvariet"	"Sweden"	"M"	1012	1008	1987-02-17	1987
-1047	2	"DUK"	1987-04-05	"Transfer"	1987-04-05	1998-08-09	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1008	1987-02-17	1987
-1047	2	"DUK"	1987-04-05	"End"	1998-08-09	1998-08-09	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1008	1987-02-17	1987
-1048	1	"DUK"	1988-01-01	"Birth"	1988-01-01	1990-09-21	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1008	1988-01-01	1988
-1048	1	"DUK"	1988-01-01	"End"	1990-09-21	1990-09-21	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1008	1988-01-01	1988
-1049	1	"DUK"	1988-01-01	"Birth"	1988-01-01	1988-01-01	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1008	1988-01-01	1988
-1049	1	"DUK"	1988-01-01	"End"	1988-01-01	1988-01-01	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1008	1988-01-01	1988
-1050	1	"SOZ"	1988-01-12	"Birth"	1988-01-12	1988-02-02	"D"	"San Diego Zoo"	"United States"	"F"	1016	1019	1988-01-12	1988
-1050	1	"SOZ"	1988-01-12	"End"	1988-02-02	1988-02-02	"D"	"San Diego Zoo"	"United States"	"F"	1016	1019	1988-01-12	1988
-1051	1	"CIN"	1988-02-29	"Birth"	1988-02-29	1989-09-20	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	1026	1034	1988-02-29	1988
-1051	2	"CBR"	1989-09-20	"Transfer"	1989-09-20	1997-02-20	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1026	1034	1988-02-29	1988
-1051	2	"CBR"	1989-09-20	"End"	1997-02-20	1997-02-20	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1026	1034	1988-02-29	1988
-1052	1	"CIN"	1988-04-04	"Birth"	1988-04-04	1988-04-05	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"U"	1032	1036	1988-04-04	1988
-1052	1	"CIN"	1988-04-04	"End"	1988-04-05	1988-04-05	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"U"	1032	1036	1988-04-04	1988
-1053	1	"CRY"	1988-04-10	"Birth"	1988-04-10	1992-03-26	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"U"	1015	1014	1988-04-10	1988
-1053	1	"CRY"	1988-04-10	"End"	1992-03-26	1992-03-26	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"U"	1015	1014	1988-04-10	1988
-1054	1	"CBR"	1988-10-24	"Birth"	1988-10-24	2002-03-04	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1030	1024	1988-10-24	1988
-1054	1	"CBR"	1988-10-24	"End"	2002-03-04	2002-03-04	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1030	1024	1988-10-24	1988
-1055	1	"DUK"	1988-11-17	"Birth"	1988-11-17	1991-07-29	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1008	1988-11-17	1988
-1055	2	"OMA"	1991-07-29	"Transfer"	1991-07-29	1993-03-29	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1012	1008	1988-11-17	1988
-1055	2	"OMA"	1991-07-29	"End"	1993-03-29	1993-03-29	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1012	1008	1988-11-17	1988
-1056	1	"DUK"	1988-11-17	"Birth"	1988-11-17	1991-07-29	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1008	1988-11-17	1988
-1056	2	"OMA"	1991-07-29	"Transfer"	1991-07-29	2000-11-30	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1012	1008	1988-11-17	1988
-1056	2	"OMA"	1991-07-29	"End"	2000-11-30	2000-11-30	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1012	1008	1988-11-17	1988
-1057	1	"SOZ"	1989-02-25	"Birth"	1989-02-25	1998-10-28	"D"	"San Diego Zoo"	"United States"	"M"	1017	1020	1989-02-25	1989
-1057	2	"CIN"	1998-10-28	"Transfer"	1998-10-28	2005-08-20	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	1017	1020	1989-02-25	1989
-1057	2	"CIN"	1998-10-28	"End"	2005-08-20	2005-08-20	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	1017	1020	1989-02-25	1989
-1058	1	"SOZ"	1989-02-25	"Birth"	1989-02-25	2008-12-20	"D"	"San Diego Zoo"	"United States"	"F"	1017	1020	1989-02-25	1989
-1058	1	"SOZ"	1989-02-25	"End"	2008-12-20	2008-12-20	"D"	"San Diego Zoo"	"United States"	"F"	1017	1020	1989-02-25	1989
-1059	1	"SOZ"	1989-02-26	"Birth"	1989-02-26	1999-07-27	"D"	"San Diego Zoo"	"United States"	"M"	1016	1019	1989-02-26	1989
-1059	1	"SOZ"	1989-02-26	"End"	1999-07-27	1999-07-27	"D"	"San Diego Zoo"	"United States"	"M"	1016	1019	1989-02-26	1989
-1060	1	"SOZ"	1989-02-27	"Birth"	1989-02-27	2002-02-01	"D"	"San Diego Zoo"	"United States"	"F"	1018	1021	1989-02-27	1989
-1060	2	"SDW"	2002-02-01	"Transfer"	2002-02-01	2002-05-02	"D"	"San Diego Zoo Safari Park"	"United States"	"F"	1018	1021	1989-02-27	1989
-1060	2	"SDW"	2002-02-01	"End"	2002-05-02	2002-05-02	"D"	"San Diego Zoo Safari Park"	"United States"	"F"	1018	1021	1989-02-27	1989
-1061	1	"SOZ"	1989-02-27	"Birth"	1989-02-27	2002-11-29	"D"	"San Diego Zoo"	"United States"	"F"	1018	1021	1989-02-27	1989
-1061	1	"SOZ"	1989-02-27	"End"	2002-11-29	2002-11-29	"D"	"San Diego Zoo"	"United States"	"F"	1018	1021	1989-02-27	1989
-1062	1	"CIN"	1989-08-15	"Birth"	1989-08-15	1989-08-15	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"U"	1032	1036	1989-08-15	1989
-1062	1	"CIN"	1989-08-15	"End"	1989-08-15	1989-08-15	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"U"	1032	1036	1989-08-15	1989
-1063	1	"PHI"	1990-01-17	"Birth"	1990-01-17	1997-02-20	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1990-01-17	1990
-1063	2	"CIN"	1997-02-20	"Transfer"	1997-02-20	2004-04-16	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1041	1040	1990-01-17	1990
-1063	2	"CIN"	1997-02-20	"End"	2004-04-16	2004-04-16	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1041	1040	1990-01-17	1990
-1064	1	"PHI"	1990-01-17	"Birth"	1990-01-17	1991-06-13	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1990-01-17	1990
-1064	2	"SEA"	1991-06-13	"Transfer"	1991-06-13	2002-12-01	"D"	"Woodland Park Zoo"	"United States"	"M"	1041	1040	1990-01-17	1990
-1064	2	"SEA"	1991-06-13	"End"	2002-12-01	2002-12-01	"D"	"Woodland Park Zoo"	"United States"	"M"	1041	1040	1990-01-17	1990
-1065	1	"SOZ"	1990-03-24	"Birth"	1990-03-24	2002-07-19	"D"	"San Diego Zoo"	"United States"	"M"	1016	1019	1990-03-24	1990
-1065	2	"CLE"	2002-07-19	"Transfer"	2002-07-19	2009-02-16	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1016	1019	1990-03-24	1990
-1065	2	"CLE"	2002-07-19	"End"	2009-02-16	2009-02-16	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1016	1019	1990-03-24	1990
-1066	1	"HOU"	1990-04-06	"Birth"	1990-04-06	1997-05-23	"D"	"Houston Zoo, Inc."	"United States"	"M"	1045	1046	1990-04-06	1990
-1066	2	"CBR"	1997-05-23	"Transfer"	1997-05-23	1998-04-24	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1045	1046	1990-04-06	1990
-1066	2	"CBR"	1997-05-23	"End"	1998-04-24	1998-04-24	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1045	1046	1990-04-06	1990
-1067	1	"HOU"	1990-04-06	"Birth"	1990-04-06	1999-12-19	"D"	"Houston Zoo, Inc."	"United States"	"F"	1045	1046	1990-04-06	1990
-1067	1	"HOU"	1990-04-06	"End"	1999-12-19	1999-12-19	"D"	"Houston Zoo, Inc."	"United States"	"F"	1045	1046	1990-04-06	1990
-1068	1	"CBR"	1990-06-15	"Birth"	1990-06-15	1993-11-10	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1990-06-15	1990
-1068	2	"PAI"	1993-11-10	"Transfer"	1993-11-10	1994-05-26	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1051	1054	1990-06-15	1990
-1068	3	"SHA"	1994-05-26	"Transfer"	1994-05-26	1995-03-29	"D"	"Shaldon Wildlife Trust"	"United Kingdom"	"M"	1051	1054	1990-06-15	1990
-1068	4	"PAI"	1995-03-29	"Transfer"	1995-03-29	2002-12-12	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1051	1054	1990-06-15	1990
-1068	4	"PAI"	1995-03-29	"End"	2002-12-12	2002-12-12	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1051	1054	1990-06-15	1990
-1069	1	"CBR"	1990-06-15	"Birth"	1990-06-15	1990-06-16	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1990-06-15	1990
-1069	1	"CBR"	1990-06-15	"End"	1990-06-16	1990-06-16	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1990-06-15	1990
-1070	1	"DUK"	1990-06-30	"Birth"	1990-06-30	1990-07-05	"D"	"Duke Lemur Center"	"United States"	"M"	1023	1010	1990-06-30	1990
-1070	1	"DUK"	1990-06-30	"End"	1990-07-05	1990-07-05	"D"	"Duke Lemur Center"	"United States"	"M"	1023	1010	1990-06-30	1990
-1071	1	"DUK"	1990-08-17	"Birth"	1990-08-17	1990-08-18	"D"	"Duke Lemur Center"	"United States"	"F"	1022	1008	1990-08-17	1990
-1071	1	"DUK"	1990-08-17	"End"	1990-08-18	1990-08-18	"D"	"Duke Lemur Center"	"United States"	"F"	1022	1008	1990-08-17	1990
-1072	1	"DUK"	1991-03-09	"Birth"	1991-03-09	1993-11-03	"D"	"Duke Lemur Center"	"United States"	"M"	1023	1010	1991-03-09	1991
-1072	2	"PAI"	1993-11-03	"Transfer"	1993-11-03	2002-09-07	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1023	1010	1991-03-09	1991
-1072	2	"PAI"	1993-11-03	"End"	2002-09-07	2002-09-07	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1023	1010	1991-03-09	1991
-1073	1	"DUK"	1991-03-09	"Birth"	1991-03-09	1992-11-22	"D"	"Duke Lemur Center"	"United States"	"M"	1023	1010	1991-03-09	1991
-1073	1	"DUK"	1991-03-09	"End"	1992-11-22	1992-11-22	"D"	"Duke Lemur Center"	"United States"	"M"	1023	1010	1991-03-09	1991
-1074	1	"PHI"	1991-04-13	"Birth"	1991-04-13	1993-04-28	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1991-04-13	1991
-1074	2	"CLE"	1993-04-28	"Transfer"	1993-04-28	1993-05-16	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1041	1040	1991-04-13	1991
-1074	2	"CLE"	1993-04-28	"End"	1993-05-16	1993-05-16	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1041	1040	1991-04-13	1991
-1075	1	"PHI"	1991-04-13	"Birth"	1991-04-13	1993-04-28	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1991-04-13	1991
-1075	2	"CLE"	1993-04-28	"Transfer"	1993-04-28	1996-08-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1041	1040	1991-04-13	1991
-1075	2	"CLE"	1993-04-28	"End"	1996-08-06	1996-08-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1041	1040	1991-04-13	1991
-1076	1	"CRY"	1991-11-09	"Birth"	1991-11-09	1993-04-01	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	1015	1014	1991-11-09	1991
-1076	1	"CRY"	1991-11-09	"End"	1993-04-01	1993-04-01	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	1015	1014	1991-11-09	1991
-1077	1	"CRY"	1991-11-09	"Birth"	1991-11-09	1995-12-31	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	1015	1014	1991-11-09	1991
-1077	1	"CRY"	1991-11-09	"End"	1995-12-31	1995-12-31	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	1015	1014	1991-11-09	1991
-1078	1	"UND"	1989-02-21	"Birth"	1989-02-21	1990-02-21	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1989-02-21	1989
-1078	2	"USD"	1990-02-21	"Transfer"	1990-02-21	1991-02-21	"D"	"US Dept of the Interior (USDI)"	"United States"	"M"	NA	NA	1989-02-21	1989
-1078	3	"NYB"	1991-02-21	"Transfer"	1991-02-21	1995-04-12	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	NA	NA	1989-02-21	1989
-1078	4	"CLE"	1995-04-12	"Transfer"	1995-04-12	1998-05-29	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	NA	NA	1989-02-21	1989
-1078	4	"CLE"	1995-04-12	"End"	1998-05-29	1998-05-29	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	NA	NA	1989-02-21	1989
-1079	1	"HOU"	1992-02-14	"Birth"	1992-02-14	1994-08-30	"D"	"Houston Zoo, Inc."	"United States"	"F"	1042	1067	1992-02-14	1992
-1079	2	"DUK"	1994-08-30	"Transfer"	1994-08-30	1998-10-08	"D"	"Duke Lemur Center"	"United States"	"F"	1042	1067	1992-02-14	1992
-1079	3	"OMA"	1998-10-08	"Transfer"	1998-10-08	2005-06-08	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1042	1067	1992-02-14	1992
-1079	3	"OMA"	1998-10-08	"End"	2005-06-08	2005-06-08	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1042	1067	1992-02-14	1992
-1080	1	"HOU"	1992-02-14	"Birth"	1992-02-14	1993-06-15	"D"	"Houston Zoo, Inc."	"United States"	"F"	1042	1067	1992-02-14	1992
-1080	1	"HOU"	1992-02-14	"End"	1993-06-15	1993-06-15	"D"	"Houston Zoo, Inc."	"United States"	"F"	1042	1067	1992-02-14	1992
-1081	1	"SOZ"	1992-02-29	"Birth"	1992-02-29	1992-02-29	"D"	"San Diego Zoo"	"United States"	"F"	1057	1060	1992-02-29	1992
-1081	1	"SOZ"	1992-02-29	"End"	1992-02-29	1992-02-29	"D"	"San Diego Zoo"	"United States"	"F"	1057	1060	1992-02-29	1992
-1082	1	"CBR"	1992-04-03	"Birth"	1992-04-03	1993-11-10	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1992-04-03	1992
-1082	2	"PAI"	1993-11-10	"Transfer"	1993-11-10	1995-04-13	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1051	1054	1992-04-03	1992
-1082	2	"PAI"	1993-11-10	"End"	1995-04-13	1995-04-13	"D"	"Paignton Zoo Environmental Park"	"United Kingdom"	"M"	1051	1054	1992-04-03	1992
-1083	1	"PHI"	1992-08-08	"Birth"	1992-08-08	2000-07-13	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1992-08-08	1992
-1083	2	"WHE"	2000-07-13	"Transfer"	2000-07-13	2001-08-19	"D"	"Oglebay's Good Children's Zoo"	"United States"	"F"	1041	1040	1992-08-08	1992
-1083	2	"WHE"	2000-07-13	"End"	2001-08-19	2001-08-19	"D"	"Oglebay's Good Children's Zoo"	"United States"	"F"	1041	1040	1992-08-08	1992
-1084	1	"PHI"	1992-08-08	"Birth"	1992-08-08	1999-06-07	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1992-08-08	1992
-1084	1	"PHI"	1992-08-08	"End"	1999-06-07	1999-06-07	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1992-08-08	1992
-1085	1	"PHI"	1992-08-08	"Birth"	1992-08-08	1992-08-10	"D"	"Philadelphia Zoo"	"United States"	"U"	1041	1040	1992-08-08	1992
-1085	1	"PHI"	1992-08-08	"End"	1992-08-10	1992-08-10	"D"	"Philadelphia Zoo"	"United States"	"U"	1041	1040	1992-08-08	1992
-1086	1	"PHI"	1992-08-08	"Birth"	1992-08-08	1992-08-09	"D"	"Philadelphia Zoo"	"United States"	"U"	1041	1040	1992-08-08	1992
-1086	1	"PHI"	1992-08-08	"End"	1992-08-09	1992-08-09	"D"	"Philadelphia Zoo"	"United States"	"U"	1041	1040	1992-08-08	1992
-1087	1	"UND"	1985-01-17	"Birth"	1985-01-17	1986-01-17	"D"	"Wild"	"Undetermined"	"F"	NA	NA	1985-01-17	1985
-1087	2	"FER"	1986-01-17	"Transfer"	1986-01-17	1987-01-17	"D"	"International Animal Exchange, Inc."	"United States"	"F"	NA	NA	1985-01-17	1985
-1087	3	"TAI"	1987-01-17	"Transfer"	1987-01-17	2003-07-01	"D"	"Taipei Zoo"	"Taiwan"	"F"	NA	NA	1985-01-17	1985
-1087	3	"TAI"	1987-01-17	"End"	2003-07-01	2003-07-01	"D"	"Taipei Zoo"	"Taiwan"	"F"	NA	NA	1985-01-17	1985
-1088	1	"VIE"	1991-09-22	"Birth"	1991-09-22	1992-09-22	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1991-09-22	1991
-1088	2	"USD"	1992-09-22	"Transfer"	1992-09-22	1993-09-22	"D"	"US Dept of the Interior (USDI)"	"United States"	"F"	NA	NA	1991-09-22	1991
-1088	3	"SEA"	1993-09-22	"Transfer"	1993-09-22	1997-06-27	"D"	"Woodland Park Zoo"	"United States"	"F"	NA	NA	1991-09-22	1991
-1088	4	"CLE"	1997-06-27	"Transfer"	1997-06-27	2008-08-09	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	NA	NA	1991-09-22	1991
-1088	4	"CLE"	1997-06-27	"End"	2008-08-09	2008-08-09	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	NA	NA	1991-09-22	1991
-1089	1	"VIE"	1991-04-03	"Birth"	1991-04-03	1992-04-03	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1991-04-03	1991
-1089	2	"USD"	1992-04-03	"Transfer"	1992-04-03	1993-04-03	"D"	"US Dept of the Interior (USDI)"	"United States"	"F"	NA	NA	1991-04-03	1991
-1089	3	"LOS"	1993-04-03	"Transfer"	1993-04-03	1994-07-08	"D"	"Los Angeles Zoo & Botanical Gardens"	"United States"	"F"	NA	NA	1991-04-03	1991
-1089	4	"SOZ"	1994-07-08	"Transfer"	1994-07-08	2009-02-27	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1991-04-03	1991
-1089	4	"SOZ"	1994-07-08	"End"	2009-02-27	2009-02-27	"D"	"San Diego Zoo"	"United States"	"F"	NA	NA	1991-04-03	1991
-1090	1	"CRY"	1992-11-14	"Birth"	1992-11-14	2005-03-22	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"M"	1015	1014	1992-11-14	1992
-1090	2	"OAS"	2005-03-22	"Transfer"	2005-03-22	2007-06-05	"D"	"OASES (John Creviston)"	"Canada"	"M"	1015	1014	1992-11-14	1992
-1090	2	"OAS"	2005-03-22	"End"	2007-06-05	2007-06-05	"D"	"OASES (John Creviston)"	"Canada"	"M"	1015	1014	1992-11-14	1992
-1091	1	"CRY"	1992-11-14	"Birth"	1992-11-14	2004-10-15	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	1015	1014	1992-11-14	1992
-1091	2	"IND"	2004-10-15	"Transfer"	2004-10-15	2007-11-21	"D"	"Indian River Reptile Zoo"	"Canada"	"F"	1015	1014	1992-11-14	1992
-1091	2	"IND"	2004-10-15	"End"	2007-11-21	2007-11-21	"D"	"Indian River Reptile Zoo"	"Canada"	"F"	1015	1014	1992-11-14	1992
-1092	1	"SOZ"	1993-03-24	"Birth"	1993-03-24	1993-03-27	"D"	"San Diego Zoo"	"United States"	"M"	1017	1021	1993-03-24	1993
-1092	1	"SOZ"	1993-03-24	"End"	1993-03-27	1993-03-27	"D"	"San Diego Zoo"	"United States"	"M"	1017	1021	1993-03-24	1993
-1093	1	"CBR"	1993-05-30	"Birth"	1993-05-30	1997-09-16	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1993-05-30	1993
-1093	2	"HOU"	1997-09-16	"Transfer"	1997-09-16	2003-04-20	"D"	"Houston Zoo, Inc."	"United States"	"M"	1051	1054	1993-05-30	1993
-1093	2	"HOU"	1997-09-16	"End"	2003-04-20	2003-04-20	"D"	"Houston Zoo, Inc."	"United States"	"M"	1051	1054	1993-05-30	1993
-1094	1	"CBR"	1993-05-30	"Birth"	1993-05-30	1994-03-24	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1993-05-30	1993
-1094	2	"CIN"	1994-03-24	"Transfer"	1994-03-24	1994-04-22	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1051	1054	1993-05-30	1993
-1094	2	"CIN"	1994-03-24	"End"	1994-04-22	1994-04-22	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1051	1054	1993-05-30	1993
-1095	1	"PHI"	1994-03-09	"Birth"	1994-03-09	1994-03-10	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1994-03-09	1994
-1095	1	"PHI"	1994-03-09	"End"	1994-03-10	1994-03-10	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1994-03-09	1994
-1096	1	"PHI"	1994-03-09	"Birth"	1994-03-09	1994-03-16	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1994-03-09	1994
-1096	1	"PHI"	1994-03-09	"End"	1994-03-16	1994-03-16	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1994-03-09	1994
-1097	1	"DUK"	1994-03-15	"Birth"	1994-03-15	2013-06-14	"D"	"Duke Lemur Center"	"United States"	"F"	1023	1008	1994-03-15	1994
-1097	1	"DUK"	1994-03-15	"End"	2013-06-14	2013-06-14	"D"	"Duke Lemur Center"	"United States"	"F"	1023	1008	1994-03-15	1994
-1098	1	"CBR"	1994-03-18	"Birth"	1994-03-18	1999-12-04	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1994-03-18	1994
-1098	2	"SOZ"	1999-12-04	"Transfer"	1999-12-04	2008-10-01	"D"	"San Diego Zoo"	"United States"	"M"	1051	1054	1994-03-18	1994
-1098	2	"SOZ"	1999-12-04	"End"	2008-10-01	2008-10-01	"D"	"San Diego Zoo"	"United States"	"M"	1051	1054	1994-03-18	1994
-1099	1	"CBR"	1994-03-18	"Birth"	1994-03-18	1997-12-08	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1994-03-18	1994
-1099	2	"MEM"	1997-12-08	"Transfer"	1997-12-08	2006-01-01	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	1051	1054	1994-03-18	1994
-1099	2	"MEM"	1997-12-08	"End"	2006-01-01	2006-01-01	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	1051	1054	1994-03-18	1994
-1100	1	"DUK"	1994-04-11	"Birth"	1994-04-11	1994-04-11	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1044	1994-04-11	1994
-1100	1	"DUK"	1994-04-11	"End"	1994-04-11	1994-04-11	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1044	1994-04-11	1994
-1101	1	"DUK"	1994-04-11	"Birth"	1994-04-11	1994-04-11	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1044	1994-04-11	1994
-1101	1	"DUK"	1994-04-11	"End"	1994-04-11	1994-04-11	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1044	1994-04-11	1994
-1102	1	"SEA"	1995-02-11	"Birth"	1995-02-11	2007-07-08	"D"	"Woodland Park Zoo"	"United States"	"M"	1064	1088	1995-02-11	1995
-1102	1	"SEA"	1995-02-11	"End"	2007-07-08	2007-07-08	"D"	"Woodland Park Zoo"	"United States"	"M"	1064	1088	1995-02-11	1995
-1103	1	"DUK"	1995-02-15	"Birth"	1995-02-15	2009-08-22	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1044	1995-02-15	1995
-1103	1	"DUK"	1995-02-15	"End"	2009-08-22	2009-08-22	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1044	1995-02-15	1995
-1104	1	"DUK"	1995-02-15	"Birth"	1995-02-15	1998-04-23	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1044	1995-02-15	1995
-1104	2	"OMA"	1998-04-23	"Transfer"	1998-04-23	2006-11-07	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1012	1044	1995-02-15	1995
-1104	3	"SEA"	2006-11-07	"Transfer"	2006-11-07	2010-08-18	"D"	"Woodland Park Zoo"	"United States"	"M"	1012	1044	1995-02-15	1995
-1104	3	"SEA"	2006-11-07	"End"	2010-08-18	2010-08-18	"D"	"Woodland Park Zoo"	"United States"	"M"	1012	1044	1995-02-15	1995
-1105	1	"SOZ"	1995-02-22	"Birth"	1995-02-22	2014-06-24	"D"	"San Diego Zoo"	"United States"	"F"	1057	1060	1995-02-22	1995
-1105	1	"SOZ"	1995-02-22	"End"	2014-06-24	2014-06-24	"D"	"San Diego Zoo"	"United States"	"F"	1057	1060	1995-02-22	1995
-1106	1	"PHI"	1995-02-23	"Birth"	1995-02-23	1997-03-04	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1995-02-23	1995
-1106	2	"MEM"	1997-03-04	"Transfer"	1997-03-04	2005-06-01	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	1041	1040	1995-02-23	1995
-1106	2	"MEM"	1997-03-04	"End"	2005-06-01	2005-06-01	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	1041	1040	1995-02-23	1995
-1107	1	"PHI"	1995-02-23	"Birth"	1995-02-23	1997-02-20	"D"	"Philadelphia Zoo"	"United States"	"F"	1041	1040	1995-02-23	1995
-1107	2	"CIN"	1997-02-20	"Transfer"	1997-02-20	1997-04-03	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1041	1040	1995-02-23	1995
-1107	3	"CBR"	1997-04-03	"Transfer"	1997-04-03	2004-06-02	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1041	1040	1995-02-23	1995
-1107	3	"CBR"	1997-04-03	"End"	2004-06-02	2004-06-02	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1041	1040	1995-02-23	1995
-1108	1	"SOZ"	1995-02-26	"Birth"	1995-02-26	2014-06-10	"D"	"San Diego Zoo"	"United States"	"M"	1017	1019	1995-02-26	1995
-1108	1	"SOZ"	1995-02-26	"End"	2014-06-10	2014-06-10	"D"	"San Diego Zoo"	"United States"	"M"	1017	1019	1995-02-26	1995
-1109	1	"CBR"	1995-03-26	"Birth"	1995-03-26	1998-03-07	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1995-03-26	1995
-1109	1	"CBR"	1995-03-26	"End"	1998-03-07	1998-03-07	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1995-03-26	1995
-1110	1	"CBR"	1995-03-26	"Birth"	1995-03-26	1995-03-26	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1995-03-26	1995
-1110	1	"CBR"	1995-03-26	"End"	1995-03-26	1995-03-26	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1995-03-26	1995
-1113	1	"UND"	1993-03-27	"Birth"	1993-03-27	1994-03-27	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1993-03-27	1993
-1113	2	"PUB"	1994-03-27	"Transfer"	1994-03-27	1995-03-27	"D"	"General Public"	"Undetermined"	"M"	NA	NA	1993-03-27	1993
-1113	3	"HOG"	1995-03-27	"Transfer"	1995-03-27	1995-11-02	"D"	"Utah's Hogle Zoo"	"United States"	"M"	NA	NA	1993-03-27	1993
-1113	4	"SOZ"	1995-11-02	"Transfer"	1995-11-02	2011-03-02	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1993-03-27	1993
-1113	4	"SOZ"	1995-11-02	"End"	2011-03-02	2011-03-02	"D"	"San Diego Zoo"	"United States"	"M"	NA	NA	1993-03-27	1993
-1114	1	"VIE"	1993-06-06	"Birth"	1993-06-06	1994-06-06	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1993-06-06	1993
-1114	2	"TOR"	1994-06-06	"Transfer"	1994-06-06	1995-06-06	"D"	"Toronto Zoo"	"Canada"	"M"	NA	NA	1993-06-06	1993
-1114	3	"CRY"	1995-06-06	"Transfer"	1995-06-06	2000-01-20	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"M"	NA	NA	1993-06-06	1993
-1114	3	"CRY"	1995-06-06	"End"	2000-01-20	2000-01-20	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"M"	NA	NA	1993-06-06	1993
-1115	1	"SEA"	1996-01-05	"Birth"	1996-01-05	1998-04-23	"D"	"Woodland Park Zoo"	"United States"	"F"	1064	1088	1996-01-05	1996
-1115	2	"OMA"	1998-04-23	"Transfer"	1998-04-23	2008-10-17	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1064	1088	1996-01-05	1996
-1115	3	"WIL"	2008-10-17	"Transfer"	2008-10-17	2011-10-07	"D"	"Wildlife World Zoo"	"United States"	"F"	1064	1088	1996-01-05	1996
-1115	4	"CLE"	2011-10-07	"Transfer"	2011-10-07	2013-08-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1064	1088	1996-01-05	1996
-1115	4	"CLE"	2011-10-07	"End"	2013-08-06	2013-08-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1064	1088	1996-01-05	1996
-1116	1	"SEA"	1996-01-05	"Birth"	1996-01-05	1998-10-01	"D"	"Woodland Park Zoo"	"United States"	"M"	1064	1088	1996-01-05	1996
-1116	2	"CBR"	1998-10-01	"Transfer"	1998-10-01	2009-01-30	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1064	1088	1996-01-05	1996
-1116	2	"CBR"	1998-10-01	"End"	2009-01-30	2009-01-30	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1064	1088	1996-01-05	1996
-1117	1	"CBR"	1996-02-02	"Birth"	1996-02-02	1996-02-02	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1996-02-02	1996
-1117	1	"CBR"	1996-02-02	"End"	1996-02-02	1996-02-02	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1996-02-02	1996
-1118	1	"CBR"	1996-02-02	"Birth"	1996-02-02	1996-02-02	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1996-02-02	1996
-1118	1	"CBR"	1996-02-02	"End"	1996-02-02	1996-02-02	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1996-02-02	1996
-1119	1	"SOZ"	1996-02-07	"Birth"	1996-02-07	1996-02-08	"D"	"San Diego Zoo"	"United States"	"M"	1059	1058	1996-02-07	1996
-1119	1	"SOZ"	1996-02-07	"End"	1996-02-08	1996-02-08	"D"	"San Diego Zoo"	"United States"	"M"	1059	1058	1996-02-07	1996
-1120	1	"SOZ"	1996-02-07	"Birth"	1996-02-07	2002-06-28	"D"	"San Diego Zoo"	"United States"	"F"	1059	1058	1996-02-07	1996
-1120	2	"CBR"	2002-06-28	"Transfer"	2002-06-28	2015-05-21	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1059	1058	1996-02-07	1996
-1120	2	"CBR"	2002-06-28	"End"	2015-05-21	2015-05-21	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1059	1058	1996-02-07	1996
-1121	1	"SOZ"	1996-02-20	"Birth"	1996-02-20	2003-10-16	"D"	"San Diego Zoo"	"United States"	"M"	1057	1060	1996-02-20	1996
-1121	2	"WHE"	2003-10-16	"Transfer"	2003-10-16	2004-10-07	"D"	"Oglebay's Good Children's Zoo"	"United States"	"M"	1057	1060	1996-02-20	1996
-1121	3	"MOO"	2004-10-07	"Transfer"	2004-10-07	2008-09-17	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1057	1060	1996-02-20	1996
-1121	4	"HOU"	2008-09-17	"Transfer"	2008-09-17	2009-01-20	"D"	"Houston Zoo, Inc."	"United States"	"M"	1057	1060	1996-02-20	1996
-1121	5	"MOO"	2009-01-20	"Transfer"	2009-01-20	2013-09-17	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1057	1060	1996-02-20	1996
-1121	5	"MOO"	2009-01-20	"End"	2013-09-17	2013-09-17	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1057	1060	1996-02-20	1996
-1122	1	"SOZ"	1996-02-20	"Birth"	1996-02-20	2002-10-15	"D"	"San Diego Zoo"	"United States"	"M"	1057	1060	1996-02-20	1996
-1122	2	"LIT"	2002-10-15	"Transfer"	2002-10-15	2013-12-09	"D"	"Little Rock Zoological Gardens"	"United States"	"M"	1057	1060	1996-02-20	1996
-1122	2	"LIT"	2002-10-15	"End"	2013-12-09	2013-12-09	"D"	"Little Rock Zoological Gardens"	"United States"	"M"	1057	1060	1996-02-20	1996
-1123	1	"DUK"	1996-04-25	"Birth"	1996-04-25	1998-06-23	"D"	"Duke Lemur Center"	"United States"	"F"	1012	1044	1996-04-25	1996
-1123	2	"MIN"	1998-06-23	"Transfer"	1998-06-23	1999-09-10	"D"	"Minnesota Zoological Garden"	"United States"	"F"	1012	1044	1996-04-25	1996
-1123	2	"MIN"	1998-06-23	"End"	1999-09-10	1999-09-10	"D"	"Minnesota Zoological Garden"	"United States"	"F"	1012	1044	1996-04-25	1996
-1124	1	"VIE"	1995-03-28	"Birth"	1995-03-28	1996-03-28	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1995-03-28	1995
-1124	2	"USD"	1996-03-28	"Transfer"	1996-03-28	1997-03-28	"D"	"US Dept of the Interior (USDI)"	"United States"	"F"	NA	NA	1995-03-28	1995
-1124	3	"PUE"	1997-03-28	"Transfer"	1997-03-28	2013-08-20	"D"	"Pueblo Zoo"	"United States"	"F"	NA	NA	1995-03-28	1995
-1124	3	"PUE"	1997-03-28	"End"	2013-08-20	2013-08-20	"D"	"Pueblo Zoo"	"United States"	"F"	NA	NA	1995-03-28	1995
-1125	1	"VIE"	1995-03-28	"Birth"	1995-03-28	1996-03-28	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1995-03-28	1995
-1125	2	"USD"	1996-03-28	"Transfer"	1996-03-28	1997-03-28	"D"	"US Dept of the Interior (USDI)"	"United States"	"M"	NA	NA	1995-03-28	1995
-1125	3	"PUE"	1997-03-28	"Transfer"	1997-03-28	2012-09-11	"D"	"Pueblo Zoo"	"United States"	"M"	NA	NA	1995-03-28	1995
-1125	3	"PUE"	1997-03-28	"End"	2012-09-11	2012-09-11	"D"	"Pueblo Zoo"	"United States"	"M"	NA	NA	1995-03-28	1995
-1126	1	"VIE"	1995-07-19	"Birth"	1995-07-19	1996-07-19	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1995-07-19	1995
-1126	2	"USD"	1996-07-19	"Transfer"	1996-07-19	1997-07-19	"D"	"US Dept of the Interior (USDI)"	"United States"	"F"	NA	NA	1995-07-19	1995
-1126	3	"SBA"	1997-07-19	"Transfer"	1997-07-19	2000-09-20	"D"	"Santa Barbara Zoological Gardens"	"United States"	"F"	NA	NA	1995-07-19	1995
-1126	4	"MIN"	2000-09-20	"Transfer"	2000-09-20	2004-11-11	"D"	"Minnesota Zoological Garden"	"United States"	"F"	NA	NA	1995-07-19	1995
-1126	4	"MIN"	2000-09-20	"End"	2004-11-11	2004-11-11	"D"	"Minnesota Zoological Garden"	"United States"	"F"	NA	NA	1995-07-19	1995
-1127	1	"VIE"	1995-07-19	"Birth"	1995-07-19	1996-07-19	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1995-07-19	1995
-1127	2	"USD"	1996-07-19	"Transfer"	1996-07-19	1997-07-19	"D"	"US Dept of the Interior (USDI)"	"United States"	"F"	NA	NA	1995-07-19	1995
-1127	3	"SBA"	1997-07-19	"Transfer"	1997-07-19	1999-10-14	"D"	"Santa Barbara Zoological Gardens"	"United States"	"F"	NA	NA	1995-07-19	1995
-1127	4	"SEA"	1999-10-14	"Transfer"	1999-10-14	2008-10-14	"D"	"Woodland Park Zoo"	"United States"	"F"	NA	NA	1995-07-19	1995
-1127	4	"SEA"	1999-10-14	"End"	2008-10-14	2008-10-14	"D"	"Woodland Park Zoo"	"United States"	"F"	NA	NA	1995-07-19	1995
-1128	1	"CBR"	1997-01-10	"Birth"	1997-01-10	1998-12-15	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1051	1054	1997-01-10	1997
-1128	2	"LIT"	1998-12-15	"Transfer"	1998-12-15	2014-02-07	"D"	"Little Rock Zoological Gardens"	"United States"	"F"	1051	1054	1997-01-10	1997
-1128	2	"LIT"	1998-12-15	"End"	2014-02-07	2014-02-07	"D"	"Little Rock Zoological Gardens"	"United States"	"F"	1051	1054	1997-01-10	1997
-1129	1	"CBR"	1997-01-10	"Birth"	1997-01-10	2008-02-07	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1051	1054	1997-01-10	1997
-1129	2	"CIN"	1997-01-10	"End"	2008-02-07	2008-02-07	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	1051	1054	1997-01-10	1997
-1130	1	"PHI"	1997-01-16	"Birth"	1997-01-16	2013-06-13	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1997-01-16	1997
-1130	1	"PHI"	1997-01-16	"End"	2013-06-13	2013-06-13	"D"	"Philadelphia Zoo"	"United States"	"M"	1041	1040	1997-01-16	1997
-1131	1	"SOZ"	1997-02-05	"Birth"	1997-02-05	2004-07-16	"D"	"San Diego Zoo"	"United States"	"M"	1059	1058	1997-02-05	1997
-1131	2	"ABQ"	2004-07-16	"Transfer"	2004-07-16	2014-09-12	"D"	"Albuquerque Biological Park"	"United States"	"M"	1059	1058	1997-02-05	1997
-1131	2	"ABQ"	2004-07-16	"End"	2014-09-12	2014-09-12	"D"	"Albuquerque Biological Park"	"United States"	"M"	1059	1058	1997-02-05	1997
-1132	1	"SOZ"	1997-02-05	"Birth"	1997-02-05	2006-08-31	"D"	"San Diego Zoo"	"United States"	"F"	1059	1058	1997-02-05	1997
-1132	2	"ELP"	2006-08-31	"Transfer"	2006-08-31	2012-06-12	"D"	"El Paso Zoo"	"United States"	"F"	1059	1058	1997-02-05	1997
-1132	3	"COL"	2012-06-12	"Transfer"	2012-06-12	2015-07-02	"D"	"Columbus Zoo and Aquarium"	"United States"	"F"	1059	1058	1997-02-05	1997
-1132	3	"COL"	2012-06-12	"End"	2015-07-02	2015-07-02	"D"	"Columbus Zoo and Aquarium"	"United States"	"F"	1059	1058	1997-02-05	1997
-1133	1	"SOZ"	1997-02-11	"Birth"	1997-02-11	1997-02-12	"D"	"San Diego Zoo"	"United States"	"F"	1065	1061	1997-02-11	1997
-1133	1	"SOZ"	1997-02-11	"End"	1997-02-12	1997-02-12	"D"	"San Diego Zoo"	"United States"	"F"	1065	1061	1997-02-11	1997
-1134	1	"SOZ"	1997-02-20	"Birth"	1997-02-20	1997-04-01	"D"	"San Diego Zoo"	"United States"	"M"	1017	1060	1997-02-20	1997
-1134	1	"SOZ"	1997-02-20	"End"	1997-04-01	1997-04-01	"D"	"San Diego Zoo"	"United States"	"M"	1017	1060	1997-02-20	1997
-1135	1	"SOZ"	1997-02-20	"Birth"	1997-02-20	2002-02-21	"D"	"San Diego Zoo"	"United States"	"F"	1017	1060	1997-02-20	1997
-1135	2	"SDW"	2002-02-21	"Transfer"	2002-02-21	2003-07-23	"D"	"San Diego Zoo Safari Park"	"United States"	"F"	1017	1060	1997-02-20	1997
-1135	3	"SOZ"	2003-07-23	"Transfer"	2003-07-23	2009-06-30	"D"	"San Diego Zoo"	"United States"	"F"	1017	1060	1997-02-20	1997
-1135	4	"SEA"	2009-06-30	"Transfer"	2009-06-30	2011-10-12	"D"	"Woodland Park Zoo"	"United States"	"F"	1017	1060	1997-02-20	1997
-1135	5	"SOZ"	2011-10-12	"Transfer"	2011-10-12	2014-03-26	"D"	"San Diego Zoo"	"United States"	"F"	1017	1060	1997-02-20	1997
-1135	5	"SOZ"	2011-10-12	"End"	2014-03-26	2014-03-26	"D"	"San Diego Zoo"	"United States"	"F"	1017	1060	1997-02-20	1997
-1136	1	"SEA"	1992-03-30	"Birth"	1992-03-30	1992-03-30	"D"	"Woodland Park Zoo"	"United States"	"U"	1064	1043	1992-03-30	1992
-1136	1	"SEA"	1992-03-30	"End"	1992-03-30	1992-03-30	"D"	"Woodland Park Zoo"	"United States"	"U"	1064	1043	1992-03-30	1992
-1137	1	"SEA"	1992-03-30	"Birth"	1992-03-30	1992-03-30	"D"	"Woodland Park Zoo"	"United States"	"U"	1064	1043	1992-03-30	1992
-1137	1	"SEA"	1992-03-30	"End"	1992-03-30	1992-03-30	"D"	"Woodland Park Zoo"	"United States"	"U"	1064	1043	1992-03-30	1992
-1138	1	"CLE"	1998-05-16	"Birth"	1998-05-16	2010-03-27	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1078	1088	1998-05-16	1998
-1138	1	"CLE"	1998-05-16	"End"	2010-03-27	2010-03-27	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1078	1088	1998-05-16	1998
-1139	1	"CLE"	1998-05-16	"Birth"	1998-05-16	2006-07-02	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1078	1088	1998-05-16	1998
-1139	1	"CLE"	1998-05-16	"End"	2006-07-02	2006-07-02	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1078	1088	1998-05-16	1998
-1140	1	"PUE"	1998-05-26	"Birth"	1998-05-26	2003-03-07	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	1998-05-26	1998
-1140	1	"PUE"	1998-05-26	"End"	2003-03-07	2003-03-07	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	1998-05-26	1998
-1141	1	"SOZ"	1999-04-19	"Birth"	1999-04-19	2009-06-30	"D"	"San Diego Zoo"	"United States"	"M"	1059	1089	1999-04-19	1999
-1141	2	"SEA"	2009-06-30	"Transfer"	2009-06-30	2011-10-12	"D"	"Woodland Park Zoo"	"United States"	"M"	1059	1089	1999-04-19	1999
-1141	3	"SOZ"	2011-10-12	"Transfer"	2011-10-12	2018-02-14	"D"	"San Diego Zoo"	"United States"	"M"	1059	1089	1999-04-19	1999
-1141	3	"SOZ"	2011-10-12	"End"	2018-02-14	2018-02-14	"D"	"San Diego Zoo"	"United States"	"M"	1059	1089	1999-04-19	1999
-1142	1	"SOZ"	1999-04-19	"Birth"	1999-04-19	2006-04-11	"D"	"San Diego Zoo"	"United States"	"M"	1059	1089	1999-04-19	1999
-1142	2	"CHI"	2006-04-11	"Transfer"	2006-04-11	2015-02-23	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	1059	1089	1999-04-19	1999
-1142	2	"CHI"	2006-04-11	"End"	2015-02-23	2015-02-23	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	1059	1089	1999-04-19	1999
-1143	1	"OMA"	1999-06-20	"Birth"	1999-06-20	2009-01-24	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1104	1115	1999-06-20	1999
-1143	1	"OMA"	1999-06-20	"End"	2009-01-24	2009-01-24	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1104	1115	1999-06-20	1999
-1144	1	"OMA"	1999-06-20	"Birth"	1999-06-20	2013-12-19	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1104	1115	1999-06-20	1999
-1144	1	"OMA"	1999-06-20	"End"	2013-12-19	2013-12-19	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1104	1115	1999-06-20	1999
-1145	1	"SOZ"	2000-04-27	"Birth"	2000-04-27	2002-07-03	"D"	"San Diego Zoo"	"United States"	"F"	1113	1089	2000-04-27	2000
-1145	2	"WHE"	2002-07-03	"Transfer"	2002-07-03	2004-10-07	"D"	"Oglebay's Good Children's Zoo"	"United States"	"F"	1113	1089	2000-04-27	2000
-1145	3	"MOO"	2004-10-07	"Transfer"	2004-10-07	2008-09-17	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1113	1089	2000-04-27	2000
-1145	4	"HOU"	2008-09-17	"Transfer"	2008-09-17	2009-01-20	"D"	"Houston Zoo, Inc."	"United States"	"F"	1113	1089	2000-04-27	2000
-1145	5	"MOO"	2009-01-20	"Transfer"	2009-01-20	2012-10-04	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1113	1089	2000-04-27	2000
-1145	5	"MOO"	2009-01-20	"End"	2012-10-04	2012-10-04	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1113	1089	2000-04-27	2000
-1146	1	"SOZ"	2000-04-27	"Birth"	2000-04-27	2018-05-04	"D"	"San Diego Zoo"	"United States"	"F"	1113	1089	2000-04-27	2000
-1146	1	"SOZ"	2000-04-27	"End"	2018-05-04	2018-05-04	"D"	"San Diego Zoo"	"United States"	"F"	1113	1089	2000-04-27	2000
-1147	1	"CBR"	2000-10-10	"Birth"	2000-10-10	2000-10-12	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1116	1054	2000-10-10	2000
-1147	1	"CBR"	2000-10-10	"End"	2000-10-12	2000-10-12	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1116	1054	2000-10-10	2000
-1148	1	"CBR"	2000-10-10	"Birth"	2000-10-10	2000-10-12	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1116	1054	2000-10-10	2000
-1148	1	"CBR"	2000-10-10	"End"	2000-10-12	2000-10-12	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1116	1054	2000-10-10	2000
-1149	1	"DUK"	2000-09-03	"Birth"	2000-09-03	2000-09-03	"D"	"Duke Lemur Center"	"United States"	"F"	1103	1097	2000-09-03	2000
-1149	1	"DUK"	2000-09-03	"End"	2000-09-03	2000-09-03	"D"	"Duke Lemur Center"	"United States"	"F"	1103	1097	2000-09-03	2000
-1150	1	"PUE"	2000-03-08	"Birth"	2000-03-08	2002-01-07	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2000-03-08	2000
-1150	1	"PUE"	2000-03-08	"End"	2002-01-07	2002-01-07	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2000-03-08	2000
-1151	1	"PUE"	2000-03-08	"Birth"	2000-03-08	2004-06-24	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2000-03-08	2000
-1151	2	"CLE"	2004-06-24	"Transfer"	2004-06-24	2010-02-21	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1125	1124	2000-03-08	2000
-1151	2	"CLE"	2004-06-24	"End"	2010-02-21	2010-02-21	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1125	1124	2000-03-08	2000
-2006	1	"ASI"	1984-10-23	"Birth"	1984-10-23	1985-10-23	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1984-10-23	1984
-2006	2	"HER"	1985-10-23	"Transfer"	1985-10-23	1986-10-23	"D"	"ZooAmerica (No. American Wildlife Pk.)"	"United States"	"M"	NA	NA	1984-10-23	1984
-2006	3	"MOS"	1986-10-23	"Transfer"	1986-10-23	1990-05-20	"D"	"Moscow Zoological Park"	"Russian Federation"	"M"	NA	NA	1984-10-23	1984
-2006	4	"WAR"	1990-05-20	"Transfer"	1990-05-20	1990-11-24	"D"	"Miejski Ogrod Zoologiczny Warsaw"	"Poland"	"M"	NA	NA	1984-10-23	1984
-2006	4	"WAR"	1990-05-20	"End"	1990-11-24	1990-11-24	"D"	"Miejski Ogrod Zoologiczny Warsaw"	"Poland"	"M"	NA	NA	1984-10-23	1984
-2097	1	"VIE"	1987-04-10	"Birth"	1987-04-10	1988-04-10	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1987-04-10	1987
-2097	2	"IRC"	1988-04-10	"Transfer"	1988-04-10	1990-04-19	"D"	"Universität Zürich-Irchel Anthropologisches Institut und Museum"	"Switzerland"	"F"	NA	NA	1987-04-10	1987
-2097	3	"FRA"	1990-04-19	"Transfer"	1990-04-19	1996-01-21	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"F"	NA	NA	1987-04-10	1987
-2097	3	"FRA"	1990-04-19	"End"	1996-01-21	1996-01-21	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"F"	NA	NA	1987-04-10	1987
-2098	1	"VIE"	1986-01-01	"Birth"	1986-01-01	1988-02-24	"D"	"Wild"	"Vietnam"	"M"	NA	NA	1986-01-01	1986
-2098	2	"SWI"	1988-02-24	"Transfer"	1988-02-24	1990-04-19	"D"	"SWITZRLND: Invalid use of GeoRef"	"Switzerland"	"M"	NA	NA	1986-01-01	1986
-2098	3	"FRA"	1990-04-19	"Transfer"	1990-04-19	2000-08-07	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"M"	NA	NA	1986-01-01	1986
-2098	3	"FRA"	1990-04-19	"End"	2000-08-07	2000-08-07	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"M"	NA	NA	1986-01-01	1986
-2108	1	"IRC"	1989-04-10	"Birth"	1989-04-10	1990-04-19	"D"	"Universität Zürich-Irchel Anthropologisches Institut und Museum"	"Switzerland"	"M"	12108	2097	1989-04-10	1989
-2108	2	"FRA"	1990-04-19	"Transfer"	1990-04-19	2002-11-26	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"M"	12108	2097	1989-04-10	1989
-2108	3	"KOL"	2002-11-26	"Transfer"	2002-11-26	2003-11-15	"D"	"Cologne Zoo"	"Germany"	"M"	12108	2097	1989-04-10	1989
-2108	3	"KOL"	2002-11-26	"End"	2003-11-15	2003-11-15	"D"	"Cologne Zoo"	"Germany"	"M"	12108	2097	1989-04-10	1989
-2129	1	"VIE"	1989-10-12	"Birth"	1989-10-12	1990-10-12	"D"	"Wild"	"Vietnam"	"F"	NA	NA	1989-10-12	1989
-2129	2	"PUB"	1990-10-12	"Transfer"	1990-10-12	1991-10-12	"D"	"General Public"	"Undetermined"	"F"	NA	NA	1989-10-12	1989
-2129	3	"MOS"	1991-10-12	"Transfer"	1991-10-12	1992-04-30	"D"	"Moscow Zoological Park"	"Russian Federation"	"F"	NA	NA	1989-10-12	1989
-2129	4	"FRA"	1992-04-30	"Transfer"	1992-04-30	2002-11-26	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"F"	NA	NA	1989-10-12	1989
-2129	5	"KOL"	2002-11-26	"Transfer"	2002-11-26	2005-12-06	"D"	"Cologne Zoo"	"Germany"	"F"	NA	NA	1989-10-12	1989
-2129	5	"KOL"	2002-11-26	"End"	2005-12-06	2005-12-06	"D"	"Cologne Zoo"	"Germany"	"F"	NA	NA	1989-10-12	1989
-2208	1	"FRA"	1994-04-27	"Birth"	1994-04-27	1998-06-24	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"M"	2108	2129	1994-04-27	1994
-2208	2	"COL"	1998-06-24	"Transfer"	1998-06-24	1998-10-13	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	2108	2129	1994-04-27	1994
-2208	3	"MIN"	1998-10-13	"Transfer"	1998-10-13	2010-10-29	"D"	"Minnesota Zoological Garden"	"United States"	"M"	2108	2129	1994-04-27	1994
-2208	3	"MIN"	1998-10-13	"End"	2010-10-29	2010-10-29	"D"	"Minnesota Zoological Garden"	"United States"	"M"	2108	2129	1994-04-27	1994
-2233	1	"FRA"	1996-07-30	"Birth"	1996-07-30	1998-06-24	"D"	"Zoologischer Garten Frankfurt"	"Germany"	"F"	2108	2129	1996-07-30	1996
-2233	2	"COL"	1998-06-24	"Transfer"	1998-06-24	1998-08-31	"D"	"Columbus Zoo and Aquarium"	"United States"	"F"	2108	2129	1996-07-30	1996
-2233	2	"COL"	1998-06-24	"End"	1998-08-31	1998-08-31	"D"	"Columbus Zoo and Aquarium"	"United States"	"F"	2108	2129	1996-07-30	1996
-2329	1	"PUE"	2001-02-07	"Birth"	2001-02-07	2001-02-07	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2001-02-07	2001
-2329	1	"PUE"	2001-02-07	"End"	2001-02-07	2001-02-07	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2001-02-07	2001
-2330	1	"PUE"	2001-02-07	"Birth"	2001-02-07	2001-02-11	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2001-02-07	2001
-2330	1	"PUE"	2001-02-07	"End"	2001-02-11	2001-02-11	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2001-02-07	2001
-2333	1	"DUK"	2001-05-14	"Birth"	2001-05-14	2001-05-14	"D"	"Duke Lemur Center"	"United States"	"U"	1103	1097	2001-05-14	2001
-2333	1	"DUK"	2001-05-14	"End"	2001-05-14	2001-05-14	"D"	"Duke Lemur Center"	"United States"	"U"	1103	1097	2001-05-14	2001
-2334	1	"DUK"	2001-05-14	"Birth"	2001-05-14	2001-05-14	"D"	"Duke Lemur Center"	"United States"	"U"	1103	1097	2001-05-14	2001
-2334	1	"DUK"	2001-05-14	"End"	2001-05-14	2001-05-14	"D"	"Duke Lemur Center"	"United States"	"U"	1103	1097	2001-05-14	2001
-2335	1	"DUK"	2001-05-14	"Birth"	2001-05-14	2001-05-23	"D"	"Duke Lemur Center"	"United States"	"U"	1103	1097	2001-05-14	2001
-2335	1	"DUK"	2001-05-14	"End"	2001-05-23	2001-05-23	"D"	"Duke Lemur Center"	"United States"	"U"	1103	1097	2001-05-14	2001
-2336	1	"ASI"	2000-08-02	"Birth"	2000-08-02	2001-08-02	"D"	"Wild"	"Undetermined"	"M"	NA	NA	2000-08-02	2000
-2336	2	"CAL"	2001-08-02	"Transfer"	2001-08-02	2001-11-22	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2336	3	"CRY"	2001-11-22	"Transfer"	2001-11-22	2004-10-15	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2336	4	"IND"	2004-10-15	"Transfer"	2004-10-15	2009-06-02	"D"	"Indian River Reptile Zoo"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2336	5	"GRA"	2009-06-02	"Transfer"	2009-06-02	2012-08-20	"D"	"Zoo de Granby"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2336	6	"NYB"	2012-08-20	"Transfer"	2012-08-20	2013-03-10	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	NA	NA	2000-08-02	2000
-2336	6	"NYB"	2012-08-20	"End"	2013-03-10	2013-03-10	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	NA	NA	2000-08-02	2000
-2337	1	"ASI"	2000-08-02	"Birth"	2000-08-02	2001-08-02	"D"	"Wild"	"Undetermined"	"M"	NA	NA	2000-08-02	2000
-2337	2	"CAL"	2001-08-02	"Transfer"	2001-08-02	2001-11-21	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2337	3	"QUE"	2001-11-21	"Transfer"	2001-11-21	2008-06-03	"D"	"Jardin Zoologique du Quebec (extinct)"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2337	4	"LAN"	2008-06-03	"Transfer"	2008-06-03	2010-11-02	"D"	"Mountain View Conservation & Breeding"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2337	4	"LAN"	2008-06-03	"End"	2010-11-02	2010-11-02	"D"	"Mountain View Conservation & Breeding"	"Canada"	"M"	NA	NA	2000-08-02	2000
-2338	1	"ASI"	1999-01-01	"Birth"	1999-01-01	2001-08-02	"D"	"Wild"	"Undetermined"	"M"	NA	NA	1999-01-01	1999
-2338	2	"CAL"	2001-08-02	"Transfer"	2001-08-02	2012-02-13	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	NA	NA	1999-01-01	1999
-2338	2	"CAL"	2001-08-02	"End"	2012-02-13	2012-02-13	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	NA	NA	1999-01-01	1999
-2339	1	"ASI"	2000-08-02	"Birth"	2000-08-02	2001-08-02	"D"	"Wild"	"Undetermined"	"F"	NA	NA	2000-08-02	2000
-2339	2	"CAL"	2001-08-02	"Transfer"	2001-08-02	2001-09-17	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2339	2	"CAL"	2001-08-02	"End"	2001-09-17	2001-09-17	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2340	1	"ASI"	2000-08-02	"Birth"	2000-08-02	2001-08-02	"D"	"Wild"	"Undetermined"	"F"	NA	NA	2000-08-02	2000
-2340	2	"CAL"	2001-08-02	"Transfer"	2001-08-02	2007-06-01	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2340	2	"CAL"	2001-08-02	"End"	2007-06-01	2007-06-01	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2341	1	"ASI"	2000-08-02	"Birth"	2000-08-02	2001-08-02	"D"	"Wild"	"Undetermined"	"F"	NA	NA	2000-08-02	2000
-2341	2	"CAL"	2001-08-02	"Transfer"	2001-08-02	2001-11-21	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2341	3	"QUE"	2001-11-21	"Transfer"	2001-11-21	2008-06-03	"D"	"Jardin Zoologique du Quebec (extinct)"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2341	4	"LAN"	2008-06-03	"Transfer"	2008-06-03	2010-11-02	"D"	"Mountain View Conservation & Breeding"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2341	5	"BOW"	2010-11-02	"Transfer"	2010-11-02	2012-02-14	"D"	"Bowmanville Zoological Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2341	5	"BOW"	2010-11-02	"End"	2012-02-14	2012-02-14	"D"	"Bowmanville Zoological Park"	"Canada"	"F"	NA	NA	2000-08-02	2000
-2342	1	"MIN"	2001-08-15	"Birth"	2001-08-15	2008-10-15	"D"	"Minnesota Zoological Garden"	"United States"	"F"	2208	1126	2001-08-15	2001
-2342	2	"EVA"	2008-10-15	"Transfer"	2008-10-15	2013-12-16	"D"	"Mesker Park Zoo"	"United States"	"F"	2208	1126	2001-08-15	2001
-2342	2	"EVA"	2008-10-15	"End"	2013-12-16	2013-12-16	"D"	"Mesker Park Zoo"	"United States"	"F"	2208	1126	2001-08-15	2001
-2343	1	"MIN"	2001-08-15	"Birth"	2001-08-15	2001-08-16	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	1126	2001-08-15	2001
-2343	1	"MIN"	2001-08-15	"End"	2001-08-16	2001-08-16	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	1126	2001-08-15	2001
-2400	1	"MIN"	2003-01-04	"Birth"	2003-01-04	2005-05-12	"D"	"Minnesota Zoological Garden"	"United States"	"F"	2208	1126	2003-01-04	2003
-2400	2	"AKR"	2005-05-12	"Transfer"	2005-05-12	2009-12-30	"D"	"Akron Zoological Park"	"United States"	"F"	2208	1126	2003-01-04	2003
-2400	2	"AKR"	2005-05-12	"End"	2009-12-30	2009-12-30	"D"	"Akron Zoological Park"	"United States"	"F"	2208	1126	2003-01-04	2003
-2402	1	"SEA"	2001-11-30	"Birth"	2001-11-30	2007-04-26	"D"	"Woodland Park Zoo"	"United States"	"M"	1102	1127	2001-11-30	2001
-2402	2	"OMA"	2007-04-26	"Transfer"	2007-04-26	2008-09-02	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1102	1127	2001-11-30	2001
-2402	3	"GAR"	2008-09-02	"Transfer"	2008-09-02	2014-03-04	"D"	"Lee Richardson Zoo"	"United States"	"M"	1102	1127	2001-11-30	2001
-2402	3	"GAR"	2008-09-02	"End"	2014-03-04	2014-03-04	"D"	"Lee Richardson Zoo"	"United States"	"M"	1102	1127	2001-11-30	2001
-2403	1	"SEA"	2001-11-30	"Birth"	2001-11-30	2003-11-12	"D"	"Woodland Park Zoo"	"United States"	"F"	1102	1127	2001-11-30	2001
-2403	2	"ABQ"	2003-11-12	"Transfer"	2003-11-12	2013-11-07	"D"	"Albuquerque Biological Park"	"United States"	"F"	1102	1127	2001-11-30	2001
-2403	3	"CLE"	2013-11-07	"Transfer"	2013-11-07	2015-10-26	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1102	1127	2001-11-30	2001
-2403	4	"OMA"	2015-10-26	"Transfer"	2015-10-26	2017-01-26	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1102	1127	2001-11-30	2001
-2403	4	"OMA"	2015-10-26	"End"	2017-01-26	2017-01-26	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	1102	1127	2001-11-30	2001
-2405	1	"CAL"	2002-02-08	"Birth"	2002-02-08	2003-10-09	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	2338	2340	2002-02-08	2002
-2405	2	"CRY"	2003-10-09	"Transfer"	2003-10-09	2005-03-22	"D"	"Crystal Garden Conservation Center (extinct 2004)"	"Canada"	"F"	2338	2340	2002-02-08	2002
-2405	3	"OAS"	2005-03-22	"Transfer"	2005-03-22	2008-07-13	"D"	"OASES (John Creviston)"	"Canada"	"F"	2338	2340	2002-02-08	2002
-2405	4	"LAN"	2008-07-13	"Transfer"	2008-07-13	2010-11-02	"D"	"Mountain View Conservation & Breeding"	"Canada"	"F"	2338	2340	2002-02-08	2002
-2405	5	"BOW"	2010-11-02	"Transfer"	2010-11-02	2013-07-14	"D"	"Bowmanville Zoological Park"	"Canada"	"F"	2338	2340	2002-02-08	2002
-2405	5	"BOW"	2010-11-02	"End"	2013-07-14	2013-07-14	"D"	"Bowmanville Zoological Park"	"Canada"	"F"	2338	2340	2002-02-08	2002
-2406	1	"DUK"	2002-03-04	"Birth"	2002-03-04	2012-05-08	"D"	"Duke Lemur Center"	"United States"	"M"	1103	1097	2002-03-04	2002
-2406	1	"DUK"	2002-03-04	"End"	2012-05-08	2012-05-08	"D"	"Duke Lemur Center"	"United States"	"M"	1103	1097	2002-03-04	2002
-2407	1	"DUK"	2002-03-04	"Birth"	2002-03-04	2002-03-05	"D"	"Duke Lemur Center"	"United States"	"M"	1103	1097	2002-03-04	2002
-2407	1	"DUK"	2002-03-04	"End"	2002-03-05	2002-03-05	"D"	"Duke Lemur Center"	"United States"	"M"	1103	1097	2002-03-04	2002
-2408	1	"SOZ"	2002-03-25	"Birth"	2002-03-25	2006-06-07	"D"	"San Diego Zoo"	"United States"	"M"	1113	1089	2002-03-25	2002
-2408	2	"AKR"	2006-06-07	"Transfer"	2006-06-07	2015-03-01	"D"	"Akron Zoological Park"	"United States"	"M"	1113	1089	2002-03-25	2002
-2408	2	"AKR"	2006-06-07	"End"	2015-03-01	2015-03-01	"D"	"Akron Zoological Park"	"United States"	"M"	1113	1089	2002-03-25	2002
-2409	1	"SOZ"	2002-03-25	"Birth"	2002-03-25	2009-07-05	"D"	"San Diego Zoo"	"United States"	"M"	1113	1089	2002-03-25	2002
-2409	2	"ATT"	2009-07-05	"Transfer"	2009-07-05	2019-03-13	"D"	"Capron Park Zoo"	"United States"	"M"	1113	1089	2002-03-25	2002
-2409	2	"ATT"	2009-07-05	"End"	2019-03-13	2019-03-13	"D"	"Capron Park Zoo"	"United States"	"M"	1113	1089	2002-03-25	2002
-2410	1	"PUE"	2002-04-05	"Birth"	2002-04-05	2004-01-13	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2002-04-05	2002
-2410	1	"PUE"	2002-04-05	"End"	2004-01-13	2004-01-13	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2002-04-05	2002
-2411	1	"PUE"	2002-04-05	"Birth"	2002-04-05	2003-11-19	"D"	"Pueblo Zoo"	"United States"	"F"	1125	1124	2002-04-05	2002
-2411	2	"CHI"	2003-11-19	"Transfer"	2003-11-19	2015-04-22	"D"	"Lincoln Park Zoological Gardens"	"United States"	"F"	1125	1124	2002-04-05	2002
-2411	3	"BUS"	2015-04-22	"Transfer"	2015-04-22	2015-06-16	"D"	"Busch Gardens Tampa Bay"	"United States"	"F"	1125	1124	2002-04-05	2002
-2411	3	"BUS"	2015-04-22	"End"	2015-06-16	2015-06-16	"D"	"Busch Gardens Tampa Bay"	"United States"	"F"	1125	1124	2002-04-05	2002
-2412	1	"MIN"	2002-06-03	"Birth"	2002-06-03	2003-09-01	"D"	"Minnesota Zoological Garden"	"United States"	"M"	2208	1126	2002-06-03	2002
-2412	2	"CHI"	2003-09-01	"Transfer"	2003-09-01	2005-01-28	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2208	1126	2002-06-03	2002
-2412	2	"CHI"	2003-09-01	"End"	2005-01-28	2005-01-28	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2208	1126	2002-06-03	2002
-2413	1	"MIN"	2002-06-03	"Birth"	2002-06-03	2003-10-23	"D"	"Minnesota Zoological Garden"	"United States"	"F"	2208	1126	2002-06-03	2002
-2413	2	"CLE"	2003-10-23	"Transfer"	2003-10-23	2007-08-01	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	2208	1126	2002-06-03	2002
-2413	2	"CLE"	2003-10-23	"End"	2007-08-01	2007-08-01	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	2208	1126	2002-06-03	2002
-2414	1	"SEA"	2002-11-05	"Birth"	2002-11-05	2003-11-12	"D"	"Woodland Park Zoo"	"United States"	"F"	1102	1127	2002-11-05	2002
-2414	2	"ABQ"	2003-11-12	"Transfer"	2003-11-12	2013-11-07	"D"	"Albuquerque Biological Park"	"United States"	"F"	1102	1127	2002-11-05	2002
-2414	3	"CLE"	2013-11-07	"Transfer"	2013-11-07	2020-04-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1102	1127	2002-11-05	2002
-2414	3	"CLE"	2013-11-07	"End"	2020-04-24	2020-04-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1102	1127	2002-11-05	2002
-2415	1	"SEA"	2002-11-05	"Birth"	2002-11-05	2009-11-12	"D"	"Woodland Park Zoo"	"United States"	"M"	1102	1127	2002-11-05	2002
-2415	2	"MEM"	2009-11-12	"Transfer"	2009-11-12	2010-05-12	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	1102	1127	2002-11-05	2002
-2415	2	"MEM"	2009-11-12	"End"	2010-05-12	2010-05-12	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	1102	1127	2002-11-05	2002
-2416	1	"CAL"	2002-12-20	"Birth"	2002-12-20	2007-01-01	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	2338	2340	2002-12-20	2002
-2416	2	"STL"	2007-01-01	"Transfer"	2007-01-01	2007-10-26	"D"	"Saint Louis Zoological Park"	"United States"	"F"	2338	2340	2002-12-20	2002
-2416	3	"MEM"	2007-10-26	"Transfer"	2007-10-26	2018-05-21	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	2338	2340	2002-12-20	2002
-2416	3	"MEM"	2007-10-26	"End"	2018-05-21	2018-05-21	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	2338	2340	2002-12-20	2002
-2417	1	"CAL"	2002-12-20	"Birth"	2002-12-20	2007-09-07	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	2338	2340	2002-12-20	2002
-2417	2	"STL"	2007-09-07	"Transfer"	2007-09-07	2007-10-16	"D"	"Saint Louis Zoological Park"	"United States"	"M"	2338	2340	2002-12-20	2002
-2417	3	"NYB"	2007-10-16	"Transfer"	2007-10-16	2016-02-23	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2338	2340	2002-12-20	2002
-2417	3	"NYB"	2007-10-16	"End"	2016-02-23	2016-02-23	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2338	2340	2002-12-20	2002
-2418	1	"PUE"	2003-02-09	"Birth"	2003-02-09	2006-11-08	"D"	"Pueblo Zoo"	"United States"	"F"	1125	1124	2003-02-09	2003
-2418	2	"MIN"	2006-11-08	"Transfer"	2006-11-08	2011-05-04	"D"	"Minnesota Zoological Garden"	"United States"	"F"	1125	1124	2003-02-09	2003
-2418	3	"AKR"	2011-05-04	"Transfer"	2011-05-04	2016-01-31	"D"	"Akron Zoological Park"	"United States"	"F"	1125	1124	2003-02-09	2003
-2418	3	"AKR"	2011-05-04	"End"	2016-01-31	2016-01-31	"D"	"Akron Zoological Park"	"United States"	"F"	1125	1124	2003-02-09	2003
-2419	1	"PUE"	2003-02-09	"Birth"	2003-02-09	2003-02-13	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2003-02-09	2003
-2419	1	"PUE"	2003-02-09	"End"	2003-02-13	2003-02-13	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2003-02-09	2003
-2420	1	"UND"	2002-01-03	"Birth"	2002-01-03	2002-06-01	"D"	"Wild"	"Undetermined"	"M"	NA	NA	2002-01-03	2002
-2420	2	"USF"	2002-06-01	"Transfer"	2002-06-01	2002-07-24	"D"	"US Fish and Wildlife Service [General]"	"United States"	"M"	NA	NA	2002-01-03	2002
-2420	3	"LOS"	2002-07-24	"Transfer"	2002-07-24	2004-07-27	"D"	"Los Angeles Zoo & Botanical Gardens"	"United States"	"M"	NA	NA	2002-01-03	2002
-2420	4	"DUK"	2004-07-27	"Transfer"	2004-07-27	2012-04-04	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	2002-01-03	2002
-2420	4	"DUK"	2004-07-27	"End"	2012-04-04	2012-04-04	"D"	"Duke Lemur Center"	"United States"	"M"	NA	NA	2002-01-03	2002
-2421	1	"UND"	2001-06-01	"Birth"	2001-06-01	2002-06-01	"D"	"Wild"	"Undetermined"	"F"	NA	NA	2001-06-01	2001
-2421	2	"USF"	2002-06-01	"Transfer"	2002-06-01	2002-07-24	"D"	"US Fish and Wildlife Service [General]"	"United States"	"F"	NA	NA	2001-06-01	2001
-2421	3	"LOS"	2002-07-24	"Transfer"	2002-07-24	2003-02-08	"D"	"Los Angeles Zoo & Botanical Gardens"	"United States"	"F"	NA	NA	2001-06-01	2001
-2421	3	"LOS"	2002-07-24	"End"	2003-02-08	2003-02-08	"D"	"Los Angeles Zoo & Botanical Gardens"	"United States"	"F"	NA	NA	2001-06-01	2001
-2422	1	"UND"	1997-01-01	"Birth"	1997-01-01	2001-01-01	"D"	"Wild"	"Undetermined"	"F"	NA	NA	1997-01-01	1997
-2422	2	"PUB"	2001-01-01	"Transfer"	2001-01-01	2002-07-16	"D"	"General Public"	"Undetermined"	"F"	NA	NA	1997-01-01	1997
-2422	3	"MYA"	2002-07-16	"Transfer"	2002-07-16	2003-06-11	"D"	"Lemur Conservation Foundation"	"United States"	"F"	NA	NA	1997-01-01	1997
-2422	4	"AUD"	2003-06-11	"Transfer"	2003-06-11	2003-12-09	"D"	"Audubon Zoo"	"United States"	"F"	NA	NA	1997-01-01	1997
-2422	5	"DUK"	2003-12-09	"Transfer"	2003-12-09	2017-10-26	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1997-01-01	1997
-2422	5	"DUK"	2003-12-09	"End"	2017-10-26	2017-10-26	"D"	"Duke Lemur Center"	"United States"	"F"	NA	NA	1997-01-01	1997
-2423	1	"PUB"	2001-01-01	"Birth"	2001-01-01	2002-07-16	"D"	"General Public"	"Undetermined"	"F"	12423	2422	2001-01-01	2001
-2423	2	"MYA"	2002-07-16	"Transfer"	2002-07-16	2003-06-11	"D"	"Lemur Conservation Foundation"	"United States"	"F"	12423	2422	2001-01-01	2001
-2423	3	"AUD"	2003-06-11	"Transfer"	2003-06-11	2004-12-15	"D"	"Audubon Zoo"	"United States"	"F"	12423	2422	2001-01-01	2001
-2423	4	"CAL"	2004-12-15	"Transfer"	2004-12-15	2007-09-07	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	12423	2422	2001-01-01	2001
-2423	5	"STL"	2007-09-07	"Transfer"	2007-09-07	2007-10-16	"D"	"Saint Louis Zoological Park"	"United States"	"F"	12423	2422	2001-01-01	2001
-2423	6	"NYB"	2007-10-16	"Transfer"	2007-10-16	2016-05-21	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	12423	2422	2001-01-01	2001
-2423	6	"NYB"	2007-10-16	"End"	2016-05-21	2016-05-21	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	12423	2422	2001-01-01	2001
-2424	1	"PUB"	2002-01-01	"Birth"	2002-01-01	2003-06-11	"D"	"General Public"	"Undetermined"	"F"	12423	2422	2002-01-01	2002
-2424	2	"AUD"	2003-06-11	"Transfer"	2003-06-11	2003-12-09	"D"	"Audubon Zoo"	"United States"	"F"	12423	2422	2002-01-01	2002
-2424	3	"DUK"	2003-12-09	"Transfer"	2003-12-09	2008-08-12	"D"	"Duke Lemur Center"	"United States"	"F"	12423	2422	2002-01-01	2002
-2424	3	"DUK"	2003-12-09	"End"	2008-08-12	2008-08-12	"D"	"Duke Lemur Center"	"United States"	"F"	12423	2422	2002-01-01	2002
-2425	1	"CBR"	2003-08-03	"Birth"	2003-08-03	2012-10-26	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1116	1120	2003-08-03	2003
-2425	1	"CBR"	2003-08-03	"End"	2012-10-26	2012-10-26	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1116	1120	2003-08-03	2003
-2426	1	"CBR"	2003-08-03	"Birth"	2003-08-03	2014-05-16	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1116	1120	2003-08-03	2003
-2426	1	"CBR"	2003-08-03	"End"	2014-05-16	2014-05-16	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	1116	1120	2003-08-03	2003
-2427	1	"CAL"	2003-09-05	"Birth"	2003-09-05	2007-09-05	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	2338	2340	2003-09-05	2003
-2427	2	"STL"	2007-09-05	"Transfer"	2007-09-05	2007-10-25	"D"	"Saint Louis Zoological Park"	"United States"	"M"	2338	2340	2003-09-05	2003
-2427	3	"MEM"	2007-10-25	"Transfer"	2007-10-25	2008-10-10	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	2338	2340	2003-09-05	2003
-2427	4	"EVA"	2008-10-10	"Transfer"	2008-10-10	2016-02-08	"D"	"Mesker Park Zoo"	"United States"	"M"	2338	2340	2003-09-05	2003
-2427	4	"EVA"	2008-10-10	"End"	2016-02-08	2016-02-08	"D"	"Mesker Park Zoo"	"United States"	"M"	2338	2340	2003-09-05	2003
-2428	1	"CAL"	2003-09-05	"Birth"	2003-09-05	2005-09-29	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"F"	2338	2340	2003-09-05	2003
-2428	2	"GRA"	2005-09-29	"Transfer"	2005-09-29	2012-08-20	"D"	"Zoo de Granby"	"Canada"	"F"	2338	2340	2003-09-05	2003
-2428	3	"NYB"	2012-08-20	"Transfer"	2012-08-20	2013-10-24	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2338	2340	2003-09-05	2003
-2428	4	"OMA"	2013-10-24	"Transfer"	2013-10-24	2016-03-12	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	2338	2340	2003-09-05	2003
-2428	4	"OMA"	2013-10-24	"End"	2016-03-12	2016-03-12	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	2338	2340	2003-09-05	2003
-2429	1	"QUE"	2003-10-27	"Birth"	2003-10-27	2006-04-11	"D"	"Jardin Zoologique du Quebec (extinct)"	"Canada"	"F"	2337	2341	2003-10-27	2003
-2429	2	"GRA"	2006-04-11	"Transfer"	2006-04-11	2012-08-20	"D"	"Zoo de Granby"	"Canada"	"F"	2337	2341	2003-10-27	2003
-2429	3	"NYB"	2012-08-20	"Transfer"	2012-08-20	2014-05-14	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2337	2341	2003-10-27	2003
-2429	4	"EVA"	2014-05-14	"Transfer"	2014-05-14	2020-12-17	"D"	"Mesker Park Zoo"	"United States"	"F"	2337	2341	2003-10-27	2003
-2429	4	"EVA"	2014-05-14	"End"	2020-12-17	2020-12-17	"D"	"Mesker Park Zoo"	"United States"	"F"	2337	2341	2003-10-27	2003
-2430	1	"PUE"	2003-12-22	"Birth"	2003-12-22	2004-11-09	"D"	"Pueblo Zoo"	"United States"	"F"	1125	1124	2003-12-22	2003
-2430	2	"HOU"	2004-11-09	"Transfer"	2004-11-09	2005-06-15	"D"	"Houston Zoo, Inc."	"United States"	"F"	1125	1124	2003-12-22	2003
-2430	3	"ATT"	2005-06-15	"Transfer"	2005-06-15	2017-03-27	"D"	"Capron Park Zoo"	"United States"	"F"	1125	1124	2003-12-22	2003
-2430	3	"ATT"	2005-06-15	"End"	2017-03-27	2017-03-27	"D"	"Capron Park Zoo"	"United States"	"F"	1125	1124	2003-12-22	2003
-2431	1	"PUE"	2003-12-22	"Birth"	2003-12-22	2003-12-22	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2003-12-22	2003
-2431	1	"PUE"	2003-12-22	"End"	2003-12-22	2003-12-22	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2003-12-22	2003
-2432	1	"DUK"	1996-04-25	"Birth"	1996-04-25	1996-04-30	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1044	1996-04-25	1996
-2432	1	"DUK"	1996-04-25	"End"	1996-04-30	1996-04-30	"D"	"Duke Lemur Center"	"United States"	"M"	1012	1044	1996-04-25	1996
-2433	1	"OMA"	2000-08-03	"Birth"	2000-08-03	2000-08-03	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"U"	1056	1079	2000-08-03	2000
-2433	1	"OMA"	2000-08-03	"End"	2000-08-03	2000-08-03	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"U"	1056	1079	2000-08-03	2000
-2434	1	"SEA"	2001-03-17	"Birth"	2001-03-17	2001-03-17	"D"	"Woodland Park Zoo"	"United States"	"U"	1102	1127	2001-03-17	2001
-2434	1	"SEA"	2001-03-17	"End"	2001-03-17	2001-03-17	"D"	"Woodland Park Zoo"	"United States"	"U"	1102	1127	2001-03-17	2001
-2435	1	"MIN"	2004-08-10	"Birth"	2004-08-10	2006-09-20	"D"	"Minnesota Zoological Garden"	"United States"	"M"	2208	1126	2004-08-10	2004
-2435	2	"ABQ"	2006-09-20	"Transfer"	2006-09-20	2013-10-28	"D"	"Albuquerque Biological Park"	"United States"	"M"	2208	1126	2004-08-10	2004
-2435	3	"PUE"	2013-10-28	"Transfer"	2013-10-28	2016-05-05	"D"	"Pueblo Zoo"	"United States"	"M"	2208	1126	2004-08-10	2004
-2435	4	"EVA"	2016-05-05	"Transfer"	2016-05-05	2018-04-19	"D"	"Mesker Park Zoo"	"United States"	"M"	2208	1126	2004-08-10	2004
-2435	5	"SOZ"	2018-04-19	"Transfer"	2018-04-19	2021-04-29	"D"	"San Diego Zoo"	"United States"	"M"	2208	1126	2004-08-10	2004
-2435	5	"SOZ"	2018-04-19	"End"	2021-04-29	2021-04-29	"D"	"San Diego Zoo"	"United States"	"M"	2208	1126	2004-08-10	2004
-2436	1	"MIN"	2004-08-10	"Birth"	2004-08-10	2006-09-20	"D"	"Minnesota Zoological Garden"	"United States"	"F"	2208	1126	2004-08-10	2004
-2436	2	"PHI"	2006-09-20	"Transfer"	2006-09-20	2015-08-25	"D"	"Philadelphia Zoo"	"United States"	"F"	2208	1126	2004-08-10	2004
-2436	3	"SOZ"	2015-08-25	"Transfer"	2015-08-25	2017-08-09	"D"	"San Diego Zoo"	"United States"	"F"	2208	1126	2004-08-10	2004
-2436	4	"PUE"	2017-08-09	"Transfer"	2017-08-09	2018-12-12	"D"	"Pueblo Zoo"	"United States"	"F"	2208	1126	2004-08-10	2004
-2436	4	"PUE"	2017-08-09	"End"	2018-12-12	2018-12-12	"D"	"Pueblo Zoo"	"United States"	"F"	2208	1126	2004-08-10	2004
-2437	1	"PUE"	2004-08-11	"Birth"	2004-08-11	2004-08-14	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2004-08-11	2004
-2437	1	"PUE"	2004-08-11	"End"	2004-08-14	2004-08-14	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2004-08-11	2004
-2438	1	"PUE"	2004-08-11	"Birth"	2004-08-11	2004-08-14	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2004-08-11	2004
-2438	1	"PUE"	2004-08-11	"End"	2004-08-14	2004-08-14	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2004-08-11	2004
-2439	1	"CAL"	2004-08-22	"Birth"	2004-08-22	2004-08-27	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	2338	2340	2004-08-22	2004
-2439	1	"CAL"	2004-08-22	"End"	2004-08-27	2004-08-27	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	2338	2340	2004-08-22	2004
-2440	1	"CAL"	2004-08-22	"Birth"	2004-08-22	2004-08-22	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	2338	2340	2004-08-22	2004
-2440	1	"CAL"	2004-08-22	"End"	2004-08-22	2004-08-22	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"M"	2338	2340	2004-08-22	2004
-2441	1	"SOZ"	2005-01-23	"Birth"	2005-01-23	2005-01-23	"D"	"San Diego Zoo"	"United States"	"M"	1108	1146	2005-01-23	2005
-2441	1	"SOZ"	2005-01-23	"End"	2005-01-23	2005-01-23	"D"	"San Diego Zoo"	"United States"	"M"	1108	1146	2005-01-23	2005
-2442	1	"SOZ"	2005-01-23	"Birth"	2005-01-23	2005-01-23	"D"	"San Diego Zoo"	"United States"	"M"	1108	1146	2005-01-23	2005
-2442	1	"SOZ"	2005-01-23	"End"	2005-01-23	2005-01-23	"D"	"San Diego Zoo"	"United States"	"M"	1108	1146	2005-01-23	2005
-2444	1	"QUE"	2005-02-15	"Birth"	2005-02-15	2008-06-03	"D"	"Jardin Zoologique du Quebec (extinct)"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2444	2	"LAN"	2008-06-03	"Transfer"	2008-06-03	2010-11-02	"D"	"Mountain View Conservation & Breeding"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2444	3	"BOW"	2010-11-02	"Transfer"	2010-11-02	2016-07-24	"D"	"Bowmanville Zoological Park"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2444	3	"BOW"	2010-11-02	"End"	2016-07-24	2016-07-24	"D"	"Bowmanville Zoological Park"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2445	1	"PUE"	2005-03-30	"Birth"	2005-03-30	2005-04-01	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2005-03-30	2005
-2445	1	"PUE"	2005-03-30	"End"	2005-04-01	2005-04-01	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2005-03-30	2005
-2446	1	"PUE"	2005-04-01	"Birth"	2005-04-01	2005-04-01	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2005-04-01	2005
-2446	1	"PUE"	2005-04-01	"End"	2005-04-01	2005-04-01	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2005-04-01	2005
-2447	1	"CAL"	2005-04-09	"Birth"	2005-04-09	2005-04-09	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"U"	2338	2340	2005-04-09	2005
-2447	1	"CAL"	2005-04-09	"End"	2005-04-09	2005-04-09	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"U"	2338	2340	2005-04-09	2005
-2448	1	"CAL"	2005-04-09	"Birth"	2005-04-09	2005-04-09	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"U"	2338	2340	2005-04-09	2005
-2448	1	"CAL"	2005-04-09	"End"	2005-04-09	2005-04-09	"D"	"Calgary Zoo, Garden & Prehistoric Park"	"Canada"	"U"	2338	2340	2005-04-09	2005
-2449	1	"SOZ"	2005-09-17	"Birth"	2005-09-17	2006-08-31	"D"	"San Diego Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2449	2	"ELP"	2006-08-31	"Transfer"	2006-08-31	2017-07-15	"D"	"El Paso Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2449	2	"ELP"	2006-08-31	"End"	2017-07-15	2017-07-15	"D"	"El Paso Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2450	1	"SOZ"	2005-09-17	"Birth"	2005-09-17	2008-11-25	"D"	"San Diego Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2450	2	"WIL"	2008-11-25	"Transfer"	2008-11-25	2011-10-07	"D"	"Wildlife World Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2450	3	"CLE"	2011-10-07	"Transfer"	2011-10-07	2020-10-15	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2450	4	"ELP"	2020-10-15	"Transfer"	2020-10-15	2023-01-01	"D"	"El Paso Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2450	4	"ELP"	2020-10-15	"End"	2023-01-01	2023-01-01	"D"	"El Paso Zoo"	"United States"	"M"	1108	1146	2005-09-17	2005
-2451	1	"DUK"	2004-10-02	"Birth"	2004-10-02	2008-10-02	"D"	"Duke Lemur Center"	"United States"	"F"	1103	1097	2004-10-02	2004
-2451	2	"GAR"	2008-10-02	"Transfer"	2008-10-02	2013-11-15	"D"	"Lee Richardson Zoo"	"United States"	"F"	1103	1097	2004-10-02	2004
-2451	3	"PUE"	2013-11-15	"Transfer"	2013-11-15	2016-02-05	"D"	"Pueblo Zoo"	"United States"	"F"	1103	1097	2004-10-02	2004
-2451	3	"PUE"	2013-11-15	"End"	2016-02-05	2016-02-05	"D"	"Pueblo Zoo"	"United States"	"F"	1103	1097	2004-10-02	2004
-2452	1	"CLE"	2005-12-24	"Birth"	2005-12-24	2005-12-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2005-12-24	2005
-2452	1	"CLE"	2005-12-24	"End"	2005-12-24	2005-12-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2005-12-24	2005
-2490	1	"CLE"	2004-08-20	"Birth"	2004-08-20	2004-08-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2004-08-20	2004
-2490	1	"CLE"	2004-08-20	"End"	2004-08-24	2004-08-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2004-08-20	2004
-2493	1	"QUE"	2005-02-15	"Birth"	2005-02-15	2008-06-03	"D"	"Jardin Zoologique du Quebec (extinct)"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2493	2	"LAN"	2008-06-03	"Transfer"	2008-06-03	2010-11-02	"D"	"Mountain View Conservation & Breeding"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2493	3	"BOW"	2010-11-02	"Transfer"	2010-11-02	2016-07-24	"D"	"Bowmanville Zoological Park"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2493	3	"BOW"	2010-11-02	"End"	2016-07-24	2016-07-24	"D"	"Bowmanville Zoological Park"	"Canada"	"M"	2337	2341	2005-02-15	2005
-2495	1	"MOO"	2006-03-24	"Birth"	2006-03-24	2006-03-24	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"U"	1121	1145	2006-03-24	2006
-2495	1	"MOO"	2006-03-24	"End"	2006-03-24	2006-03-24	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"U"	1121	1145	2006-03-24	2006
-2496	1	"MOO"	2006-03-24	"Birth"	2006-03-24	2008-09-17	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1121	1145	2006-03-24	2006
-2496	2	"HOU"	2008-09-17	"Transfer"	2008-09-17	2008-12-17	"D"	"Houston Zoo, Inc."	"United States"	"M"	1121	1145	2006-03-24	2006
-2496	3	"CLE"	2008-12-17	"Transfer"	2008-12-17	2016-04-19	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1121	1145	2006-03-24	2006
-2496	4	"DUK"	2016-04-19	"Transfer"	2016-04-19	2017-06-07	"D"	"Duke Lemur Center"	"United States"	"M"	1121	1145	2006-03-24	2006
-2496	4	"DUK"	2016-04-19	"End"	2017-06-07	2017-06-07	"D"	"Duke Lemur Center"	"United States"	"M"	1121	1145	2006-03-24	2006
-2498	1	"DUK"	2006-06-01	"Birth"	2006-06-01	2015-06-17	"D"	"Duke Lemur Center"	"United States"	"M"	2406	2424	2006-06-01	2006
-2498	1	"DUK"	2006-06-01	"End"	2015-06-17	2015-06-17	"D"	"Duke Lemur Center"	"United States"	"M"	2406	2424	2006-06-01	2006
-2499	1	"DUK"	2006-06-01	"Birth"	2006-06-01	2008-10-02	"D"	"Duke Lemur Center"	"United States"	"F"	2406	2424	2006-06-01	2006
-2499	2	"OMA"	2008-10-02	"Transfer"	2008-10-02	2017-03-04	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	2406	2424	2006-06-01	2006
-2499	2	"OMA"	2008-10-02	"End"	2017-03-04	2017-03-04	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	2406	2424	2006-06-01	2006
-2500	1	"SOZ"	2006-06-18	"Birth"	2006-06-18	2008-09-17	"D"	"San Diego Zoo"	"United States"	"M"	2409	1135	2006-06-18	2006
-2500	2	"OMA"	2008-09-17	"Transfer"	2008-09-17	2013-12-18	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	2409	1135	2006-06-18	2006
-2500	2	"OMA"	2008-09-17	"End"	2013-12-18	2013-12-18	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	2409	1135	2006-06-18	2006
-2501	1	"CLE"	2007-01-07	"Birth"	2007-01-07	2009-11-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1138	2413	2007-01-07	2007
-2501	1	"CLE"	2007-01-07	"End"	2009-11-06	2009-11-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1138	2413	2007-01-07	2007
-2502	1	"CLE"	2007-01-07	"Birth"	2007-01-07	2009-05-05	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1138	2413	2007-01-07	2007
-2502	2	"DUK"	2009-05-05	"Transfer"	2009-05-05	2019-09-10	"D"	"Duke Lemur Center"	"United States"	"F"	1138	2413	2007-01-07	2007
-2502	3	"EVA"	2019-09-10	"Transfer"	2019-09-10	2025-01-01	"D"	"Mesker Park Zoo"	"United States"	"F"	1138	2413	2007-01-07	2007
-2502	3	"EVA"	2019-09-10	"End"	2025-01-01	2025-01-01	"D"	"Mesker Park Zoo"	"United States"	"F"	1138	2413	2007-01-07	2007
-2503	1	"ABQ"	2007-01-18	"Birth"	2007-01-18	2007-01-24	"D"	"Albuquerque Biological Park"	"United States"	"U"	1131	2403	2007-01-18	2007
-2503	1	"ABQ"	2007-01-18	"End"	2007-01-24	2007-01-24	"D"	"Albuquerque Biological Park"	"United States"	"U"	1131	2403	2007-01-18	2007
-2504	1	"ABQ"	2007-01-18	"Birth"	2007-01-18	2009-06-25	"A"	"Albuquerque Biological Park"	"United States"	"F"	1131	2403	2007-01-18	2007
-2504	2	"PRO"	2009-06-25	"Transfer"	2009-06-25	2022-10-26	"A"	"Prospect Park Zoo"	"United States"	"F"	1131	2403	2007-01-18	2007
-2504	3	"ELP"	2022-10-26	"Transfer"	2022-10-26	2025-03-21	"A"	"El Paso Zoo"	"United States"	"F"	1131	2403	2007-01-18	2007
-2504	3	"ELP"	2022-10-26	"End"	2025-03-21	2025-03-21	"A"	"El Paso Zoo"	"United States"	"F"	1131	2403	2007-01-18	2007
-2505	1	"SOZ"	2006-06-20	"Birth"	2006-06-20	2006-06-20	"D"	"San Diego Zoo"	"United States"	"U"	2409	1135	2006-06-20	2006
-2505	1	"SOZ"	2006-06-20	"End"	2006-06-20	2006-06-20	"D"	"San Diego Zoo"	"United States"	"U"	2409	1135	2006-06-20	2006
-2506	1	"PUE"	2006-04-06	"Birth"	2006-04-06	2008-10-29	"D"	"Pueblo Zoo"	"United States"	"F"	1125	1124	2006-04-06	2006
-2506	2	"CLE"	2008-10-29	"Transfer"	2008-10-29	2012-07-28	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1125	1124	2006-04-06	2006
-2506	2	"CLE"	2008-10-29	"End"	2012-07-28	2012-07-28	"D"	"Cleveland Metroparks Zoo"	"United States"	"F"	1125	1124	2006-04-06	2006
-2507	1	"PUE"	2006-04-06	"Birth"	2006-04-06	2008-07-09	"D"	"Pueblo Zoo"	"United States"	"M"	1125	1124	2006-04-06	2006
-2507	2	"OMA"	2008-07-09	"Transfer"	2008-07-09	2015-11-04	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1125	1124	2006-04-06	2006
-2507	2	"OMA"	2008-07-09	"End"	2015-11-04	2015-11-04	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1125	1124	2006-04-06	2006
-2600	1	"AKR"	2008-11-20	"Birth"	2008-11-20	2010-03-13	"D"	"Akron Zoological Park"	"United States"	"M"	2408	2400	2008-11-20	2008
-2600	2	"CIN"	2010-03-13	"Transfer"	2010-03-13	2018-06-22	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	2408	2400	2008-11-20	2008
-2600	2	"CIN"	2010-03-13	"End"	2018-06-22	2018-06-22	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	2408	2400	2008-11-20	2008
-2601	1	"MOO"	2008-03-12	"Birth"	2008-03-12	2008-03-13	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2008-03-12	2008
-2601	1	"MOO"	2008-03-12	"End"	2008-03-13	2008-03-13	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2008-03-12	2008
-2602	1	"MOO"	2008-03-12	"Birth"	2008-03-12	2008-04-05	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2008-03-12	2008
-2602	1	"MOO"	2008-03-12	"End"	2008-04-05	2008-04-05	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2008-03-12	2008
-2603	1	"OMA"	2008-11-22	"Birth"	2008-11-22	2008-11-22	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"U"	2402	1143	2008-11-22	2008
-2603	1	"OMA"	2008-11-22	"End"	2008-11-22	2008-11-22	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"U"	2402	1143	2008-11-22	2008
-2604	1	"PHI"	2008-03-16	"Birth"	2008-03-16	2008-03-20	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2008-03-16	2008
-2604	1	"PHI"	2008-03-16	"End"	2008-03-20	2008-03-20	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2008-03-16	2008
-2605	1	"PHI"	2008-03-16	"Birth"	2008-03-16	2009-07-09	"D"	"Philadelphia Zoo"	"United States"	"F"	1130	2436	2008-03-16	2008
-2605	2	"PRO"	2009-07-09	"Transfer"	2009-07-09	2015-10-08	"D"	"Prospect Park Zoo"	"United States"	"F"	1130	2436	2008-03-16	2008
-2605	3	"AKR"	2015-10-08	"Transfer"	2015-10-08	2025-01-01	"D"	"Akron Zoological Park"	"United States"	"F"	1130	2436	2008-03-16	2008
-2605	3	"AKR"	2015-10-08	"End"	2025-01-01	2025-01-01	"D"	"Akron Zoological Park"	"United States"	"F"	1130	2436	2008-03-16	2008
-2606	1	"PUE"	2008-02-12	"Birth"	2008-02-12	2008-02-12	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2008-02-12	2008
-2606	1	"PUE"	2008-02-12	"End"	2008-02-12	2008-02-12	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2008-02-12	2008
-2607	1	"ABQ"	2008-09-18	"Birth"	2008-09-18	2018-12-18	"D"	"Albuquerque Biological Park"	"United States"	"F"	1131	2403	2008-09-18	2008
-2607	2	"SOZ"	2018-12-18	"Transfer"	2018-12-18	2019-02-01	"D"	"San Diego Zoo"	"United States"	"F"	1131	2403	2008-09-18	2008
-2607	2	"SOZ"	2018-12-18	"End"	2019-02-01	2019-02-01	"D"	"San Diego Zoo"	"United States"	"F"	1131	2403	2008-09-18	2008
-2608	1	"ABQ"	2008-09-18	"Birth"	2008-09-18	2009-08-27	"D"	"Albuquerque Biological Park"	"United States"	"F"	1131	2403	2008-09-18	2008
-2608	2	"DUK"	2009-08-27	"Transfer"	2009-08-27	2017-06-20	"D"	"Duke Lemur Center"	"United States"	"F"	1131	2403	2008-09-18	2008
-2608	3	"AKR"	2017-06-20	"Transfer"	2017-06-20	2021-01-19	"D"	"Akron Zoological Park"	"United States"	"F"	1131	2403	2008-09-18	2008
-2608	3	"AKR"	2017-06-20	"End"	2021-01-19	2021-01-19	"D"	"Akron Zoological Park"	"United States"	"F"	1131	2403	2008-09-18	2008
-2609	1	"CLE"	2009-08-14	"Birth"	2009-08-14	2012-06-13	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	1138	2506	2009-08-14	2009
-2609	2	"MEM"	2012-06-13	"Transfer"	2012-06-13	2016-04-23	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	1138	2506	2009-08-14	2009
-2609	3	"OMA"	2016-04-23	"Transfer"	2016-04-23	2016-05-28	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1138	2506	2009-08-14	2009
-2609	3	"OMA"	2016-04-23	"End"	2016-05-28	2016-05-28	"D"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	1138	2506	2009-08-14	2009
-2610	1	"CLE"	2009-11-06	"Birth"	2009-11-06	2009-11-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	2496	2501	2009-11-06	2009
-2610	1	"CLE"	2009-11-06	"End"	2009-11-06	2009-11-06	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	2496	2501	2009-11-06	2009
-2611	1	"MOO"	2009-05-13	"Birth"	2009-05-13	2009-05-22	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1121	1145	2009-05-13	2009
-2611	1	"MOO"	2009-05-13	"End"	2009-05-22	2009-05-22	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1121	1145	2009-05-13	2009
-2612	1	"PHI"	2009-03-27	"Birth"	2009-03-27	2009-03-30	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2009-03-27	2009
-2612	1	"PHI"	2009-03-27	"End"	2009-03-30	2009-03-30	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2009-03-27	2009
-2613	1	"ABQ"	2009-07-18	"Birth"	2009-07-18	2009-07-23	"D"	"Albuquerque Biological Park"	"United States"	"M"	1131	2403	2009-07-18	2009
-2613	1	"ABQ"	2009-07-18	"End"	2009-07-23	2009-07-23	"D"	"Albuquerque Biological Park"	"United States"	"M"	1131	2403	2009-07-18	2009
-2614	1	"ABQ"	2009-07-18	"Birth"	2009-07-18	2018-12-18	"A"	"Albuquerque Biological Park"	"United States"	"F"	1131	2403	2009-07-18	2009
-2614	2	"SOZ"	2018-12-18	"Transfer"	2018-12-18	2019-11-05	"A"	"San Diego Zoo"	"United States"	"F"	1131	2403	2009-07-18	2009
-2614	3	"PUE"	2019-11-05	"Transfer"	2019-11-05	2025-03-21	"A"	"Pueblo Zoo"	"United States"	"F"	1131	2403	2009-07-18	2009
-2614	3	"PUE"	2019-11-05	"End"	2025-03-21	2025-03-21	"A"	"Pueblo Zoo"	"United States"	"F"	1131	2403	2009-07-18	2009
-2615	1	"CHI"	2009-04-25	"Birth"	2009-04-25	2009-04-25	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	1142	2411	2009-04-25	2009
-2615	1	"CHI"	2009-04-25	"End"	2009-04-25	2009-04-25	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	1142	2411	2009-04-25	2009
-2616	1	"CHI"	2009-04-25	"Birth"	2009-04-25	2009-04-25	"D"	"Lincoln Park Zoological Gardens"	"United States"	"F"	1142	2411	2009-04-25	2009
-2616	1	"CHI"	2009-04-25	"End"	2009-04-25	2009-04-25	"D"	"Lincoln Park Zoological Gardens"	"United States"	"F"	1142	2411	2009-04-25	2009
-2617	1	"PHI"	2010-02-05	"Birth"	2010-02-05	2025-03-21	"A"	"Philadelphia Zoo"	"United States"	"F"	1130	2436	2010-02-05	2010
-2617	1	"PHI"	2010-02-05	"End"	2025-03-21	2025-03-21	"A"	"Philadelphia Zoo"	"United States"	"F"	1130	2436	2010-02-05	2010
-2618	1	"PHI"	2010-02-05	"Birth"	2010-02-05	2010-02-07	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2010-02-05	2010
-2618	1	"PHI"	2010-02-05	"End"	2010-02-07	2010-02-07	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2010-02-05	2010
-2622	1	"DUK"	2010-09-17	"Birth"	2010-09-17	2016-02-08	"A"	"Duke Lemur Center"	"United States"	"M"	2498	2502	2010-09-17	2010
-2622	2	"MEM"	2016-02-08	"Transfer"	2016-02-08	2019-05-16	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	2498	2502	2010-09-17	2010
-2622	3	"CIN"	2019-05-16	"Transfer"	2019-05-16	2025-03-21	"A"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	2498	2502	2010-09-17	2010
-2622	3	"CIN"	2019-05-16	"End"	2025-03-21	2025-03-21	"A"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	2498	2502	2010-09-17	2010
-2623	1	"DUK"	2010-09-17	"Birth"	2010-09-17	2011-12-01	"A"	"Duke Lemur Center"	"United States"	"M"	2498	2502	2010-09-17	2010
-2623	2	"SOZ"	2011-12-01	"Transfer"	2011-12-01	2014-05-14	"A"	"San Diego Zoo"	"United States"	"M"	2498	2502	2010-09-17	2010
-2623	3	"NYB"	2014-05-14	"Transfer"	2014-05-14	2025-03-21	"A"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2498	2502	2010-09-17	2010
-2623	3	"NYB"	2014-05-14	"End"	2025-03-21	2025-03-21	"A"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2498	2502	2010-09-17	2010
-2624	1	"GAR"	2010-03-14	"Birth"	2010-03-14	2017-10-25	"D"	"Lee Richardson Zoo"	"United States"	"M"	2402	2451	2010-03-14	2010
-2624	2	"DUK"	2017-10-25	"Transfer"	2017-10-25	2017-11-22	"D"	"Duke Lemur Center"	"United States"	"M"	2402	2451	2010-03-14	2010
-2624	2	"DUK"	2017-10-25	"End"	2017-11-22	2017-11-22	"D"	"Duke Lemur Center"	"United States"	"M"	2402	2451	2010-03-14	2010
-2625	1	"GAR"	2010-12-06	"Birth"	2010-12-06	2011-10-13	"D"	"Lee Richardson Zoo"	"United States"	"F"	2402	2451	2010-12-06	2010
-2625	2	"CIN"	2011-10-13	"Transfer"	2011-10-13	2020-03-03	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	2402	2451	2010-12-06	2010
-2625	2	"CIN"	2011-10-13	"End"	2020-03-03	2020-03-03	"D"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	2402	2451	2010-12-06	2010
-2626	1	"GAR"	2010-12-06	"Birth"	2010-12-06	2014-04-22	"A"	"Lee Richardson Zoo"	"United States"	"F"	2402	2451	2010-12-06	2010
-2626	2	"CBR"	2014-04-22	"Transfer"	2014-04-22	2022-11-02	"A"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	2402	2451	2010-12-06	2010
-2626	3	"MIL"	2022-11-02	"Transfer"	2022-11-02	2025-03-21	"A"	"Milwaukee County Zoological Gardens"	"United States"	"F"	2402	2451	2010-12-06	2010
-2626	3	"MIL"	2022-11-02	"End"	2025-03-21	2025-03-21	"A"	"Milwaukee County Zoological Gardens"	"United States"	"F"	2402	2451	2010-12-06	2010
-2627	1	"MIN"	2010-09-25	"Birth"	2010-09-25	2010-09-25	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	2418	2010-09-25	2010
-2627	1	"MIN"	2010-09-25	"End"	2010-09-25	2010-09-25	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	2418	2010-09-25	2010
-2628	1	"MIN"	2010-09-25	"Birth"	2010-09-25	2010-09-25	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	2418	2010-09-25	2010
-2628	1	"MIN"	2010-09-25	"End"	2010-09-25	2010-09-25	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	2418	2010-09-25	2010
-2629	1	"MIN"	2010-09-25	"Birth"	2010-09-25	2010-09-25	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	2418	2010-09-25	2010
-2629	1	"MIN"	2010-09-25	"End"	2010-09-25	2010-09-25	"D"	"Minnesota Zoological Garden"	"United States"	"U"	2208	2418	2010-09-25	2010
-2630	1	"MOO"	2010-03-22	"Birth"	2010-03-22	2021-06-15	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2010-03-22	2010
-2630	2	"CIN"	2021-06-15	"Transfer"	2021-06-15	2025-03-21	"A"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1121	1145	2010-03-22	2010
-2630	2	"CIN"	2021-06-15	"End"	2025-03-21	2025-03-21	"A"	"Cincinnati Zoo & Botanical Garden"	"United States"	"F"	1121	1145	2010-03-22	2010
-2631	1	"MOO"	2010-03-22	"Birth"	2010-03-22	2014-02-20	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1121	1145	2010-03-22	2010
-2631	2	"CBR"	2014-02-20	"Transfer"	2014-02-20	2022-11-02	"A"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	1121	1145	2010-03-22	2010
-2631	3	"MIL"	2022-11-02	"Transfer"	2022-11-02	2025-03-21	"A"	"Milwaukee County Zoological Gardens"	"United States"	"M"	1121	1145	2010-03-22	2010
-2631	3	"MIL"	2022-11-02	"End"	2025-03-21	2025-03-21	"A"	"Milwaukee County Zoological Gardens"	"United States"	"M"	1121	1145	2010-03-22	2010
-2632	1	"PHI"	2010-08-09	"Birth"	2010-08-09	2012-02-01	"D"	"Philadelphia Zoo"	"United States"	"F"	1130	2436	2010-08-09	2010
-2632	2	"ELP"	2012-02-01	"Transfer"	2012-02-01	2025-01-01	"D"	"El Paso Zoo"	"United States"	"F"	1130	2436	2010-08-09	2010
-2632	2	"ELP"	2012-02-01	"End"	2025-01-01	2025-01-01	"D"	"El Paso Zoo"	"United States"	"F"	1130	2436	2010-08-09	2010
-2633	1	"PHI"	2010-08-09	"Birth"	2010-08-09	2010-08-09	"D"	"Philadelphia Zoo"	"United States"	"U"	1130	2436	2010-08-09	2010
-2633	1	"PHI"	2010-08-09	"End"	2010-08-09	2010-08-09	"D"	"Philadelphia Zoo"	"United States"	"U"	1130	2436	2010-08-09	2010
-2634	1	"ABQ"	2010-08-12	"Birth"	2010-08-12	2014-04-24	"D"	"Albuquerque Biological Park"	"United States"	"M"	1131	2414	2010-08-12	2010
-2634	2	"LIT"	2014-04-24	"Transfer"	2014-04-24	2024-11-18	"D"	"Little Rock Zoological Gardens"	"United States"	"M"	1131	2414	2010-08-12	2010
-2634	2	"LIT"	2014-04-24	"End"	2024-11-18	2024-11-18	"D"	"Little Rock Zoological Gardens"	"United States"	"M"	1131	2414	2010-08-12	2010
-2635	1	"ABQ"	2010-08-12	"Birth"	2010-08-12	2013-12-12	"D"	"Albuquerque Biological Park"	"United States"	"M"	1131	2414	2010-08-12	2010
-2635	2	"BUS"	2013-12-12	"Transfer"	2013-12-12	2017-01-03	"D"	"Busch Gardens Tampa Bay"	"United States"	"M"	1131	2414	2010-08-12	2010
-2635	3	"BLO"	2017-01-03	"Transfer"	2017-01-03	2018-02-23	"D"	"Miller Park Zoo"	"United States"	"M"	1131	2414	2010-08-12	2010
-2635	3	"BLO"	2017-01-03	"End"	2018-02-23	2018-02-23	"D"	"Miller Park Zoo"	"United States"	"M"	1131	2414	2010-08-12	2010
-2636	1	"NYB"	2010-12-06	"Birth"	2010-12-06	2011-05-22	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"U"	2417	2423	2010-12-06	2010
-2636	1	"NYB"	2010-12-06	"End"	2011-05-22	2011-05-22	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"U"	2417	2423	2010-12-06	2010
-2637	1	"DUK"	2011-02-04	"Birth"	2011-02-04	2011-10-26	"A"	"Duke Lemur Center"	"United States"	"F"	2406	2608	2011-02-04	2011
-2637	2	"CBR"	2011-10-26	"Transfer"	2011-10-26	2015-07-08	"A"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	2406	2608	2011-02-04	2011
-2637	3	"CHI"	2015-07-08	"Transfer"	2015-07-08	2025-03-21	"A"	"Lincoln Park Zoological Gardens"	"United States"	"F"	2406	2608	2011-02-04	2011
-2637	3	"CHI"	2015-07-08	"End"	2025-03-21	2025-03-21	"A"	"Lincoln Park Zoological Gardens"	"United States"	"F"	2406	2608	2011-02-04	2011
-2638	1	"MOO"	2011-06-14	"Birth"	2011-06-14	2023-01-01	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2011-06-14	2011
-2638	1	"MOO"	2011-06-14	"End"	2023-01-01	2023-01-01	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	1121	1145	2011-06-14	2011
-2639	1	"MOO"	2011-06-14	"Birth"	2011-06-14	2013-12-04	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	1121	1145	2011-06-14	2011
-2639	2	"COL"	2013-12-04	"Transfer"	2013-12-04	2022-02-25	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	1121	1145	2011-06-14	2011
-2639	2	"COL"	2013-12-04	"End"	2022-02-25	2022-02-25	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	1121	1145	2011-06-14	2011
-2640	1	"DUK"	2012-04-09	"Birth"	2012-04-09	2014-05-14	"A"	"Duke Lemur Center"	"United States"	"F"	2420	2608	2012-04-09	2012
-2640	2	"NYB"	2014-05-14	"Transfer"	2014-05-14	2025-03-21	"A"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2420	2608	2012-04-09	2012
-2640	2	"NYB"	2014-05-14	"End"	2025-03-21	2025-03-21	"A"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2420	2608	2012-04-09	2012
-2641	1	"DUK"	2012-04-09	"Birth"	2012-04-09	2014-06-11	"A"	"Duke Lemur Center"	"United States"	"M"	2420	2608	2012-04-09	2012
-2641	2	"SOZ"	2014-06-11	"Transfer"	2014-06-11	2018-05-23	"A"	"San Diego Zoo"	"United States"	"M"	2420	2608	2012-04-09	2012
-2641	3	"EVA"	2018-05-23	"Transfer"	2018-05-23	2025-03-21	"A"	"Mesker Park Zoo"	"United States"	"M"	2420	2608	2012-04-09	2012
-2641	3	"EVA"	2018-05-23	"End"	2025-03-21	2025-03-21	"A"	"Mesker Park Zoo"	"United States"	"M"	2420	2608	2012-04-09	2012
-2642	1	"GAR"	2011-10-27	"Birth"	2011-10-27	2013-11-23	"A"	"Lee Richardson Zoo"	"United States"	"F"	2402	2451	2011-10-27	2011
-2642	2	"COL"	2013-11-23	"Transfer"	2013-11-23	2025-03-21	"A"	"Columbus Zoo and Aquarium"	"United States"	"F"	2402	2451	2011-10-27	2011
-2642	2	"COL"	2013-11-23	"End"	2025-03-21	2025-03-21	"A"	"Columbus Zoo and Aquarium"	"United States"	"F"	2402	2451	2011-10-27	2011
-2643	1	"NYB"	2011-12-09	"Birth"	2011-12-09	2011-12-11	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2417	2423	2011-12-09	2011
-2643	1	"NYB"	2011-12-09	"End"	2011-12-11	2011-12-11	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2417	2423	2011-12-09	2011
-2644	1	"NYB"	2011-12-09	"Birth"	2011-12-09	2011-12-12	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"U"	2417	2423	2011-12-09	2011
-2644	1	"NYB"	2011-12-09	"End"	2011-12-12	2011-12-12	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"U"	2417	2423	2011-12-09	2011
-2645	1	"ABQ"	2011-12-07	"Birth"	2011-12-07	2015-01-20	"D"	"Albuquerque Biological Park"	"United States"	"M"	1131	2414	2011-12-07	2011
-2645	1	"ABQ"	2011-12-07	"End"	2015-01-20	2015-01-20	"D"	"Albuquerque Biological Park"	"United States"	"M"	1131	2414	2011-12-07	2011
-2646	1	"ELP"	2013-04-26	"Birth"	2013-04-26	2015-07-07	"A"	"El Paso Zoo"	"United States"	"M"	2449	2632	2013-04-26	2013
-2646	2	"CHI"	2015-07-07	"Transfer"	2015-07-07	2025-03-21	"A"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2449	2632	2013-04-26	2013
-2646	2	"CHI"	2015-07-07	"End"	2025-03-21	2025-03-21	"A"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2449	2632	2013-04-26	2013
-2647	1	"ELP"	2013-04-26	"Birth"	2013-04-26	2015-05-27	"D"	"El Paso Zoo"	"United States"	"F"	2449	2632	2013-04-26	2013
-2647	2	"GAR"	2015-05-27	"Transfer"	2015-05-27	2017-03-16	"D"	"Lee Richardson Zoo"	"United States"	"F"	2449	2632	2013-04-26	2013
-2647	2	"GAR"	2015-05-27	"End"	2017-03-16	2017-03-16	"D"	"Lee Richardson Zoo"	"United States"	"F"	2449	2632	2013-04-26	2013
-2648	1	"DUK"	2012-06-20	"Birth"	2012-06-20	2012-07-03	"D"	"Duke Lemur Center"	"United States"	"M"	2498	2502	2012-06-20	2012
-2648	1	"DUK"	2012-06-20	"End"	2012-07-03	2012-07-03	"D"	"Duke Lemur Center"	"United States"	"M"	2498	2502	2012-06-20	2012
-2649	1	"DUK"	2012-06-20	"Birth"	2012-06-20	2015-09-10	"A"	"Duke Lemur Center"	"United States"	"M"	2498	2502	2012-06-20	2012
-2649	2	"MOO"	2015-09-10	"Transfer"	2015-09-10	2025-03-21	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2498	2502	2012-06-20	2012
-2649	2	"MOO"	2015-09-10	"End"	2025-03-21	2025-03-21	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2498	2502	2012-06-20	2012
-2650	1	"PHI"	2013-01-26	"Birth"	2013-01-26	2013-01-26	"D"	"Philadelphia Zoo"	"United States"	"U"	1130	2436	2013-01-26	2013
-2650	1	"PHI"	2013-01-26	"End"	2013-01-26	2013-01-26	"D"	"Philadelphia Zoo"	"United States"	"U"	1130	2436	2013-01-26	2013
-2651	1	"PHI"	2013-01-26	"Birth"	2013-01-26	2013-01-26	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2013-01-26	2013
-2651	1	"PHI"	2013-01-26	"End"	2013-01-26	2013-01-26	"D"	"Philadelphia Zoo"	"United States"	"M"	1130	2436	2013-01-26	2013
-2652	1	"AKR"	2013-08-21	"Birth"	2013-08-21	2017-06-08	"A"	"Akron Zoological Park"	"United States"	"M"	2408	2418	2013-08-21	2013
-2652	2	"OMA"	2017-06-08	"Transfer"	2017-06-08	2025-03-21	"A"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	2408	2418	2013-08-21	2013
-2652	2	"OMA"	2017-06-08	"End"	2025-03-21	2025-03-21	"A"	"Omaha's Henry Doorly Zoo"	"United States"	"M"	2408	2418	2013-08-21	2013
-2653	1	"ELP"	2014-08-22	"Birth"	2014-08-22	2015-09-21	"A"	"El Paso Zoo"	"United States"	"M"	2449	2632	2014-08-22	2014
-2653	2	"ABQ"	2015-09-21	"Transfer"	2015-09-21	2018-12-18	"A"	"Albuquerque Biological Park"	"United States"	"M"	2449	2632	2014-08-22	2014
-2653	3	"SOZ"	2018-12-18	"Transfer"	2018-12-18	2019-11-05	"A"	"San Diego Zoo"	"United States"	"M"	2449	2632	2014-08-22	2014
-2653	4	"PUE"	2019-11-05	"Transfer"	2019-11-05	2025-03-21	"A"	"Pueblo Zoo"	"United States"	"M"	2449	2632	2014-08-22	2014
-2653	4	"PUE"	2019-11-05	"End"	2025-03-21	2025-03-21	"A"	"Pueblo Zoo"	"United States"	"M"	2449	2632	2014-08-22	2014
-2654	1	"ELP"	2014-08-22	"Birth"	2014-08-22	2015-09-23	"A"	"El Paso Zoo"	"United States"	"F"	2449	2632	2014-08-22	2014
-2654	2	"LIT"	2015-09-23	"Transfer"	2015-09-23	2025-03-21	"A"	"Little Rock Zoological Gardens"	"United States"	"F"	2449	2632	2014-08-22	2014
-2654	2	"LIT"	2015-09-23	"End"	2025-03-21	2025-03-21	"A"	"Little Rock Zoological Gardens"	"United States"	"F"	2449	2632	2014-08-22	2014
-2655	1	"CLE"	2015-01-22	"Birth"	2015-01-22	2015-01-22	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	2496	2403	2015-01-22	2015
-2655	1	"CLE"	2015-01-22	"End"	2015-01-22	2015-01-22	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	2496	2403	2015-01-22	2015
-2656	1	"CLE"	2015-01-22	"Birth"	2015-01-22	2015-01-22	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	2496	2403	2015-01-22	2015
-2656	1	"CLE"	2015-01-22	"End"	2015-01-22	2015-01-22	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	2496	2403	2015-01-22	2015
-2657	1	"CBR"	2015-04-24	"Birth"	2015-04-24	2015-04-28	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	2631	2626	2015-04-24	2015
-2657	1	"CBR"	2015-04-24	"End"	2015-04-28	2015-04-28	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	2631	2626	2015-04-24	2015
-2658	1	"CBR"	2015-04-28	"Birth"	2015-04-28	2015-04-28	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"U"	2631	2626	2015-04-28	2015
-2658	1	"CBR"	2015-04-28	"End"	2015-04-28	2015-04-28	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"U"	2631	2626	2015-04-28	2015
-2659	1	"CLE"	2015-05-18	"Birth"	2015-05-18	2016-06-03	"A"	"Cleveland Metroparks Zoo"	"United States"	"F"	2450	2414	2015-05-18	2015
-2659	2	"COL"	2016-06-03	"Transfer"	2016-06-03	2023-11-16	"A"	"Columbus Zoo and Aquarium"	"United States"	"F"	2450	2414	2015-05-18	2015
-2659	3	"MOO"	2023-11-16	"Transfer"	2023-11-16	2025-03-21	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	2450	2414	2015-05-18	2015
-2659	3	"MOO"	2023-11-16	"End"	2025-03-21	2025-03-21	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	2450	2414	2015-05-18	2015
-2660	1	"CLE"	2015-05-18	"Birth"	2015-05-18	2015-05-19	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	2450	2414	2015-05-18	2015
-2660	1	"CLE"	2015-05-18	"End"	2015-05-19	2015-05-19	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	2450	2414	2015-05-18	2015
-2661	1	"COL"	2015-06-09	"Birth"	2015-06-09	2016-06-29	"A"	"Columbus Zoo and Aquarium"	"United States"	"F"	2639	2642	2015-06-09	2015
-2661	2	"BUS"	2016-06-29	"Transfer"	2016-06-29	2017-01-03	"A"	"Busch Gardens Tampa Bay"	"United States"	"F"	2639	2642	2015-06-09	2015
-2661	3	"BLO"	2017-01-03	"Transfer"	2017-01-03	2025-03-21	"A"	"Miller Park Zoo"	"United States"	"F"	2639	2642	2015-06-09	2015
-2661	3	"BLO"	2017-01-03	"End"	2025-03-21	2025-03-21	"A"	"Miller Park Zoo"	"United States"	"F"	2639	2642	2015-06-09	2015
-2662	1	"COL"	2015-06-09	"Birth"	2015-06-09	2015-06-09	"D"	"Columbus Zoo and Aquarium"	"United States"	"U"	2639	2642	2015-06-09	2015
-2662	1	"COL"	2015-06-09	"End"	2015-06-09	2015-06-09	"D"	"Columbus Zoo and Aquarium"	"United States"	"U"	2639	2642	2015-06-09	2015
-2663	1	"NYB"	2015-03-01	"Birth"	2015-03-01	2015-03-06	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2623	2640	2015-03-01	2015
-2663	1	"NYB"	2015-03-01	"End"	2015-03-06	2015-03-06	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2623	2640	2015-03-01	2015
-2664	1	"NYB"	2015-03-04	"Birth"	2015-03-04	2015-03-04	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2623	2640	2015-03-04	2015
-2664	1	"NYB"	2015-03-04	"End"	2015-03-04	2015-03-04	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2623	2640	2015-03-04	2015
-2665	1	"NYB"	2015-04-10	"Birth"	2015-04-10	2015-04-11	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2417	2423	2015-04-10	2015
-2665	1	"NYB"	2015-04-10	"End"	2015-04-11	2015-04-11	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2417	2423	2015-04-10	2015
-2666	1	"COL"	2016-03-25	"Birth"	2016-03-25	2017-08-30	"A"	"Columbus Zoo and Aquarium"	"United States"	"F"	2639	2642	2016-03-25	2016
-2666	2	"GAR"	2017-08-30	"Transfer"	2017-08-30	2025-03-21	"A"	"Lee Richardson Zoo"	"United States"	"F"	2639	2642	2016-03-25	2016
-2666	2	"GAR"	2017-08-30	"End"	2025-03-21	2025-03-21	"A"	"Lee Richardson Zoo"	"United States"	"F"	2639	2642	2016-03-25	2016
-2667	1	"COL"	2016-03-25	"Birth"	2016-03-25	2017-08-28	"A"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2642	2016-03-25	2016
-2667	2	"AKR"	2017-08-28	"Transfer"	2017-08-28	2022-02-25	"A"	"Akron Zoological Park"	"United States"	"M"	2639	2642	2016-03-25	2016
-2667	3	"CLE"	2022-02-25	"Transfer"	2022-02-25	2025-03-21	"A"	"Cleveland Metroparks Zoo"	"United States"	"M"	2639	2642	2016-03-25	2016
-2667	3	"CLE"	2022-02-25	"End"	2025-03-21	2025-03-21	"A"	"Cleveland Metroparks Zoo"	"United States"	"M"	2639	2642	2016-03-25	2016
-2668	1	"CHI"	2016-04-25	"Birth"	2016-04-25	2016-04-27	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2646	2637	2016-04-25	2016
-2668	1	"CHI"	2016-04-25	"End"	2016-04-27	2016-04-27	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2646	2637	2016-04-25	2016
-2669	1	"CHI"	2016-04-25	"Birth"	2016-04-25	2016-04-28	"D"	"Lincoln Park Zoological Gardens"	"United States"	"U"	2646	2637	2016-04-25	2016
-2669	1	"CHI"	2016-04-25	"End"	2016-04-28	2016-04-28	"D"	"Lincoln Park Zoological Gardens"	"United States"	"U"	2646	2637	2016-04-25	2016
-2670	1	"ELP"	2016-09-28	"Birth"	2016-09-28	2016-09-29	"D"	"El Paso Zoo"	"United States"	"U"	2449	2632	2016-09-28	2016
-2670	1	"ELP"	2016-09-28	"End"	2016-09-29	2016-09-29	"D"	"El Paso Zoo"	"United States"	"U"	2449	2632	2016-09-28	2016
-2671	1	"ELP"	2016-09-28	"Birth"	2016-09-28	2017-10-25	"A"	"El Paso Zoo"	"United States"	"M"	2449	2632	2016-09-28	2016
-2671	2	"GAR"	2017-10-25	"Transfer"	2017-10-25	2025-03-21	"A"	"Lee Richardson Zoo"	"United States"	"M"	2449	2632	2016-09-28	2016
-2671	2	"GAR"	2017-10-25	"End"	2025-03-21	2025-03-21	"A"	"Lee Richardson Zoo"	"United States"	"M"	2449	2632	2016-09-28	2016
-2672	1	"ELP"	2016-09-28	"Birth"	2016-09-28	2016-10-10	"D"	"El Paso Zoo"	"United States"	"F"	2449	2632	2016-09-28	2016
-2672	1	"ELP"	2016-09-28	"End"	2016-10-10	2016-10-10	"D"	"El Paso Zoo"	"United States"	"F"	2449	2632	2016-09-28	2016
-2673	1	"MOO"	2016-12-16	"Birth"	2016-12-16	2018-01-30	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2638	2016-12-16	2016
-2673	2	"PUE"	2018-01-30	"Transfer"	2018-01-30	2019-11-04	"A"	"Pueblo Zoo"	"United States"	"M"	2649	2638	2016-12-16	2016
-2673	3	"MEM"	2019-11-04	"Transfer"	2019-11-04	2025-03-21	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	2649	2638	2016-12-16	2016
-2673	3	"MEM"	2019-11-04	"End"	2025-03-21	2025-03-21	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	2649	2638	2016-12-16	2016
-2674	1	"MOO"	2016-12-16	"Birth"	2016-12-16	2018-04-26	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"F"	2649	2638	2016-12-16	2016
-2674	2	"PRO"	2018-04-26	"Transfer"	2018-04-26	2023-01-01	"D"	"Prospect Park Zoo"	"United States"	"F"	2649	2638	2016-12-16	2016
-2674	2	"PRO"	2018-04-26	"End"	2023-01-01	2023-01-01	"D"	"Prospect Park Zoo"	"United States"	"F"	2649	2638	2016-12-16	2016
-2675	1	"CBR"	2016-11-03	"Birth"	2016-11-03	2016-11-09	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"U"	2631	2626	2016-11-03	2016
-2675	1	"CBR"	2016-11-03	"End"	2016-11-09	2016-11-09	"D"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"U"	2631	2626	2016-11-03	2016
-2676	1	"CBR"	2016-11-03	"Birth"	2016-11-03	2017-10-26	"A"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"M"	2631	2626	2016-11-03	2016
-2676	2	"PHI"	2017-10-26	"Transfer"	2017-10-26	2025-03-21	"A"	"Philadelphia Zoo"	"United States"	"M"	2631	2626	2016-11-03	2016
-2676	2	"PHI"	2017-10-26	"End"	2025-03-21	2025-03-21	"A"	"Philadelphia Zoo"	"United States"	"M"	2631	2626	2016-11-03	2016
-2677	1	"DUK"	2017-01-18	"Birth"	2017-01-18	2017-09-14	"A"	"Duke Lemur Center"	"United States"	"F"	2496	2502	2017-01-18	2017
-2677	2	"OMA"	2017-09-14	"Transfer"	2017-09-14	2025-03-21	"A"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	2496	2502	2017-01-18	2017
-2677	2	"OMA"	2017-09-14	"End"	2025-03-21	2025-03-21	"A"	"Omaha's Henry Doorly Zoo"	"United States"	"F"	2496	2502	2017-01-18	2017
-2678	1	"DUK"	2017-01-18	"Birth"	2017-01-18	2017-01-19	"D"	"Duke Lemur Center"	"United States"	"F"	2496	2502	2017-01-18	2017
-2678	1	"DUK"	2017-01-18	"End"	2017-01-19	2017-01-19	"D"	"Duke Lemur Center"	"United States"	"F"	2496	2502	2017-01-18	2017
-2679	1	"COL"	2017-02-05	"Birth"	2017-02-05	2019-07-11	"A"	"Columbus Zoo and Aquarium"	"United States"	"F"	2639	2642	2017-02-05	2017
-2679	2	"DUL"	2019-07-11	"Transfer"	2019-07-11	2025-03-21	"A"	"Lake Superior Zoological Gardens"	"United States"	"F"	2639	2642	2017-02-05	2017
-2679	2	"DUL"	2019-07-11	"End"	2025-03-21	2025-03-21	"A"	"Lake Superior Zoological Gardens"	"United States"	"F"	2639	2642	2017-02-05	2017
-2680	1	"COL"	2017-02-05	"Birth"	2017-02-05	2017-02-05	"D"	"Columbus Zoo and Aquarium"	"United States"	"U"	2639	2642	2017-02-05	2017
-2680	1	"COL"	2017-02-05	"End"	2017-02-05	2017-02-05	"D"	"Columbus Zoo and Aquarium"	"United States"	"U"	2639	2642	2017-02-05	2017
-2681	1	"CHI"	2017-03-01	"Birth"	2017-03-01	2017-03-28	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2646	2637	2017-03-01	2017
-2681	1	"CHI"	2017-03-01	"End"	2017-03-28	2017-03-28	"D"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2646	2637	2017-03-01	2017
-2682	1	"LIT"	2017-08-08	"Birth"	2017-08-08	2019-02-14	"A"	"Little Rock Zoological Gardens"	"United States"	"M"	2634	2654	2017-08-08	2017
-2682	2	"BLO"	2019-02-14	"Transfer"	2019-02-14	2025-03-21	"A"	"Miller Park Zoo"	"United States"	"M"	2634	2654	2017-08-08	2017
-2682	2	"BLO"	2019-02-14	"End"	2025-03-21	2025-03-21	"A"	"Miller Park Zoo"	"United States"	"M"	2634	2654	2017-08-08	2017
-2683	1	"LIT"	2017-08-08	"Birth"	2017-08-08	2019-05-14	"D"	"Little Rock Zoological Gardens"	"United States"	"F"	2634	2654	2017-08-08	2017
-2683	2	"MEM"	2019-05-14	"Transfer"	2019-05-14	2023-01-01	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	2634	2654	2017-08-08	2017
-2683	2	"MEM"	2019-05-14	"End"	2023-01-01	2023-01-01	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	2634	2654	2017-08-08	2017
-2684	1	"CHI"	2017-11-28	"Birth"	2017-11-28	2017-11-30	"D"	"Lincoln Park Zoological Gardens"	"United States"	"U"	2646	2637	2017-11-28	2017
-2684	1	"CHI"	2017-11-28	"End"	2017-11-30	2017-11-30	"D"	"Lincoln Park Zoological Gardens"	"United States"	"U"	2646	2637	2017-11-28	2017
-2685	1	"CHI"	2017-11-28	"Birth"	2017-11-28	2019-07-11	"A"	"Lincoln Park Zoological Gardens"	"United States"	"M"	2646	2637	2017-11-28	2017
-2685	2	"DUL"	2019-07-11	"Transfer"	2019-07-11	2025-03-21	"A"	"Lake Superior Zoological Gardens"	"United States"	"M"	2646	2637	2017-11-28	2017
-2685	2	"DUL"	2019-07-11	"End"	2025-03-21	2025-03-21	"A"	"Lake Superior Zoological Gardens"	"United States"	"M"	2646	2637	2017-11-28	2017
-2686	1	"COL"	2018-05-27	"Birth"	2018-05-27	2018-06-04	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2018-05-27	2018
-2686	1	"COL"	2018-05-27	"End"	2018-06-04	2018-06-04	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2018-05-27	2018
-2687	1	"COL"	2018-05-27	"Birth"	2018-05-27	2018-05-27	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2018-05-27	2018
-2687	1	"COL"	2018-05-27	"End"	2018-05-27	2018-05-27	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2018-05-27	2018
-2688	1	"SOZ"	2019-01-31	"Birth"	2019-01-31	2019-01-31	"D"	"San Diego Zoo"	"United States"	"U"	2653	2607	2019-01-31	2019
-2688	1	"SOZ"	2019-01-31	"End"	2019-01-31	2019-01-31	"D"	"San Diego Zoo"	"United States"	"U"	2653	2607	2019-01-31	2019
-2689	1	"COL"	2019-05-28	"Birth"	2019-05-28	2020-06-25	"A"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2019-05-28	2019
-2689	2	"CLE"	2020-06-25	"Transfer"	2020-06-25	2022-06-23	"A"	"Cleveland Metroparks Zoo"	"United States"	"M"	2639	2659	2019-05-28	2019
-2689	3	"AKR"	2022-06-23	"Transfer"	2022-06-23	2024-04-30	"A"	"Akron Zoological Park"	"United States"	"M"	2639	2659	2019-05-28	2019
-2689	4	"COL"	2024-04-30	"Transfer"	2024-04-30	2025-03-21	"A"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2019-05-28	2019
-2689	4	"COL"	2024-04-30	"End"	2025-03-21	2025-03-21	"A"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2019-05-28	2019
-2690	1	"COL"	2019-05-28	"Birth"	2019-05-28	2020-06-25	"A"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2659	2019-05-28	2019
-2690	2	"CLE"	2020-06-25	"Transfer"	2020-06-25	2022-06-23	"A"	"Cleveland Metroparks Zoo"	"United States"	"M"	2639	2659	2019-05-28	2019
-2690	3	"AKR"	2022-06-23	"Transfer"	2022-06-23	2025-03-21	"A"	"Akron Zoological Park"	"United States"	"M"	2639	2659	2019-05-28	2019
-2690	3	"AKR"	2022-06-23	"End"	2025-03-21	2025-03-21	"A"	"Akron Zoological Park"	"United States"	"M"	2639	2659	2019-05-28	2019
-2691	1	"AKR"	2019-05-16	"Birth"	2019-05-16	2019-05-16	"D"	"Akron Zoological Park"	"United States"	"U"	2667	2608	2019-05-16	2019
-2691	1	"AKR"	2019-05-16	"End"	2019-05-16	2019-05-16	"D"	"Akron Zoological Park"	"United States"	"U"	2667	2608	2019-05-16	2019
-2692	1	"MEM"	2010-09-25	"Birth"	2010-09-25	2010-09-25	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"U"	2415	2416	2010-09-25	2010
-2692	1	"MEM"	2010-09-25	"End"	2010-09-25	2010-09-25	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"U"	2415	2416	2010-09-25	2010
-2693	1	"NYB"	2010-12-06	"Birth"	2010-12-06	2010-12-06	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2417	2423	2010-12-06	2010
-2693	1	"NYB"	2010-12-06	"End"	2010-12-06	2010-12-06	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"M"	2417	2423	2010-12-06	2010
-2694	1	"MEM"	2010-09-27	"Birth"	2010-09-27	2010-09-27	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"U"	2415	2416	2010-09-27	2010
-2694	1	"MEM"	2010-09-27	"End"	2010-09-27	2010-09-27	"D"	"Memphis Zoological Garden & Aquarium"	"United States"	"U"	2415	2416	2010-09-27	2010
-2695	1	"AKR"	2008-11-20	"Birth"	2008-11-20	2008-11-21	"D"	"Akron Zoological Park"	"United States"	"U"	2408	2400	2008-11-20	2008
-2695	1	"AKR"	2008-11-20	"End"	2008-11-21	2008-11-21	"D"	"Akron Zoological Park"	"United States"	"U"	2408	2400	2008-11-20	2008
-2696	1	"AKR"	2008-04-03	"Birth"	2008-04-03	2008-04-03	"D"	"Akron Zoological Park"	"United States"	"M"	2408	2400	2008-04-03	2008
-2696	1	"AKR"	2008-04-03	"End"	2008-04-03	2008-04-03	"D"	"Akron Zoological Park"	"United States"	"M"	2408	2400	2008-04-03	2008
-2697	1	"AKR"	2008-04-03	"Birth"	2008-04-03	2008-04-03	"D"	"Akron Zoological Park"	"United States"	"F"	2408	2400	2008-04-03	2008
-2697	1	"AKR"	2008-04-03	"End"	2008-04-03	2008-04-03	"D"	"Akron Zoological Park"	"United States"	"F"	2408	2400	2008-04-03	2008
-2698	1	"AKR"	2007-06-15	"Birth"	2007-06-15	2007-06-16	"D"	"Akron Zoological Park"	"United States"	"U"	2408	2400	2007-06-15	2007
-2698	1	"AKR"	2007-06-15	"End"	2007-06-16	2007-06-16	"D"	"Akron Zoological Park"	"United States"	"U"	2408	2400	2007-06-15	2007
-2699	1	"AKR"	2007-06-15	"Birth"	2007-06-15	2007-06-16	"D"	"Akron Zoological Park"	"United States"	"U"	2408	2400	2007-06-15	2007
-2699	1	"AKR"	2007-06-15	"End"	2007-06-16	2007-06-16	"D"	"Akron Zoological Park"	"United States"	"U"	2408	2400	2007-06-15	2007
-2700	1	"PUE"	2007-04-21	"Birth"	2007-04-21	2007-04-23	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2007-04-21	2007
-2700	1	"PUE"	2007-04-21	"End"	2007-04-23	2007-04-23	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2007-04-21	2007
-2701	1	"PUE"	2007-04-21	"Birth"	2007-04-21	2007-04-23	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2007-04-21	2007
-2701	1	"PUE"	2007-04-21	"End"	2007-04-23	2007-04-23	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2007-04-21	2007
-2702	1	"PUE"	2007-04-21	"Birth"	2007-04-21	2007-04-21	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2007-04-21	2007
-2702	1	"PUE"	2007-04-21	"End"	2007-04-21	2007-04-21	"D"	"Pueblo Zoo"	"United States"	"U"	1125	1124	2007-04-21	2007
-2703	1	"CLE"	2005-12-24	"Birth"	2005-12-24	2005-12-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2005-12-24	2005
-2703	1	"CLE"	2005-12-24	"End"	2005-12-24	2005-12-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2005-12-24	2005
-2704	1	"CLE"	2005-12-24	"Birth"	2005-12-24	2005-12-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2005-12-24	2005
-2704	1	"CLE"	2005-12-24	"End"	2005-12-24	2005-12-24	"D"	"Cleveland Metroparks Zoo"	"United States"	"U"	1138	2413	2005-12-24	2005
-2705	1	"MOO"	2020-01-16	"Birth"	2020-01-16	2020-02-02	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2630	2020-01-16	2020
-2705	1	"MOO"	2020-01-16	"End"	2020-02-02	2020-02-02	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2630	2020-01-16	2020
-2706	1	"NYB"	2020-03-11	"Birth"	2020-03-11	2020-03-11	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"U"	2623	2640	2020-03-11	2020
-2706	1	"NYB"	2020-03-11	"End"	2020-03-11	2020-03-11	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"U"	2623	2640	2020-03-11	2020
-2707	1	"CBR"	2020-08-26	"Birth"	2020-08-26	2022-10-04	"A"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	2631	2626	2020-08-26	2020
-2707	2	"CHI"	2022-10-04	"Transfer"	2022-10-04	2025-03-21	"A"	"Lincoln Park Zoological Gardens"	"United States"	"F"	2631	2626	2020-08-26	2020
-2707	2	"CHI"	2022-10-04	"End"	2025-03-21	2025-03-21	"A"	"Lincoln Park Zoological Gardens"	"United States"	"F"	2631	2626	2020-08-26	2020
-2708	1	"CBR"	2020-08-26	"Birth"	2020-08-26	2022-08-25	"A"	"Chicago Zoological Park / Brookfield Zoo"	"United States"	"F"	2631	2626	2020-08-26	2020
-2708	2	"NZP"	2022-08-25	"Transfer"	2022-08-25	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"F"	2631	2626	2020-08-26	2020
-2708	2	"NZP"	2022-08-25	"End"	2025-03-21	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"F"	2631	2626	2020-08-26	2020
-2709	1	"EVA"	2020-10-27	"Birth"	2020-10-27	2020-10-29	"D"	"Mesker Park Zoo"	"United States"	"U"	2641	2502	2020-10-27	2020
-2709	1	"EVA"	2020-10-27	"End"	2020-10-29	2020-10-29	"D"	"Mesker Park Zoo"	"United States"	"U"	2641	2502	2020-10-27	2020
-2710	1	"MOO"	2020-12-04	"Birth"	2020-12-04	2021-02-06	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2638	2020-12-04	2020
-2710	1	"MOO"	2020-12-04	"End"	2021-02-06	2021-02-06	"D"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2638	2020-12-04	2020
-2711	1	"COL"	2021-02-25	"Birth"	2021-02-25	2024-04-30	"D"	"Columbus Zoo and Aquarium"	"United States"	"M"	2639	2642	2021-02-25	2021
-2711	2	"CLE"	2024-04-30	"Transfer"	2024-04-30	2025-01-01	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	2639	2642	2021-02-25	2021
-2711	2	"CLE"	2024-04-30	"End"	2025-01-01	2025-01-01	"D"	"Cleveland Metroparks Zoo"	"United States"	"M"	2639	2642	2021-02-25	2021
-2712	1	"NYB"	2021-03-11	"Birth"	2021-03-11	2021-03-23	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2623	2640	2021-03-11	2021
-2712	1	"NYB"	2021-03-11	"End"	2021-03-23	2021-03-23	"D"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2623	2640	2021-03-11	2021
-2713	1	"NYB"	2021-03-11	"Birth"	2021-03-11	2024-03-28	"A"	"Bronx Zoo/Wildlife Conservation Society"	"United States"	"F"	2623	2640	2021-03-11	2021
-2713	2	"WGE"	2024-03-28	"Transfer"	2024-03-28	2025-03-21	"A"	"Turtle Back Zoo"	"United States"	"F"	2623	2640	2021-03-11	2021
-2713	2	"WGE"	2024-03-28	"End"	2025-03-21	2025-03-21	"A"	"Turtle Back Zoo"	"United States"	"F"	2623	2640	2021-03-11	2021
-2714	1	"LIT"	2021-06-18	"Birth"	2021-06-18	2022-08-02	"A"	"Little Rock Zoological Gardens"	"United States"	"F"	2634	2654	2021-06-18	2021
-2714	2	"CLE"	2022-08-02	"Transfer"	2022-08-02	2025-03-21	"A"	"Cleveland Metroparks Zoo"	"United States"	"F"	2634	2654	2021-06-18	2021
-2714	2	"CLE"	2022-08-02	"End"	2025-03-21	2025-03-21	"A"	"Cleveland Metroparks Zoo"	"United States"	"F"	2634	2654	2021-06-18	2021
-2715	1	"LIT"	2021-06-18	"Birth"	2021-06-18	2022-08-23	"A"	"Little Rock Zoological Gardens"	"United States"	"M"	2634	2654	2021-06-18	2021
-2715	2	"NZP"	2022-08-23	"Transfer"	2022-08-23	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"M"	2634	2654	2021-06-18	2021
-2715	2	"NZP"	2022-08-23	"End"	2025-03-21	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"M"	2634	2654	2021-06-18	2021
-2717	1	"GRE"	2020-06-12	"Birth"	2020-06-12	2021-06-12	"A"	"Private Owner"	"United Kingdom"	"F"	12717	22717	2020-06-12	2020
-2717	2	"VAS"	2021-06-12	"Transfer"	2021-06-12	2022-01-13	"A"	"Virginia Safari Park"	"United States"	"F"	12717	22717	2020-06-12	2020
-2717	3	"WGE"	2022-01-13	"Transfer"	2022-01-13	2025-03-21	"A"	"Turtle Back Zoo"	"United States"	"F"	12717	22717	2020-06-12	2020
-2717	3	"WGE"	2022-01-13	"End"	2025-03-21	2025-03-21	"A"	"Turtle Back Zoo"	"United States"	"F"	12717	22717	2020-06-12	2020
-2718	1	"DUL"	2022-02-28	"Birth"	2022-02-28	2024-03-15	"A"	"Lake Superior Zoological Gardens"	"United States"	"F"	2685	2679	2022-02-28	2022
-2718	2	"MEM"	2024-03-15	"Transfer"	2024-03-15	2025-03-21	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	2685	2679	2022-02-28	2022
-2718	2	"MEM"	2024-03-15	"End"	2025-03-21	2025-03-21	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"F"	2685	2679	2022-02-28	2022
-2719	1	"DUL"	2022-02-28	"Birth"	2022-02-28	2025-03-21	"A"	"Lake Superior Zoological Gardens"	"United States"	"F"	2685	2679	2022-02-28	2022
-2719	1	"DUL"	2022-02-28	"End"	2025-03-21	2025-03-21	"A"	"Lake Superior Zoological Gardens"	"United States"	"F"	2685	2679	2022-02-28	2022
-2723	1	"MOO"	2022-12-24	"Birth"	2022-12-24	2025-03-21	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2638	2022-12-24	2022
-2723	1	"MOO"	2022-12-24	"End"	2025-03-21	2025-03-21	"A"	"Aquarium & Rainforest at Moody Gardens"	"United States"	"M"	2649	2638	2022-12-24	2022
-2727	1	"CLE"	2023-07-25	"Birth"	2023-07-25	2025-03-21	"A"	"Cleveland Metroparks Zoo"	"United States"	"M"	2667	2714	2023-07-25	2023
-2727	1	"CLE"	2023-07-25	"End"	2025-03-21	2025-03-21	"A"	"Cleveland Metroparks Zoo"	"United States"	"M"	2667	2714	2023-07-25	2023
-2729	1	"LIT"	2023-11-18	"Birth"	2023-11-18	2025-03-21	"A"	"Little Rock Zoological Gardens"	"United States"	"M"	2634	2654	2023-11-18	2023
-2729	1	"LIT"	2023-11-18	"End"	2025-03-21	2025-03-21	"A"	"Little Rock Zoological Gardens"	"United States"	"M"	2634	2654	2023-11-18	2023
-2730	1	"LIT"	2023-11-18	"Birth"	2023-11-18	2025-03-21	"A"	"Little Rock Zoological Gardens"	"United States"	"M"	2634	2654	2023-11-18	2023
-2730	1	"LIT"	2023-11-18	"End"	2025-03-21	2025-03-21	"A"	"Little Rock Zoological Gardens"	"United States"	"M"	2634	2654	2023-11-18	2023
-2732	1	"MEM"	2023-12-13	"Birth"	2023-12-13	2025-03-21	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	2673	2683	2023-12-13	2023
-2732	1	"MEM"	2023-12-13	"End"	2025-03-21	2025-03-21	"A"	"Memphis Zoological Garden & Aquarium"	"United States"	"M"	2673	2683	2023-12-13	2023
-2735	1	"NZP"	2024-03-21	"Birth"	2024-03-21	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"U"	2715	2708	2024-03-21	2024
-2735	1	"NZP"	2024-03-21	"End"	2025-03-21	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"U"	2715	2708	2024-03-21	2024
-2736	1	"NZP"	2024-03-21	"Birth"	2024-03-21	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"U"	2715	2708	2024-03-21	2024
-2736	1	"NZP"	2024-03-21	"End"	2025-03-21	2025-03-21	"A"	"Smithsonian National Zoological Park"	"United States"	"U"	2715	2708	2024-03-21	2024
-2738	1	"CIN"	2025-01-01	"Birth"	2025-01-01	2025-03-21	"A"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	2622	2630	2025-01-01	2025
-2738	1	"CIN"	2025-01-01	"End"	2025-03-21	2025-03-21	"A"	"Cincinnati Zoo & Botanical Garden"	"United States"	"M"	2622	2630	2025-01-01	2025
-11045	1	"POZ"	1985-02-14	"Birth"	1985-02-14	1986-02-14	"H"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"M"	NA	NA	1985-02-14	1985
-11045	1	"POZ"	1985-02-14	"End"	1986-02-14	1986-02-14	"H"	"Ogrod Zoologiczny w Poznaniu"	"Poland"	"M"	NA	NA	1985-02-14	1985
-12108	1	"IRC"	1987-04-10	"Birth"	1987-04-10	1988-04-10	"H"	"Universität Zürich-Irchel Anthropologisches Institut und Museum"	"Switzerland"	"M"	NA	NA	1987-04-10	1987
-12108	1	"IRC"	1987-04-10	"End"	1988-04-10	1988-04-10	"H"	"Universität Zürich-Irchel Anthropologisches Institut und Museum"	"Switzerland"	"M"	NA	NA	1987-04-10	1987
-12423	1	"PUB"	1999-01-01	"Birth"	1999-01-01	2000-01-01	"H"	"General Public"	"Undetermined"	"M"	NA	NA	1999-01-01	1999
-12423	1	"PUB"	1999-01-01	"End"	2000-01-01	2000-01-01	"H"	"General Public"	"Undetermined"	"M"	NA	NA	1999-01-01	1999
-12717	1	"GRE"	2018-06-12	"Birth"	2018-06-12	2019-06-12	"H"	"Private Owner"	"United Kingdom"	"M"	NA	NA	2018-06-12	2018
-12717	1	"GRE"	2018-06-12	"End"	2019-06-12	2019-06-12	"H"	"Private Owner"	"United Kingdom"	"M"	NA	NA	2018-06-12	2018
-22717	1	"GRE"	2018-06-12	"Birth"	2018-06-12	2019-06-12	"H"	"Private Owner"	"United Kingdom"	"F"	NA	NA	2018-06-12	2018
-22717	1	"GRE"	2018-06-12	"End"	2019-06-12	2019-06-12	"H"	"Private Owner"	"United Kingdom"	"F"	NA	NA	2018-06-12	2018
+"ID"	"Status"	"Sex"	"Sire"	"Dam"	"LocDeath"	"DateDeath"	"LocBirth"	"DateBirth"	"BirthYear"	"AgeDeath"
+1000	"D"	"F"	NA	NA	"SKA"	1987-12-01	"VIE"	1985-01-01	1985	2
+1001	"D"	"F"	NA	NA	"SKA"	1987-01-01	"VIE"	1984-01-01	1984	3
+1002	"D"	"M"	NA	NA	"HON"	1984-04-28	"VIE"	1966-06-10	1966	17
+1003	"D"	"U"	NA	NA	"HON"	1982-01-29	"VIE"	1969-01-05	1969	13
+1004	"D"	"F"	NA	NA	"HON"	1973-10-18	"VIE"	1971-10-18	1971	2
+1005	"D"	"F"	NA	NA	"HON"	1973-10-18	"VIE"	1971-10-18	1971	2
+1006	"D"	"M"	NA	NA	"FIT"	1991-06-12	"UND"	1989-01-01	1989	2
+1007	"D"	"F"	NA	NA	"DUK"	1990-05-12	"VIE"	1983-03-01	1983	7
+1008	"D"	"F"	NA	NA	"DUK"	1998-10-15	"VIE"	1983-03-01	1983	15
+1009	"D"	"M"	NA	NA	"DUK"	1990-09-28	"VIE"	1984-01-01	1984	6
+1010	"D"	"F"	NA	NA	"DUK"	1993-04-18	"VIE"	1984-01-01	1984	9
+1011	"D"	"F"	NA	NA	"DUK"	1989-05-19	"VIE"	1984-01-01	1984	5
+1012	"D"	"M"	NA	NA	"DUK"	1998-07-21	"VIE"	1984-01-01	1984	14
+1013	"D"	"M"	NA	NA	"SKA"	1987-01-01	"VIE"	1984-01-01	1984	3
+1014	"D"	"F"	NA	NA	"CRY"	1995-12-31	"VIE"	1985-05-01	1985	10
+1015	"D"	"M"	NA	NA	"CRY"	1994-12-07	"VIE"	1985-05-01	1985	9
+1016	"D"	"M"	NA	NA	"SOZ"	1993-04-22	"UND"	1985-01-01	1985	8
+1017	"D"	"M"	NA	NA	"SOZ"	1997-01-17	"UND"	1985-03-01	1985	11
+1018	"D"	"M"	NA	NA	"SOZ"	1993-11-01	"UND"	1985-03-01	1985	8
+1019	"D"	"F"	NA	NA	"SOZ"	1995-03-02	"UND"	1985-03-01	1985	10
+1020	"D"	"F"	NA	NA	"SOZ"	1990-12-05	"UND"	1985-03-01	1985	5
+1021	"D"	"F"	NA	NA	"SOZ"	1999-07-08	"UND"	1985-03-01	1985	14
+1022	"D"	"M"	NA	NA	"MIN"	2000-04-10	"VIE"	1985-01-01	1985	15
+1023	"D"	"M"	NA	NA	"DUK"	1996-05-31	"VIE"	1985-03-01	1985	11
+1024	"D"	"F"	NA	NA	"CBR"	1990-06-29	"VIE"	1985-03-01	1985	5
+1025	"D"	"M"	NA	NA	"CIN"	1997-05-26	"VIE"	1985-01-01	1985	12
+1026	"D"	"M"	NA	NA	"CIN"	1990-12-15	"VIE"	1985-03-01	1985	5
+1029	"D"	"M"	NA	NA	"SKA"	1987-12-01	"VIE"	1983-01-01	1983	4
+1030	"D"	"M"	NA	NA	"CBR"	1989-06-01	"VIE"	1986-01-01	1986	3
+1031	"D"	"M"	NA	NA	"SEA"	2004-01-19	"VIE"	1986-01-01	1986	18
+1032	"D"	"M"	NA	NA	"CIN"	1997-03-11	"VIE"	1985-01-01	1985	12
+1033	"D"	"M"	NA	NA	"CIN"	1988-07-27	"VIE"	1986-01-01	1986	2
+1034	"D"	"F"	NA	NA	"CIN"	1992-02-14	"LAO"	1985-01-01	1985	7
+1035	"D"	"F"	NA	NA	"CIN"	1990-11-23	"VIE"	1985-01-01	1985	5
+1036	"D"	"F"	NA	NA	"CIN"	1989-10-25	"VIE"	1986-01-01	1986	3
+1037	"D"	"F"	NA	NA	"CIN"	1990-06-01	"VIE"	1986-01-01	1986	4
+1038	"D"	"F"	NA	NA	"CIN"	1989-07-13	"VIE"	1985-05-11	1985	4
+1039	"D"	"M"	NA	NA	"PHI"	1997-05-18	"UND"	1985-10-15	1985	11
+1040	"D"	"F"	1013	1001	"PHI"	2002-08-17	"SKA"	1986-01-01	1986	16
+1041	"D"	"M"	1029	1000	"PHI"	2001-04-07	"SKA"	1986-12-01	1986	14
+1042	"D"	"M"	NA	NA	"HOU"	1999-11-05	"UND"	1988-05-07	1988	11
+1043	"D"	"F"	NA	NA	"SEA"	1996-09-15	"UND"	1987-08-20	1987	9
+1044	"D"	"F"	NA	NA	"HOU"	2003-01-01	"THA"	1984-01-01	1984	19
+1045	"D"	"M"	11045	1034	"HOU"	2009-01-22	"POZ"	1987-02-14	1987	21
+1046	"D"	"F"	11045	1035	"HOU"	2006-08-12	"POZ"	1987-02-14	1987	19
+1047	"D"	"M"	1012	1008	"DUK"	1998-08-09	"SKA"	1987-02-17	1987	11
+1048	"D"	"F"	1012	1008	"DUK"	1990-09-21	"DUK"	1988-01-01	1988	2
+1049	"D"	"M"	1012	1008	"DUK"	1988-01-01	"DUK"	1988-01-01	1988	0
+1050	"D"	"F"	1016	1019	"SOZ"	1988-02-02	"SOZ"	1988-01-12	1988	0
+1051	"D"	"M"	1026	1034	"CBR"	1997-02-20	"CIN"	1988-02-29	1988	9
+1052	"D"	"U"	1032	1036	"CIN"	1988-04-05	"CIN"	1988-04-04	1988	0
+1053	"D"	"U"	1015	1014	"CRY"	1992-03-26	"CRY"	1988-04-10	1988	3
+1054	"D"	"F"	1030	1024	"CBR"	2002-03-04	"CBR"	1988-10-24	1988	13
+1055	"D"	"M"	1012	1008	"OMA"	1993-03-29	"DUK"	1988-11-17	1988	4
+1056	"D"	"M"	1012	1008	"OMA"	2000-11-30	"DUK"	1988-11-17	1988	12
+1057	"D"	"M"	1017	1020	"CIN"	2005-08-20	"SOZ"	1989-02-25	1989	16
+1058	"D"	"F"	1017	1020	"SOZ"	2008-12-20	"SOZ"	1989-02-25	1989	19
+1059	"D"	"M"	1016	1019	"SOZ"	1999-07-27	"SOZ"	1989-02-26	1989	10
+1060	"D"	"F"	1018	1021	"SDW"	2002-05-02	"SOZ"	1989-02-27	1989	13
+1061	"D"	"F"	1018	1021	"SOZ"	2002-11-29	"SOZ"	1989-02-27	1989	13
+1062	"D"	"U"	1032	1036	"CIN"	1989-08-15	"CIN"	1989-08-15	1989	0
+1063	"D"	"F"	1041	1040	"CIN"	2004-04-16	"PHI"	1990-01-17	1990	14
+1064	"D"	"M"	1041	1040	"SEA"	2002-12-01	"PHI"	1990-01-17	1990	12
+1065	"D"	"M"	1016	1019	"CLE"	2009-02-16	"SOZ"	1990-03-24	1990	18
+1066	"D"	"M"	1045	1046	"CBR"	1998-04-24	"HOU"	1990-04-06	1990	8
+1067	"D"	"F"	1045	1046	"HOU"	1999-12-19	"HOU"	1990-04-06	1990	9
+1068	"D"	"M"	1051	1054	"PAI"	2002-12-12	"CBR"	1990-06-15	1990	12
+1069	"D"	"M"	1051	1054	"CBR"	1990-06-16	"CBR"	1990-06-15	1990	0
+1070	"D"	"M"	1023	1010	"DUK"	1990-07-05	"DUK"	1990-06-30	1990	0
+1071	"D"	"F"	1022	1008	"DUK"	1990-08-18	"DUK"	1990-08-17	1990	0
+1072	"D"	"M"	1023	1010	"PAI"	2002-09-07	"DUK"	1991-03-09	1991	11
+1073	"D"	"M"	1023	1010	"DUK"	1992-11-22	"DUK"	1991-03-09	1991	1
+1074	"D"	"M"	1041	1040	"CLE"	1993-05-16	"PHI"	1991-04-13	1991	2
+1075	"D"	"M"	1041	1040	"CLE"	1996-08-06	"PHI"	1991-04-13	1991	5
+1076	"D"	"F"	1015	1014	"CRY"	1993-04-01	"CRY"	1991-11-09	1991	1
+1077	"D"	"F"	1015	1014	"CRY"	1995-12-31	"CRY"	1991-11-09	1991	4
+1078	"D"	"M"	NA	NA	"CLE"	1998-05-29	"UND"	1989-02-21	1989	9
+1079	"D"	"F"	1042	1067	"OMA"	2005-06-08	"HOU"	1992-02-14	1992	13
+1080	"D"	"F"	1042	1067	"HOU"	1993-06-15	"HOU"	1992-02-14	1992	1
+1081	"D"	"F"	1057	1060	"SOZ"	1992-02-29	"SOZ"	1992-02-29	1992	0
+1082	"D"	"M"	1051	1054	"PAI"	1995-04-13	"CBR"	1992-04-03	1992	3
+1083	"D"	"F"	1041	1040	"WHE"	2001-08-19	"PHI"	1992-08-08	1992	9
+1084	"D"	"F"	1041	1040	"PHI"	1999-06-07	"PHI"	1992-08-08	1992	6
+1085	"D"	"U"	1041	1040	"PHI"	1992-08-10	"PHI"	1992-08-08	1992	0
+1086	"D"	"U"	1041	1040	"PHI"	1992-08-09	"PHI"	1992-08-08	1992	0
+1087	"D"	"F"	NA	NA	"TAI"	2003-07-01	"UND"	1985-01-17	1985	18
+1088	"D"	"F"	NA	NA	"CLE"	2008-08-09	"VIE"	1991-09-22	1991	16
+1089	"D"	"F"	NA	NA	"SOZ"	2009-02-27	"VIE"	1991-04-03	1991	17
+1090	"D"	"M"	1015	1014	"OAS"	2007-06-05	"CRY"	1992-11-14	1992	14
+1091	"D"	"F"	1015	1014	"IND"	2007-11-21	"CRY"	1992-11-14	1992	15
+1092	"D"	"M"	1017	1021	"SOZ"	1993-03-27	"SOZ"	1993-03-24	1993	0
+1093	"D"	"M"	1051	1054	"HOU"	2003-04-20	"CBR"	1993-05-30	1993	9
+1094	"D"	"F"	1051	1054	"CIN"	1994-04-22	"CBR"	1993-05-30	1993	0
+1095	"D"	"F"	1041	1040	"PHI"	1994-03-10	"PHI"	1994-03-09	1994	0
+1096	"D"	"M"	1041	1040	"PHI"	1994-03-16	"PHI"	1994-03-09	1994	0
+1097	"D"	"F"	1023	1008	"DUK"	2013-06-14	"DUK"	1994-03-15	1994	19
+1098	"D"	"M"	1051	1054	"SOZ"	2008-10-01	"CBR"	1994-03-18	1994	14
+1099	"D"	"F"	1051	1054	"MEM"	2006-01-01	"CBR"	1994-03-18	1994	11
+1100	"D"	"F"	1012	1044	"DUK"	1994-04-11	"DUK"	1994-04-11	1994	0
+1101	"D"	"F"	1012	1044	"DUK"	1994-04-11	"DUK"	1994-04-11	1994	0
+1102	"D"	"M"	1064	1088	"SEA"	2007-07-08	"SEA"	1995-02-11	1995	12
+1103	"D"	"M"	1012	1044	"DUK"	2009-08-22	"DUK"	1995-02-15	1995	14
+1104	"D"	"M"	1012	1044	"SEA"	2010-08-18	"DUK"	1995-02-15	1995	15
+1105	"D"	"F"	1057	1060	"SOZ"	2014-06-24	"SOZ"	1995-02-22	1995	19
+1106	"D"	"M"	1041	1040	"MEM"	2005-06-01	"PHI"	1995-02-23	1995	10
+1107	"D"	"F"	1041	1040	"CBR"	2004-06-02	"PHI"	1995-02-23	1995	9
+1108	"D"	"M"	1017	1019	"SOZ"	2014-06-10	"SOZ"	1995-02-26	1995	19
+1109	"D"	"F"	1051	1054	"CBR"	1998-03-07	"CBR"	1995-03-26	1995	3
+1110	"D"	"M"	1051	1054	"CBR"	1995-03-26	"CBR"	1995-03-26	1995	0
+1113	"D"	"M"	NA	NA	"SOZ"	2011-03-02	"UND"	1993-03-27	1993	18
+1114	"D"	"M"	NA	NA	"CRY"	2000-01-20	"VIE"	1993-06-06	1993	6
+1115	"D"	"F"	1064	1088	"CLE"	2013-08-06	"SEA"	1996-01-05	1996	17
+1116	"D"	"M"	1064	1088	"CBR"	2009-01-30	"SEA"	1996-01-05	1996	13
+1117	"D"	"F"	1051	1054	"CBR"	1996-02-02	"CBR"	1996-02-02	1996	0
+1118	"D"	"F"	1051	1054	"CBR"	1996-02-02	"CBR"	1996-02-02	1996	0
+1119	"D"	"M"	1059	1058	"SOZ"	1996-02-08	"SOZ"	1996-02-07	1996	0
+1120	"D"	"F"	1059	1058	"CBR"	2015-05-21	"SOZ"	1996-02-07	1996	19
+1121	"D"	"M"	1057	1060	"MOO"	2013-09-17	"SOZ"	1996-02-20	1996	17
+1122	"D"	"M"	1057	1060	"LIT"	2013-12-09	"SOZ"	1996-02-20	1996	17
+1123	"D"	"F"	1012	1044	"MIN"	1999-09-10	"DUK"	1996-04-25	1996	3
+1124	"D"	"F"	NA	NA	"PUE"	2013-08-20	"VIE"	1995-03-28	1995	18
+1125	"D"	"M"	NA	NA	"PUE"	2012-09-11	"VIE"	1995-03-28	1995	17
+1126	"D"	"F"	NA	NA	"MIN"	2004-11-11	"VIE"	1995-07-19	1995	9
+1127	"D"	"F"	NA	NA	"SEA"	2008-10-14	"VIE"	1995-07-19	1995	13
+1128	"D"	"F"	1051	1054	"LIT"	2014-02-07	"CBR"	1997-01-10	1997	17
+1129	"D"	"M"	1051	1054	"CIN"	2008-02-07	"CBR"	1997-01-10	1997	11
+1130	"D"	"M"	1041	1040	"PHI"	2013-06-13	"PHI"	1997-01-16	1997	16
+1131	"D"	"M"	1059	1058	"ABQ"	2014-09-12	"SOZ"	1997-02-05	1997	17
+1132	"D"	"F"	1059	1058	"COL"	2015-07-02	"SOZ"	1997-02-05	1997	18
+1133	"D"	"F"	1065	1061	"SOZ"	1997-02-12	"SOZ"	1997-02-11	1997	0
+1134	"D"	"M"	1017	1060	"SOZ"	1997-04-01	"SOZ"	1997-02-20	1997	0
+1135	"D"	"F"	1017	1060	"SOZ"	2014-03-26	"SOZ"	1997-02-20	1997	17
+1136	"D"	"U"	1064	1043	"SEA"	1992-03-30	"SEA"	1992-03-30	1992	0
+1137	"D"	"U"	1064	1043	"SEA"	1992-03-30	"SEA"	1992-03-30	1992	0
+1138	"D"	"M"	1078	1088	"CLE"	2010-03-27	"CLE"	1998-05-16	1998	11
+1139	"D"	"F"	1078	1088	"CLE"	2006-07-02	"CLE"	1998-05-16	1998	8
+1140	"D"	"M"	1125	1124	"PUE"	2003-03-07	"PUE"	1998-05-26	1998	4
+1141	"D"	"M"	1059	1089	"SOZ"	2018-02-14	"SOZ"	1999-04-19	1999	18
+1142	"D"	"M"	1059	1089	"CHI"	2015-02-23	"SOZ"	1999-04-19	1999	15
+1143	"D"	"F"	1104	1115	"OMA"	2009-01-24	"OMA"	1999-06-20	1999	9
+1144	"D"	"F"	1104	1115	"OMA"	2013-12-19	"OMA"	1999-06-20	1999	14
+1145	"D"	"F"	1113	1089	"MOO"	2012-10-04	"SOZ"	2000-04-27	2000	12
+1146	"D"	"F"	1113	1089	"SOZ"	2018-05-04	"SOZ"	2000-04-27	2000	18
+1147	"D"	"M"	1116	1054	"CBR"	2000-10-12	"CBR"	2000-10-10	2000	0
+1148	"D"	"M"	1116	1054	"CBR"	2000-10-12	"CBR"	2000-10-10	2000	0
+1149	"D"	"F"	1103	1097	"DUK"	2000-09-03	"DUK"	2000-09-03	2000	0
+1150	"D"	"M"	1125	1124	"PUE"	2002-01-07	"PUE"	2000-03-08	2000	1
+1151	"D"	"M"	1125	1124	"CLE"	2010-02-21	"PUE"	2000-03-08	2000	9
+2006	"D"	"M"	NA	NA	"WAR"	1990-11-24	"ASI"	1984-10-23	1984	6
+2097	"D"	"F"	NA	NA	"FRA"	1996-01-21	"VIE"	1987-04-10	1987	8
+2098	"D"	"M"	NA	NA	"FRA"	2000-08-07	"VIE"	1986-01-01	1986	14
+2108	"D"	"M"	12108	2097	"KOL"	2003-11-15	"IRC"	1989-04-10	1989	14
+2129	"D"	"F"	NA	NA	"KOL"	2005-12-06	"VIE"	1989-10-12	1989	16
+2208	"D"	"M"	2108	2129	"MIN"	2010-10-29	"FRA"	1994-04-27	1994	16
+2233	"D"	"F"	2108	2129	"COL"	1998-08-31	"FRA"	1996-07-30	1996	2
+2329	"D"	"U"	1125	1124	"PUE"	2001-02-07	"PUE"	2001-02-07	2001	0
+2330	"D"	"U"	1125	1124	"PUE"	2001-02-11	"PUE"	2001-02-07	2001	0
+2333	"D"	"U"	1103	1097	"DUK"	2001-05-14	"DUK"	2001-05-14	2001	0
+2334	"D"	"U"	1103	1097	"DUK"	2001-05-14	"DUK"	2001-05-14	2001	0
+2335	"D"	"U"	1103	1097	"DUK"	2001-05-23	"DUK"	2001-05-14	2001	0
+2336	"D"	"M"	NA	NA	"NYB"	2013-03-10	"ASI"	2000-08-02	2000	12
+2337	"D"	"M"	NA	NA	"LAN"	2010-11-02	"ASI"	2000-08-02	2000	10
+2338	"D"	"M"	NA	NA	"CAL"	2012-02-13	"ASI"	1999-01-01	1999	13
+2339	"D"	"F"	NA	NA	"CAL"	2001-09-17	"ASI"	2000-08-02	2000	1
+2340	"D"	"F"	NA	NA	"CAL"	2007-06-01	"ASI"	2000-08-02	2000	6
+2341	"D"	"F"	NA	NA	"BOW"	2012-02-14	"ASI"	2000-08-02	2000	11
+2342	"D"	"F"	2208	1126	"EVA"	2013-12-16	"MIN"	2001-08-15	2001	12
+2343	"D"	"U"	2208	1126	"MIN"	2001-08-16	"MIN"	2001-08-15	2001	0
+2400	"D"	"F"	2208	1126	"AKR"	2009-12-30	"MIN"	2003-01-04	2003	6
+2402	"D"	"M"	1102	1127	"GAR"	2014-03-04	"SEA"	2001-11-30	2001	12
+2403	"D"	"F"	1102	1127	"OMA"	2017-01-26	"SEA"	2001-11-30	2001	15
+2405	"D"	"F"	2338	2340	"BOW"	2013-07-14	"CAL"	2002-02-08	2002	11
+2406	"D"	"M"	1103	1097	"DUK"	2012-05-08	"DUK"	2002-03-04	2002	10
+2407	"D"	"M"	1103	1097	"DUK"	2002-03-05	"DUK"	2002-03-04	2002	0
+2408	"D"	"M"	1113	1089	"AKR"	2015-03-01	"SOZ"	2002-03-25	2002	13
+2409	"D"	"M"	1113	1089	"ATT"	2019-03-13	"SOZ"	2002-03-25	2002	17
+2410	"D"	"M"	1125	1124	"PUE"	2004-01-13	"PUE"	2002-04-05	2002	1
+2411	"D"	"F"	1125	1124	"BUS"	2015-06-16	"PUE"	2002-04-05	2002	13
+2412	"D"	"M"	2208	1126	"CHI"	2005-01-28	"MIN"	2002-06-03	2002	2
+2413	"D"	"F"	2208	1126	"CLE"	2007-08-01	"MIN"	2002-06-03	2002	5
+2414	"D"	"F"	1102	1127	"CLE"	2020-04-24	"SEA"	2002-11-05	2002	17
+2415	"D"	"M"	1102	1127	"MEM"	2010-05-12	"SEA"	2002-11-05	2002	7
+2416	"D"	"F"	2338	2340	"MEM"	2018-05-21	"CAL"	2002-12-20	2002	15
+2417	"D"	"M"	2338	2340	"NYB"	2016-02-23	"CAL"	2002-12-20	2002	13
+2418	"D"	"F"	1125	1124	"AKR"	2016-01-31	"PUE"	2003-02-09	2003	12
+2419	"D"	"U"	1125	1124	"PUE"	2003-02-13	"PUE"	2003-02-09	2003	0
+2420	"D"	"M"	NA	NA	"DUK"	2012-04-04	"UND"	2002-01-03	2002	10
+2421	"D"	"F"	NA	NA	"LOS"	2003-02-08	"UND"	2001-06-01	2001	1
+2422	"D"	"F"	NA	NA	"DUK"	2017-10-26	"UND"	1997-01-01	1997	20
+2423	"D"	"F"	12423	2422	"NYB"	2016-05-21	"PUB"	2001-01-01	2001	15
+2424	"D"	"F"	12423	2422	"DUK"	2008-08-12	"PUB"	2002-01-01	2002	6
+2425	"D"	"M"	1116	1120	"CBR"	2012-10-26	"CBR"	2003-08-03	2003	9
+2426	"D"	"F"	1116	1120	"CBR"	2014-05-16	"CBR"	2003-08-03	2003	10
+2427	"D"	"M"	2338	2340	"EVA"	2016-02-08	"CAL"	2003-09-05	2003	12
+2428	"D"	"F"	2338	2340	"OMA"	2016-03-12	"CAL"	2003-09-05	2003	12
+2429	"D"	"F"	2337	2341	"EVA"	2020-12-17	"QUE"	2003-10-27	2003	17
+2430	"D"	"F"	1125	1124	"ATT"	2017-03-27	"PUE"	2003-12-22	2003	13
+2431	"D"	"M"	1125	1124	"PUE"	2003-12-22	"PUE"	2003-12-22	2003	0
+2432	"D"	"M"	1012	1044	"DUK"	1996-04-30	"DUK"	1996-04-25	1996	0
+2433	"D"	"U"	1056	1079	"OMA"	2000-08-03	"OMA"	2000-08-03	2000	0
+2434	"D"	"U"	1102	1127	"SEA"	2001-03-17	"SEA"	2001-03-17	2001	0
+2435	"D"	"M"	2208	1126	"SOZ"	2021-04-29	"MIN"	2004-08-10	2004	16
+2436	"D"	"F"	2208	1126	"PUE"	2018-12-12	"MIN"	2004-08-10	2004	14
+2437	"D"	"U"	1125	1124	"PUE"	2004-08-14	"PUE"	2004-08-11	2004	0
+2438	"D"	"U"	1125	1124	"PUE"	2004-08-14	"PUE"	2004-08-11	2004	0
+2439	"D"	"M"	2338	2340	"CAL"	2004-08-27	"CAL"	2004-08-22	2004	0
+2440	"D"	"M"	2338	2340	"CAL"	2004-08-22	"CAL"	2004-08-22	2004	0
+2441	"D"	"M"	1108	1146	"SOZ"	2005-01-23	"SOZ"	2005-01-23	2005	0
+2442	"D"	"M"	1108	1146	"SOZ"	2005-01-23	"SOZ"	2005-01-23	2005	0
+2444	"D"	"M"	2337	2341	"BOW"	2016-07-24	"QUE"	2005-02-15	2005	11
+2445	"D"	"U"	1125	1124	"PUE"	2005-04-01	"PUE"	2005-03-30	2005	0
+2446	"D"	"U"	1125	1124	"PUE"	2005-04-01	"PUE"	2005-04-01	2005	0
+2447	"D"	"U"	2338	2340	"CAL"	2005-04-09	"CAL"	2005-04-09	2005	0
+2448	"D"	"U"	2338	2340	"CAL"	2005-04-09	"CAL"	2005-04-09	2005	0
+2449	"D"	"M"	1108	1146	"ELP"	2017-07-15	"SOZ"	2005-09-17	2005	11
+2450	"D"	"M"	1108	1146	"ELP"	2020-10-15	"SOZ"	2005-09-17	2005	15
+2451	"D"	"F"	1103	1097	"PUE"	2016-02-05	"DUK"	2004-10-02	2004	11
+2452	"D"	"U"	1138	2413	"CLE"	2005-12-24	"CLE"	2005-12-24	2005	0
+2490	"D"	"U"	1138	2413	"CLE"	2004-08-24	"CLE"	2004-08-20	2004	0
+2493	"D"	"M"	2337	2341	"BOW"	2016-07-24	"QUE"	2005-02-15	2005	11
+2495	"D"	"U"	1121	1145	"MOO"	2006-03-24	"MOO"	2006-03-24	2006	0
+2496	"D"	"M"	1121	1145	"DUK"	2017-06-07	"MOO"	2006-03-24	2006	11
+2498	"D"	"M"	2406	2424	"DUK"	2015-06-17	"DUK"	2006-06-01	2006	9
+2499	"D"	"F"	2406	2424	"OMA"	2017-03-04	"DUK"	2006-06-01	2006	10
+2500	"D"	"M"	2409	1135	"OMA"	2013-12-18	"SOZ"	2006-06-18	2006	7
+2501	"D"	"F"	1138	2413	"CLE"	2009-11-06	"CLE"	2007-01-07	2007	2
+2502	"D"	"F"	1138	2413	"EVA"	2019-09-10	"CLE"	2007-01-07	2007	12
+2503	"D"	"U"	1131	2403	"ABQ"	2007-01-24	"ABQ"	2007-01-18	2007	0
+2504	"A"	"F"	1131	2403	NA	NA	"ABQ"	2007-01-18	2007	NA
+2505	"D"	"U"	2409	1135	"SOZ"	2006-06-20	"SOZ"	2006-06-20	2006	0
+2506	"D"	"F"	1125	1124	"CLE"	2012-07-28	"PUE"	2006-04-06	2006	6
+2507	"D"	"M"	1125	1124	"OMA"	2015-11-04	"PUE"	2006-04-06	2006	9
+2600	"D"	"M"	2408	2400	"CIN"	2018-06-22	"AKR"	2008-11-20	2008	9
+2601	"D"	"F"	1121	1145	"MOO"	2008-03-13	"MOO"	2008-03-12	2008	0
+2602	"D"	"F"	1121	1145	"MOO"	2008-04-05	"MOO"	2008-03-12	2008	0
+2603	"D"	"U"	2402	1143	"OMA"	2008-11-22	"OMA"	2008-11-22	2008	0
+2604	"D"	"M"	1130	2436	"PHI"	2008-03-20	"PHI"	2008-03-16	2008	0
+2605	"D"	"F"	1130	2436	"AKR"	2015-10-08	"PHI"	2008-03-16	2008	7
+2606	"D"	"U"	1125	1124	"PUE"	2008-02-12	"PUE"	2008-02-12	2008	0
+2607	"D"	"F"	1131	2403	"SOZ"	2019-02-01	"ABQ"	2008-09-18	2008	10
+2608	"D"	"F"	1131	2403	"AKR"	2021-01-19	"ABQ"	2008-09-18	2008	12
+2609	"D"	"M"	1138	2506	"OMA"	2016-05-28	"CLE"	2009-08-14	2009	6
+2610	"D"	"U"	2496	2501	"CLE"	2009-11-06	"CLE"	2009-11-06	2009	0
+2611	"D"	"M"	1121	1145	"MOO"	2009-05-22	"MOO"	2009-05-13	2009	0
+2612	"D"	"M"	1130	2436	"PHI"	2009-03-30	"PHI"	2009-03-27	2009	0
+2613	"D"	"M"	1131	2403	"ABQ"	2009-07-23	"ABQ"	2009-07-18	2009	0
+2614	"A"	"F"	1131	2403	NA	NA	"ABQ"	2009-07-18	2009	NA
+2615	"D"	"M"	1142	2411	"CHI"	2009-04-25	"CHI"	2009-04-25	2009	0
+2616	"D"	"F"	1142	2411	"CHI"	2009-04-25	"CHI"	2009-04-25	2009	0
+2617	"A"	"F"	1130	2436	NA	NA	"PHI"	2010-02-05	2010	NA
+2618	"D"	"M"	1130	2436	"PHI"	2010-02-07	"PHI"	2010-02-05	2010	0
+2622	"A"	"M"	2498	2502	NA	NA	"DUK"	2010-09-17	2010	NA
+2623	"A"	"M"	2498	2502	NA	NA	"DUK"	2010-09-17	2010	NA
+2624	"D"	"M"	2402	2451	"DUK"	2017-11-22	"GAR"	2010-03-14	2010	7
+2625	"D"	"F"	2402	2451	"CIN"	2020-03-03	"GAR"	2010-12-06	2010	9
+2626	"A"	"F"	2402	2451	NA	NA	"GAR"	2010-12-06	2010	NA
+2627	"D"	"U"	2208	2418	"MIN"	2010-09-25	"MIN"	2010-09-25	2010	0
+2628	"D"	"U"	2208	2418	"MIN"	2010-09-25	"MIN"	2010-09-25	2010	0
+2629	"D"	"U"	2208	2418	"MIN"	2010-09-25	"MIN"	2010-09-25	2010	0
+2630	"A"	"F"	1121	1145	NA	NA	"MOO"	2010-03-22	2010	NA
+2631	"A"	"M"	1121	1145	NA	NA	"MOO"	2010-03-22	2010	NA
+2632	"D"	"F"	1130	2436	"ELP"	2012-02-01	"PHI"	2010-08-09	2010	1
+2633	"D"	"U"	1130	2436	"PHI"	2010-08-09	"PHI"	2010-08-09	2010	0
+2634	"D"	"M"	1131	2414	"LIT"	2014-04-24	"ABQ"	2010-08-12	2010	3
+2635	"D"	"M"	1131	2414	"BLO"	2018-02-23	"ABQ"	2010-08-12	2010	7
+2636	"D"	"U"	2417	2423	"NYB"	2011-05-22	"NYB"	2010-12-06	2010	0
+2637	"A"	"F"	2406	2608	NA	NA	"DUK"	2011-02-04	2011	NA
+2638	"D"	"F"	1121	1145	"MOO"	2011-06-14	"MOO"	2011-06-14	2011	0
+2639	"D"	"M"	1121	1145	"COL"	2013-12-04	"MOO"	2011-06-14	2011	2
+2640	"A"	"F"	2420	2608	NA	NA	"DUK"	2012-04-09	2012	NA
+2641	"A"	"M"	2420	2608	NA	NA	"DUK"	2012-04-09	2012	NA
+2642	"A"	"F"	2402	2451	NA	NA	"GAR"	2011-10-27	2011	NA
+2643	"D"	"F"	2417	2423	"NYB"	2011-12-11	"NYB"	2011-12-09	2011	0
+2644	"D"	"U"	2417	2423	"NYB"	2011-12-12	"NYB"	2011-12-09	2011	0
+2645	"D"	"M"	1131	2414	"ABQ"	2015-01-20	"ABQ"	2011-12-07	2011	3
+2646	"A"	"M"	2449	2632	NA	NA	"ELP"	2013-04-26	2013	NA
+2647	"D"	"F"	2449	2632	"GAR"	2017-03-16	"ELP"	2013-04-26	2013	3
+2648	"D"	"M"	2498	2502	"DUK"	2012-07-03	"DUK"	2012-06-20	2012	0
+2649	"A"	"M"	2498	2502	NA	NA	"DUK"	2012-06-20	2012	NA
+2650	"D"	"U"	1130	2436	"PHI"	2013-01-26	"PHI"	2013-01-26	2013	0
+2651	"D"	"M"	1130	2436	"PHI"	2013-01-26	"PHI"	2013-01-26	2013	0
+2652	"A"	"M"	2408	2418	NA	NA	"AKR"	2013-08-21	2013	NA
+2653	"A"	"M"	2449	2632	NA	NA	"ELP"	2014-08-22	2014	NA
+2654	"A"	"F"	2449	2632	NA	NA	"ELP"	2014-08-22	2014	NA
+2655	"D"	"M"	2496	2403	"CLE"	2015-01-22	"CLE"	2015-01-22	2015	0
+2656	"D"	"U"	2496	2403	"CLE"	2015-01-22	"CLE"	2015-01-22	2015	0
+2657	"D"	"F"	2631	2626	"CBR"	2015-04-28	"CBR"	2015-04-24	2015	0
+2658	"D"	"U"	2631	2626	"CBR"	2015-04-28	"CBR"	2015-04-28	2015	0
+2659	"A"	"F"	2450	2414	NA	NA	"CLE"	2015-05-18	2015	NA
+2660	"D"	"U"	2450	2414	"CLE"	2015-05-19	"CLE"	2015-05-18	2015	0
+2661	"A"	"F"	2639	2642	NA	NA	"COL"	2015-06-09	2015	NA
+2662	"D"	"U"	2639	2642	"COL"	2015-06-09	"COL"	2015-06-09	2015	0
+2663	"D"	"M"	2623	2640	"NYB"	2015-03-06	"NYB"	2015-03-01	2015	0
+2664	"D"	"F"	2623	2640	"NYB"	2015-03-04	"NYB"	2015-03-04	2015	0
+2665	"D"	"F"	2417	2423	"NYB"	2015-04-11	"NYB"	2015-04-10	2015	0
+2666	"A"	"F"	2639	2642	NA	NA	"COL"	2016-03-25	2016	NA
+2667	"A"	"M"	2639	2642	NA	NA	"COL"	2016-03-25	2016	NA
+2668	"D"	"M"	2646	2637	"CHI"	2016-04-27	"CHI"	2016-04-25	2016	0
+2669	"D"	"U"	2646	2637	"CHI"	2016-04-28	"CHI"	2016-04-25	2016	0
+2670	"D"	"U"	2449	2632	"ELP"	2016-09-29	"ELP"	2016-09-28	2016	0
+2671	"A"	"M"	2449	2632	NA	NA	"ELP"	2016-09-28	2016	NA
+2672	"D"	"F"	2449	2632	"ELP"	2016-10-10	"ELP"	2016-09-28	2016	0
+2673	"A"	"M"	2649	2638	NA	NA	"MOO"	2016-12-16	2016	NA
+2674	"D"	"F"	2649	2638	"PRO"	2018-04-26	"MOO"	2016-12-16	2016	1
+2675	"D"	"U"	2631	2626	"CBR"	2016-11-09	"CBR"	2016-11-03	2016	0
+2676	"A"	"M"	2631	2626	NA	NA	"CBR"	2016-11-03	2016	NA
+2677	"A"	"F"	2496	2502	NA	NA	"DUK"	2017-01-18	2017	NA
+2678	"D"	"F"	2496	2502	"DUK"	2017-01-19	"DUK"	2017-01-18	2017	0
+2679	"A"	"F"	2639	2642	NA	NA	"COL"	2017-02-05	2017	NA
+2680	"D"	"U"	2639	2642	"COL"	2017-02-05	"COL"	2017-02-05	2017	0
+2681	"D"	"M"	2646	2637	"CHI"	2017-03-28	"CHI"	2017-03-01	2017	0
+2682	"A"	"M"	2634	2654	NA	NA	"LIT"	2017-08-08	2017	NA
+2683	"D"	"F"	2634	2654	"MEM"	2019-05-14	"LIT"	2017-08-08	2017	1
+2684	"D"	"U"	2646	2637	"CHI"	2017-11-30	"CHI"	2017-11-28	2017	0
+2685	"A"	"M"	2646	2637	NA	NA	"CHI"	2017-11-28	2017	NA
+2686	"D"	"M"	2639	2659	"COL"	2018-06-04	"COL"	2018-05-27	2018	0
+2687	"D"	"M"	2639	2659	"COL"	2018-05-27	"COL"	2018-05-27	2018	0
+2688	"D"	"U"	2653	2607	"SOZ"	2019-01-31	"SOZ"	2019-01-31	2019	0
+2689	"A"	"M"	2639	2659	NA	NA	"COL"	2019-05-28	2019	NA
+2690	"A"	"M"	2639	2659	NA	NA	"COL"	2019-05-28	2019	NA
+2691	"D"	"U"	2667	2608	"AKR"	2019-05-16	"AKR"	2019-05-16	2019	0
+2692	"D"	"U"	2415	2416	"MEM"	2010-09-25	"MEM"	2010-09-25	2010	0
+2693	"D"	"M"	2417	2423	"NYB"	2010-12-06	"NYB"	2010-12-06	2010	0
+2694	"D"	"U"	2415	2416	"MEM"	2010-09-27	"MEM"	2010-09-27	2010	0
+2695	"D"	"U"	2408	2400	"AKR"	2008-11-21	"AKR"	2008-11-20	2008	0
+2696	"D"	"M"	2408	2400	"AKR"	2008-04-03	"AKR"	2008-04-03	2008	0
+2697	"D"	"F"	2408	2400	"AKR"	2008-04-03	"AKR"	2008-04-03	2008	0
+2698	"D"	"U"	2408	2400	"AKR"	2007-06-16	"AKR"	2007-06-15	2007	0
+2699	"D"	"U"	2408	2400	"AKR"	2007-06-16	"AKR"	2007-06-15	2007	0
+2700	"D"	"U"	1125	1124	"PUE"	2007-04-23	"PUE"	2007-04-21	2007	0
+2701	"D"	"U"	1125	1124	"PUE"	2007-04-23	"PUE"	2007-04-21	2007	0
+2702	"D"	"U"	1125	1124	"PUE"	2007-04-21	"PUE"	2007-04-21	2007	0
+2703	"D"	"U"	1138	2413	"CLE"	2005-12-24	"CLE"	2005-12-24	2005	0
+2704	"D"	"U"	1138	2413	"CLE"	2005-12-24	"CLE"	2005-12-24	2005	0
+2705	"D"	"M"	2649	2630	"MOO"	2020-02-02	"MOO"	2020-01-16	2020	0
+2706	"D"	"U"	2623	2640	"NYB"	2020-03-11	"NYB"	2020-03-11	2020	0
+2707	"A"	"F"	2631	2626	NA	NA	"CBR"	2020-08-26	2020	NA
+2708	"A"	"F"	2631	2626	NA	NA	"CBR"	2020-08-26	2020	NA
+2709	"D"	"U"	2641	2502	"EVA"	2020-10-29	"EVA"	2020-10-27	2020	0
+2710	"D"	"M"	2649	2638	"MOO"	2021-02-06	"MOO"	2020-12-04	2020	0
+2711	"D"	"M"	2639	2642	"CLE"	2024-04-30	"COL"	2021-02-25	2021	3
+2712	"D"	"F"	2623	2640	"NYB"	2021-03-23	"NYB"	2021-03-11	2021	0
+2713	"A"	"F"	2623	2640	NA	NA	"NYB"	2021-03-11	2021	NA
+2714	"A"	"F"	2634	2654	NA	NA	"LIT"	2021-06-18	2021	NA
+2715	"A"	"M"	2634	2654	NA	NA	"LIT"	2021-06-18	2021	NA
+2717	"A"	"F"	12717	22717	NA	NA	"GRE"	2020-06-12	2020	NA
+2718	"A"	"F"	2685	2679	NA	NA	"DUL"	2022-02-28	2022	NA
+2719	"A"	"F"	2685	2679	NA	NA	"DUL"	2022-02-28	2022	NA
+2723	"A"	"M"	2649	2638	NA	NA	"MOO"	2022-12-24	2022	NA
+2727	"A"	"M"	2667	2714	NA	NA	"CLE"	2023-07-25	2023	NA
+2729	"A"	"M"	2634	2654	NA	NA	"LIT"	2023-11-18	2023	NA
+2730	"A"	"M"	2634	2654	NA	NA	"LIT"	2023-11-18	2023	NA
+2732	"A"	"M"	2673	2683	NA	NA	"MEM"	2023-12-13	2023	NA
+2735	"A"	"U"	2715	2708	NA	NA	"NZP"	2024-03-21	2024	NA
+2736	"A"	"U"	2715	2708	NA	NA	"NZP"	2024-03-21	2024	NA
+2738	"A"	"M"	2622	2630	NA	NA	"CIN"	2025-01-01	2025	NA
+11045	"H"	"M"	NA	NA	"POZ"	1987-02-14	"POZ"	1985-02-14	1985	2
+12423	"H"	"M"	NA	NA	"PUB"	2001-01-01	"PUB"	1999-01-01	1999	2
+12108	"H"	"M"	NA	NA	"IRC"	1989-04-10	"IRC"	1987-04-10	1987	2
+22717	"H"	"F"	NA	NA	"GRE"	2020-06-12	"GRE"	2018-06-12	2018	2
+12717	"H"	"M"	NA	NA	"GRE"	2020-06-12	"GRE"	2018-06-12	2018	2

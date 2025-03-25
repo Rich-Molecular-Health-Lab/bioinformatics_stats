@@ -135,6 +135,23 @@ clean_studbook <- function(df, alive, locations) {
 
 calculate_age <- function(birth, date) {
   floor(as.numeric(as.period(interval(floor_date(birth, "month"), date), unit = "years"), "years"))
+
+}
+
+check_loc_dates <- function(df) {
+ df %>%
+   mutate(check = if_else(
+    between(Date, StartLoc, EndLoc) |
+      is.na(StartLoc) & Date < EndLoc |
+      is.na(EndLoc) & Date > StartLoc |
+      (is.na(StartLoc) & is.na(EndLoc)) | is.na(Date),
+    "keep",
+    "discard"
+  )) %>%
+   filter(check == "keep") %>%
+   select(-check)
+ 
+ return(df)
 }
 
 est_date_between   <- function(date1, date2) {
@@ -158,11 +175,13 @@ assemble_timeline <- function(studbook) {
             TypeEvent,
             Date) %>%
     slice_tail(n = 1, by = ID) %>%
-    filter(TypeEvent != "End") %>%
-    mutate(Date      = if_else(Status == "A", today(), NA),
+    mutate(Date      = case_when(Status == "A" ~ today(), 
+                                 is.na(Date) & ID %in% deaths.21_24 ~ ymd("2023-1-1"),
+                                 is.na(Date) & ID %in% deaths.24    ~ ymd("2025-1-1"),
+                                 .default = Date),
            TypeEvent = "End") %>% 
-    mutate(EndLoc    = Date) %>%
-    select(-Status) %>% distinct()
+    mutate(EndLoc    = Date) %>% 
+    distinct()
   
   sires <- studbook %>%
     filter(TypeEvent == "Birth" & !is.na(Sire)) %>%
@@ -171,14 +190,13 @@ assemble_timeline <- function(studbook) {
            Location,
            Date)
   
-  dams <- studbook %>%
+  parents <- studbook %>%
     filter(TypeEvent == "Birth" & !is.na(Dam)) %>%
     select(ID      = Dam,
            OffspID = ID,
            Location,
-           Date)
-  
-  parents <- bind_rows(sires, dams)
+           Date) %>%
+    bind_rows(sires)
   
   births <- studbook %>%
     select(ID,
@@ -187,51 +205,38 @@ assemble_timeline <- function(studbook) {
            StartLoc,
            EndLoc) %>%
     right_join(parents, by = join_by(ID, Location)) %>%
-    mutate(check = if_else(
-      between(Date, StartLoc, EndLoc) | 
-        is.na(StartLoc) & Date < EndLoc | 
-        is.na(EndLoc) & Date > StartLoc | 
-        (is.na(StartLoc) & is.na(EndLoc)) | is.na(Date),
-      "keep",
-      "discard"
-    )) %>% filter(check == "keep") %>%
+    check_loc_dates() %>%
     mutate(TypeEvent = "Breed") %>%
-    select(-c(check, OffspID)) %>% 
+    select(-OffspID) %>% 
     distinct() %>% 
     arrange(ID, 
             OrderLoc,
             Date)
   
-    studbook %>%
-      select(
-        ID,
-        Sex,
-        OrderLoc,
-        Location,
-        TypeEvent,
-        StartLoc,
-        Date,
-        EndLoc) %>% 
-      bind_rows(births) %>% 
-      bind_rows(end.records) %>%
-      mutate(TypeEvent = fct(TypeEvent, 
-                             levels = c(
-        "Birth",
-        "Transfer",
-        "Breed",
-        "End"
-      ))) %>%
-      arrange(ID, 
-              OrderLoc,
-              TypeEvent,
-              Date) %>%
-    distinct() %>%
-      group_by(ID) %>%
-      fill(Sex, .direction = "downup") %>%
-      mutate(OrderEvent = consecutive_id(TypeEvent)) %>%
-      mutate(Cohort = if_else(OrderEvent == 1, year(Date), NA)) %>%
-      fill(Cohort) %>%
-      ungroup()
+  studbook %>%
+    select(
+      ID,
+      OrderLoc,
+      Location,
+      TypeEvent,
+      StartLoc,
+      Date,
+      EndLoc) %>% 
+    filter(TypeEvent != "End") %>%
+    bind_rows(births) %>% 
+    bind_rows(select(end.records, -Status)) %>%
+    mutate(TypeEvent = fct(TypeEvent, 
+                           levels = c(
+                             "Birth",
+                             "Transfer",
+                             "Breed",
+                             "End"
+                           ))) %>%
+    arrange(ID, 
+            OrderLoc,
+            TypeEvent,
+            Date) %>%
+    distinct()
 }
 
 fill_dates_timeline <- function(df) {
@@ -285,190 +290,181 @@ fill_dates_timeline <- function(df) {
     
 }
 
-census.location <- function(df, interval) {
-  if (interval == "month") {
-    records <- df %>%
-      mutate(StartLoc = floor_date(StartLoc, "month"),
-             EndLoc   = floor_date(EndLoc, "month"),
-             DateBirth = floor_date(DateBirth, "month"))
-    seqby <- paste0("months")
-  } else if (interval == "year") {
-    records <- df %>%
-      mutate(StartLoc  = floor_date(StartLoc, "year"),
-             EndLoc    = floor_date(EndLoc, "year"),
-             DateBirth = floor_date(DateBirth, "year"))
-    seqby <- paste0("years")
-  }
+
+
+revise_studbook <- function(studbook, timeline) {
+  deceased <- filter(studbook, Status == "D") %>% pull(ID) %>% unique()
   
-  list <-  list(pull(records, StartLoc),
-                pull(records, EndLoc), 
-                pull(records, DateBirth), 
-                pull(records, Location), 
-                pull(records, Sex), 
-                pull(records, ID))
+  birth.dates <- filter(timeline, TypeEvent == "Birth") %>%
+    select(ID,
+           LocBirth  = Location,
+           DateBirth = Date) %>%
+    mutate(BirthYear = year(DateBirth))
   
-  pmap(list, \(u, v, w, x, y, z) tibble(
-    Date     = seq(u, v, by = seqby),
-    ID       = z,
-    Location = x,
-    Sex      = y,
-    Age      =  calculate_age(w, seq(u, v, by = seqby))
-  )) %>%
-    map_depth(., 1, \(x) distinct(x)) %>%
-    map_depth(., 1, \(x) arrange(x, Sex, ID)) %>% 
-    bind_rows() %>% 
-    group_by(Date, Location) %>%
-    summarise(Individuals = list(
-      tibble(ID, Sex, Age)), 
-      .groups = "drop") %>%
-    group_by(Date) %>%
-    summarise(Locations = split(Individuals, 
-                                Location), 
-              .groups = "drop") %>%
-    split(.$Date) %>%
-    map(~ .x$Locations)
+  deaths   <- filter(timeline, TypeEvent == "End" & ID %in% deceased) %>%
+    select(ID,
+           LocDeath  = Location,
+           DateDeath = Date) 
+  
+  studbook.revised <- studbook %>%
+    select(
+      ID,
+      Status,
+      Sex,
+      Sire,
+      Dam
+    ) %>%
+    distinct() %>%
+    left_join(deaths, by = join_by(ID)) %>%
+    left_join(birth.dates, by = join_by(ID)) %>%
+    mutate(AgeDeath = calculate_age(DateBirth, DateDeath))
+  
+  return(studbook.revised)
 }
 
-census <- function(df, interval, groups) {
-  if (interval == "month") {
-    records <- df %>%
-      mutate(Birth = floor_date(Birth, "month"),
-             End   = floor_date(End, "month"))
-    seqby <- paste0("months")
-  } else if (interval == "year") {
-    records <- df %>%
-      mutate(Birth = floor_date(Birth, "year"),
-             End   = floor_date(End, "year"))
-    seqby <- paste0("years")
+
+expand_timeline <- function(timeline, period, studbook) {
+  timeline <- timeline %>%
+    select(ID,
+           Location,
+           StartLoc,
+           EndLoc) %>%
+    distinct()
+  if (period == "months") {
+    timeline.long <- timeline %>% 
+      mutate(StartLoc = floor_date(StartLoc, "months"),
+             EndLoc   = floor_date(EndLoc, "months")) %>%
+      mutate(Months = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "1 month"))) %>%
+      unnest(Months) %>%
+      select(ID, 
+             Date = Months, 
+             Location) %>%
+      left_join(select(
+        studbook,
+        ID,
+        Sex,
+        DateBirth
+      ), by = join_by(ID)) %>%
+      mutate(BirthYear = year(DateBirth),
+             Age    = calculate_age(DateBirth, Date)) %>%
+      select(ID,
+             Sex,
+             BirthYear,
+             Date,
+             Age,
+             Location)
+      
+  } else if (period == "years") {
+    timeline.new <- timeline %>% 
+      mutate(StartLoc = floor_date(StartLoc, "years"),
+             EndLoc   = floor_date(EndLoc, "years")) %>%
+      mutate(Years = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "1 year"))) %>%
+      unnest(Years) %>%
+      select(ID, 
+             Date = Years, 
+             Location) %>%
+      left_join(select(
+        studbook,
+        ID,
+        Sex,
+        DateBirth
+      ), by = join_by(ID)) %>%
+      mutate(BirthYear = year(DateBirth),
+             Age    = calculate_age(floor_date(DateBirth, "years"), Date)) %>%
+      select(ID,
+             Sex,
+             BirthYear,
+             Date,
+             Age,
+             Location)
   }
   
-  list <-  list(pull(records, Birth),
-                pull(records, End), 
-                pull(records, Sex), 
-                pull(records, ID))
-  census <- pmap(list, \(w, x, y, z) tibble(
-    Date   = seq(w, x, by = seqby),
-    ID     = z,
-    Sex    = y,
-    Cohort = year(w),
-    Age    =  calculate_age(w, seq(w, x, by = seqby))
-  )) %>% map_depth(., 1, \(x) distinct(x)) %>%
-    map_depth(., 1, \(x) arrange(x, Sex, ID)) %>% 
-    bind_rows()
+  return(timeline.long)
+
+}
+
+nest_timeline <- function(timeline, groupBy = NULL) {
   
-  if (groups == "age") {
-    census %>%
-      group_by(Date, Age) %>%
-      summarise(Individuals = list(
-        tibble(ID, Sex)), 
-        .groups = "drop") %>%
+  if (is.null(groupBy)) {
+  nested <-  timeline %>%
       group_by(Date) %>%
-      summarise(Ages = split(Individuals, 
-                             Age), 
-                .groups = "drop") %>%
-      split(.$Date) %>%
-      map(~ .x$Ages)
-  } else if (groups == "cohort") {
-    census %>%
-      group_by(Date, Cohort) %>%
-      summarise(Individuals = list(
-        tibble(ID, Sex)), 
-        .groups = "drop") %>%
-      group_by(Date) %>%
-      summarise(Cohorts = split(Individuals, 
-                             Cohort), 
-                .groups = "drop") %>%
-      split(.$Date) %>%
-      map(~ .x$Cohorts)
-  } else if (groups == "none") {
-    census %>%
-      group_by(Date) %>%
-      summarise(Individuals = list(tibble(ID, Sex, Age)),
+      summarise(Individuals = list(tibble(ID, Sex, BirthYear, Age)),
                 .groups = "drop") %>%
       split(.$Date)
-  }
     
+  } else if (groupBy == "Location") {
+  nested <-  timeline %>%
+      group_by(Date, Location) %>%
+      summarize(Individuals = list(tibble(ID, Sex, BirthYear, Age))) %>%
+      group_by(Date) %>%
+      summarize(Locations = split(Individuals, Location)) %>%
+      split(.$Date) %>%
+      map(~ .x$Locations)
+  } else if (groupBy == "Age") {
+    nested <-  timeline %>%
+      group_by(Date, Age) %>%
+      summarize(Individuals = list(tibble(ID, Sex, BirthYear, Location))) %>%
+      group_by(Date) %>%
+      summarize(Ages = split(Individuals, Age)) %>%
+      split(.$Date) %>%
+      map(~ .x$Ages)
+  } else if (groupBy == "Sex") {
+    nested <-  timeline %>%
+      group_by(Date, Sex) %>%
+      summarize(Individuals = list(tibble(ID, Age, BirthYear, Location))) %>%
+      group_by(Date) %>%
+      summarize(Sexes = split(Individuals, Sex)) %>%
+      split(.$Date) %>%
+      map(~ .x$Sexes)
+  } else if (groupBy == "AgeSex") {
+    nested <-  timeline %>%
+      group_by(Date, Sex, Age) %>%
+      summarize(Individuals = list(tibble(ID, BirthYear, Location))) %>%
+      group_by(Date) %>%
+      summarize(Classes = split(Individuals, Sex, Age)) %>%
+      split(.$Date) %>%
+      map(~ .x$Classes)
+  }
+  
+  return(nested)
+
 }
 
-count_census_grouped <- function(census, groups) {
-  bind_rows(
-    map_dfr(names(census), function(date) {
-      groups <- census[[date]]
-      bind_rows(map_dfr(names(groups), function(group) {
-        individuals <- groups[[group]][[1]] 
-        tibble(Date           = as.Date(date),
-               Group          = group,
-               Total          = nrow(individuals),
-               Males          = sum(individuals$Sex == "M", na.rm = TRUE),
-               Females        = sum(individuals$Sex == "F", na.rm = TRUE),
-               Undetermined   = sum(individuals$Sex == "U", na.rm = TRUE))
-      }))
-    })
-  )
-}
 
 
-count_census <- function(census) {
-  bind_rows(
-    map_dfr(names(census), function(date) {
-      individuals <- census[[date]]$Individuals[[1]]  
-      tibble(Date           = as.Date(date),
-             Total          = nrow(individuals),
-             Males          = sum(individuals$Sex == "M", na.rm = TRUE),
-             Females        = sum(individuals$Sex == "F", na.rm = TRUE),
-             Undetermined   = sum(individuals$Sex == "U", na.rm = TRUE))
-    }))
-}
-
-
-inspect <- function(df, location, studbook) {
-  left_join(df, select(studbook,
-                       ID,
-                       TypeEvent,
-                       Location,
-                       StartLoc,
-                       EndLoc,
-                       NameLoc,
-                       Country,
-                       Sire,
-                       Dam,
-                       DateBirth,
-                       Status), 
-            by = join_by(ID)) %>%
-    filter(Location == location & TypeEvent != "End") %>%
-    select(-TypeEvent) %>%
-    distinct()
+inspect <- function(df, studbook) {
+  left_join(df, studbook, by = join_by(ID, BirthYear, Sex))
 }
 
 
 whoisthedaddy <- function(studbook, list) {
   subjects <- studbook %>%
-  filter(((is.na(Sire) & !is.na(Dam)) | (Status == "A" & is.na(Sire))) & TypeEvent == "Birth") %>%
-    mutate(Date = floor_date(Date, unit = "months")) %>%
-    relocate(Sire, Dam, .after = Location)
+  filter(((is.na(Sire) & !is.na(Dam)) | (Status == "A" & is.na(Sire)))) %>%
+    mutate(Date = floor_date(DateBirth, unit = "months")) %>%
+    relocate(Sire, Dam, .after = LocBirth)
   
-  search <- as.list(deframe(select(subjects, Date, Location)))
+  search <- as.list(deframe(select(subjects, Date, LocBirth)))
   
   imap(search, \(x, idx) pluck(list, idx, x, 1)) %>%
     set_names(., as.list(deframe(select(subjects, ID)))) %>%
     map_depth(., 1, \(x) filter(x, Sex == "M" & !(ID %in% c(names)))) %>%
     map_depth(., 1, \(x) arrange(x, desc(Age))) %>%
-    map2(., search, \(x, y) inspect(x, y, studbook))
+    map(., \(x) inspect(x, studbook))
 }
 
 whoisthemommy <- function(studbook, list) {
   subjects <- studbook %>%
-    filter(((!is.na(Sire) & is.na(Dam)) | (Status == "A" & is.na(Dam))) & TypeEvent == "Birth") %>%
-    mutate(Date = floor_date(Date, unit = "months")) %>%
-    relocate(Sire, Dam, .after = Location)
+    filter(((!is.na(Sire) & is.na(Dam)) | (Status == "A" & is.na(Dam)))) %>%
+    mutate(Date = floor_date(DateBirth, unit = "months")) %>%
+    relocate(Sire, Dam, .after = LocBirth)
   
-  search <- as.list(deframe(select(subjects, Date, Location)))
+  search <- as.list(deframe(select(subjects, Date, LocBirth)))
   
   imap(search, \(x, idx) pluck(list, idx, x, 1)) %>%
     set_names(., as.list(deframe(select(subjects, ID)))) %>%
     map_depth(., 1, \(x) filter(x, Sex == "F" & !(ID %in% c(names)))) %>%
     map_depth(., 1, \(x) arrange(x, desc(Age))) %>%
-    map2(., search, \(x, y) inspect(x, y, studbook))
+    map(., \(x) inspect(x, studbook))
 }
 
 add.hypotheticals <- function(studbook, ids, parent) {
@@ -484,132 +480,124 @@ add.hypotheticals <- function(studbook, ids, parent) {
   hypDam  <- min(ids) + 20000
   
   hypotheticals <-  studbook %>%
-    filter(ID %in% ids & TypeEvent == "Birth") %>%
-    mutate(ID = min(ID) + add,
-           StartLoc = min(StartLoc - years(2)),
-           Date     = min(Date     - years(2)),
-           EndLoc   = max(StartLoc) + years(1),
-           Status   = "H",
-           Sex      = sex.add,
-           Sire     = NA,
-           Dam      = NA,
-           DateBirth = min(DateBirth - years(2))) %>%
+    filter(ID %in% ids) %>%
+    mutate(ID        = min(ID) + add,
+           DateBirth = min(DateBirth - years(2)),
+           DateDeath = max(DateBirth + years(2)),
+           LocDeath  = LocBirth,
+           AgeDeath  = calculate_age(DateBirth, DateDeath),
+           Status    = "H",
+           Sex       = sex.add,
+           BirthYear = year(DateBirth),
+           Sire      = NA,
+           Dam       = NA) %>%
     distinct() %>%
     bind_rows(slice_head(., n = 1)) %>%
-    mutate(TypeEvent = if_else(row_number() > 1, "End" , TypeEvent),
-           Date      = if_else(row_number() > 1, EndLoc, Date))
+    distinct()
   
   if (sex.add == "M") {
     
     studbook %>% bind_rows(hypotheticals) %>%
-      mutate(TypeEvent = fct(TypeEvent, levels = c(
-        "Birth",
-        "Transfer",
-        "Breed",
-        "End"
-      ))) %>%
-      arrange(ID, OrderLoc, TypeEvent, Date) %>%
       mutate(Sire = if_else(ID %in% c(ids), hypSire, Sire))
     
   } else if (sex.add == "F") {
     
     studbook %>% bind_rows(hypotheticals) %>%
-      mutate(TypeEvent = fct(TypeEvent, levels = c(
-        "Birth",
-        "Transfer",
-        "Breed",
-        "End"
-      ))) %>%
-      arrange(ID, OrderLoc, TypeEvent, Date) %>%
       mutate(Dam = if_else(ID %in% c(ids), hypDam, Dam))
     
   }
+
+}
+
+update_timeline <- function(timeline, studbook.old, studbook.new) {
+  new  <- setdiff(studbook.new, studbook.old)
+  edit <- filter(new, !is.na(Sire) & !is.na(Dam))
   
- 
+  edit.sires <- select(edit,
+                       ID       = Sire,
+                       Date     = DateBirth,
+                       Location = LocBirth) %>%
+    mutate(TypeEvent = "Breed")
+  
+  edit.dams <- select(edit,
+                       ID       = Dam,
+                       Date     = DateBirth,
+                       Location = LocBirth) %>%
+    mutate(TypeEvent = "Breed")
+  
+  add  <- filter(new, is.na(Sire) & is.na(Dam))
+  
+  add.births <- add %>% 
+    select(ID, 
+           Location = LocBirth, 
+           Date     = DateBirth,
+           EndLoc   = DateDeath) %>%
+    mutate(OrderLoc = 1,
+           StartLoc = Date,
+           TypeEvent = "Birth")
+  add.deaths <- add %>% 
+    select(ID, 
+           Location = LocDeath, 
+           Date     = DateDeath,
+           StartLoc = DateBirth) %>%
+    mutate(OrderLoc  = 1,
+           EndLoc    = Date,
+           TypeEvent = "End")
+  
+  new.timeline <- bind_rows(edit.sires, 
+                            edit.dams, 
+                            add.births, 
+                            add.deaths,
+                            timeline) %>%
+    arrange(ID, Date) %>%
+    group_by(ID, Location) %>%
+    fill(StartLoc, OrderLoc, EndLoc) %>%
+    ungroup() %>%
+    arrange(ID, OrderLoc, Date) %>%
+    distinct() %>%
+    select(
+      ID,
+      OrderLoc,
+      Location,
+      StartLoc,
+      TypeEvent,
+      Date,
+      EndLoc
+    )
+  
+  write.table(new.timeline, here(path$AZAstudbooks$timeline), sep = "\t", row.names = F)
+  
+  return(new.timeline)
+  
 }
 
 my_lambda <- function(years, df) {
-  N_final   <- filter(df, Date == floor_date(today(), "year")) %>% pull(Population)
-  N_initial <- filter(df, Date == (floor_date(today(), "year") - years(years))) %>% pull(Population)
+  N_final   <- filter(df, Date == floor_date(today(), "year")) %>% pull(Nx)
+  N_initial <- filter(df, Date == (floor_date(today(), "year") - years(years))) %>% pull(Nx)
   
   return((N_final / N_initial)^(1/years))
 }
 
-print_lambda <- function(lambda) {
- paste0(round((lambda*100) - 100, digits = 2), "% change")
-}
 
-cohort_grid <- function(df, maxAge, minYear) {
-  
-  cohorts <- minYear:2025
-  years   <- cohorts
-  sexes   <- c("Male", "Female", "Total")
-  
- grid <-  expand_grid(
-    Year   = years,
-    Cohort = cohorts,
-    Sex    = sexes
-  )  %>%
-   filter(Year >= Cohort, (Year - Cohort) <= maxAge) %>%
-   mutate(Age = Year - Cohort) %>%
-   select(Cohort, Year, Sex, Age) %>%
-   arrange(Cohort, Sex, Age)
- 
- df %>% 
-   mutate(Year = year(Date)) %>%
-   right_join(grid, by = join_by(
-   Year, 
-   Age, 
-   Cohort, 
-   Sex
- )) %>%
-   mutate(across(where(is.numeric), ~ replace_na(., 0)),
-          Date = make_date(year = Year, month = 1, day = 1)) %>%
-   arrange(Cohort, Sex, Age) %>%
-   relocate(Cohort, Sex, Year, Age)
-}
 
-mle_all <- function(lx, age) {
-
-    df <- tibble(lx = lx, age = age) %>%
-    filter(!is.na(lx))
-  
-  below <- df %>% filter(lx <= 0.5 & lx > 0) %>% slice_min(order_by = age, n = 1)
-  above <- df %>% filter(lx > 0.5)           %>% slice_max(order_by = age, n = 1)
-  
-  if (nrow(below) == 0 || nrow(above) == 0) {
-    return(NA_real_)
-  }
-  
-  ageLow  <- above$age
-  ageHigh <- below$age
-  lxLow   <- above$lx
-  lxHigh  <- below$lx
-  
-  ageMLE <- ageLow + ((0.5 - lxLow) / (lxHigh - lxLow)) * (ageHigh - ageLow)
-  return(ageMLE)
-  
-
-}
-
-mle_age1 <- function(lx, age) {
+MLE_age1 <- function(lx, age) {
   df <- tibble(lx = lx, age = age) %>%
     filter(age >= 1, !is.na(lx), lx > 0)
   
-  if (nrow(df) == 0) return(NA_real_)
+  if (nrow(df) == 0) return(0)
   
-  df <- df %>%
-    mutate(lx1 = lx / first(lx))
+  lx1_start <- df$lx[1]
+  df <- df %>% mutate(lx1 = lx / lx1_start)
   
-  below <- df %>% filter(lx1 <= 0.5) %>% slice_min(order_by = age, n = 1)
-  above <- df %>% filter(lx1 > 0.5)  %>% slice_max(order_by = age, n = 1)
+  below <- df %>% filter(lx1 <= 0.5) %>% slice_min(order_by = age, n = 1, with_ties = FALSE)
+  above <- df %>% filter(lx1 >  0.5) %>% slice_max(order_by = age, n = 1, with_ties = FALSE)
   
-  if (nrow(below) == 0 || nrow(above) == 0) return(NA_real_)
+  if (nrow(below) == 0 || nrow(above) == 0) return(0)
   
-  ageLow  <- above$age
-  ageHigh <- below$age
-  lxLow   <- above$lx1
-  lxHigh  <- below$lx1
+  ageLow  <- above$age[1]
+  ageHigh <- below$age[1]
+  lxLow   <- above$lx1[1]
+  lxHigh  <- below$lx1[1]
   
   ageMLE1 <- ageLow + ((0.5 - lxLow) / (lxHigh - lxLow)) * (ageHigh - ageLow)
   return(ageMLE1)
@@ -630,18 +618,30 @@ lambda_5 <- function(Nx_vec, Year_vec) {
   })
 }
 
-build_leslie <- function(df, CohortStart, CohortEnd, Sex) {
+build_leslie_vec <- function(mx, Px) {
+  n <- length(mx)
+  L <- matrix(0, n, n)
+  L[1, ] <- mx
+  if (n > 1) {
+    for (i in 2:n) {
+      L[i, i - 1] <- Px[i - 1]
+    }
+  }
+  return(L)
+}
+
+build_leslie <- function(df, BirthYrStart, BirthYrEnd, sex) {
   
-  df <- filter(df, Cohort >= CohortStart & Cohort <= CohortEnd & Sex == Sex)  %>%
+  df <- df %>% filter(BirthYear >= BirthYrStart & Cohort <= BirthYrEnd & Sex == sex)  %>%
     group_by(Age) %>%
     summarise(
-      mx = mean(mx, na.rm = TRUE),
+      Mx = mean(Mx, na.rm = TRUE),
       Px = mean(Px, na.rm = TRUE),
       .groups = "drop"
     ) %>%
     arrange(Age)
   
-  fecundity <- pull(df, mx)
+  fecundity <- pull(df, Mx)
   survival  <- pull(df, Px)
   n         <- length(fecundity)
   L         <- matrix(0, nrow = n, ncol = n)
@@ -654,4 +654,291 @@ build_leslie <- function(df, CohortStart, CohortEnd, Sex) {
   return(L)
 }
 
+make_cohorts <- function(df, minYear, maxYear, span, maxAge, include_sex = TRUE) {
+  N_letters <- (maxYear - minYear + 1)/span
+  
+  cohorts <- expand_grid(
+    Age       = 0:maxAge, 
+    Sex       = c("M", "F"), 
+    BirthYear = 1985:2024) %>%
+    full_join(tibble(BirthYear   = minYear:maxYear, 
+                     BirthCohort = rep(LETTERS[1:N_letters], each = span)), 
+              by = join_by(BirthYear)) %>%
+    mutate(CohortMin = min(BirthYear),
+           CohortMax = max(BirthYear), .by = BirthCohort) %>%
+    mutate(CohortLabel = case_when(
+      CohortMin <= 2013 & CohortMax >= 2013 ~ as.character(str_glue("{CohortMin}", "-", "{CohortMax}", "\n(Culi)")),
+      CohortMin <= 2017 & CohortMax >= 2013  ~ as.character(str_glue("{CohortMin}", "-", "{CohortMax}", "\n(Warble)")),
+             .default = as.character(str_glue("{CohortMin}", "-", "{CohortMax}"))), 
+           .keep = "unused") %>%
+    select(CohortLabel, BirthCohort, BirthYear, Sex, Age) %>%
+    arrange(BirthCohort, BirthYear, Sex, Age) %>%
+    filter(BirthYear + Age <= 2025)
+  
+  if (include_sex == TRUE) {
+    df <- df %>%
+      right_join(cohorts, by = join_by(BirthYear, Sex, Age)) %>%
+      mutate(Cohort = as.character(str_glue("{Sex}", "{BirthCohort}")),
+             across(where(is.numeric), ~ replace_na(., 0)))
+  } else if (include_sex == FALSE) {
+    df <- df %>%
+      right_join(distinct(cohorts,
+                          Age,
+                          BirthYear,
+                          BirthCohort,
+                          CohortLabel), by = join_by(BirthYear, Age)) %>%
+      mutate(Cohort = BirthCohort,
+             across(where(is.numeric), ~ replace_na(., 0)),
+             Sex = "Total") %>%
+      relocate(CohortLabel, BirthCohort, Sex, Age)
+  }
+  
+  return(df)
+}
+
+count_births <- function(timeline, studbook) {
+  births <- timeline %>%
+    filter(TypeEvent == "Breed") %>%
+    select(ID, Date) %>% distinct() %>%
+    mutate(Year = year(Date)) %>%
+    summarize(Births = n(), .by = c(ID, Year)) %>%
+    ungroup()
+  
+  counts <- studbook %>%
+    select(
+      ID,
+      Sex,
+      BirthYear,
+      Start     = DateBirth,
+      End       = DateDeath
+    ) %>%
+    filter(Sex != "U") %>%
+    mutate(Start = floor_date(Start, "years"),
+           End   = if_else(!is.na(End), 
+                           floor_date(End, "years"), 
+                           floor_date(today(), "years"))
+    ) %>%
+    mutate(Years = pmap(list(Start, End), \(x, y) seq(x, y, by = "years"))) %>%
+    unnest(Years) %>%
+    mutate(Year = year(Years),
+           Age  = calculate_age(Start, Years)) %>%
+    select(ID,
+           Sex,
+           BirthYear,
+           Age,
+           Year) %>%
+    left_join(births, by = join_by(ID, Year)) %>%
+    mutate(Births = replace_na(Births, 0)) %>% 
+    distinct() %>%
+    select(ID,
+           BirthYear,
+           Sex,
+           Age,
+           Births)
+}
+
+lifeTab <- function(df) {
+  
+  life.table <- df %>% arrange(Cohort, Age) %>%
+    mutate(across(c(Births, Nx), ~ replace_na(., 0)),
+           RiskQx = Nx,
+           RiskMx = Nx) %>%
+    group_by(Cohort) %>%
+    mutate(Deaths = if_else(Age == max(Age), Nx, Nx - lead(Nx)),
+           N0     = if_else(Age == 0, Nx, NA),
+           N1     = if_else(Age == 1, Nx, NA),
+           Px     = if_else(Nx == 0 | Age == max(Age), 0, lead(Nx)/Nx)) %>%
+    fill(N0, N1, .direction = "downup")  %>%
+    ungroup() %>%
+    mutate(Lx1 = if_else(    N1 == 0, 0, Nx/N1),
+           Lx  = if_else(    N0 == 0, 0, Nx/N0),
+           Qx  = if_else(RiskQx == 0, 0, Deaths/RiskQx),
+           Mx  = if_else(RiskMx == 0, 0, (Births/RiskMx)/2)) %>%
+    mutate(Qx1 = if_else(Age == 0, Qx, NA),
+           Fx  = Mx * Lx) %>%
+    mutate(numT  = Age * Fx) %>%
+    group_by(Cohort) %>%
+    mutate(MLE        = if_else(max(N1) < 1, 0, MLE_age1(Lx1, Age)),
+           FirstRepro = min(Age[Mx>0]),
+           LastRepro  = max(Age[Mx>0]),
+           MaxLongev  = max(Age[Deaths>0])
+    ) %>%
+    mutate(R0   = sum(Fx), 
+           Tnum = sum(numT),
+           .keep = "unused") %>%
+    fill(Qx1) %>%
+    ungroup() %>%
+    mutate(T = if_else(R0 > 0, Tnum/R0, 0)) %>%
+    mutate(lambda = if_else(R0 > 0 & T > 0, R0^(1/T), 0)) %>%
+    select(-Tnum) %>%
+    relocate(
+      RiskQx,
+      RiskMx,
+      N0,
+      Nx,
+      Px,
+      Lx,
+      Lx1,
+      Qx,
+      Qx1,
+      Mx,
+      R0,
+      T,
+      MLE,
+      lambda,
+      FirstRepro,
+      LastRepro,
+      MaxLongev,
+      .after = Age
+    )
+  
+  return(life.table)
+}
+
+annotate_lambda <- function(df, lambda = lambda) {
+  df <- df %>%
+    mutate(hover_lambda = abs(round((lambda - 1)*100, digits = 1))) %>%
+    mutate(
+      hover_lambda = if_else(
+        lambda >= 1,
+        as.character(str_glue("Population growing by ", "{hover_lambda}", "%")),
+        as.character(str_glue("Population declining by ", "{hover_lambda}", "%"))
+      )
+    )
+  
+  return(df)
+}
+
+lifeTab_static <- function(df) {
+  df <- df  %>%
+    mutate(across(c(Px:lambda), ~ round(., digits = 3))) %>%
+    select(
+      Cohort,
+      CohortLabel,
+      Sex,
+      N0,
+      Qx1,
+      R0,
+      T,
+      MLE,
+      lambda,
+      FirstRepro,
+      LastRepro,
+      MaxLongev
+    ) %>%
+    filter(N0 > 0) %>%
+    distinct() %>%
+    arrange(Cohort, Sex)
+    
+  return(df)
+}
+
+hline <- function(y = 0, color = "#444444") {
+  list(
+    type = "line",
+    x0   = 0,
+    x1   = 1,
+    xref = "paper",
+    y0   = y,
+    y1   = y,
+    line = list(color   = color, 
+                width   = 0.9,
+                dash    = "dot")
+  )
+}
+
+
+lambda.annotation <-  list(
+  x          = 0.9,
+  xref       = "paper",
+  y          = 1,
+  yref       = "y",
+  text       = "Stable if \u03BB = 1.0",
+  showarrow  = TRUE,
+  arrowhead  = 4,
+  arrowcolor = "#444444",
+  arrowsize  = 1,
+  arrowwidth = 0.7,
+  ax         = 10,
+  ay         = 40,
+  font       = list(color  = "#444444",
+                    size   = 12,
+                    style  = "italic")
+)
+
+
+lighten_palette <- function(palette, hex) {
+  if (is.list(palette)) {
+    new <-  map_depth(palette, 1, \(x) gsub("FF", hex, x))
+  } else {
+    new <- gsub("FF", hex, palette)
+  }
+  
+  return(new)
+
+}
+
+studbook_visual <- function(timeline, studbook, locations) {
+  end.records <- filter(timeline, TypeEvent == "End") %>%
+    select(ID, LocLast = Location)
+  
+  locations <- locations %>%
+    select(colorLoc,
+           Loc            = LocAbbrev,
+           NameLoc,
+           iconLoc,
+           Country)
+  
+  studbook %>% left_join(end.records, by = join_by(ID)) %>%
+    mutate(DateLast = if_else(is.na(DateDeath), today(), DateDeath),
+           AgeLast  = if_else(is.na(AgeDeath), 
+                              calculate_age(DateBirth, today()), 
+                              AgeDeath),
+           Status   = case_match(Status,
+                                 "D" ~ "Deceased",
+                                 "A" ~ "Alive"),
+           color    = case_match(Sex,
+                                 "F" ~ colors$f,
+                                 "M" ~ colors$m,
+                                 "U" ~ colors$u)) %>%
+    mutate(YearLast = year(DateLast), .keep = "unused") %>%
+    left_join(locations, by = join_by(LocBirth == Loc)) %>%
+    rename(
+      LocBirth_color     = colorLoc,
+      LocBirth_name      = NameLoc,
+      LocBirth_icon      = iconLoc
+    ) %>%
+    left_join(locations, by = join_by(LocLast == Loc)) %>%
+    rename(
+      LocLast_color     = colorLoc,
+      LocLast_name      = NameLoc,
+      LocLast_icon      = iconLoc
+    ) %>%
+    arrange(Status, DateBirth, LocBirth) %>%
+    select(
+      Status,
+      ID,
+      LocBirth      ,
+      DateBirth     ,
+      AgeLast       ,
+      DateDeath     ,
+      LocLast       ,
+      Sire          ,
+      Dam           ,
+      Sex           ,
+      color         ,
+      BirthYear     ,
+      YearLast      ,
+      LocBirth_color,
+      LocLast_color ,
+      LocBirth_icon ,
+      LocLast_icon  ,
+      LocBirth_name ,
+      LocLast_name  
+    )
+  
+  write.table(studbook, here(path$AZAstudbooks$reactable_ready), sep = "\t", row.names = F)  
+  
+  return(studbook)
+}
 

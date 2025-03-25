@@ -84,6 +84,7 @@ loris:
     btp: "metadata/loris/Studbook/BTP25.R"
     btp_current: "metadata/loris/Studbook/BTP25.tsv"
     lifetable: "metadata/loris/Studbook/lifetable25.tsv"
+    lifetabStatic: "metadata/loris/Studbook/lifetable25_static.tsv"
     load_data: "metadata/loris/Studbook/LoadStudbookData.R"
     functions: "metadata/loris/studbookFunctions.R"
     reactables: "metadata/loris/Studbook/reactables.R"
@@ -95,6 +96,7 @@ loris:
       current21: "metadata/loris/Studbook/CurrentInstitutions_2021.csv"
       historic21: "metadata/loris/Studbook/HistoricInstitutions_2021.csv"
     working: "metadata/loris/Studbook/working_studbook_loris25.tsv"
+    reactable_ready: "metadata/loris/Studbook/studbook_loris_reactableReady.tsv"
     timeline: "metadata/loris/Studbook/working_timeline_loris25.tsv"
   metadata: 
     scripts: !expr list("metadata/loris/colors.R", "metadata/loris/metadata_key.R", "metadata/loris/diet_schedule.R")
