@@ -82,6 +82,10 @@ timeline.revised <- update_timeline(timeline, studbook, final.studbook)
 studtbl          <- studbook_visual(timeline.revised, final.studbook, locations)
 ```
 
+```{r}
+
+```
+
 
 # Summary Statistics
 

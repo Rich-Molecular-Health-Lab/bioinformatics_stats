@@ -1,0 +1,681 @@
+---
+title: "Data Visualization for Bat Sex Ratio Project"
+author: "Thomas Raad"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: kable
+params:
+  sampleset: "bats"
+                     
+---
+
+# Set working directory {.tabset}
+
+## Your Version
+
+```{r}
+setwd("C:/Users/raadt/OneDrive - University of Nebraska at Omaha/Datasets/Sex_Ratio")
+```
+
+## My Version
+
+- I recommend you use the here package instead for directory control.
+
+```{r}
+library(here)
+
+i_am("BatSexRatioDataVisualization.Rmd")
+```
+
+- Now R will recognize the directory containing that script as the parent of any other paths you reference.
+
+- I also prefer to load some of my most commonly used packages at the beginning of a script. You can do it directly in R Markdown or run an outside R script that loads them all. I do the latter just so that I can keep a master script that loads those packages and reference it from different scripts.
+
+```{r}
+source(here("setup/setup_forThomas.R"))
+# note that I include here at the beginning to tell the here package to find this file relative to the source directory I set up with the i_am command in the previous chunk.
+```
+
+here is the text of that file for ease of copying and pasting:
+
+```{r}
+library(bslib)
+library(conflicted)
+library(here)
+library(kableExtra)
+library(knitr)
+library(paletteer)
+library(plotly)
+library(reactable)
+library(reactablefmtr)
+library(rmarkdown)
+library(scales)
+library(showtext)
+library(skimr)
+library(thematic)
+library(tidyverse)
+library(tippy)
+library(usethis)
+library(rmdformats)
+```
+
+
+
+# Load Data {.tabset}
+
+## Your Version
+
+### read file
+
+```{r}
+df <- read.csv("NC_netting.csv")
+```
+
+#### cleanup
+
+```{r}
+class(df$SEX)
+df$SEX<-as.factor(df$SEX)
+df$REPRO_STAT<-as.factor(df$REPRO_STAT)
+df2$REPRO_STAT<-as.factor(df2$REPRO_STAT)
+
+df1$X..GRTS.Cell.Id<-as.numeric(df1$X..GRTS.Cell.Id)
+
+summary(df$SEX)
+summary(df$REPRO_STAT)
+summary(df2$REPRO_STAT)
+
+df[,c(1,3)]
+df1<-df[,c(1,7)]
+
+```
+
+
+## My Version
+
+I am going to load the file and do your cleanup steps in one chunk to reduce the number of individual objects hanging out in your environment.
+
+```{r}
+species_tags <- c(
+ coto = "Corynorhinus townsendii virginianus" ,
+ cora = "Corynorhinus rafinesquii rafinesquii",
+ cora = "Corynorhinus rafinesquii macrotis"   ,
+ epfu = "Eptesicus fuscus"                    ,
+ lano = "Lasionycteris noctivagans"           ,
+ labo = "Lasiurus borealis"                   ,
+ laci = "Lasiurus cinereus"                   ,
+ lain = "Lasiurus intermedius floridanus"     ,
+ lase = "Lasiurus seminolus"                  ,
+ myau = "Myotis austroriparius"               ,
+ mygr = "Myotis grisescens"                   ,
+ myle = "Myotis leibii leibii"                ,
+ mylu = "Myotis lucifugus"                    ,
+ myse = "Myotis septentrionalis"              ,
+ myso = "Myotis sodalis"                      ,
+ noid = "noid"                                ,
+ nyhu = "Nycticeius humeralis"                ,
+ pesu = "Perimyotis subflavus"                ,
+ pesu = "pesu"                                ,
+ tabr = "Tadarida brasiliensis"               ,
+ lano = "Lasionycteris notivagans"            
+)
+```
+
+
+
+```{r warning=FALSE}
+nc_net <- read_csv(here("data/bats/NC_netting.csv")) %>%
+  dplyr::filter(AGE != "Age") %>%
+  rename(cell = "| GRTS Cell Id") %>%
+  mutate(START_TIME   = as.character(str_glue("{DATE}", "{START_TIME}" , .sep = " ", .na = "")), 
+         STOP_TIME    = as.character(str_glue("{DATE}", "{STOP_TIME}"  , .sep = " ", .na = "")),
+         CAP_TIME     = as.character(str_glue("{DATE}", "{CAP_TIME}"   , .sep = " ", .na = "")),
+         cell         = as.numeric(cell),
+         BAT_SP       = case_when(BAT_SP %in% c("unknown", "Unknown", "species") ~"noid",
+                                  is.na(BAT_SP) ~"pesu", .default = BAT_SP)) %>%
+  mutate(species = fct_recode(BAT_SP, !!!species_tags),
+         across(c(START_TIME, STOP_TIME, CAP_TIME), ~mdy_hms(.)),
+         DATE = mdy(DATE),
+         MDY  = make_date(year = YEAR, month = MONTH, day = DAY)) %>%
+  separate_wider_delim(BAT_SP, " ", names = c("BAT_GEN", "BAT_SPE", "BAT_SUB"), too_few = "align_start") %>%
+  mutate(across(where(is.character), ~str_remove_all(., "[^\\w+|\\s]"))) %>%
+  mutate(across(c(SEX, REPRO_STAT, BAND, AGE), ~str_to_lower(.))) %>%
+  mutate(across(c(SEX, REPRO_STAT, AGE), ~replace_na(., "unknown"))) %>%
+  mutate(SEX = case_when(SEX == "m" | SEX == "male" ~"male", 
+                          SEX == "f" | SEX == "female" ~"female",
+                          SEX == "unknown" ~"unknown"),
+         AGE = case_match(AGE, 
+                          "adult" ~"adult", 
+                          "juvenile" ~"juvenile",
+                          "jv"       ~ "juvenile",
+                          "unknown" ~"unknown")) %>%
+  mutate(AGE = fct(AGE, levels = c("juvenile", "adult", "unknown")),
+         REPRO_STAT = str_replace_all(REPRO_STAT, " ", "_")) %>%
+  mutate(across(c(SEX, REPRO_STAT), ~as_factor(.))) %>%
+  select(
+    cell,
+    STATE,
+    species,
+    BAT_GEN,
+    BAT_SPE,
+    BAT_SUB,
+    DATE,
+    START_TIME, 
+    STOP_TIME, 
+    CAP_TIME,
+    BAND,
+    SEX,
+    AGE,
+    REPRO_STAT,
+    RFA_MM,
+    MASS_G,
+    WING_SCORE
+  ) %>%
+  arrange(DATE, STATE, START_TIME)
+
+write.table(nc_net, here("data/bats/NC_netting_clean.tsv"), sep = "\t", row.names = F)
+```
+
+
+```{r warning=FALSE}
+nc_skim <- skim(nc_net)
+nc_skim
+```
+
+```{r}
+summary_stats <- nc_net %>%
+  arrange(species, SEX, AGE, REPRO_STAT, STATE, DATE) %>%
+  summarize(
+    count     = n(),
+    mean_RFA  = mean(RFA_MM),
+    mean_MASS = mean(MASS_G),
+    .by = c(species, SEX, AGE, REPRO_STAT, STATE, DATE)
+  )
+
+summary_sex_state <- summary_stats %>%
+  summarize(
+    count = sum(count),
+    mean_RFA  = mean(mean_RFA),
+    mean_MASS = mean(mean_MASS),
+    .by = c(SEX, STATE)
+  )
+```
+
+
+### Data meeting revisions
+
+```{r}
+df <- df[, c(1, 5, 6, 7, 8, 14, 30)]
+```
+
+#df[is.na(df),] <- -1
+
+
+# turn "DATE" into month/day/year
+
+```{r}
+df <- separate(df, col = "DATE", c("month", "day", "year"), sep = "/")
+```
+
+
+# Remove excel descriptor row
+
+```{r}
+df <- subset(df, df$AGE != "Age")
+```
+
+#to see how many recaptures in df 
+
+```{r}
+df$BAND <- as.factor(df$BAND)
+summary(df$BAND)
+```
+
+# SEX term cleanup
+
+```{r}
+summary(df$SEX)
+df_male <- subset (df, df$SEX=="male" | df$SEX=="Male" | df$SEX=="M")
+df_female <- subset (df, df$SEX=="Female")
+df_male$SEX <- "male"
+df_female$SEX <- "female"
+```
+
+
+
+#generates dataframe with missing, unknown, etc.
+
+```{r}
+df_new <- rbind(df_male, df_female)
+
+colnames(df_new[1]) <- "cell"
+```
+
+# gets rid of awkward GRID cell title, makes new column "cell" within df_new
+
+```{r}
+df_new$cell <- df_new$X..GRTS.Cell.Id
+df_new <- df_new[, c(2:10)]
+df_new$cell <- as.factor(df_new$cell)
+```
+
+# makes year column numeric
+
+```{r}
+df_new$year <- as.numeric(df_new$year)
+```
+
+
+# creates a column where year is a character
+
+```{r}
+
+df_new$year_char <- as.factor(df_new$year)
+```
+
+
+
+#summarizes BAT_SP, relabels BAT_SP entries as factors
+
+```{r}
+summary(df_new$BAT_SP)
+df_new$BAT_SP <- as.factor(df_new$BAT_SP)
+
+```
+
+
+
+#creates new column "species", sets all to 0
+
+```{r}
+df_new$species <- 0
+```
+
+
+
+#labels unknowns to "noid"(omitting NA cells), and single na to "pesu" within species column
+
+```{r}
+df_new[!is.na(df_new$BAT_SP) & (df_new$BAT_SP == "unknown" | df_new$BAT_SP == "Unknown"), "species"] <- "noid"
+df_new[is.na(df_new$BAT_SP),]$species <- "pesu"
+
+```
+
+
+
+#adds species tags in "species" column
+
+
+```{r}
+df_new$species[df_new$BAT_SP=="Corynorhinus townsendii virginianus"] <- "coto"
+df_new$species[df_new$BAT_SP=="Corynorhinus rafinesquii rafinesquii"] <- "cora"
+df_new$species[df_new$BAT_SP=="Corynorhinus rafinesquii macrotis"] <- "cora"
+df_new$species[df_new$BAT_SP=="Eptesicus fuscus"] <- "epfu"
+df_new$species[df_new$BAT_SP=="Lasionycteris noctivagans"] <- "lano"
+df_new$species[df_new$BAT_SP=="Lasiurus borealis"] <- "labo"
+df_new$species[df_new$BAT_SP=="Lasiurus cinereus"] <- "laci"
+df_new$species[df_new$BAT_SP=="Lasiurus intermedius floridanus"] <- "lain"
+df_new$species[df_new$BAT_SP=="Lasiurus seminolus"] <- "lase"
+df_new$species[df_new$BAT_SP=="Myotis austroriparius"] <- "myau"
+df_new$species[df_new$BAT_SP=="Myotis grisescens"] <- "mygr"
+df_new$species[df_new$BAT_SP=="Myotis leibii leibii"] <- "myle"
+df_new$species[df_new$BAT_SP=="Myotis lucifugus"] <- "mylu"
+df_new$species[df_new$BAT_SP=="Myotis septentrionalis"] <- "myse"
+df_new$species[df_new$BAT_SP=="Myotis sodalis"] <- "myso"
+df_new$species[df_new$BAT_SP=="Nycticeius humeralis"] <- "nyhu"
+df_new$species[df_new$BAT_SP=="Perimyotis subflavus"] <- "pesu"
+df_new$species[df_new$BAT_SP=="Tadarida brasiliensis"] <- "tabr"
+df_new$species[df_new$BAT_SP=="Lasionycteris notivagans"] <- "lano"
+```
+
+
+
+#creates df2, a "Female"-only dataframe
+
+```{r}
+df2<-subset(df,df$SEX=="Female")
+
+df_new$species <- as.factor(df_new$species)
+summary(df_new$species)
+
+```
+
+
+####Eastern Red#####
+
+```{r}
+df_labo <- subset(df_new, species=="labo")
+summary(df_new$cell)
+```
+
+
+#creates df for labo using agg function and renaming columns
+
+```{r}
+df_labo_agg <- aggregate(df_labo$SEX, by=list(df_labo$SEX, df_labo$month, df_labo$day, df_labo$year_char, df_labo$cell), FUN = length)
+names(df_labo_agg)[1]<-"sex"
+names(df_labo_agg)[2]<-"month"
+names(df_labo_agg)[3]<-"day"
+names(df_labo_agg)[4]<-"year"
+names(df_labo_agg)[5]<-"cell"
+names(df_labo_agg)[6]<-"count"
+
+```
+
+
+#creates df3, making male/female count columns
+
+```{r}
+df3 <- spread(df_labo_agg, sex, count)
+df3[is.na(df3)]<- 0
+
+```
+
+#makes new column "total", which totals all bats caught (male+female)
+
+```{r}
+df3$total <- df3$male + df3$female
+```
+
+
+#making wide instead of long; looking at totals by year(df4), or cell(df5)
+
+```{r}
+df4 <- xtabs(count ~ sex + year, data=df_labo_agg)
+df5 <- xtabs(count ~ sex + cell, data=df_labo_agg)
+```
+
+
+#read file
+
+```{r}
+df_table <- read.csv("table.csv")
+```
+
+
+#makes df6 from df_table with only needed columns
+
+```{r}
+df6 <- df_table[, c(2, 14, 15)]
+df7 <- merge(df3, df6, by.x = "cell", by.y = "GRTS_ID")
+df7$male_prop <- df7$male / df7$total
+
+```
+
+#convert df7 to csv
+
+```{r}
+write.csv(df7, "NC_labo.csv", row.names = FALSE)
+```
+
+
+#fit <- glm(data = dataframe you want to test, dep_var~indep~var, family = data distribution)
+
+```{r}
+fit <- glm(data=df7, male_prop~centroid_x, family = "quasibinomial")
+fit2 <- glm(data=df7, male_prop~centroid_y, family = "quasibinomial")
+summary(fit)
+summary(fit2)
+df7$year1 <- as.integer(levels(df7$year))[df7$year]
+fit <- glm(data=df7, male_prop~year1, family = "quasibinomial")
+summary(fit)
+```
+
+#X and Y are SIGNIFICANT -- Females more abundant south-east corner of NC
+
+####Big Brown#####
+
+```{r}
+df_epfu <- subset(df_new, species=="epfu")
+```
+
+
+#creates df for epfu using agg function and renaming columns
+
+```{r}
+df_epfu_agg <- aggregate(df_epfu$SEX, by=list(df_epfu$SEX, df_epfu$month, df_epfu$day, df_epfu$year_char, df_epfu$cell), FUN = length)
+names(df_epfu_agg)[1]<-"sex"
+names(df_epfu_agg)[2]<-"month"
+names(df_epfu_agg)[3]<-"day"
+names(df_epfu_agg)[4]<-"year"
+names(df_epfu_agg)[5]<-"cell"
+names(df_epfu_agg)[6]<-"count"
+
+```
+
+
+
+#creates df8, making male/female count columns for epfu
+
+```{r}
+df8 <- spread(df_epfu_agg, sex, count)
+df8[is.na(df8)]<- 0
+
+```
+
+
+#makes new column "total", which totals all bats caught (male+female)
+
+```{r}
+df8$total <- df8$male + df8$female
+```
+
+
+#making wide instead of long; looking at totals by year(df9), or cell(df10)
+
+```{r}
+df9 <- xtabs(count ~ sex + year, data=df_epfu_agg)
+df10 <- xtabs(count ~ sex + cell, data=df_epfu_agg)
+```
+
+#makes df11 from df_table with only needed columns
+
+```{r}
+
+df11 <- df_table[, c(2, 14, 15)]
+df12 <- merge(df8, df11, by.x = "cell", by.y = "GRTS_ID")
+df12$male_prop <- df8$male / df8$total
+write.csv(df12, "NC_epfu.csv", row.names = FALSE)
+
+```
+
+
+#fit <- glm(data = dataframe you want to test, dep_var~indep~var, family = data distribution)
+
+```{r}
+fit <- glm(data=df12, male_prop~centroid_x, family = "quasibinomial")
+fit2 <- glm(data=df12, male_prop~centroid_y, family = "quasibinomial")
+summary(fit)
+summary(fit2)
+df12$year1 <- as.integer(levels(df12$year))[df12$year]
+fit <- glm(data=df12, male_prop~year1, family = "quasibinomial")
+summary(fit)
+
+```
+
+
+
+#Y-dimension is NOT significant for epfu -- more male skewed towards east
+
+####Little Brown#####
+
+```{r}
+df_mylu <- subset(df_new, species=="mylu")
+
+```
+
+
+#creates df for mylu using agg function and renaming columns
+
+```{r}
+df_mylu_agg <- aggregate(df_mylu$SEX, by=list(df_mylu$SEX, df_mylu$year_char, df_mylu$cell), FUN = length)
+names(df_mylu_agg)[1]<-"sex"
+names(df_mylu_agg)[2]<-"year"
+names(df_mylu_agg)[3]<-"cell"
+names(df_mylu_agg)[4]<-"count"
+
+```
+
+
+#creates df13, making male/female count columns for mylu
+
+```{r}
+df13 <- spread(df_mylu_agg, sex, count)
+df13[is.na(df13)]<- 0
+
+```
+
+#makes new column "total", which totals all bats caught (male+female)
+
+```{r}
+df13$total <- df13$male + df13$female
+```
+
+
+#making wide instead of long; looking at totals by year(df14), or cell(df15)
+
+```{r}
+df14 <- xtabs(count ~ sex + year, data=df_mylu_agg)
+df15 <- xtabs(count ~ sex + cell, data=df_mylu_agg)
+
+```
+
+
+#makes df16 from df_table with only needed columns
+
+```{r}
+df16 <- df_table[, c(2, 14, 15)]
+df17 <- merge(df13, df16, by.x = "cell", by.y = "GRTS_ID")
+df17$male_prop <- df13$male / df13$total
+
+```
+
+#fixing issue with above line
+
+```{r}
+nrow(df13)  # Should return 165
+nrow(df17)  # Should return 164
+df13 <- df13[-161, ]
+
+```
+
+
+
+#fit <- glm(data = dataframe you want to test, dep_var~indep~var, family = data distribution)
+
+```{r}
+fit <- glm(data=df17, male_prop~centroid_x, family = "quasibinomial")
+fit2 <- glm(data=df17, male_prop~centroid_y, family = "quasibinomial")
+summary(fit)
+summary(fit2)
+df17$year1 <- as.integer(levels(df17$year))[df17$year]
+fit <- glm(data=df17, male_prop~year1, family = "quasibinomial")
+summary(fit)
+
+```
+
+#no significance found
+
+####Northern Long-eared####
+
+```{r}
+df_myse <- subset(df_new, species == "myse")
+```
+
+
+# creates df for myse using agg function and renaming columns
+
+```{r}
+df_myse_agg <- aggregate(df_myse$SEX, by = list(df_myse$SEX, df_myse$year_char, df_myse$cell), FUN = length)
+names(df_myse_agg)[1] <- "sex"
+names(df_myse_agg)[2] <- "year"
+names(df_myse_agg)[3] <- "cell"
+names(df_myse_agg)[4] <- "count"
+
+```
+
+
+# creates df18, making male/female count columns for myse
+
+```{r}
+df18 <- spread(df_myse_agg, sex, count)
+df18[is.na(df18)] <- 0
+
+```
+
+# makes new column "total", which totals all bats caught (male + female)
+
+```{r}
+df18$total <- df18$male + df18$female
+
+```
+
+# making wide instead of long; looking at totals by year (df19), or cell (df20)
+
+```{r}
+df19 <- xtabs(count ~ sex + year, data = df_myse_agg)
+df20 <- xtabs(count ~ sex + cell, data = df_myse_agg)
+
+```
+
+
+# makes df21 from df_table with only needed columns
+
+```{r}
+df21 <- df_table[, c(2, 14, 15)]
+df22 <- merge(df18, df21, by.x = "cell", by.y = "GRTS_ID")
+df22$male_prop <- df18$male / df18$total
+
+```
+
+# fit models for male proportion using GLM with quasibinomial distribution
+
+```{r}
+fit <- glm(data = df22, male_prop ~ centroid_x, family = "quasibinomial")
+fit2 <- glm(data = df22, male_prop ~ centroid_y, family = "quasibinomial")
+summary(fit)
+summary(fit2)
+
+```
+
+
+```{r}
+df22$year1 <- as.integer(levels(df22$year))[df22$year]
+fit <- glm(data = df22, male_prop ~ year1, family = "quasibinomial")
+summary(fit)
+
+```
+
+
+#no signifiance found
+
+####summary table LABO####
+
+```{r}
+df7 %>%
+  group_by(centroid_x, centroid_y) %>%
+  summarise(mean(male_prop, na.rm=TRUE), sd(male_prop, na.rm=TRUE), n=371)
+
+```
+
+
+
+####playing with ggplot####
+
+```{r}
+ggplot(data=df7, aes(x=centroid_x, y=male_prop, fill=male_prop))
+geom_point(size = 3)
+theme_minimal()
+
+```
+
+
+
