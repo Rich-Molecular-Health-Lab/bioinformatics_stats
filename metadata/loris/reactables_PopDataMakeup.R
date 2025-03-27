@@ -100,16 +100,7 @@ Current_Location <- function(df) {
            
            div(style="display:inline-block", flag, name)
            
-         },
-        style = JS("function(rowInfo, column, state) {
-                        const firstSorted = state.sorted[0]
-                        if (!firstSorted || firstSorted.id === 'LocLast') {
-                          const prevRow = state.pageRows[rowInfo.viewIndex - 1]
-                          if (prevRow && rowInfo.values['LocLast'] === prevRow['LocLast']) {
-                            return { visibility: 'hidden' }
-                          }
-                        }
-                      }")
+         }
   )
 }
 
@@ -171,13 +162,13 @@ Rel_Contribution <- function(df) {
   colDef(header = tippy("Relative Contribution",
                         tooltip = "Individual's contribution to living population relative to total founder representation in current population"),
          cell = data_bars(
-           data = df,
+           data          = df,
            text_position = "outside-base",
-           fill_color = paletteer_d(colors$seq),
-           number_fmt = label_percent(),
-           background = "white",
-           box_shadow = TRUE
-         ), maxWidth = 200)
+           fill_color    =  paletteer_d(colors$seq),
+           number_fmt    = label_percent(),
+           background    = "white",
+           box_shadow    = TRUE
+         ), maxWidth     = 200)
 }
 
 inbred <- function(df) {
@@ -218,9 +209,13 @@ list(
   YearLast          = colDef(show = FALSE),
   YearDeath         = colDef(show = FALSE),
   LocBirth_icon     = colDef(show = FALSE),
+  LocBirth_color    = colDef(show = FALSE),
   LocLast_icon      = colDef(show = FALSE),
+  LocLast_color     = colDef(show = FALSE),
   LocBirth_name     = colDef(show = FALSE),
-  LocLast_name      = colDef(show = FALSE)
+  LocLast_name      = colDef(show = FALSE),
+  sex_ped           = colDef(show = FALSE),
+  sex_kinship       = colDef(show = FALSE)
   )
 }
 
@@ -229,10 +224,10 @@ founder.cols <- function(df) {
     Status            = Status(),
     ID                = ID(df),
     LocBirth          = LocBirth(df),
-    AgeLast           = AgeLast(df),
+    AgeDeath          = AgeLast(df),
     LocLast           = LocLast(df),
-    Sire              = Sire(df),
-    Dam               = Dam(df),
+    Sire              = colDef(show = FALSE),
+    Dam               = colDef(show = FALSE),
     Rel_Contribution  = Rel_Contribution(df),
     DateDeath         = colDef(show = FALSE),
     DateBirth         = colDef(show = FALSE),
@@ -243,19 +238,22 @@ founder.cols <- function(df) {
     YearLast          = colDef(show = FALSE),
     YearDeath         = colDef(show = FALSE),
     LocBirth_icon     = colDef(show = FALSE),
+    LocBirth_color    = colDef(show = FALSE),
     LocLast_icon      = colDef(show = FALSE),
+    LocLast_color     = colDef(show = FALSE),
     LocBirth_name     = colDef(show = FALSE),
-    LocLast_name      = colDef(show = FALSE)
+    LocLast_name      = colDef(show = FALSE),
+    sex_ped           = colDef(show = FALSE),
+    sex_kinship       = colDef(show = FALSE)
   )
 }
 
 living.cols <- function(df) {
   list(
+    LocCurrent        = Current_Location(df),
     ID                = ID(df),
     LocBirth          = LocBirth(df),
-    DateBirth         = DateBirth(df),
-    AgeLast           = AgeLast(df),
-    LocLast           = Current_Location(df),
+    Age               = AgeLast(df),
     Sire              = Sire(df),
     Dam               = Dam(df),
     inbred            = inbred(df),
@@ -263,16 +261,20 @@ living.cols <- function(df) {
     N_Descendants     = bubble_count(df, "Descendants"),
     N_Children        = bubble_count(df, "Offspring"),
     N_Siblings        = bubble_count(df, "Siblings"),
+    DateBirth         = colDef(show = FALSE),
     Sex               = colDef(show = FALSE),
     color             = colDef(show = FALSE),
     BirthYear         = colDef(show = FALSE),
+    MonthBirth        = colDef(show = FALSE),
     YearLast          = colDef(show = FALSE),
-    LocBirth_color    = colDef(show = FALSE),
-    LocLast_color     = colDef(show = FALSE),
     LocBirth_icon     = colDef(show = FALSE),
+    LocBirth_color    = colDef(show = FALSE),
     LocLast_icon      = colDef(show = FALSE),
+    LocLast_color     = colDef(show = FALSE),
     LocBirth_name     = colDef(show = FALSE),
-    LocLast_name      = colDef(show = FALSE)
+    LocLast_name      = colDef(show = FALSE),
+    sex_ped           = colDef(show = FALSE),
+    sex_kinship       = colDef(show = FALSE)
   )
 }
 
@@ -298,13 +300,11 @@ studbook.react <- function(df, cols, ...) {
       ...
     )
   
- save_reactable_test(df.react, paste0("StudbookA_", params$group, ".html"))
  return(df.react)
 }
 
-lambda.hover <- "Growth rate: Finite rate of population growth calculated as the geometric mean of changes in total population size over the past 5 years"
 
-pva.cols <- list(
+kin.cols <- list(
   N = colDef(header = tippy("N",
     tooltip = "Demographic Population size: Number of currently living individuals in the population")
   ),
@@ -344,9 +344,6 @@ pva.cols <- list(
   ),
   MK = colDef(header = tippy("MK",
       tooltip = "Population mean kinship" )
-  ),
-  lambda2 = colDef(header = tippy("\u03BB",
-    tooltip =  lambda.hover)
   )
 )
 
