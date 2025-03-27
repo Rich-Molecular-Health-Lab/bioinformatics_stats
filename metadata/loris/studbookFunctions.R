@@ -333,7 +333,7 @@ expand_timeline <- function(timeline, period, studbook) {
   if (period == "months") {
     timeline.long <- timeline %>% 
       mutate(StartLoc = floor_date(StartLoc, "months"),
-             EndLoc   = celing_date(EndLoc, "months")) %>%
+             EndLoc   = ceiling_date(EndLoc, "months")) %>%
       mutate(Months = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "months"))) %>%
       unnest(Months) %>%
       select(ID, 
@@ -357,7 +357,7 @@ expand_timeline <- function(timeline, period, studbook) {
   } else if (period == "years") {
     timeline.new <- timeline %>% 
       mutate(StartLoc = floor_date(StartLoc, "years"),
-             EndLoc   = celing_date(EndLoc, "years")) %>%
+             EndLoc   = ceiling_date(EndLoc, "years")) %>%
       mutate(Years = pmap(list(StartLoc, EndLoc), \(x, y) seq(x, y, by = "years"))) %>%
       unnest(Years) %>%
       select(ID, 
@@ -383,16 +383,61 @@ expand_timeline <- function(timeline, period, studbook) {
 
 }
 
-census_timeline <- function(timeline) {
-  timeline.new <- timeline %>%
-    filter(TypeEvent %in% c("Birth", "End")) %>%
-    select(ID, Date, TypeEvent) %>%
-    pivot_wider(id_cols     = "ID",
-                names_from  = "TypeEvent",
-                values_from = "Date") %>%
-    mutate(Birth = floor_date(Birth, "years"),
-           End   = celing_date(End, "years")) %>%
-    mutate(Years = pmap(list(Birth, End), \(x, y) seq(x, y, by = "year")))
+census <- function(timeline, studbook, period) {
+  
+  if (period == "years") {
+    counts <- timeline %>%
+      filter(TypeEvent %in% c("Birth", "End")) %>%
+      distinct(ID, Date, TypeEvent) %>%
+      pivot_wider(id_cols     = "ID",
+                  names_from  = "TypeEvent",
+                  values_from = "Date") %>%
+      distinct() %>%
+      mutate(Birth = floor_date(Birth, "years"),
+             End   = ceiling_date(End, "years")) %>%
+      mutate(Dates = pmap(list(Birth, End), \(x, y) seq(x, y, by = "year"))) %>%
+      unnest(Dates) %>%
+      select(ID, Date = Dates) %>%
+      mutate(Age = row_number() - 1, .by = ID) %>%
+      left_join(select(studbook,
+                       ID,
+                       Sex), by = join_by(ID)) %>%
+      summarize(N = n(), .by = c(Sex, Date)) %>%
+      distinct() %>%
+      arrange(Date)
+  } else if (period == "months") {
+    counts <- timeline %>%
+      filter(TypeEvent %in% c("Birth", "End")) %>%
+      distinct(ID, Date, TypeEvent) %>%
+      pivot_wider(id_cols     = "ID",
+                  names_from  = "TypeEvent",
+                  values_from = "Date") %>%
+      distinct() %>%
+      mutate(Birth = floor_date(Birth, "months"),
+             End   = ceiling_date(End, "months")) %>%
+      mutate(Dates = pmap(list(Birth, End), \(x, y) seq(x, y, by = "month"))) %>%
+      unnest(Dates) %>%
+      select(ID, Date = Dates) %>%
+      mutate(Age = row_number() - 1, .by = ID) %>%
+      left_join(select(studbook,
+                       ID,
+                       Sex), by = join_by(ID)) %>%
+      summarize(N = n(), .by = c(Sex, Date)) %>%
+      distinct() %>%
+      arrange(Date)
+  }
+  
+  census <- counts %>% 
+    pivot_wider(id_cols     = "Date",
+                names_from  = "Sex",
+                values_from = "N") %>%
+    rename(Females      = F,
+           Males        = M,
+           Unidentified = U) %>%
+    mutate(across(where(is.numeric), ~ replace_na(., 0)))
+  
+  return(census)
+  
 }
 
 nest_timeline <- function(timeline, groupBy = NULL) {
@@ -890,6 +935,23 @@ lighten_palette <- function(palette, hex) {
 
 }
 
+living <- function(studbook) {
+  ids  <- filter(studbook, Status == "Alive" | Status == "A") %>% pull(ID) %>% unique()
+  return(ids)
+}
+
+living.males <- function(studbook) {
+  ids  <- filter(studbook, Status == "Alive" & (Sex == "M" | Sex == "Male")) %>% 
+    pull(ID) %>% unique()
+  return(ids)
+}
+
+living.females <- function(studbook) {
+  ids  <- filter(studbook, Status == "Alive" & (Sex == "F" | Sex == "Female")) %>% 
+    pull(ID) %>% unique()
+  return(ids)
+}
+
 studbook_visual <- function(timeline, studbook, location.key) {
   end.records <- filter(timeline, TypeEvent == "End") %>%
     select(ID, LocLast = Location)
@@ -898,6 +960,7 @@ studbook_visual <- function(timeline, studbook, location.key) {
     mutate(Label = str_glue("{NameLoc}", ", ", "{Country}")) %>%
     select(LocAbbrev,
            Label,
+           colorLoc,
            iconLoc)
   
   studbook.new <- studbook %>% left_join(end.records, by = join_by(ID)) %>%
@@ -905,23 +968,33 @@ studbook_visual <- function(timeline, studbook, location.key) {
            AgeLast  = if_else(is.na(AgeDeath), 
                               calculate_age(DateBirth, today()), 
                               AgeDeath),
-           Status   = case_match(Status,
+           Status      = case_match(Status,
                                  "D" ~ "Deceased",
                                  "A" ~ "Alive",
                                  "H" ~ "Hypothetical Parent"),
-           color    = case_match(Sex,
+           color       = case_match(Sex,
                                  "F" ~ colors$f,
                                  "M" ~ colors$m,
-                                 "U" ~ colors$u)) %>%
+                                 "U" ~ colors$u),
+           sex_ped     = case_match(Sex,
+                                 "F" ~ 2,
+                                 "M" ~ 1,
+                                 "U" ~ 0),
+           sex_kinship = case_match(Sex,
+                                   "F" ~ 2,
+                                   "M" ~ 1,
+                                   "U" ~ 3)) %>%
     mutate(YearLast = year(DateLast), .keep = "unused") %>%
     left_join(locations, by = join_by(LocBirth == LocAbbrev)) %>%
     rename(
       LocBirth_name      = Label,
+      LocBirth_color     = colorLoc,
       LocBirth_icon      = iconLoc
     ) %>%
     left_join(locations, by = join_by(LocLast == LocAbbrev)) %>%
     rename(
       LocLast_name      = Label,
+      LocLast_color     = colorLoc,
       LocLast_icon      = iconLoc
     ) %>%
     arrange(Status, DateBirth, LocBirth) %>%
@@ -941,8 +1014,12 @@ studbook_visual <- function(timeline, studbook, location.key) {
       YearLast      ,
       LocBirth_icon ,
       LocLast_icon  ,
+      LocLast_color ,
       LocBirth_name ,
-      LocLast_name  
+      LocBirth_color,
+      LocLast_name  ,
+      sex_ped       ,
+      sex_kinship
     )  %>%
     mutate(MonthBirth = month(DateBirth, label = TRUE, abbr = TRUE),
            YearDeath  = if_else(Status == "Alive", Status, as.character(YearLast))) 
@@ -952,3 +1029,553 @@ studbook_visual <- function(timeline, studbook, location.key) {
   return(studbook.new)
 }
 
+locations.color <- function(x) {
+  list_assign(x, color = "#444444")
+}
+
+pedigree_levels <- function(pedigree, studbook) {
+  studbook <- studbook %>%
+    mutate(across(c(Sire, Dam), ~ as.character(.)))
+  
+  levels <- as.list(gen_numbers(pedigree)) %>%
+    set_names(pedigree$ID) %>%
+    enframe(name = "id", value = "level") %>%
+    mutate(level = as.integer(level)) %>%
+    mutate(level = if_else(id %in% founders(pedigree), level, level + 2)) %>%
+    mutate(level = if_else(id %in% leaves(pedigree), level + 1, level)) %>% 
+    distinct()
+  
+  return(levels)
+}
+
+pedigree_pairs   <- function(pedigree, studbook) {
+  studbook <- studbook %>%
+    mutate(across(c(Sire, Dam), ~ as.character(.)))
+  
+  pairs <- map(as.list(nonfounders(pedigree)), \(x) as.list(parents(pedigree, id = x))) %>%
+    enframe(name = NULL) %>%
+    unnest_wider(value, names_sep = "_") %>%
+    distinct() %>%
+    mutate(pid = paste0("0", as.character(row_number()))) %>%
+    left_join(studbook, by = join_by(value_1 == Sire, value_2 == Dam)) %>%
+    select(pid, 
+           fid = value_1, 
+           mid = value_2, 
+           color = LocBirth_color, 
+           label = LocBirth) %>% 
+    distinct() %>% 
+    group_by(pid) %>% 
+    summarize(across(everything(), ~ dplyr::first(.x)), .groups = "drop") %>% 
+    ungroup()
+  
+  return(pairs)
+  
+}
+
+pedigree_edges  <- function(pedigree, studbook) {
+  pairs  <- pedigree_pairs(pedigree, studbook)
+  sire   <- pull(pairs, fid, pid) %>% as.list()
+  dam    <- pull(pairs, mid, pid) %>% as.list()
+  
+  pairs.edf <- pairs  %>%
+    pivot_longer(cols = c("fid", "mid"), values_to = "from", names_to = NULL) %>%
+    select(from, to = pid, color) %>%
+    mutate(dashes = TRUE, 
+           shadow = FALSE,
+           width  = 0.5,
+           arrows = "to") %>% distinct()
+  
+  combined         <- c(sire, dam)
+  combined_grouped <- split(combined, names(combined)) %>% map(unlist)
+  
+  offspring.edf <- combined_grouped %>%
+    imap(function(x, idx) {
+      list(idx, as.list(commonDescendants(pedigree, ids = x, maxGen = 2)))
+    }) %>%
+    enframe(name = NULL, value = "id") %>%
+    unnest_wider(id, names_sep = "_") %>%
+    unnest_longer(id_2, values_to = "id") %>%
+    select(from = id_1, to = id) %>%
+    arrange(from, to) %>%
+    distinct() %>%
+    left_join(select(pairs, from = pid, color), by = join_by(from)) %>%
+    mutate(dashes = FALSE, 
+           shadow = TRUE,
+           width  = 0.7,
+           arrows = NULL) %>%
+    distinct()
+  
+  edges <- bind_rows(pairs.edf, offspring.edf) %>%
+    distinct()
+  
+  return(edges)
+}
+
+pedigree_nodes  <- function(pedigree, studbook) {
+  levels    <- pedigree_levels(pedigree, studbook)
+  pairs.ndf <- pedigree_pairs(pedigree, studbook)  %>%
+    pivot_longer(cols = c("fid", "mid"), values_to = "mateID", names_to = NULL) %>%
+    left_join(levels, by = join_by(mateID == id)) %>%
+    distinct() %>%
+    group_by(pid, color, label) %>%
+    mutate(level = sum(max(level), 1)) %>% ungroup() %>% 
+    group_by(pid) %>% 
+    summarize(across(everything(), ~ dplyr::first(.x)), .groups = "drop") %>% 
+    ungroup() %>%
+    mutate(
+      group = "pair",
+      shape = "icon",
+      icon  = map(color, \(x) list(code = "\uf068", color = x, face = "'Font Awesome 5 Free'", weight = 700, size = 35)),
+      font  = map(color, \(x) list(size = 18, color = x, strokeColor = "#FFFFFF", strokeWidth = 3))
+    ) %>%
+    select(id = pid, level, group, shape, icon, label, font) %>%
+    distinct()
+  
+  nodes <- as.data.frame(pedigree) %>% 
+    mutate(id    = as.character(id),
+           group = as.character(sex)) %>% 
+    select(id, group) %>%
+    distinct() %>% 
+    group_by(id) %>% 
+    summarize(across(everything(), ~ dplyr::first(.x)), .groups = "drop") %>% 
+    ungroup() %>% 
+    left_join(levels, by = join_by(id)) %>%
+    distinct() %>% 
+    group_by(id) %>% 
+    summarize(across(everything(), ~ dplyr::first(.x)), .groups = "drop") %>% 
+    ungroup() %>% 
+    mutate(color = case_when(
+      group == "0" ~ colors$u,
+      group == "1" ~ colors$m,
+      group == "2" ~ colors$f),
+      code = case_when(
+        group == "0" ~ "\uf04b",
+        group == "1" ~ "\uf0c8",
+        group == "2" ~ "\uf111"),
+      shape = "icon",
+      label = id
+    ) %>% 
+    mutate(icon = map2(color, code, \(x, y) list(code = y, 
+                                                 color = x, 
+                                                 face = "'Font Awesome 5 Free'",
+                                                 weight = 700, 
+                                                 size = 30)),
+           font = map(color, \(x) list(size = 12, 
+                                       color = x, 
+                                       strokeColor = "#FFFFFF", 
+                                       strokeWidth = 3))
+    ) %>% 
+    select(id, level, group, shape, icon, label, font) %>% 
+    bind_rows(pairs.ndf) %>% 
+    distinct(id, .keep_all = TRUE) %>% 
+    ungroup()
+
+  return(nodes)
+}
+
+
+ped_network <- function(pedigree, studbook) {
+  edges <- pedigree_edges(pedigree, studbook) %>% distinct()
+  nodes <- pedigree_nodes(pedigree, studbook) %>% distinct()
+  
+  legend <- nodes %>%
+    select(group, shape, icon) %>%
+    distinct() %>%
+    mutate(icon = if_else(group %in% c("0", "1", "2"), icon, map(icon, \(x) locations.color(x)))) %>%
+    mutate(label = case_when(
+      group == "0" ~ "Sex Undet",
+      group == "1" ~ "Male",
+      group == "2" ~ "Female",
+      .default = "Pair colored/labeled by Location"
+    )) %>% distinct()
+  
+  ped.net <- visNetwork(nodes, edges, width = "100%", height = "700px") %>% 
+    addFontAwesome(version = "5.13.0") %>%
+    visNodes(shadow = TRUE, fixed  = list(x = FALSE, y = FALSE))  %>%
+    visInteraction(dragNodes = TRUE, dragView = TRUE) %>%
+    visLegend(addNodes = legend, ncol = 1, useGroups = FALSE)
+  
+  visSave(ped.net, file = paste0("Pedigree_Hierarchical_", params$group, ".html"))
+  
+  return(ped.net)
+}
+
+founder_reps <- function(pedigree, pedigree.living, studbook) {
+  founder.descendants <- map(as.list(founders(pedigree)), \(x) as.list(descendants(pedigree, x, inclusive = TRUE))) %>%
+    compact()
+  names(founder.descendants) <- map(founder.descendants, \(x) x[[1]])
+  
+  founderReps <- keep(founder.descendants, function(sublist) {
+  flat        <- unlist(sublist)
+    any(flat %in% living(studbook))
+  }) %>% list_flatten(name_spec = "") %>% unique() %>%
+    intersect(founders(pedigree.living))
+  return(founderReps)
+}
+
+founder_contributions <- function(studbook, pedigree.living) {
+  living         <- living(studbook)
+  dp             <- descentPaths(pedigree.living)
+  
+  founderContribution <- map_dbl(founders(pedigree.living), function(f) {
+    paths_list <- dp[[f]]
+    valid_paths <- keep(paths_list, ~ tail(.x, 1) %in% living)
+    sum(map_dbl(valid_paths, ~ 0.5^(length(.x) - 1)))
+  })
+  names(founderContribution) <- founders(pedigree.living)
+  
+  return(founderContribution)
+}
+
+rel_founder_contributions <- function(studbook, pedigree.living) {
+  founderContribution <- founder_contributions(studbook, pedigree.living)
+  result              <- founderContribution / sum(founderContribution)
+  
+  return(result)
+}
+
+founder_summary <- function(pedigree, pedigree.living, studbook) {
+  founderContribution <- founder_contributions(studbook, pedigree.living)
+  living              <- living(studbook)
+  founderReps         <- founder_reps(pedigree, pedigree.living, studbook)
+  
+  n_founder_reps <- length(founderReps)
+  
+  founderRepsIDs <- founderReps %>% list_c()
+  
+  dp <- descentPaths(pedigree.living)
+  
+  p     <- founder_contributions(studbook, pedigree.living)
+  p.tbl <- enframe(p, 
+                   name  = "ID", 
+                   value = "Rel_Contribution") %>%
+    mutate(ID = as.integer(ID))
+  
+  founder.summary <- enframe(founderContribution, 
+                             name = "ID", 
+                             value = "Contribution")  %>%
+    mutate(ID = as.integer(ID)) %>%
+    left_join(p.tbl) %>%
+    left_join(studbook) %>%
+    select(Status           ,
+           ID               ,
+           LocBirth         ,
+           AgeDeath = AgeLast ,
+           LocLast          ,
+           Sire             ,
+           Dam              ,
+           Rel_Contribution ,
+           DateDeath        ,
+           DateBirth        ,
+           Sex              ,
+           color            ,
+           BirthYear        ,
+           MonthBirth       ,
+           YearLast         ,
+           YearDeath        ,
+           LocBirth_icon    ,
+           LocBirth_color   ,
+           LocLast_icon     ,
+           LocLast_color    ,
+           LocBirth_name    ,
+           LocLast_name     ,
+           sex_ped          ,
+           sex_kinship      
+    )  %>%
+    arrange(Status, LocLast, desc(Rel_Contribution))
+  
+  return(founder.summary)
+}
+
+gen_numbers <- function(pedigree.living) {
+  gen_numbers <- generations(pedigree.living, what = "indiv")
+  if (length(gen_numbers) == 0) {
+    warning("No generation numbers returned using what = 'indiv'. Trying what = 'depth' instead.")
+    gen_numbers <- generations(pedigree.living, what = "depth")
+  }
+  
+  return(gen_numbers)
+}
+
+
+gen_numbers_living <- function(pedigree.living, studbook) {
+  living      <- living(studbook)
+  gens        <- gen_numbers(pedigree.living)
+  living_gen  <- gens[names(gens) %in% living]
+  return(living_gen)
+}
+
+
+kin_matrix_living <- function(pedigree.living, studbook) {
+  living         <- living(studbook)
+  kinship.ped    <- kinship(pedigree.living)
+  living.ped     <- intersect(living, rownames(kinship.ped))
+  living.kinship <- kinship.ped[living.ped, living.ped]
+}
+
+family_history <- function(pedigree.living, studbook) {
+  generations <- enframe(gen_numbers(pedigree.living), 
+                         name  = "ID", 
+                         value = "Generations") %>%
+    mutate(ID = as.integer(ID))
+  
+  inbred.df <- inbreeding(pedigree.living) %>% 
+    enframe(name = "ID", value = "inbred")
+  
+  kin.matrix <- kin_matrix_living(pedigree.living, studbook)
+  
+  inbred.df <- inbred.df  %>%
+    mutate(ID = as.integer(ID))
+  
+  ancestors <- as.list(rownames(kin.matrix)) %>%
+    set_names(map(., \(x) x)) %>%
+    map(., \(x) as.list(ancestors(pedigree.living, x))) %>%
+    enframe(name = "ID", value = "Ancestors") %>%
+    mutate(ID = as.integer(ID))
+  
+  children <- as.list(rownames(kin.matrix)) %>%
+    set_names(map(., \(x) x)) %>%
+    map(., \(x) as.list(children(pedigree.living, x))) %>%
+    enframe(name = "ID", value = "Children") %>%
+    mutate(ID = as.integer(ID))
+  
+  descendants <- as.list(rownames(kin.matrix)) %>%
+    set_names(map(., \(x) x)) %>%
+    map(., \(x) as.list(descendants(pedigree.living, x))) %>%
+    enframe(name = "ID", value = "Descendants") %>%
+    mutate(ID = as.integer(ID))
+  
+  siblings <- as.list(rownames(kin.matrix)) %>%
+    set_names(map(., \(x) x)) %>%
+    map(., \(x) as.list(siblings(pedigree.living, x))) %>%
+    enframe(name = "ID", value = "Siblings") %>%
+    mutate(ID = as.integer(ID))
+  
+  df <- ancestors %>% 
+    left_join(descendants) %>% 
+    left_join(children) %>% 
+    left_join(siblings) %>%
+    left_join(generations) %>%
+    rowwise() %>%
+    mutate(N_Children    = length(Children),
+           N_Descendants = length(Descendants),
+           N_Siblings    = length(Siblings),
+           N_Ancestors   = length(Ancestors)) %>%
+    select(ID, starts_with("N_")) %>%
+    left_join(inbred.df) %>%
+    left_join(studbook) %>%
+    select(
+           LocCurrent = LocLast,
+           ID               ,
+           LocBirth         ,
+           Age = AgeLast    ,
+           Sire             ,
+           Dam              ,
+           DateBirth        ,
+           Sex              ,
+           color            ,
+           BirthYear        ,
+           MonthBirth       ,
+           YearLast         ,
+           LocBirth_icon    ,
+           LocBirth_color   ,
+           LocLast_icon     ,
+           LocLast_color    ,
+           LocBirth_name    ,
+           LocLast_name     ,
+           sex_ped          ,
+           sex_kinship      ,
+           inbred           ,
+           starts_with("N_")) %>%
+    arrange(LocCurrent, Sex, Age)
+  
+  return(df)
+  
+}
+
+F_vector <- function(pedigree.living, studbook) {
+  kin.matrix     <- kin_matrix_living(pedigree.living, studbook)
+  F_vec          <- 2 * diag(kin.matrix) - 1
+  
+  return(F_vec)
+}
+
+kinship_summary <- function(pedigree, pedigree.living, studbook) {
+  p              <- rel_founder_contributions(studbook, pedigree.living)
+  living         <- living(studbook)
+  n_founder_reps <- length(founder_reps(pedigree, pedigree.living, studbook))
+  kin.matrix     <- kin_matrix_living(pedigree.living, studbook)
+  mean_gen       <- mean(gen_numbers_living(pedigree.living, studbook), na.rm = TRUE)
+  F_vec          <- F_vector(pedigree.living, studbook)
+  F_mean         <- mean(F_vec)
+  delta_F        <- 1 - (1 - F_mean)^(1/mean_gen)
+  Ne             <- 1 / (2 * delta_F)
+  N              <- length(living)
+  Ne_over_N      <- Ne / N
+  FGE            <- 1 / sum(p^2)
+  GD             <- 1 - sum(p^2)
+  MK             <- mean(kin.matrix[upper.tri(kin.matrix)])
+  
+  result <- tibble(N, 
+                   n_founder_reps, 
+                   FGE, 
+                   delta_F, 
+                   Ne, 
+                   Ne_over_N, 
+                   mean_gen, 
+                   F_mean, 
+                   MK, 
+                   GD)
+  return(result)
+}
+
+
+
+subset_matrix_living <- function(matrix, studbook) {
+  living_males   <- intersect(as.character(living.males(studbook))  , rownames(matrix))
+  living_females <- intersect(as.character(living.females(studbook)), rownames(matrix))
+  result         <- matrix[living_males, living_females]
+  return(result)
+}
+
+annotate_kin_matrix <- function(matrix, pedigree.living, studbook) {
+  F           <- F_vector(pedigree.living, studbook) %>%
+    enframe(name  = "ID", value = "F_vec") %>%
+    mutate(ID = as.integer(ID))
+  
+  living.data <- family_history(pedigree.living, studbook)
+  
+  annotate    <- living.data %>%
+    mutate(ID = as.integer(ID)) %>%
+    left_join(F, by = join_by(ID)) %>%
+    mutate(hoverText = str_glue(
+             "{LocCurrent}", "<br>", 
+             "{Age}", " yrs (Born ", "{DateBirth}", ")<br>",
+             "Mother: ", "{Dam}", ", Father: ", "{Sire}", "<br>",
+             "{N_Siblings}"," Siblings, ", "{N_Children}", " Offspring, ", "{N_Descendants}", " Descendants"
+           )
+    ) %>% arrange(ID)
+  
+  kinship_btp  <- subset_matrix_living(matrix, studbook)
+  text_males   <- intersect(as.character(living.males(studbook))  , rownames(kinship_btp))
+  text_females <- intersect(as.character(living.females(studbook)), colnames(kinship_btp))
+  
+  annotate.m   <- filter(annotate, Sex == "Male") %>% 
+    select(ID, hoverText) %>%
+    filter(ID %in% text_males) %>% 
+    arrange(match(ID, text_males))
+  
+  annotate.f   <- filter(annotate, Sex == "Female") %>% 
+    select(ID, hoverText) %>%
+    filter(ID %in% text_females) %>% 
+    arrange(match(ID, text_females))
+  
+  hover_matrix <- outer(
+    annotate.m$hoverText, 
+    annotate.f$hoverText, 
+    FUN = function(m_text, f_text) {
+      I(paste0("<br>Male:<br>", m_text, "<br><br>",
+               "Female:<br>", f_text))
+    }
+  )
+  rownames(hover_matrix) <- annotate.m$ID
+  colnames(hover_matrix) <- annotate.f$ID
+  
+  return(hover_matrix)
+}
+
+subset_network_btp <- function(pedigree.living, pair, studbook) {
+  edges        <- pedigree_edges(pedigree.living, studbook) %>% distinct()
+  nodes        <- pedigree_nodes(pedigree.living, studbook) %>% distinct()
+  result       <- verbalise(pedigree.living, ids = pair)
+  related.pair <- setdiff(pedigree.living[["ID"]], 
+              c(unrelated(pedigree.living, male), 
+                unrelated(pedigree.living, female))) %>% unique() 
+  connections <- edges %>%
+    filter(to %in% c(pair, result[[1]][["v1"]], result[[1]][["v2"]])) %>%
+    pull(from) %>% unique()
+  paths       <- edges %>% 
+    filter(to %in% c(related.pair, pair) | from %in% c(related.pair, pair)) %>%
+    filter(to %in% c(pair, result[[1]][["v1"]], result[[1]][["v2"]], connections)) %>%
+    mutate(color  = colors$emph,
+           shadow = TRUE,
+           width  = 3) %>%
+    distinct()
+  pair.edges <- edges %>% 
+    filter(to %in% c(related.pair, pair) | from %in% c(related.pair, pair)) %>%
+    anti_join(paths) %>%
+    bind_rows(paths) %>%
+    distinct()
+  node.ids <- c(pull(pair.edges, from), pull(pair.edges, to)) %>% unique()
+  
+  icons.size <- function(x, group) {
+    if (group == "match.m" | group == "match.f") {
+      list_assign(x, size = 55, )
+    } else if (group == "match.anc") {
+      list_assign(x, size = 45)
+    } else {
+      return(x)
+    }
+  }
+  
+  nodes.color <- function(group) {
+    if (group == "match.m" | group == "match.f" | group == "match.anc") {
+      list(background = colors$emph, border = "#000000")
+    } else {
+      list(NULL)
+    }
+  }
+  
+  font.match <- function(x, group) {
+    if (group == "match.m" | group == "match.f") {
+      list_assign(x, size = 18, background = colors$emph)
+    } else if (group == "match.anc") {
+      list_assign(x, size = 18, background = colors$emph)
+    } else if (group == "match.rel.m" | group == "match.rel.f") {
+      list_assign(x, size = 14)
+    } else {
+      return(x)
+    }
+  }
+  pair.nodes <- filter(nodes, id %in% node.ids) %>%
+    mutate(
+      label = case_when(
+        id %in% male                 ~ "Male Partner",
+        id %in% female               ~ "Female Partner",
+        id %in% result[[1]][["anc"]] ~ "Shared Ancestor",
+        .default = label),
+      group = case_when(
+        id %in% male                 ~ "match.m",
+        id %in% female               ~ "match.f",
+        id %in% result[[1]][["anc"]] ~ "match.anc",
+        id %in% result[[1]][["v1"]]  ~ "match.rel.m",
+        id %in% result[[1]][["v2"]]  ~ "match.rel.f",
+        .default = group)) %>%
+    mutate(icon = map2(icon, group, \(x, y) icons.size(x, y)),
+           font = map2(font, group, \(x, y) font.match(x, y)),
+           color= map(group, \(x) nodes.color(x)),
+           borderWidth = case_when(
+             group %in% c("match.m"    , "match.f")     ~ 3,
+             group %in% c("match.rel.m", "match.rel.f") ~ 1.5,
+             group     == "match.anc"                   ~ 2,
+             .default = 1
+           )) %>% distinct()
+  subtitle <- paste0(male, " & ", female, " are ", result[[1]][["rel"]],
+                     "<br>Path Connecting Pair: ", result[[1]][["path"]])
+  pair.net <- visNetwork(pair.nodes, 
+                         pair.edges, 
+                         width   = "100%", 
+                         height  = "700px",
+                         main    = "Relatives of Proposed Match",
+                         submain = subtitle) %>% 
+    addFontAwesome(version = "5.13.0") %>%
+    visNodes(shadow = TRUE, fixed  = list(x = FALSE, y = FALSE))  %>%
+    visInteraction(dragNodes = TRUE, dragView = TRUE)
+  
+  visSave(pair.net, file = paste0("Pedigree_Network_PairLineage_", params$group, ".html"))
+  
+  return(pair.net)
+}
+  
+
+  
