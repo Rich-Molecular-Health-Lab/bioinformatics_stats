@@ -1,0 +1,44 @@
+---
+title: "Demographic Data Summaries for AZA Pygmy Loris Provisional SSP"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+      css: "Studbook.css"
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "loris"
+  dataset: "culi"
+                     
+---
+
+```{r global, message = FALSE, warning = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("Demography.Rmd")
+source(here::here(global$setup))
+
+source(here(path$AZAstudbooks$functions))
+source(here(path$AZAstudbooks$btp))
+
+source(here(path$AZAstudbooks$load_data))
+source(here(path$AZAstudbooks$reactables))
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+
+subjects <- list(culi = 2652, warble = 2677)
+
+```
+

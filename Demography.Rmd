@@ -271,7 +271,6 @@ lambda.plot <- plot_ly(
    )) %>%
   layout(title        = "Pygmy Loris Population Growth 1985-2024",
          plot_bgcolor = "#ffffff", 
-         barmode      = "grouped",
          shapes       = list(hline(1.0)),
          annotations  = lambda.annotation,
          yaxis = list(title         = "Lambda (\u03BB)",

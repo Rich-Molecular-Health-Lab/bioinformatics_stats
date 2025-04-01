@@ -51,7 +51,6 @@ enhance.locations <- function(df) {
       is.na(Country)                         ~ "\U1F6A9"))
 }
 
-
 clean_studbook <- function(df, alive, locations) {
   df %>%
     select(ID        = Studbook.ID, 
@@ -290,8 +289,6 @@ fill_dates_timeline <- function(df) {
     
 }
 
-
-
 revise_studbook <- function(studbook, timeline) {
   deceased <- filter(studbook, Status == "D") %>% pull(ID) %>% unique()
   
@@ -321,7 +318,6 @@ revise_studbook <- function(studbook, timeline) {
   
   return(studbook.revised)
 }
-
 
 expand_timeline <- function(timeline, period, studbook) {
   timeline <- timeline %>%
@@ -382,7 +378,6 @@ expand_timeline <- function(timeline, period, studbook) {
   return(timeline.long)
 
 }
-
 census <- function(timeline, studbook, period) {
   
   if (period == "years") {
@@ -561,7 +556,6 @@ add.hypotheticals <- function(studbook, ids, parent) {
     
     studbook %>% bind_rows(hypotheticals) %>%
       mutate(Dam = if_else(ID %in% c(ids), hypDam, Dam))
-    
   }
 
 }
