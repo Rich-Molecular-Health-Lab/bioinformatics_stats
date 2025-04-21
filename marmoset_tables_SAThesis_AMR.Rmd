@@ -86,3 +86,76 @@ marm_foods
 gtsave(marm_foods, "marm_foods.png", "visuals")
 ```
 
+```{r}
+marm_diet_trials <- list(
+  list(
+    "Days"    = c(1, 14),
+    "Trials" = list(
+      "Group 1" = "Run-in",
+      "Group 2" = "Run-in"
+    )
+  ),
+  list(
+    "Days"    = c(15, 28),
+    "Trials" = list(
+      "Group 1" = "Intervention",
+      "Group 2" = "Control"
+      )
+  ),
+  list(
+    "Days"    = c(29, 42),
+    "Trials" = list(
+      "Group 1" = "Washout",
+      "Group 2" = "Washout"
+    )
+  ),
+  list(
+    "Days"    = c(43, 56),
+    "Trials" = list(
+      "Group 1" = "Control",
+      "Group 2" = "Intervention"
+    )
+  ),
+  list(
+    "Days"    = c(57, 70),
+    "Trials" = list(
+      "Group 1" = "Washout",
+      "Group 2" = "Washout"
+    )
+  )
+) %>%
+  enframe(name = NULL) %>%
+  unnest_wider(value) %>%
+  unnest_wider(Trials) %>%
+  pivot_longer(c("Group 1", "Group 2"), names_to = "Group") %>%
+  mutate(Days = str_replace_all(str_remove_all(as.character(Days), "[c()]"), ", ", " - ")) %>%
+  pivot_wider(names_from = "Days", values_from = "value") %>%
+  gt(rowname_col = "Group") %>%
+  opt_table_lines(extent = "none") %>%
+  cols_align("center") %>%
+  tab_stubhead("Trial Days:") %>%
+  tab_header("Table X. Timeline of study") %>%
+  tab_style(style = cell_borders(sides = "top", color = "#775F55FF"), locations = cells_body()) %>%
+  tab_style(style = cell_borders(sides = "top", color = "#775F55FF"), locations = cells_stub()) %>%
+  tab_style_body(style = list(cell_text(transform = "uppercase", weight = "bold"), 
+                              cell_fill("#DD8047A6")), pattern = "Intervention") %>%
+  tab_style_body(style = list(cell_text(transform = "uppercase"), 
+                              cell_fill("#A5AB81A6")), pattern = "Control") %>%
+  tab_style_body(style = list(cell_text(style = "oblique", size = "small", color = "#968C8CFF"), 
+                              cell_fill("#94B6D2A6")), pattern = "Washout") %>%
+  tab_style_body(style = list(cell_text(style = "oblique", size = "small", color = "#968C8CFF"), 
+                              cell_fill("#EBDDC3A6")), pattern = "Run-in") %>%
+  tab_style(style = list(cell_text(size = "small", transform = "uppercase", weight = "bold", color = "#968C8CFF")),
+            locations = cells_column_labels()) %>%
+  tab_style(style = list(cell_text(size = "small", transform = "uppercase", weight = "bold", color = "#968C8CFF")),
+            locations = cells_stub()) %>%
+  tab_style(style = list(cell_text(size = "small", transform = "uppercase", weight = "bold", color = "#968C8CFF")),
+            locations = cells_stubhead()) %>%
+  tab_style(style = list(cell_text(align = "left"), cell_borders(sides = "bottom", color = "#968C8CFF")),
+            locations = cells_title())
+
+marm_diet_trials
+gtsave(marm_diet_trials, "marm_diet_trials.png", "visuals")
+```
+
+
