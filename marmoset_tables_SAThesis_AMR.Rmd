@@ -1,0 +1,88 @@
+---
+title: "Summary Tables for SA's Thesis by AMR"
+author: "Alicia Rich"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    code_folding: "show"
+    fig_caption: true
+    df_print: paged
+params:
+  sampleset: "marmoset"
+  dataset: "marmoset"
+  
+---
+
+```{r global, message = FALSE, warning = FALSE}
+global             <- config::get(config = "default")
+
+here::i_am("marmoset_tables_SAThesis_AMR.Rmd")
+source(here::here(global$setup))
+
+opts_chunk$set(message = FALSE,
+               warning = FALSE,
+               echo    = TRUE,
+               include = TRUE,
+               eval    = TRUE,
+               comment = "")
+
+subjects <- keep_at(subjects, "marmoset") %>% compact()
+
+```
+
+
+```{r}
+marm_foods <- list(
+  "Zoopreem^\u00AE Marmoset Diet" = list(
+    "Commercially formulated diet made up of wheat, soybean, egg, alfalfa, and various vitamins",
+    1,
+    "slice"
+  ),
+  "Mazuri^\u00AE Callitrichid Gel Diet" = list(
+    "Commercially formulated diet made up of soybean, corn, wheat, gelatin, and various vitamins",
+    1,
+    "slice"
+  ),
+  "Apple" = list(
+    "Cut into 1-cm^2 cubes",
+    4,
+    "pieces"
+  ),
+  "Sweet Potato" = list(
+    "Cut into 1-cm^2 cubes",
+    4,
+    "pieces"
+  ),
+  "Eggs" = list(
+    "Scrambled and microwave-cooked",
+    2,
+    "tsp"
+  )
+) %>%
+  enframe(name = "Food_Item", value = "Details") %>%
+  unnest_wider(Details, names_sep = "_") %>%
+  rename(Details = Details_1, Amount = Details_2, Unit = Details_3) %>%
+  gt(rowname_col = "Food_Item") %>%
+  fmt_units() %>%
+  cols_merge(columns = c("Amount", "Unit"), pattern = "{1} {2}") %>%
+  tab_stubhead("Food Item") %>%
+  cols_width(
+    stub()  ~ px(250),
+    Details ~ px(400),
+    Amount  ~ px(100)
+  ) %>%
+  cols_align("left") %>%
+  opt_stylize(style = 3, color = "blue") %>%
+  tab_style(style = cell_text(weight = "bold", v_align = "top"), locations = cells_stub()) %>%
+  tab_style(style = cell_text(v_align = "top"), locations = cells_body()) %>%
+  tab_header("Table X. Standardized diet per marmoset pair") %>%
+  tab_style(style = cell_text(align = "left"), locations = cells_title())
+marm_foods
+gtsave(marm_foods, "marm_foods.png", "visuals")
+```
+
