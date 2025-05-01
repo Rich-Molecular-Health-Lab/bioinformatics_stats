@@ -726,9 +726,27 @@ Some of the standard microbiome profiling metrics rely on on an OTU approach dev
   
 ONT Reads are generally still too messy and long to smoothly produce consensus sequences for each taxon. I use a workaround to enable us to still generate some phylogenetic estimates and graphics, though we will really be visualizing the relationships between the reference sequences for each taxon that our reads align to. The first step of this will use Entrez Direct to source a reference fasta for each of the taxids from our minimap2 results.  
 
-## Check Previous Taxonomy List
+## Check Previous Taxonomy List {.tabset}
 
 Because we do not sequence and profile all our data for a project at once, we need a system for reading in, updating, and exporting our taxonomy records. This is also a helpful approach, because as we notice fewer and fewer new taxa appearing in our subsequent sequencing runs, we can assume we are reaching an optimal sample size. First, we will read in our ongoing taxonomy list for this sampleset.
+
+### First Time - Generate a new representative fasta
+
+```{r, message = FALSE, eval=FALSE}
+new.refs          <- alignments %>% 
+                     select(ref, organism) %>% distinct()
+
+
+  write.table(new.refs,
+              global$tmp_fetch,
+              sep       = "\t",
+              quote     = FALSE,
+              row.names = FALSE,
+              col.names = FALSE)
+```
+
+
+### Add new taxa to existing representative fasta
 
 ```{r, message = FALSE, eval=FALSE}
 rep.seqs.previous <- read.fasta(path$taxa_reps$aligned)

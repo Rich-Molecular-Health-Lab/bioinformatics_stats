@@ -208,4 +208,29 @@ write_csv(studbook_revised, "data/loris/demography/studbook.csv")
 ```
 
 
+```{r}
+library(reactable)
+library(reactablefmtr)
+library(htmlwidgets)
+library(htmltools)
+conflicts_prefer(lubridate::interval)
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(purrr::set_names)
+studbook <- read_csv("data/loris/demography/studbook.csv")
+pedigree <- featured_pedigree(studbook)
+```
+
+```{r}
+demog <- demog_summary(studbook, list(span = 5))
+```
+
+```{r}
+dem_vars <- demog_variables()
+```
+
+
+```{r}
+projections <- proj_matrix(studbook, list(span = 5))
+```
+
 
