@@ -227,6 +227,41 @@ studbook <- read_csv("data/loris/demography/studbook.csv")
 pedigree <- featured_pedigree(studbook)
 ```
 
+# Demographic Plots
+
+```{r}
+data        <- plot_demog_prep(studbook, list(span = 5), "lambda", log_trans = FALSE, age_spec = FALSE)
+```
+
+
+```{r}
+attr        <- plot_demog_attr(data, "lambda", age_spec = FALSE)
+```
+
+```{r}
+overall_val <- demog_intercept(studbook, list(span = 5), "lambda")
+```
+
+
+```{r}
+layer        <- plot_demog_annot(attr, overall_val, age_spec = FALSE)
+```
+
+
+
+```{r}
+lambda_plot  <- plot_demog(studbook, list(span = 5), "lambda")
+lambda_plot
+```
+
+```{r}
+Lx1_plot <- plot_age_ts(studbook, list(span = 5), "Lx1", log_trans = TRUE)
+Lx1_plot
+```
+
+
+# Projections
+
 ```{r}
 projections <- projections_studbook(studbook, list(span = 5))
 ```
