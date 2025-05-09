@@ -207,6 +207,27 @@ Now you can export this version of the studbook as a `csv` file to carry forward
 write_csv(studbook_revised, "data/loris/demography/studbook.csv")
 ```
 
+```{r}
+library(tidyverse)
+library(reactable)
+library(reactablefmtr)
+library(htmlwidgets)
+library(htmltools)
+library(conflicted)
+conflicts_prefer(lubridate::interval)
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(purrr::set_names)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message  = FALSE,
+  warning  = FALSE,
+  echo     = TRUE,
+  include  = TRUE,
+  eval     = TRUE,
+  comment  = ""
+)
+```
+
 
 ```{r eval=FALSE}
 pak::pkg_install("Rich-Molecular-Health-Lab/zoopop?reinstall")
@@ -215,14 +236,6 @@ pak::pkg_install("Rich-Molecular-Health-Lab/zoopop?reinstall")
 
 ```{r}
 library(zoopop)
-library(tidyverse)
-library(reactable)
-library(reactablefmtr)
-library(htmlwidgets)
-library(htmltools)
-conflicts_prefer(lubridate::interval)
-conflicts_prefer(dplyr::filter)
-conflicts_prefer(purrr::set_names)
 studbook <- read_csv("data/loris/demography/studbook.csv")
 pedigree <- featured_pedigree(studbook)
 ```
@@ -351,93 +364,6 @@ proj <- pop.projection(A, nKx)
 ```
 
 
-```{r}
-projections <- projections_studbook(studbook, list(span = 5))
-```
-
-```{r}
-extract_proj <- projections %>%
-  mutate(Mx_age5 = map_dbl(Mx_ts, \(x) pluck(x, 5))) 
-```
-
-```{r}
-extract_proj <- projections %>%
-  mutate(Mx_proj5_age5 = map_dbl(Mx_grid, \(x) x[6][5]))
-```
-
-```{r}
-extract_mx_gd <- projections$Mx_grid
-extract_mx_ts <- projections$Mx_ts
-```
-
-```{r}
-extract_qx_gd <- projections$Qx_grid
-extract_qx_ts <- projections$Qx_ts
-```
-
-```{r}
-Projection_summary <- projections$Projection
-```
-
-
-```{r}
-reactable(
-  projections,
-  columns = list(
-    Fx_ts   = colDef(name="Total Fx_t series", cell=function(v) react_sparkline(v)),
-    Mx_ts   = colDef(name="Total Mx_t series"),
-    Qx_grid = colDef(name="Qx grid", cell=function(mat) react_sparkline(mat[,1]))
-  )
-)
-```
-
-```{r}
-year_born <- 2012
-life_data <- filter(vitals, cohort_start <= year_born & cohort_end >= year_born)
-```
-
-```{r}
-lt <- life.table(
-  x       = life_data$x[[1]],
-  nDx     = life_data$Dx[[1]],
-  nKx     = life_data$Sx[[1]],
-  type    = "cohort",
-  iwidth  = 1,
-  width12 = c(0, 1)
-) %>%
-  bind_cols(select(life_data, starts_with("cohort")))
-```
-
-
-```{r}
-tables <- make_cohort_lifetables(vitals) %>%
-  hoist(lifetable, 
-        nMx = "nMx",
-        nqx = "nqx",
-        lx  = "lx",
-        ndx = "ndx",
-        nLx = "nLx",
-        Tx  = "Tx",
-        ex  = "ex") %>%
-  select(-lifetable) %>%
-  mutate(across(c(nMx:ex), ~map(., \(x) replace_na(x, 0))))
-
-leslies <- make_cohort_leslies(tables)
-```
-
-
-
-```{r}
-cohorts <- cohort_template(studbook)
-```
-
-```{r}
-studbook_dates <- cohort_studbook(studbook)
-```
-
-```{r}
-births <- births_annual(studbook)
-```
 
 ```{r}
 census <- census_pop(studbook)
