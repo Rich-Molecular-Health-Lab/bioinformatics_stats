@@ -262,6 +262,95 @@ Lx1_plot
 
 # Projections
 
+
+```{r}
+cohorts <- cohorts_set(studbook)
+```
+
+```{r}
+counts      <- vitals(studbook)
+```
+
+
+```{r}
+lifetab <- cohort_lifetab(studbook)
+
+lt_list <- cohort_lifelist(lifetab)
+```
+
+
+```{r}
+leslie <- cohort_leslie(studbook)
+```
+
+```{r}
+lt_year <- cohort_lifetab(studbook, 1) %>%
+  cohort_lifelist()
+```
+
+
+```{r}
+proj <- pop.projection(leslie[["2015"]], lt_list[["2015"]]$Sx)
+```
+
+
+
+```{r}
+A_list <- cohorts_leslie(lifetab)
+```
+
+```{r}
+life_list <- list_life(lifetab)
+```
+
+
+```{r}
+pop_list <- pmap(A_list, life_list, \(x, y) pop.projection())
+```
+
+
+```{r}
+proj2010 <- pop.projection(A_list[["2010"]], life_list[["2010"]]$Sx)
+```
+
+
+
+```{r}
+cohort <- 10
+
+x    <- data$Age[[1]]
+mx   <- data$Mx[[1]]
+fx   <- data$Fx[[1]]
+nDx  <- data$Deaths[[1]]
+nKx  <- data$Nx[[1]]
+
+
+x   <- lifetab$les$x
+
+stages <- c(seq(from = min(x), to = max(x)))
+
+nLx <- lifetab$les$nLx
+lx  <- lifetab$les$lx
+mx  <- lifetab$les$mx
+
+A <- matrix(
+  leslie.matrix(
+    lx           = lx,
+    mx           = mx,
+    L            = FALSE,
+    peryear      = 1,
+    one.sex      = FALSE,
+    infant.class = FALSE
+    ),
+  nrow     = length(age), 
+  ncol     = length(age), 
+  dimnames = list(stages, stages)
+  )
+
+proj <- pop.projection(A, nKx)
+```
+
+
 ```{r}
 projections <- projections_studbook(studbook, list(span = 5))
 ```
@@ -300,5 +389,57 @@ reactable(
     Qx_grid = colDef(name="Qx grid", cell=function(mat) react_sparkline(mat[,1]))
   )
 )
+```
+
+```{r}
+year_born <- 2012
+life_data <- filter(vitals, cohort_start <= year_born & cohort_end >= year_born)
+```
+
+```{r}
+lt <- life.table(
+  x       = life_data$x[[1]],
+  nDx     = life_data$Dx[[1]],
+  nKx     = life_data$Sx[[1]],
+  type    = "cohort",
+  iwidth  = 1,
+  width12 = c(0, 1)
+) %>%
+  bind_cols(select(life_data, starts_with("cohort")))
+```
+
+
+```{r}
+tables <- make_cohort_lifetables(vitals) %>%
+  hoist(lifetable, 
+        nMx = "nMx",
+        nqx = "nqx",
+        lx  = "lx",
+        ndx = "ndx",
+        nLx = "nLx",
+        Tx  = "Tx",
+        ex  = "ex") %>%
+  select(-lifetable) %>%
+  mutate(across(c(nMx:ex), ~map(., \(x) replace_na(x, 0))))
+
+leslies <- make_cohort_leslies(tables)
+```
+
+
+
+```{r}
+cohorts <- cohort_template(studbook)
+```
+
+```{r}
+studbook_dates <- cohort_studbook(studbook)
+```
+
+```{r}
+births <- births_annual(studbook)
+```
+
+```{r}
+census <- census_pop(studbook)
 ```
 
