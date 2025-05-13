@@ -1,0 +1,180 @@
+---
+title: "Receptor Assay Results"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(conflicted)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = ""
+  )
+
+conflicts_prefer(dplyr::filter)
+```
+
+```{r}
+treatments <- c(
+control              = "Control"               ,
+meoh                 = "Veh MeOH"              ,
+dmso                 = "Veh DMSO"              ,
+e2                   = "E2"                    ,
+e1                   = "E1"                    ,
+e3                   = "E3"                    ,
+genistein            = "gen"                   ,
+daidzen              = "diad"                  ,
+daidzen              = "daid"                  ,
+equol                = "equol"                 ,
+coumestrol           = "cou"                   ,
+enterodiol           = "entidiol"              ,
+ls_cinbrowse         = "LS Cin/Browse Biscuit" ,
+ls_banfiber          = "LS Ban/High Fiber"     ,
+insect_leaf          = "Insect/Leafeater"      ,
+random_osu           = "Random/Pellet OSU"     ,
+lettuce              = "lettuce"               
+)
+
+treat_type <- c(
+control           = "Control"               ,
+vehicle           = "Veh MeOH"              ,
+vehicle           = "Veh DMSO"              ,
+standard          = "E2"                    ,
+standard          = "E1"                    ,
+standard          = "E3"                    ,
+standard          = "gen"                   ,
+standard          = "diad"                  ,
+standard          = "daid"                  ,
+standard          = "equol"                 ,
+standard          = "cou"                   ,
+standard          = "entidiol"              ,
+diet              = "LS Cin/Browse Biscuit" ,
+diet              = "LS Ban/High Fiber"     ,
+diet              = "Insect/Leafeater"      ,
+diet              = "Random/Pellet OSU"     ,
+diet              = "lettuce"               
+)
+
+treat_subtype <- c(
+control              = "Control"               ,
+meoh                 = "Veh MeOH"              ,
+dmso                 = "Veh DMSO"              ,
+estrogens            = "E2"                    ,
+estrogens            = "E1"                    ,
+estrogens            = "E3"                    ,
+isoflavones          = "gen"                   ,
+isoflavones          = "diad"                  ,
+isoflavones          = "daid"                  ,
+coumestans           = "cou"                   ,
+metabolites          = "equol"                 ,
+metabolites          = "entidiol"              ,
+biscuit              = "LS Cin/Browse Biscuit" ,
+biscuit              = "LS Ban/High Fiber"     ,
+biscuit              = "Insect/Leafeater"      ,
+biscuit              = "Random/Pellet OSU"     ,
+lettuce              = "lettuce"               
+)
+
+treat_origin <- c(
+control          = "Control"               ,
+vehicle          = "Veh MeOH"              ,
+vehicle          = "Veh DMSO"              ,
+endogenous       = "E2"                    ,
+endogenous       = "E1"                    ,
+endogenous       = "E3"                    ,
+phyto            = "gen"                   ,
+phyto            = "diad"                  ,
+phyto            = "daid"                  ,
+phyto            = "cou"                   ,
+microbe          = "equol"                 ,
+microbe          = "entidiol"              ,
+commercial       = "LS Cin/Browse Biscuit" ,
+commercial       = "LS Ban/High Fiber"     ,
+commercial       = "Insect/Leafeater"      ,
+commercial       = "Random/Pellet OSU"     ,
+vegetable        = "lettuce"               
+)
+
+```
+
+
+```{r}
+assays <- read_csv("data/receptors/esr_assays_tubbs.csv") %>%
+  rename(common = species) %>%
+  filter(assay %in% c("luciferase", "b_gal")) %>%
+  mutate(date          = mdy(date),
+         receptor      = factor(receptor, levels = c("esr1", "esr2")),
+         genus         = case_match(common, 
+                                    "gorilla" ~ "Gorilla",
+                                    "loris"   ~ "Xanthonycticebus",
+                                    "human"   ~ "Homo"
+                                    ),
+         species       = case_match(common, 
+                                    "gorilla" ~ "gorilla",
+                                    "loris"   ~ "pygmaeus",
+                                    "human"   ~ "sapiens"
+                                    ),
+         treat_type    = fct_recode(treatment, !!!treat_origin),
+         treat_subtype = fct_recode(treatment, !!!treat_subtype),
+         treat         = fct_recode(treatment, !!!treatments)) %>%
+  select(date,
+         receptor,
+         genus,
+         treat_type,
+         treat_subtype,
+         treat,
+         assay,
+         dose_type,
+         dose,
+         value_1,
+         value_2,
+         value_3) %>%
+  group_by(
+         date,
+         receptor,
+         genus,
+         treat_type,
+         treat_subtype,
+         treat,
+         assay,
+         dose_type,
+         dose) %>%
+  mutate(series = row_number()) %>%
+  ungroup() %>%
+  pivot_longer(starts_with("value_"),
+               names_to     = "replicate",
+               names_prefix = "value_",
+               values_to    = "value") %>%
+  pivot_wider(names_from  = "assay",
+              values_from = "value") %>%
+  select(date,
+         receptor,
+         genus,
+         treat_type,
+         treat_subtype,
+         treat,
+         series,
+         replicate,
+         dose_type,
+         dose,
+         luciferase,
+         b_gal
+  ) %>%
+  rowwise() %>%
+  mutate(normalized = luciferase/b_gal) %>%
+  ungroup() %>%
+  mutate(control_mean = mean(normalized[treat == "control"]), 
+         .by = c(date, receptor, genus)) %>%
+  rowwise() %>%
+  mutate(fold_act = normalized/control_mean) %>%
+  ungroup()
+```
+
