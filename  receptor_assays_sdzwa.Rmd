@@ -338,6 +338,25 @@ In this snippet, we nest the data for each group and then apply `drm()` via `map
 \n
 We should also consider setting constraints or starting values if some models have trouble converging. For instance, if we know the baseline should be ~1, we could fix the lower asymptote at [1.0 for stability](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0146021#:~:text=,2) (drc allows fixing parameters). But initially, we can try free four-parameter fits and check convergence.
 
+## Checking Model Fits
+
+**After fitting, examine each model’s results:**
+
+- Use summary() on the drm_fit to see estimated parameters and standard errors.
+- Check if any models failed to converge or gave unreasonable estimates (e.g., extremely high EC50 or slope). We might detect these by looking at the tidy coefficients or trying to predict outside the data range.
+- If a particular fit is poor (e.g., only two points were effectively available or the response is non-sigmoidal), we might exclude that model from further analysis or treat it cautiously.
+
+```{r}
+model_results <- model_data %>%
+  mutate(
+    EC50 = map_dbl(drm_fit, \(x) ED(x, 50, type="absolute", display=FALSE)[1,1]),  
+    Dmax = map_dbl(drm_fit, \(x) coef(x)["d:(Intercept)"])
+  ) %>%
+  select(genus, receptor, treat, EC50, Dmax)
+```
+
+Here, `ED(model, 50)` gives the effective dose for 50% response. We specify `type="absolute"` if we want the EC50 in the same units as dose. The `coef(x)["d:(Intercept)"]` accesses the estimated top asymptote (often named “Upper Limit” in the model) which corresponds to the maximal fold change. *(If we fixed the lower bound at 1, then 50% of effect is halfway between 1 and d, etc., but using ED with `type="absolute"` should directly give the EC50 in original dose units.)*
+
 
 ```{r}
 
