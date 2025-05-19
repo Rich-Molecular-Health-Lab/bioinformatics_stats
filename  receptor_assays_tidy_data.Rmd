@@ -31,6 +31,8 @@ conflicts_prefer(plotly::layout)
 
 source("data/receptors/inputs.R")
 source("helpers/receptor_assays.R")
+
+
 ```
 
 # Prepare Data
@@ -182,11 +184,33 @@ Fit a 4-parameter curve to only our E2 data on each plate, extract its upper asy
 – **Cons**: requires a successful E₂ curve fit on every plate (if a plate’s E₂ data are too noisy, we’ll get NAs).
 
 ```{r}
+treat_vars <- c(
+  "treat_type",
+  "treat_subtype",
+  "treat_name",
+  "treat_desc",
+  "treat_form",
+  "dose_type",
+  "treat"
+)
+
+plate_e2_vars <- c(
+  "plate",
+  "date",
+  "genus", 
+  "subj", 
+  "receptor",
+  "model",
+  "column",
+  treat_vars
+)
+```
+
+
+```{r}
 plate_e2_curves <- esr_normalized %>%
   filter(treat=="e2") %>%
-  group_by(plate, receptor, genus) %>%
-  nest()  %>%
-  ungroup() %>%
+  nest(.by = plate_e2_vars)  %>%
   mutate(
     drm_result = map(data, \(x) drm(
       fold_act ~ dose,
@@ -198,7 +222,10 @@ plate_e2_curves <- esr_normalized %>%
          slope  = map(drm_result, \(x) coef(x)[[1]]),
          Dmin   = map(drm_result, \(x) coef(x)[[2]]),
          ED50   = map(drm_result, \(x) coef(x)[[4]]))
+```
 
+
+```{r}
 esr_norm_dmax <- esr_normalized %>%
   left_join(select(plate_e2_curves, plate, Dmax), by="plate") %>%
   rowwise() %>%

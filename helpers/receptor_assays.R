@@ -263,8 +263,18 @@ drc_plot_each <- function(data_real, data_pred) {
     )
 }
 
-drc_plot_map <- function(df_real, df_predicted) {
+drc_plot_map <- function() {
+  df_real <- df %>%
+    select(-predict) %>%
+    unnest(data)
   
+  df_pred <- df %>%
+    select(-data) %>%
+    unnest(predict) %>%
+    left_join(select(df_real, plate:treat_desc), 
+              by = join_by(plate, genus, receptor, treat)) %>%
+    mutate(log10_dose = log10(dose))
+    
 }
 
 
