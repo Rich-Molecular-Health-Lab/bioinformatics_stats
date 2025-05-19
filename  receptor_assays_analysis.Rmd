@@ -1,0 +1,221 @@
+---
+title: "Receptor Assay Data Tidying"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: minty
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(conflicted)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(drc)
+library(shiny)
+library(bslib)
+library(flexdashboard)
+library(gridlayout)
+library(rlang)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = ""
+  )
+
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::select)
+conflicts_prefer(plotly::layout)
+
+
+source("data/receptors/inputs.R")
+source("helpers/receptor_assays.R")
+
+esr_data <- read_csv("data/receptors/esr_assays_normalized.csv")
+```
+
+# Fitting Dose–Response Models (LL.4 Logistic)
+
+For each treatment that has more than one dose tested, we will fit a four-parameter log-logistic model (LL.4) to the fold-change data. The four parameters of this model are: lower asymptote (minimal effect, often near 1 if baseline-normalized), upper asymptote (maximal effect = Dmax), the inflection point or EC50 (the dose producing half-maximal response), and the slope (Hill coefficient). We use the drc package’s `drm()` function with the `LL.4()` model specification for this task.\n
+\n
+Grouping by Treatment: We will fit separate curves for each unique combination of receptor, species, and treatment.\n
+\n
+The model `drm(fold_act ~ dose, fct=LL.4())` will attempt to estimate the four parameters for each curve. *Note: We ensure dose is on a numeric scale (e.g., molar concentrations or mg/mL as appropriate). If dose values vary over many orders of magnitude, using a log scale for fitting might be helpful; however, drc’s LL.4 expects the raw dose and internally handles the log-logistic form, so we provide the raw dose (non-logged) in the formula.*\n
+\n
+
+>**After fitting, examine each model’s results:**
+>- Use `summary()` on the `drm_result` to see estimated parameters and standard errors.
+>- Check if any models failed to converge or gave unreasonable estimates (e.g., extremely high EC50 or slope). We might detect these by looking at the tidy coefficients or trying to predict outside the data range.
+>- If a particular fit is poor (e.g., only two points were effectively available or the response is non-sigmoidal), we might exclude that model from further analysis or treat it cautiously.
+
+## Step 1: Plate-by-plate QC plots
+
+```{r}
+plate_fits <- esr_data %>%
+  group_by(plate, genus, receptor, treat) %>%
+  nest() %>%
+  ungroup() %>%
+  mutate(
+    drm_result = map(data, \(x) drm(fold_act ~ dose, data = x, fct  = LL.4(
+      names = c("Slope", "Lower Limit", "Upper Limit", "ED50")
+      ))),
+    grid = map(data, \(x) seq(min(x$dose), max(x$dose), length.out = 200)),
+    preds = map2(drm_result, grid, \(x, y) predict(
+      x, data.frame(dose = y), interval = "confidence"))
+    ) %>%
+  select(plate, 
+         genus, 
+         receptor, 
+         treat, 
+         data, 
+         grid, 
+         preds) %>%
+  mutate(predict = map2(grid, preds, \(x, y) tibble(
+    dose  = x,        
+    resp  = y[,"Prediction"],
+    lower = y[,"Lower"],
+    upper = y[,"Upper"]))
+    ) %>%
+  select(-grid, -preds)
+```
+
+
+```{r}
+plate_real <- plate_fits %>%
+  select(-predict) %>%
+  unnest(data)
+
+plate_predicted <- plate_fits %>%
+  select(-data) %>%
+  unnest(predict) %>%
+  left_join(select(plate_real, plate:treat_desc), 
+            by = join_by(plate, genus, receptor, treat)) %>%
+  mutate(log10_dose = log10(dose))
+```
+
+
+```{r}
+
+# 3. plotly: small multiples, one card per plate×treatment
+plots_qc <- qc_df %>%
+  group_split(plate, receptor, treat) %>%
+  set_names(~ sprintf("P%02d_%s_%s", .x$plate[1], .x$receptor[1], .x$treat[1])) %>%
+  imap(function(df, label) {
+    plot_ly(df, x=~log10(dose), y=~fold_act, name="raw",
+            mode="markers", type="scatter", marker=list(size=6)) %>%
+      add_ribbons(x=~log10(dose), ymin=~lower, ymax=~upper,
+                  fillcolor="rgba(100,100,100,0.2)", line=list(color=NA)) %>%
+      add_lines(x=~log10(dose), y=~resp,
+                line=list(color="steelblue", width=2)) %>%
+      layout(title=label,
+             xaxis=list(title="log10(dose)"),
+             yaxis=list(title="fold-activation"))
+  })
+
+# then you can do subplot(plots_qc, nrows=..., margin=0.02) or display a few manually
+```
+
+
+```{r}
+esr_modeled <- esr_data %>%
+  group_by(
+    genus,
+    subj,
+    receptor,
+    model,
+    treat_type,
+    treat_subtype,
+    treat,
+    treat_name,
+    treat_desc
+  ) %>%
+  nest() %>%
+  mutate(
+    drm_result = map(data, \(x) drm(
+      fold_act ~ dose,
+      data     = x,
+      fct      = LL.4(names = c("Slope", "Lower Limit", "Upper Limit", "ED50"))
+    )),
+    drm_summary = map(drm_result, \(x) summary(x, od = FALSE))
+  ) %>%
+  mutate(
+    dose_grid = map(data, \(x) seq(min(x$dose), 
+                                   max(x$dose), 
+                                   length.out = 100)),
+    preds     = map2(drm_result, 
+                     dose_grid, \(x, y) predict(x, 
+                                                data.frame(dose = y), 
+                                                interval = "confidence"))
+  ) %>%
+  mutate(curve = map2(dose_grid, 
+                      preds, \(x, y) tibble(dose  = x,        
+                                            resp  = y[,"Prediction"],
+                                            lower = y[,"Lower"],
+                                            upper = y[,"Upper"])))
+```
+
+## Format Model Results for Visualizing
+
+We want to visualize the dose–response curves along with the actual data points. A typical plot will have `log10` dose on the x-axis and fold activation (or % of E2) on the y-axis.
+
+```{r}
+curve_data <- esr_modeled %>%
+  mutate(filename = as.character(str_glue("{subj}_{receptor}"))) %>%
+  mutate(receptor = case_match(receptor, 
+                               "alpha" ~ "\u03B1", 
+                               "beta"  ~ "\u03B2")) %>%
+  mutate(label_short = as.character(str_glue("{str_to_title(subj)} ER{receptor}: {treat_name}")),
+         label = paste0(genus, " ER", receptor, "<br>", treat_name)) %>%
+  ungroup() %>%
+  select(
+    genus,
+    receptor,
+    treat,
+    treat_subtype,
+    treat_name,
+    label,
+    label_short,
+    filename,
+    curve
+  ) %>%
+  unnest(curve) %>%
+  mutate(x = log10(dose + 0.1)) %>%
+  arrange(receptor, genus, treat) %>%
+  group_by(receptor, genus, treat) %>%
+  mutate(plot_id = as.character(str_glue("plot_{cur_group_id()}"))) %>%
+  group_split() %>%
+  set_names(map(., \(x) first(x$plot_id)))
+```
+
+
+## Visualize Model Results
+
+### Grid View of Fitted Logistic Dose-Response Curves
+
+```{r}
+grid <- dr_grid(curve_data, 4)
+save_html(grid, "visuals/receptor_assays/dr_curves.html")
+```
+
+
+
+
+## Checking Model Fits
+
+
+Here, `ED(model, 50)` gives the effective dose for 50% response. We specify `type="absolute"` if we want the EC50 in the same units as dose. The `coef(x)["d:(Intercept)"]` accesses the estimated top asymptote (often named “Upper Limit” in the model) which corresponds to the maximal fold change. *(If we fixed the lower bound at 1, then 50% of effect is halfway between 1 and d, etc., but using ED with `type="absolute"` should directly give the EC50 in original dose units.)*
+
+### Interpreting Parameters
+
+- **EC50:** The concentration producing half-maximal activation. A lower EC50 indicates higher potency (the compound activates the receptor at a low concentration). We will often take `log10` of EC50 for plotting (to compare across orders of magnitude). We might also compute a confidence interval for EC50 via ED() if needed for statistical comparison.
+
+- **Dmax**: The asymptotic maximum fold activation relative to control. If we later express it in percent of E2, Dmax (fold) can be converted to %E2 by `Dmax_percent = (Dmax / reference_fold) * 100`. Since we normalized our data to `E2=100%`, an easier way is to fit the model on the `perc_E2` scale for final visualization of efficacy. However, fitting on `fold_act` and then converting is fine because it’s a linear scaling. Dmax tells us the efficacy of the compound: if Dmax ~1 (or 100%), it’s a full agonist similar to E2; if Dmax is lower (e.g., 50%), it’s a partial agonist; if Dmax >100%, it produced a higher response than 1 nM E2 (which might happen with potent synthetic estrogens or assay noise at high doses).\n
+\n
+By collecting EC50 and Dmax for all receptor-treatment pairs, we can create a summary table.
+
+

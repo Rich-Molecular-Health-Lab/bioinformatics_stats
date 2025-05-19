@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 
-library(broom)
 library(tidyverse)
 library(forcats)
 library(conflicted)
@@ -15,6 +14,9 @@ library(plotly)
 library(htmltools)
 library(htmlwidgets)
 library(drc)
+library(shiny)
+library(bslib)
+library(flexdashboard)
 knitr::opts_chunk$set(
   echo    = TRUE,
   warning = FALSE,
@@ -26,139 +28,11 @@ conflicts_prefer(dplyr::filter)
 conflicts_prefer(dplyr::select)
 conflicts_prefer(plotly::layout)
 
-source("data/receptors/biscuits.R")
+source("data/receptors/inputs.R")
+source("helpers/receptor_assays.R")
 ```
 
 # Prepare Data
-
-```{r}
-treatments <- c(
-control        = "Control" ,
-MeOH           = "Veh MeOH",
-DMSO           = "Veh DMSO",
-e2             = "E2"      ,
-e1             = "E1"      ,
-e3             = "E3"      ,
-genistein      = "gen",
-daidzein       = "daid"   ,
-coumestrol     = "cou"   ,
-equol          = "equol"   ,
-enterodiol     = "entdiol"   ,
-mazuri_5m1s    = "LS Cin",
-mazuri_5m1g    = "LS Ban",
-mazuri_5ma4    = "Browse Biscuit",
-mazuri_5ma3    = "High Fiber"    ,
-mazuri_5m6c    = "Insect",
-mazuri_5m02    = "Leafeater",
-mazuri_5m02    = "LE Primate",
-mazuri_5ma2    = "primate_osu"   ,
-lettuce        = "lettuce",
-WI             = "WI"
-)
-
-
-treat_type <- c(
-control        = "Control" ,
-vehicle        = "Veh MeOH",
-vehicle        = "Veh DMSO",
-standard       = "E2"      ,
-standard       = "E1"      ,
-standard       = "E3"      ,
-standard       = "gen",
-standard       = "daid"   ,
-standard       = "cou"   ,
-standard       = "equol"   ,
-standard       = "entdiol"   ,
-diet           = "LS Cin",
-diet           = "LS Ban",
-diet           = "Browse Biscuit",
-diet           = "High Fiber"    ,
-diet           = "Insect",
-diet           = "Leafeater",
-diet           = "LE Primate",
-diet           = "primate_osu"   ,
-diet           = "lettuce",
-diet           = "WI"
-)
-
-treat_subtype <- c(
-control        = "Control" ,
-vehicle        = "Veh MeOH",
-vehicle        = "Veh DMSO",
-estrogen       = "E2"      ,
-estrogen       = "E1"      ,
-estrogen       = "E3"      ,
-isoflavone     = "gen",
-isoflavone     = "daid"   ,
-coumestans     = "cou"   ,
-metabolite     = "equol"   ,
-metabolite     = "entdiol"   ,
-biscuit        = "LS Cin",
-biscuit        = "LS Ban",
-biscuit        = "Browse Biscuit",
-biscuit        = "High Fiber"    ,
-biscuit        = "Insect",
-biscuit        = "Leafeater",
-biscuit        = "LE Primate",
-biscuit        = "primate_osu"   ,
-produce        = "lettuce",
-produce        = "WI"
-)
-
-receptors <- c(
-  alpha = "esr1",
-  beta  = "esr2"
-)
-
-ingredients <- select(nutrition, formula, ingredients) %>%
-  separate_longer_delim(ingredients, ", ") %>%
-  mutate(rank = row_number(), .by = "formula") %>%
-  mutate(ingredients = str_to_lower(str_squish(str_remove_all(ingredients, "\\.")))) %>%
-  mutate(rel_rank  = percent_rank(desc(rank)), .by = "formula", .keep = "unused") %>%
-  mutate(med_rank = median(rel_rank), .by = "ingredients") %>%
-  pivot_wider(names_from  = "formula",
-              values_from = "rel_rank",
-              values_fill = 0) %>%
-  mutate(across(where(is.numeric), ~round(.x, digits = 2))) %>%
-  arrange(desc(med_rank))
-
-standards <- tibble(
-  treat = c(
-    "e2",
-    "e1",
-    "e3",
-    "genistein", 
-    "daidzein",  
-    "coumestrol",
-    "equol",     
-    "enterodiol"
-  ),
-  name = c(
-    "Estradiol (Endogenous estrogen)",
-    "Estrone (Endogenous estrogen)",
-    "Estriol (Endogenous estrogen)",
-    "Genistein (Isoflavone plant metabolite)",
-    "Daidzein (Isoflavone plant metabolite)",
-    "Coumestrol (Coumestan plant metabolite)",
-    "Equol (Microbial metabolite)",
-    "Enterodiol (Microbial metabolite)"
-  ),
-  formula = c(
-    "e2",
-    "e1",
-    "e3",
-    "genistein", 
-    "daidzein",  
-    "coumestrol",
-    "equol",     
-    "enterodiol")
-)
-
-diet_key <- nutrition %>%
-  select(formula, name) %>%
-  mutate(treat = as.character(str_glue("mazuri_{formula}"))) %>%
-  bind_rows(standards)
-```
 
 ## Load Assay Data
 
@@ -174,11 +48,15 @@ This dataset is expected to be in tidy long format, where each row is a single m
 - `control_mean` – The mean normalized value of the vehicle-control wells (within the same experiment/plate).
 - `fold_act` – Fold activation relative to the vehicle control, i.e. normalized / control_mean. A fold_act of 1 means no induction above baseline; >1 indicates activation above control.
 
+- Ensure dose values are numeric and in consistent units. If needed, convert doses to a common unit (e.g., molar concentrations for chemicals, or mg/mL for extracts) or add a column for the log10 of dose for convenience.
+- Check that each receptor–treatment combination has the expected number of replicates and dose points. If any treatment has only a single dose (or only the control), mark it for special handling (since a dose–response curve cannot be fit with a single point).
+
 ```{r}
 assays <- read_csv("data/receptors/esr_assays_tubbs.csv") %>%
   rename(common = species) %>%
   filter(assay %in% c("luciferase", "b_gal")) %>%
   mutate(date          = mdy(date),
+         log10_dose    = log10(dose),
          genus         = case_match(common, 
                                     "gorilla" ~ "Gorilla",
                                     "loris"   ~ "Xanthonycticebus",
@@ -190,129 +68,96 @@ assays <- read_csv("data/receptors/esr_assays_tubbs.csv") %>%
                                     "human"   ~ "sapiens"
                                     ),
          receptor      = fct_recode(receptor, !!!receptors),
+         column        = fct_recode(treatment, !!!column),
          treat_type    = fct_recode(treatment, !!!treat_type),
          treat_subtype = fct_recode(treatment, !!!treat_subtype),
-         treat         = fct_recode(treatment, !!!treatments)) %>%
+         treat         = fct_recode(treatment, !!!treatments))  %>%
+  left_join(diet_key, by = "treat") %>%
+  mutate(plate       = consecutive_id(date, receptor, genus)) %>%
+  mutate(dose_rank   = row_number(), .by = c(plate, assay, column)) %>%
   select(date,
-         receptor,
          genus,
+         receptor,
+         plate,
+         column,
          treat_type,
          treat_subtype,
          treat,
+         treat_name = name,
+         treat_form = formula,
          assay,
          dose_type,
+         dose_rank,
+         log10_dose,
          dose,
          value_1,
          value_2,
          value_3) %>%
-  group_by(
-         date,
-         receptor,
-         genus,
-         treat_type,
-         treat_subtype,
-         treat,
-         assay,
-         dose_type,
-         dose) %>%
-  mutate(series = row_number()) %>%
-  ungroup() %>%
   pivot_longer(starts_with("value_"),
                names_to     = "replicate",
                names_prefix = "value_",
                values_to    = "value") %>%
   pivot_wider(names_from    = "assay",
-              values_from   = "value") %>%
-  select(date,
-         receptor,
-         genus,
-         treat_type,
-         treat_subtype,
-         treat,
-         series,
-         replicate,
-         dose_type,
-         dose,
-         luciferase,
-         b_gal
-  ) %>%
-  rowwise() %>%
-  mutate(normalized = luciferase/b_gal) %>%
-  ungroup() %>%
-  mutate(control_mean = mean(normalized[treat == "control"]), 
-         .by = c(date, receptor, genus)) %>%
-  rowwise() %>%
-  mutate(fold_act = normalized/control_mean) %>%
-  ungroup() %>%
-  left_join(diet_key, by = "treat")
+              values_from   = "value")  %>%
+  mutate(n_doses     = n_distinct(dose), .by = c(plate, treat))
 
 write_csv(assays, "data/receptors/esr_assays_tidy.csv")
 ```
 
 
-### Clean Data Further
-
-- Remove any obvious outliers or erroneous data if identified (e.g., extreme luminescence values due to technical error).
-- Ensure dose values are numeric and in consistent units. If needed, convert doses to a common unit (e.g., molar concentrations for chemicals, or mg/mL for extracts) or add a column for the log10 of dose for convenience.
-- Check that each receptor–treatment combination has the expected number of replicates and dose points. If any treatment has only a single dose (or only the control), mark it for special handling (since a dose–response curve cannot be fit with a single point).
-
-```{r}
-# Ensure numeric dose and create log10 dose for convenience (for compounds in M or extracts in mg/mL)
-esr_data <- assays %>%
-  mutate(dose       = as.numeric(dose),
-         log10_dose = log10(dose)) %>%
-  filter(!is.na(dose))
-# Identify groups with only one dose tested
-single_dose_groups <- esr_data %>%
-  group_by(genus, receptor, treat) %>%
-  summarize(n_doses = n_distinct(dose)) %>%
-  filter(n_doses < 2)
-
-dose_data <- assays %>%
-  filter(!is.na(formula)) %>%
-  select(
-    date,
-    receptor,
-    genus,
-    treat_type,
-    treat_subtype,
-    treat,
-    treat_name = name,
-    dose_type,
-    dose,
-    replicate,
-    fold_act
-  ) %>%
-  mutate(n_doses = n()/3, .by = c(receptor, genus, treat)) %>%
-  filter(n_doses > 1)
-write_csv(dose_data, "data/receptors/esr_dose_data.csv")
-```
-
 ### Reference Normalization
 
-**Percent of 1 nM E2:** To compare efficacy across very different treatments, it’s useful to express responses as a percentage of a strong reference agonist. [Tubbs et al.](https://app.paperpile.com/my-library/Tubbs-et-al-2016-pD1_6J11GDuiYTdWdyXeiYw) normalized all data to the response of 1 nM 17β-estradiol (E2) on the same receptor, defining that as 100% activation. We will do the same. 
+**Percent of 1 nM E2:** To compare efficacy across very different treatments, it’s useful to express responses as a percentage of a strong reference agonist. [Tubbs et al.](https://app.paperpile.com/my-library/Tubbs-et-al-2016-pD1_6J11GDuiYTdWdyXeiYw) normalized all data to the response of 1 nM 17β-estradiol (E2) on the same receptor, defining that as 100% activation. We will do the same.
 
-- This means for each receptor (and species), find the fold activation at 1 nM E2, and then express other responses relative to that. Practically:
+>From [Tubbs et al.](https://app.paperpile.com/my-library/Tubbs-et-al-2016-pD1_6J11GDuiYTdWdyXeiYw):
+> *Luciferase activity of treatments relative to vehicle-only treatment and normalized to b-galactosidase activity was used to calculate fold receptor activation. All data were normalized to fold activation of a 1 nM E2 treatment and expressed as a percentage of that response as reported previously.*
 
-  - Subset the data for wells where the treatment is E2 at 1 nM (i.e., treat == “E2” and dose == 1e-9 M, assuming units are in M). Compute the mean fold activation of those wells for each receptor and species.
-  - Create a new column, say perc_E2, where for each data point perc_E2 = (fold_act / E2_mean) * 100 for the corresponding species and receptor. Thus 1 nM E2 itself will be ~100%, and other treatments will be some percentage of that.
   
 ```{r}
-# Compute mean fold activation of 1 nM E2 for each species & receptor
-esr_normalized <- esr_data %>%
-  filter(treat == "e2" | str_detect(treat, regex("estradiol", ignore_case=TRUE)), 
-         dose_type == "molar_M", 
-         abs(log10_dose - -9) < 1e-6) %>% 
-  group_by(genus, receptor) %>%
-  summarize(E2_ref_fold = mean(fold_act, na.rm = TRUE)) %>%
+esr_normalized <- assays %>%
+  rowwise() %>%
+  mutate(normalized = luciferase/b_gal) %>%
   ungroup() %>%
-  right_join(esr_data, by = join_by(genus, receptor)) %>%
-  mutate(perc_E2 = 100 * fold_act / E2_ref_fold)
+  mutate(mean_veh = mean(normalized[dose_type == "vehicle"]), .by = "plate") %>%
+  rowwise() %>%
+  mutate(fold_act = normalized/mean_veh) %>%
+  ungroup() %>%
+  mutate(max_e2_plate = mean(fold_act[treat == "e2" & dose == 1e-9]), .by = "plate") %>%
+  rowwise() %>%
+  mutate(perc_e2 = (fold_act/max_e2_plate)*100) %>%
+  ungroup() %>%
+  mutate(mean_veh_e2 = mean(perc_e2[dose_type == "vehicle"]), .by = "plate") %>%
+  rowwise() %>%
+  mutate(adj_perc_e2 = perc_e2 - mean_veh_e2) %>%
+  ungroup()  %>%
+  filter(!is.na(dose) & !is.na(fold_act)) %>%
+  select(
+    plate,
+    genus,
+    receptor,
+    treat_type,
+    treat_subtype,
+    treat = treat_form,
+    treat_name,
+    log10_dose,
+    dose,
+    replicate,
+    fold_act,
+    perc_e2,
+    adj_perc_e2
+  ) %>%
+  mutate(n_doses = n_distinct(dose), .by = c(plate, treat)) %>%
+  filter(n_doses > 2) %>% select(-n_doses)
+
+
+write_csv(esr_normalized, "data/receptors/esr_assays_normalized.csv")
 ```
 
-Now perc_E2 represents “*percent activation relative to 1 nM E2*” for each measurement. A value of 100 means the treatment produces an effect equal to E2 (at that dose), >100 means a stronger effect than E2, and <100 a weaker effect. For treatments tested at multiple doses, their maximum perc_E2 (at the highest dose or plateau) indicates their efficacy relative to E2 (this will be our Dmax if a curve is fit).  
+
+
+Now `max_e2` represents “*percent activation relative to 1 nM E2*” for each measurement. A value of 100 means the treatment produces an effect equal to E2 (at that dose), >100 means a stronger effect than E2, and <100 a weaker effect. For treatments tested at multiple doses, their maximum `max_e2` (at the highest dose or plateau) indicates their efficacy relative to E2 (this will be our `Dmax` if a curve is fit).  
   
-We will use fold_act for curve fitting (since it’s on a fold-change scale anchored at 1 for baseline), and use perc_E2 mostly for visualization (so that we can plot responses on a intuitive percentage scale). Both scales are useful: fold-change is better for modeling relative increases, while percent-of-E2 is better for comparing different compounds’ strengths.
+We will use `fold_act` for curve fitting (since it’s on a fold-change scale anchored at 1 for baseline), and use `max_e2` mostly for visualization (so that we can plot responses on a intuitive percentage scale). Both scales are useful: fold-change is better for modeling relative increases, while percent-of-E2 is better for comparing different compounds’ strengths.
 
 
 # Fitting Dose–Response Models (LL.4 Logistic)
@@ -322,17 +167,176 @@ For each treatment that has more than one dose tested, we will fit a four-parame
 Grouping by Treatment: We will fit separate curves for each unique combination of receptor, species, and treatment.
 
 ```{r}
-multi_dose_data <- esr_normalized %>%
-  anti_join(single_dose_groups, by = join_by(genus, receptor, treat))
+esr_data <- esr_normalized %>%
+  group_by(
+    genus,
+    receptor,
+    treat_type,
+    treat_subtype,
+    treat,
+    treat_name
+  ) %>%
+  nest()
 
-model_data <- multi_dose_data %>%
-  group_by(genus, receptor, treat) %>%
-  nest() %>%
+dr_model <- esr_data %>%
   mutate(
-    drm_fit = map(data, \(x) drm(fold_act ~ dose, data = x, fct = LL.4())),
-    coef_df = map(drm_fit, \(x) tidy(coef(x)))
+    drm_result = map(data, \(x) drm(
+      fold_act ~ dose,
+      data = x,
+      fct  = LL.4()
+    )),
+    drm_summary = map(drm_result, \(x) summary(x, od = FALSE))
   )
 ```
+
+```{r}
+model_curves <- dr_model %>%
+  mutate(
+    dose_grid = map(data, \(x) seq(min(x$dose), 
+                                   max(x$dose), 
+                                   length.out = 100)),
+    preds     = map2(drm_result, 
+                     dose_grid, \(x, y) predict(x, 
+                                                data.frame(dose = y), 
+                                                interval = "confidence"))
+  ) %>%
+  mutate(curve = map2(dose_grid, 
+                      preds, \(x, y) tibble(dose  = x,        
+                                            resp  = y[,"Prediction"],
+                                            lower = y[,"Lower"],
+                                            upper = y[,"Upper"])))
+
+curve_data <- model_curves %>%
+  mutate(subj     = case_match(genus,
+                               "Gorilla" ~ "gorilla",
+                               "Xanthonycticebus" ~ "loris",
+                               "Homo" ~ "human")) %>%
+  mutate(filename = as.character(str_glue("{subj}_{receptor}"))) %>%
+  mutate(receptor = case_match(receptor, 
+                               "alpha" ~ "\u03B1", 
+                               "beta"  ~ "\u03B2")) %>%
+  mutate(label_short = paste(genus, receptor, 
+                       str_to_title(treat_subtype), 
+                       str_to_title(treat), sep = " "),
+         label = paste0(genus, 
+                        " ER", 
+                        receptor, 
+                        "<br>", 
+                        treat_name)) %>%
+  ungroup() %>%
+  select(
+    genus,
+    receptor,
+    treat,
+    treat_subtype,
+    treat_name,
+    label,
+    label_short,
+    filename,
+    curve
+  ) %>%
+  unnest(curve) %>%
+  mutate(x = log10(dose + 0.1)) %>%
+  arrange(receptor, genus, treat) %>%
+  group_by(receptor, genus, treat) %>%
+  group_split() %>%
+  set_names(map(., \(x) first(x$label)))
+```
+
+
+```{r}
+plots <- imap(curve_data, \(x, idx) drm_curve(x, idx))
+
+n  <- length(plots)
+nc <- 11
+nr <- ceiling(n / nc)
+
+subplots <- subplot(plots,
+        nrows      = nr,
+        shareX     = FALSE,
+        shareY     = FALSE,
+        titleX     = FALSE,
+        titleY     = FALSE,
+        margin     = 0.001)
+```
+
+
+
+```{r}
+model_out <- dr_model %>%
+  select(
+    genus,
+    receptor,
+    treat_type,
+    treat_subtype,
+    treat,
+    treat_name,
+    drm_result
+    ) %>%
+  mutate(data = map(drm_result, \(x) pluck(x, "data")), .keep = "unused") %>%
+  unnest_longer(data, indices_include = F) %>%
+  mutate(dose     = as.numeric(data$dose),
+         fold_act = as.numeric(data$fold_act)) %>%
+  select(
+    genus,
+    receptor,
+    treat_type,
+    treat_subtype,
+    treat,
+    treat_name,
+    dose,
+    fold_act
+    )
+```
+
+
+
+```{r}
+dr_summary <- dr_model %>%
+  mutate(
+         slope_p = as.numeric(map(drm_summary, \(x) pluck(x, "coefficients", -4))),
+         EC50    = map(drm_summary, \(x) pluck(x, "coefficients", 4)),
+         EC50_p  = as.numeric(map(drm_summary, \(x) pluck(x, "coefficients", -2))),
+         Dmax    = map(drm_summary, \(x) pluck(x, "coefficients", 3)),
+         Dmax_p  = as.numeric(map(drm_summary, \(x) pluck(x, "coefficients", -1)))) %>%
+  mutate(
+    slope_sig = case_when(
+      slope_p >= 0.05               ~ "",
+      between(slope_p, 0.01, 0.05)  ~ "*",
+      between(slope_p, 0.001, 0.01) ~ "**",
+      slope_p < 0.001               ~ "***"
+      ),
+    EC50_sig = case_when(
+      EC50_p >= 0.05               ~ "",
+      between(EC50_p, 0.01, 0.05)  ~ "*",
+      between(EC50_p, 0.001, 0.01) ~ "**",
+      EC50_p < 0.001               ~ "***"
+      ),
+    Dmax_sig = case_when(
+      Dmax_p >= 0.05               ~ "",
+      between(Dmax_p, 0.01, 0.05)  ~ "*",
+      between(Dmax_p, 0.001, 0.01) ~ "**",
+      Dmax_p < 0.001               ~ "***"
+      )
+  ) %>%
+  select(
+    genus,
+    receptor,
+    treat_type,
+    treat_subtype,
+    treat,
+    treat_name,
+    slope_p,
+    slope_sig,
+    EC50   ,
+    EC50_p ,
+    EC50_sig ,
+    Dmax   ,
+    Dmax_p ,
+    Dmax_sig
+    )
+```
+
 
 In this snippet, we nest the data for each group and then apply `drm()` via `map.` The model `drm(fold_act ~ dose, fct=LL.4())` will attempt to estimate the four parameters for each curve. *Note: We ensure dose is on a numeric scale (e.g., molar concentrations or mg/mL as appropriate). If dose values vary over many orders of magnitude, using a log scale for fitting might be helpful; however, drc’s LL.4 expects the raw dose and internally handles the log-logistic form, so we provide the raw dose (non-logged) in the formula.*\n
 \n
@@ -346,139 +350,20 @@ We should also consider setting constraints or starting values if some models ha
 - Check if any models failed to converge or gave unreasonable estimates (e.g., extremely high EC50 or slope). We might detect these by looking at the tidy coefficients or trying to predict outside the data range.
 - If a particular fit is poor (e.g., only two points were effectively available or the response is non-sigmoidal), we might exclude that model from further analysis or treat it cautiously.
 
-```{r}
-model_results <- model_data %>%
-  mutate(
-    EC50 = map_dbl(drm_fit, \(x) ED(x, 50, type="absolute", display=FALSE)[1,1]),  
-    Dmax = map_dbl(drm_fit, \(x) coef(x)["d:(Intercept)"])
-  ) %>%
-  select(genus, receptor, treat, EC50, Dmax)
-```
-
 Here, `ED(model, 50)` gives the effective dose for 50% response. We specify `type="absolute"` if we want the EC50 in the same units as dose. The `coef(x)["d:(Intercept)"]` accesses the estimated top asymptote (often named “Upper Limit” in the model) which corresponds to the maximal fold change. *(If we fixed the lower bound at 1, then 50% of effect is halfway between 1 and d, etc., but using ED with `type="absolute"` should directly give the EC50 in original dose units.)*
 
+### Interpreting Parameters
 
-```{r}
+- **EC50:** The concentration producing half-maximal activation. A lower EC50 indicates higher potency (the compound activates the receptor at a low concentration). We will often take `log10` of EC50 for plotting (to compare across orders of magnitude). We might also compute a confidence interval for EC50 via ED() if needed for statistical comparison.
 
-img_gorilla = list(
-      list(source = "https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats",
-           xref    = "paper",
-           yref    = "paper",
-           x       = 0,
-           y       = 0.9,
-           sizex   = 0.2,
-           sizey   = 0.2,
-           opacity = 0.8
-      )
-    )
-```
+- **Dmax**: The asymptotic maximum fold activation relative to control. If we later express it in percent of E2, Dmax (fold) can be converted to %E2 by `Dmax_percent = (Dmax / reference_fold) * 100`. Since we normalized our data to `E2=100%`, an easier way is to fit the model on the `perc_E2` scale for final visualization of efficacy. However, fitting on `fold_act` and then converting is fine because it’s a linear scaling. Dmax tells us the efficacy of the compound: if Dmax ~1 (or 100%), it’s a full agonist similar to E2; if Dmax is lower (e.g., 50%), it’s a partial agonist; if Dmax >100%, it produced a higher response than 1 nM E2 (which might happen with potent synthetic estrogens or assay noise at high doses).\n
+\n
+By collecting EC50 and Dmax for all receptor-treatment pairs, we can create a summary table.
 
+# Dose–Response Curves Visualization
 
-```{r}
-dose_data <- assays %>%
-  filter(!is.na(formula)) %>%
-  select(
-    date,
-    receptor,
-    genus,
-    treat_type,
-    treat_subtype,
-    treat,
-    treat_name = name,
-    dose_type,
-    dose,
-    replicate,
-    fold_act
-  ) %>%
-  mutate(n_doses = n()/3, .by = c(receptor, genus, treat)) %>%
-  filter(n_doses > 1)
-write_csv(dose_data, "data/receptors/esr_dose_data.csv")
-```
+We want to visualize the dose–response curves along with the actual data points. A typical plot will have `log10` dose on the x-axis and fold activation (or % of E2) on the y-axis.\n
+\n
+**Preparing Predictions**: To plot the fitted curves, generate a fine grid of dose values for each treatment and get the model’s predicted response. We can leverage the model objects for prediction:
 
-```{r}
-dose_data_nested <- dose_data %>%
-  arrange(receptor, genus, treat) %>%
-  group_by(receptor, genus, treat) %>%
-  nest() %>%
-  arrange(receptor, genus, treat)
-```
-
-```{r}
-dose_data_listed <- dose_data %>%
-  arrange(receptor, genus, treat) %>%
-  group_by(receptor, genus, treat) %>%
-  mutate(receptor = case_match(receptor, "alpha" ~ "\u03B1", "beta" ~ "\u03B2")) %>%
-  mutate(label = paste0(genus, " ER", receptor, "<br>", str_to_title(treat))) %>%
-  group_split() %>%
-  set_names(map(., \(x) first(x$label)))
-```
-
-
-```{r}
-#MoMAColors::Palermo
-plot_fold <- function(data, idx) {
-  plot_ly(
-    data = data,
-    x    = ~log(dose + .1),
-    y    = ~fold_act,
-    text          = idx,
-    hovertemplate = paste0("%{text}", "<br>dose = log(%{x})<br>act = %{y}"),
-    marker = list(
-      size  = 8,
-      color = "#EA5B574D",
-      line  = list(
-        color = "#0C3C5FFF",
-        width = 1.5
-      )
-    )
-  ) %>%
-    layout(
-      showlegend  = FALSE,
-      xaxis       = list(
-        zeroline       = F,
-        showgrid       = F,
-        showline       = T,
-        showticklabels = F
-      ),
-      yaxis       = list(
-        zeroline       = F,
-        showgrid       = F,
-        showline       = T,
-        showticklabels = F
-      )
-    )
-}
-
-plots <- imap(dose_data_listed, \(x, idx) plot_fold(x, idx))
-
-n  <- length(plots)
-nc <- 10
-nr <- ceiling(n / nc)
-
-subplots <- subplot(plots,
-        nrows      = nr,
-        shareX     = FALSE,
-        shareY     = FALSE,
-        titleX     = FALSE,
-        titleY     = FALSE,
-        margin     = 0.001)
-subplots
-```
-
-
-
-```{r}
-drm_models <- dose_data_nested %>%
-  mutate(
-    drm_fit = map(data, \(x) drm(fold_act ~ dose,
-                              data = x,
-                              fct  = LL.4(names = c("Slope","Lower","Upper","ED50"))))
-  )
-
-ed50s <- drm_models %>%
-  mutate(tidied = map(drm_fit, broom::tidy)) %>%
-  unnest(tidied) %>%
-  filter(term == "ED50") %>%
-  select(treat, estimate, std.error)
-```
 

@@ -1,0 +1,246 @@
+---
+title: "Receptor Assay Data Tidying"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(forcats)
+library(conflicted)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(drc)
+library(shiny)
+library(bslib)
+library(flexdashboard)
+library(paletteer)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = ""
+  )
+
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::select)
+conflicts_prefer(plotly::layout)
+
+source("data/receptors/inputs.R")
+source("helpers/receptor_assays.R")
+```
+
+# Prepare Data
+
+## Load Assay Data
+
+This dataset is expected to be in tidy long format, where each row is a single measurement (one replicate of a given receptor–species–treatment at a certain dose). Key columns likely include:
+
+- `genus` – Species of origin (e.g., Gorilla, Loris, Human).
+- `receptor` – Receptor type (alpha = ESR1 or beta = ESR2).
+- `treat` and `treat_type`/`treat_subtype` – The treatment name (compound or extract) and its category (estrogen, isoflavone, diet, etc.).
+- `dose` (with dose_type indicating units, e.g. molar concentration for pure compounds or mg/mL for extracts).
+- `replicate` – Replicate number for that measurement.
+- `luciferase` and `b_gal` – Raw reporter signals (firefly luciferase and β-galactosidase, where β-gal serves as a transfection control).
+- `normalized` – Luciferase activity normalized to β-gal for that well (this yields a relative light unit controlling for transfection efficiency).
+- `control_mean` – The mean normalized value of the vehicle-control wells (within the same experiment/plate).
+- `fold_act` – Fold activation relative to the vehicle control, i.e. normalized / control_mean. A fold_act of 1 means no induction above baseline; >1 indicates activation above control.
+
+- Ensure dose values are numeric and in consistent units. If needed, convert doses to a common unit (e.g., molar concentrations for chemicals, or mg/mL for extracts) or add a column for the log10 of dose for convenience.
+- Check that each receptor–treatment combination has the expected number of replicates and dose points. If any treatment has only a single dose (or only the control), mark it for special handling (since a dose–response curve cannot be fit with a single point).
+
+```{r}
+assays <- read_csv("data/receptors/esr_assays_raw.csv") %>%
+  rename(common = species) %>%
+  filter(assay %in% c("luciferase", "b_gal")) %>%
+  mutate(date          = mdy(date),
+         log10_dose    = log10(dose),
+         genus         = case_match(common, 
+                                    "gorilla" ~ "Gorilla",
+                                    "loris"   ~ "Xanthonycticebus",
+                                    "human"   ~ "Homo"
+                                    ),
+         species       = case_match(common, 
+                                    "gorilla" ~ "gorilla",
+                                    "loris"   ~ "pygmaeus",
+                                    "human"   ~ "sapiens"
+                                    ),
+         receptor      = fct_recode(receptor, !!!receptors),
+         column        = fct_recode(treatment, !!!column),
+         treat_type    = fct_recode(treatment, !!!treat_type),
+         treat_subtype = fct_recode(treatment, !!!treat_subtype),
+         treat         = fct_recode(treatment, !!!treatments))  %>%
+  left_join(diet_key, by = "treat") %>%
+  mutate(plate       = consecutive_id(date, receptor, genus),
+         model       = as.character(str_glue("{common}_{receptor}"))) %>%
+  mutate(dose_rank   = row_number(), .by = c(plate, assay, column)) %>%
+  select(date,
+         subj = common,
+         genus,
+         receptor,
+         model,
+         plate,
+         column,
+         treat_type,
+         treat_subtype,
+         treat,
+         treat_name = name,
+         treat_form = formula,
+         treat_desc = description,
+         assay,
+         dose_type,
+         dose_rank,
+         log10_dose,
+         dose,
+         value_1,
+         value_2,
+         value_3) %>%
+  pivot_longer(starts_with("value_"),
+               names_to     = "replicate",
+               names_prefix = "value_",
+               values_to    = "value") %>%
+  pivot_wider(names_from    = "assay",
+              values_from   = "value")  %>%
+  mutate(n_doses     = n_distinct(dose), .by = c(plate, treat))
+
+write_csv(assays, "data/receptors/esr_assays_tidy.csv")
+```
+
+#### Check Data
+
+```{r}
+bgal <- data_check_box(assays, 
+                      "treat_name", 
+                      "b_gal", 
+                      "treat_name")
+bgal
+```
+
+
+### Reference Normalization
+
+**Percent of 1 nM E2:** To compare efficacy across very different treatments, it’s useful to express responses as a percentage of a strong reference agonist. [Tubbs et al.](https://app.paperpile.com/my-library/Tubbs-et-al-2016-pD1_6J11GDuiYTdWdyXeiYw) normalized all data to the response of 1 nM 17β-estradiol (E2) on the same receptor, defining that as 100% activation. We will do the same.
+
+>From [Tubbs et al.](https://app.paperpile.com/my-library/Tubbs-et-al-2016-pD1_6J11GDuiYTdWdyXeiYw):
+> *Luciferase activity of treatments relative to vehicle-only treatment and normalized to b-galactosidase activity was used to calculate fold receptor activation. All data were normalized to fold activation of a 1 nM E2 treatment and expressed as a percentage of that response as reported previously.*
+
+```{r}
+esr_normalized <- assays %>%
+  rowwise() %>%
+  mutate(normalized = luciferase/b_gal,
+         plate      = as.character(plate)) %>%
+  ungroup() %>%
+  mutate(mean_veh_plate = mean(normalized[treat_type == "vehicle"]), .by = "plate") %>%
+  rowwise() %>%
+  mutate(fold_act = normalized / mean_veh_plate) %>%
+  ungroup() %>%
+  mutate(mean_E2_plate = mean(fold_act[ treat=="e2" & dose==1e-9 ]), .by = "plate") %>%
+  rowwise() %>%
+  mutate(perc_e2 = (fold_act/mean_E2_plate)*100) %>%
+  ungroup()
+```
+
+#### Check Data
+
+```{r}
+normalized <- data_check_box(esr_normalized, 
+                             "treat_name", 
+                             "normalized", 
+                             "treat_name")
+normalized
+```
+
+```{r}
+fold_act <- data_check_box(esr_normalized, 
+                             "treat_name", 
+                             "fold_act", 
+                             "treat_name")
+fold_act
+```
+
+```{r}
+perc_e2 <- data_check_box(esr_normalized, 
+                             "treat_name", 
+                             "perc_e2", 
+                             "treat_name")
+perc_e2
+```
+
+
+Now `max_e2` represents “*percent activation relative to 1 nM E2*” for each measurement. A value of 100 means the treatment produces an effect equal to E2 (at that dose), >100 means a stronger effect than E2, and <100 a weaker effect. For treatments tested at multiple doses, their maximum `max_e2` (at the highest dose or plateau) indicates their efficacy relative to E2 (this will be our `Dmax` if a curve is fit).  
+  
+We will use `fold_act` for curve fitting (since it’s on a fold-change scale anchored at 1 for baseline), and use `perc_e2` mostly for visualization (so that we can plot responses on a intuitive percentage scale). Both scales are useful: fold-change is better for modeling relative increases, while percent-of-E2 is better for comparing different compounds’ strengths.
+
+### Plate‐wise E2 dose–response Dmax (upper asymptote)
+
+Fit a 4-parameter curve to only our E2 data on each plate, extract its upper asymptote (the `Dmax`), and use that as an alternative to calculate `perc_e2`.
+
+– **Pros**: smooths over an outlier single well; we’re anchoring to the actual plateau of the E₂ curve.
+– **Cons**: requires a successful E₂ curve fit on every plate (if a plate’s E₂ data are too noisy, we’ll get NAs).
+
+```{r}
+plate_e2_curves <- esr_normalized %>%
+  filter(treat=="e2") %>%
+  group_by(plate, receptor, genus) %>%
+  nest()  %>%
+  ungroup() %>%
+  mutate(
+    drm_result = map(data, \(x) drm(
+      fold_act ~ dose,
+      data = x,
+      fct  = LL.4(names = c("Slope", "Lower Limit", "Upper Limit", "ED50"))
+    )),
+    drm_summary = map(drm_result, \(x) summary(x, od = FALSE))) %>%
+  mutate(Dmax   = map(drm_result, \(x) coef(x)[[3]]),
+         slope  = map(drm_result, \(x) coef(x)[[1]]),
+         Dmin   = map(drm_result, \(x) coef(x)[[2]]),
+         ED50   = map(drm_result, \(x) coef(x)[[4]]))
+
+esr_norm_dmax <- esr_normalized %>%
+  left_join(select(plate_e2_curves, plate, Dmax), by="plate") %>%
+  rowwise() %>%
+  mutate(perc_e2_Dmax = 100 * (fold_act / Dmax)) %>%
+  ungroup()  %>%
+  filter(!is.na(dose) & !is.na(fold_act)) %>%
+  select(
+    plate,
+    subj,
+    genus,
+    receptor,
+    model,
+    treat_type,
+    treat_subtype,
+    treat = treat_form,
+    treat_name,
+    treat_desc,
+    log10_dose,
+    dose,
+    replicate,
+    fold_act,
+    perc_e2,
+    perc_e2_Dmax
+  ) %>%
+  mutate(n_doses = n_distinct(dose), .by = c(plate, treat)) %>%
+  filter(n_doses > 2) %>% select(-n_doses)
+```
+
+```{r}
+percDmax <- data_check_box(esr_norm_dmax, 
+                             "treat_name", 
+                             "perc_e2_Dmax", 
+                             "treat_name")
+save_html(percDmax, "visuals/receptor_assays/rel_activation_dmax.html")
+percDmax
+```
+
+
+For most cases, `perc_E2_Dmax` produces a relatively equivalent value, but in some of our plates with extremely high or low values, this method seemed to level out our estimates, so we should proceed using `perc_E2_Dmax` as our relative value for comparing results across plates.
+
+```{r}
+write_csv(esr_norm_dmax, "data/receptors/esr_assays_normalized.csv")
+```
+
+
