@@ -37,12 +37,28 @@ dose_response_list <- function(df) {
     group_by(receptor) %>%
     group_split() %>%
     set_names(., map(., \(x) paste0(first(x$receptor)))) %>%
+    map_depth(1, \(x) nest(x, .by = "labs_treatment")) %>%
+    map_depth(1, \(x) deframe(x)) 
+}
+
+dose_response_list_backup <- function(df) {
+  df %>%
+    mutate(hover = as.character(str_glue(
+      "{labs_plate}<br>{labs_treatment}"
+    ))) %>%
+    mutate(treatment = as.character(str_glue(
+      "{as.character(groups_treatment)}_{as.character(treatment)}"
+    ))) %>%
+    arrange(receptor, dose_type, treatment) %>%
+    group_by(receptor) %>%
+    group_split() %>%
+    set_names(., map(., \(x) paste0(first(x$receptor)))) %>%
     map(\(x) group_by(x, treatment)) %>%
     map(\(x) group_split(x)) %>%
     map_depth(1, \(x) set_names(
       x, map(x, \(y) paste0(first(y$labs_treatment)))
     )) %>%
-    map_depth(2, \(x) nest(x, .by = "group_plate")) %>%
+    map_depth(2, \(x) nest(x, .by = "group_pooled")) %>%
     map_depth(2, \(x) deframe(x)) 
 }
 
@@ -55,7 +71,7 @@ dose_response_markers <- function(size = 7, opacity = 0.6) {
 }
 
 
-curve_trace <- function(plot, data) {
+curve_trace <- function(plot, data, name) {
   colors  <- unlist(data[["color_key"]][1])
   trace <- add_trace(
     p          = plot,
@@ -63,7 +79,7 @@ curve_trace <- function(plot, data) {
     x          = ~dose,
     y          = ~response,
     text       = ~hover,
-    name       = ~labs_treatment,
+    name       = name,
     type       = "scatter",
     mode       = "lines",
     color      = ~labs_plate,
@@ -92,7 +108,7 @@ curve_trace <- function(plot, data) {
       x          = ~dose,
       y          = ~response,
       text       = ~hover,
-      name       = ~labs_treatment,
+      name       = name,
       zorder     = 2,
       type       = "scatter",
       mode       = "markers",
@@ -104,7 +120,15 @@ curve_trace <- function(plot, data) {
   return(trace)
 }
 
-curve_loop <- function(list_traces, log = FALSE) {
+curve_loop <- function(data, name, log = FALSE) {
+  dose_type <- data[["dose_type"]][1]
+  plot <- plot_ly() %>%
+    curve_trace(data, name) %>%
+    dose_response_layout(log, dose_type)
+  return(plot)
+}
+
+curve_loop_backup <- function(list_traces, log = FALSE) {
   p   <- plot_ly()
   for(i in 1:length(list_traces)) {
     data   <- pluck(list_traces, i)
@@ -116,7 +140,8 @@ curve_loop <- function(list_traces, log = FALSE) {
   return(out)
 }
 
-raw_scatter_trace <- function(plot, data) {
+
+raw_scatter_trace <- function(plot, data, name) {
   colors  <- unlist(data[["color_key"]][1])
   add_trace(
     p          = plot,
@@ -124,7 +149,7 @@ raw_scatter_trace <- function(plot, data) {
     x          = ~dose,
     y          = ~response,
     text       = ~hover,
-    name       = ~labs_treatment,
+    name       = name,
     type       = "scatter",
     mode       = "markers",
     color      = ~labs_plate,
@@ -134,26 +159,23 @@ raw_scatter_trace <- function(plot, data) {
   )
 }
 
-raw_scatter_loop <- function(list_traces, log = FALSE) {
-  p   <- plot_ly()
-  for(i in 1:length(list_traces)) {
-    data      <- pluck(list_traces, i)
-    dose_type <- data[["dose_type"]][1]
-    p         <- raw_scatter_trace(p, data)
-  }
-  out <- dose_response_layout(p, log, dose_type)
-  return(out)
+raw_scatter_loop <- function(data, name, log = FALSE) {
+  dose_type <- data[["dose_type"]][1]
+  plot <- plot_ly() %>%
+    raw_scatter_trace(data, name) %>%
+    dose_response_layout(log, dose_type)
+  return(plot)
 }
 
-res_trace <- function(plot, data) {
+res_trace <- function(plot, data, name) {
   colors  <- unlist(data[["color_key"]][1])
   add_trace(
     p          = plot,
     data       = data,
-    x          = ~fitted,
+    x          = ~response,
     y          = ~resid,
     text       = ~hover,
-    name       = ~hover,
+    name       = name,
     type       = "scatter",
     mode       = "markers",
     color      = ~labs_plate,
@@ -163,7 +185,7 @@ res_trace <- function(plot, data) {
   )
 }
 
-qq_trace <- function(plot, data) {
+qq_trace <- function(plot, data, name) {
   colors  <- unlist(data[["color_key"]][1])
   res   <- data[["resid"]]
   i25   <- which.min(abs(data[["theoretical"]] - quantile(data[["theoretical"]], .25)))
@@ -187,37 +209,29 @@ qq_trace <- function(plot, data) {
   ) %>%
     add_segments(
       data       = data,
-      text       = ~hover,
+      text       = name,
       x          = x0, 
       xend       = x1,
       y          = y0, 
       yend       = y1,
-      color      = ~labs_plate,
-      colors     = colors,
-      line       = list(width = 2),
+      line       = list(width = 2, color = "#000000FF"),
       showlegend = FALSE
     )
   return(plot)
 }
 
-resid_loop <- function(list_traces) {
-  p   <- plot_ly()
-  for(i in 1:length(list_traces)) {
-    data      <- pluck(list_traces, i)
-    p      <- res_trace(p, data)
-  }
-  out <- residual_layout(p)
-  return(out)
+resid_loop <- function(data, name) {
+  plot <- plot_ly() %>%
+    res_trace(data, name) %>%
+    residual_layout()
+  return(plot)
 }
 
-qq_loop <- function(list_traces) {
-  p   <- plot_ly()
-  for(i in 1:length(list_traces)) {
-    data   <- pluck(list_traces, i)
-    p      <- qq_trace(p, data)
-  }
-  out <- residual_layout(p, qqnorm = TRUE)
-  return(out)
+qq_loop <- function(data, name) {
+  plot <- plot_ly() %>%
+    qq_trace(data, name) %>%
+    residual_layout(qqnorm = TRUE)
+  return(plot)
 }
 
 dose_response_layout <- function(plot, log = FALSE, dose_type) {
@@ -327,7 +341,7 @@ dose_response_layout <- function(plot, log = FALSE, dose_type) {
       yaxis        = list(
         title          = list(
           font = list(size = 9),
-          text = "Response (fold act)"
+          text = "Response (% Baseline)"
         ),
         rangemode      = "nonnegative",
         zeroline       = F,
@@ -336,8 +350,8 @@ dose_response_layout <- function(plot, log = FALSE, dose_type) {
         showticklabels = T,
         ticks          = "inside",
         tickfont       = list(size = 8),
-        tickformat     = ".1f",
-        hoverformat    = ".1f"
+        tickformat     = ".0%",
+        hoverformat    = ".0%"
       ))
   return(plot_out)
 }
@@ -408,21 +422,21 @@ residual_layout <- function(plot, qqnorm = FALSE) {
   return(plot_out)
 }
 
-dose_response_card <- function(list_traces, title_plot, plot_function) {
+dose_response_card <- function(data, title_plot, plot_function) {
   
   if (plot_function == "plot_curve") {
-    plot_A     <- curve_loop(list_traces)
-    plot_B     <- curve_loop(list_traces, log = TRUE)
+    plot_A     <- curve_loop(data, title_plot)
+    plot_B     <- curve_loop(data, title_plot, log = TRUE)
     ylab       <- "Response (fold act)"
     shareY     <- TRUE
   } else if (plot_function == "plot_raw") {
-    plot_A     <- raw_scatter_loop(list_traces)
-    plot_B     <- raw_scatter_loop(list_traces, log = TRUE)
+    plot_A     <- raw_scatter_loop(data, title_plot)
+    plot_B     <- raw_scatter_loop(data, title_plot, log = TRUE)
     ylab       <- "Response (fold act)"
     shareY     <- TRUE
   } else if (plot_function == "plot_resid_qq") {
-    plot_A     <- resid_loop(list_traces)
-    plot_B     <- qq_loop(list_traces)
+    plot_A     <- resid_loop(data, title_plot)
+    plot_B     <- qq_loop(data, title_plot)
     ylab       <- "Residual Values"
     shareY     <- FALSE
   } 

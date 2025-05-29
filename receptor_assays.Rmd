@@ -331,7 +331,10 @@ esr_data <- assays %>%
     e2_max,
     response
   ) %>%
-  filter(treatment != "diet_lettuce" & !str_starts(treatment, "unknown"))
+  filter(treatment != "diet_lettuce" & !str_starts(treatment, "unknown")) %>%
+  group_by(group_plate) %>%
+  filter(n_distinct(dose) > 2) %>%
+  ungroup()
 
 write_csv(esr_data, "data/receptors/esr_assays_tidy.csv")
 
@@ -346,12 +349,36 @@ data_working <- esr_data %>%
   group_split() %>%
   set_names(., map(., \(x) paste0(first(x$groups_treatment)))) %>%
   map(\(x) mutate(x, across(where(is.factor), ~fct_drop(.))))
+```
+
+
+```{r}
+data_working <- esr_data %>%
+  select(dose, response, group_plate, group_pooled) %>%
+  group_by(group_pooled) %>%
+  group_split() %>%
+  set_names(., map(., \(x) paste0(first(x$group_pooled)))) %>%
+  map(\(x) mutate(x, across(where(is.factor), ~fct_drop(.))))
+
 
 meta_working <- esr_data %>%
   select(labs_er:dose_type) %>%
   distinct() %>%
   mutate(across(where(is.factor), ~as.character(.))) %>%
   col_list("labs_plate")
+
+meta_pooled <- esr_data %>%
+  select(
+    labs_er,
+    labs_genus,
+    ends_with("treatment"),
+    receptor,
+    group_pooled,
+    dose_type
+  ) %>%
+  distinct() %>%
+  mutate(across(where(is.factor), ~as.character(.))) %>%
+  col_list("labs_treatment")
 ```
 
 # Plot Summary of Normalized Data
@@ -371,9 +398,7 @@ save_html(scatter_navset, "visuals/receptor_assays/dose_response_raw.html")
 ```{r}
 drc_ctrl <- drmc( 
   errorm    = FALSE,
-  maxIt     = 5000, 
   noMessage = TRUE,
-  relTol    = 1e-8,   
   trace     = FALSE
 )
 
@@ -382,132 +407,43 @@ names_4 <-  c("slope","lower","upper","ED50")
 
 drm_working <- function(data) {
   drm(
-    formula = response ~ dose, 
-    curveid = group_plate,
-    data    = data, 
-    fct     = LL.4(names = names_4), 
-    type    = "continuous",
-    control = drc_ctrl)
+    formula  = response ~ dose, 
+    data     = data, 
+    fct      = LL.4(names = names_4), 
+    control  = drc_ctrl
+    )
 }
 ```
 
 
 ```{r}
 drc_working <- map(data_working, \(x) drm_working(x))
-```
-## Plot Curves
 
-```{r}
+summary_safe <- safely(summary)
+drc_summary <- map(drc_working, \(x) summary_safe(x)) %>%
+  list_assign(errors = map(., \(x) x$error), results = map(., \(x) x$result)) %>%
+  keep_at(c("errors", "results")) %>%
+  map_depth(1, \(x) compact(x)) %>%
+  compact()
 
-```
-
-
-## Split Data into Nested Lists
-
-### By Species + Receptor + Plate + Treatment
-
-```{r}
-data_plate <- data_working %>%
-  select(
-    group = group_plate,
-    dose,
-    response
-  ) %>%
-  filter(n_distinct(dose) > 2, .by = "group") %>%
-  group_by(group) %>%
-  group_split() %>%
-  set_names(., map_depth(., 1, \(x) as.character(first(x$group))))
-```
-
-### By Species + Receptor + Treatment (Plates Pooled)
-
-```{r}
-data_pooled <- data_working %>%
-  select(
-    group = group_pooled,
-    dose,
-    response
-  ) %>%
-  filter(n_distinct(dose) > 2, .by = "group") %>%
-  group_by(group) %>%
-  group_split() %>%
-  set_names(., map_depth(., 1, \(x) as.character(first(x$group))))
+drc_summary$results
 ```
 
 
-## Create DRC Objects
-
-
-
-```{r}
-plates_drc <- keep_at(data_plate, names(ll4_plates$results)) %>%
-  map(\(x) drm(
-    formula = response ~ dose, 
-    data    = x, 
-    fct     = LL.4(
-      names = names_4
-      ),
-    control = drc_ctrl
-    )
-                  )
-pooled_drc <- keep_at(data_pooled, names(ll4_pooled$results)) %>%
-  map(\(x) drm(
-    formula = response ~ dose, 
-    data    = x, 
-    fct     = LL.4(
-      names = names_4
-      ),
-    control = drc_ctrl
-    )
-                  )
-```
-
-### ED50 Box Plot
-
-```{r}
-plates_coefs_tbl <- map(plates_working, \(x) coef(x)) %>%
-  enframe(name = "group_plate", value = "coefs") %>%
-  unnest_wider(coefs) %>%
-  rename_with(~str_remove_all(., ":(.+)")) %>%
-  left_join(meta_working, by = "group_plate") %>%
-  select(-color_key) %>%
-  col_list("groups_treatment") %>%
-    arrange(receptor, dose_type, groups_treatment, treatment)
-```
-
-
-```{r}
-plates_coefs <- plates_coefs_tbl %>%
-    group_by(labs_er) %>%
-    group_split() %>%
-    set_names(., map(., \(x) paste0(first(x$labs_er)))) %>%
-    map(\(x) group_by(x, labs_genus)) %>%
-    map(\(x) group_split(x)) %>%
-    map_depth(1, \(x) set_names(
-      x, map(x, \(y) paste0(first(y$labs_genus)))
-    ))
-```
-
-```{r}
-dashboard_ed50 <- navset_ed50(plates_coefs)
-
-save_html(dashboard_ed50, "visuals/receptor_assays/ed50.html")
-```
-
-
+## Plot Dose-Response Fitted
 
 ### Residuals and Normals
 
 ```{r}
-fitted <- map(ll4_plates, \(x) augment(x, x[["origData"]], conf.int = TRUE)) %>%
+fitted <- map(drc_working, \(x) augment(x, x[["origData"]], conf.int = TRUE)) %>%
   map(\(x) map_qqnorm(x)) %>%
    list_rbind() %>%
-  rename(group_plate = group) %>%
   rename_with(~str_remove_all(., "\\.")) %>%
-  left_join(meta_working, by = "group_plate") %>%
+  left_join(meta_working, by = join_by(group_plate, group_pooled)) %>%
   mutate(value_type = "fitted") %>%
   select(
     receptor,
+    starts_with("group"),
     ends_with("plate"),
     ends_with("treatment"),
     ends_with("type"),
@@ -515,7 +451,7 @@ fitted <- map(ll4_plates, \(x) augment(x, x[["origData"]], conf.int = TRUE)) %>%
     color_key,
     theoretical,
     sample,
-    fitted,
+    response = fitted,
     resid
   )
 ```
@@ -540,7 +476,7 @@ save_html(resid_qq_complete, "visuals/receptor_assays/residuals.html")
 
 ```{r}
 predicted <- map(
-  ll4_plates, \(x) predict(
+  drc_working, \(x) predict(
     x, data.frame(
       dose = seq(
         min(x[["dataList"]][["dose"]]), 
@@ -548,37 +484,39 @@ predicted <- map(
         length.out = 200)),
     interval = "confidence")) %>%
   map2(
-    ll4_plates, \(x, y) bind_cols(
+    drc_working, \(x, y) bind_cols(
       as_tibble(x), 
       tibble(
         dose = c(seq(
           min(y[["dataList"]][["dose"]]), 
           max(y[["dataList"]][["dose"]]), 
           length.out = 200))))) %>%
-   imap(\(x, idx) mutate(x, group_plate = paste0(idx))) %>%
+   imap(\(x, idx) mutate(x, group_pooled = paste0(idx))) %>%
    list_rbind() %>%
-  rename(fold_act       = Prediction,
-         fold_act_lower = Lower,
-         fold_act_upper = Upper) %>%
-  left_join(meta_working, by = "group_plate") %>%
+  rename(response       = Prediction,
+         response_lower = Lower,
+         response_upper = Upper) %>%
+  left_join(meta_working, by = "group_pooled") %>%
   mutate(value_type = "predicted") %>%
   select(
     receptor,
+    starts_with("group"),
     ends_with("plate"),
     ends_with("treatment"),
     ends_with("type"),
     dose,
-    starts_with("fold_act"),
+    starts_with("response"),
     color_key
   ) %>%
   bind_rows(select(
     fitted,
     receptor,
+    starts_with("group"),
     ends_with("plate"),
     ends_with("treatment"),
     ends_with("type"),
     dose,
-    fold_act = fitted,
+    response,
     color_key
     ))
 ```
@@ -593,27 +531,51 @@ predicted_list <- dose_response_list(predicted)
 curve_panels <- imap(predicted_list, \(x, idx) dose_response_grid(x, idx, "plot_curve")) %>%
   set_names(., "")
 
-curve_complete <- navset_pill_list(!!!curve_panels,
-                                      widths = c(2, 10))
+curve_complete <- navset_pill_list(!!!curve_panels, widths = c(2, 10))
 save_html(curve_complete, "visuals/receptor_assays/dose_response_curves.html")
 ```
 
 
+### ED50 Box Plot
+
+```{r}
+groups_coefs_tbl <- map(drc_working, \(x) coef(x)) %>%
+  enframe(name = "group_pooled", value = "coefs") %>%
+  unnest_wider(coefs) %>%
+  rename_with(~str_remove_all(., ":(.+)")) %>%
+  left_join(meta_pooled, by = "group_pooled") %>%
+  select(-color_key) %>%
+  col_list("labs_genus") %>%
+    arrange(receptor, dose_type, groups_treatment, treatment)
+```
+
+```{r}
+boxplots_era <- boxplot_ed50(filter(groups_coefs_tbl, str_ends(receptor, "alpha")))
+```
+
+
+```{r}
+groups_coefs <- groups_coefs_tbl %>%
+    group_by(labs_er) %>%
+    group_split() %>%
+    set_names(., map(., \(x) paste0(first(x$labs_er)))) %>%
+    map(\(x) group_by(x, labs_genus)) %>%
+    map(\(x) group_split(x)) %>%
+    map_depth(1, \(x) set_names(
+      x, map(x, \(y) paste0(first(y$labs_genus)))
+    ))
+```
+
+```{r}
+dashboard_ed50 <- navset_ed50(plates_coefs)
+
+save_html(dashboard_ed50, "visuals/receptor_assays/ed50.html")
+```
+
+
+
+
 ## Dashboard for Visuals
-
-```{r}
-raw_data_list <- data_working %>%
-  left_join(meta_working, by = "group_plate") %>%
-  dose_response_list()
-```
-
-```{r}
-raw_panels <- imap(raw_data_list, \(x, idx) dose_response_grid(x, idx, "plot_raw")) %>%
-  set_names(., "")
-
-raw_scatter_complete <- navset_pill_list(!!!raw_panels, widths = c(2, 10))
-save_html(raw_scatter_complete, "visuals/receptor_assays/dose_response_raw.html")
-```
 
 
 

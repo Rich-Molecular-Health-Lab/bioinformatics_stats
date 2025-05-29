@@ -9,13 +9,13 @@ boxplot_ed50 <- function(data) {
   plot <- plot_ly() %>%
     add_trace(
       data      = data,
-      x         = ~labs_treatment,
+      x         = ~groups_treatment,
       y         = ~ED50,
       type      = "box",
       boxpoints = "all",
-      color     = ~groups_treatment,
+      color     = ~labs_genus,
       colors    = colors,
-      text      = ~labs_treatment,
+      text      = ~labs_genus,
       line      = list(
         color = "#000000FF", width = 0.5
       ),
@@ -30,21 +30,22 @@ boxplot_ed50 <- function(data) {
     ) %>%
     layout(
       showlegend = FALSE,
+      boxmode    = "group",
       xaxis      = list(
-        title = "Treatment",
+        title = "Treatment Type",
         zeroline = F,
         showgrid = F,
         showline = T,
         showticklabels = T
       ),
       yaxis      = list(
-        title = "ED50 (Fold Activation)",
+        title = "ED50",
         zeroline = F,
         showgrid = F,
         showline = T,
         showticklabels = T,
-        tickformat     = ".0f",
-        hoverformat    = ".0f"
+        tickformat     = ".0%",
+        hoverformat    = ".0%"
       )
     )
   
