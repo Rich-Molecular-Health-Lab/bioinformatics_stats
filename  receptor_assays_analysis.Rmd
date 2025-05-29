@@ -4,8 +4,8 @@ author: "Alicia Rich"
 date: "`r Sys.Date()`"
 output:
   html_document:
-    theme:
-      bootswatch: minty
+    theme: 
+      bslib: true
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +20,9 @@ library(shiny)
 library(bslib)
 library(flexdashboard)
 library(rlang)
+library(crosstalk)
+library(paletteer)
+library(broom)
 knitr::opts_chunk$set(
   echo    = TRUE,
   warning = FALSE,
@@ -33,10 +36,171 @@ conflicts_prefer(plotly::layout)
 
 
 source("data/receptors/inputs.R")
-source("helpers/receptor_assays.R")
+source("helpers/dose_response_curves/variables_helpers.R")
+source("helpers/dose_response_curves/model_options.R")
+source("helpers/dose_response_curves/models_results.R")
+source("helpers/dose_response_curves/tidy_data.R")
+source("helpers/dose_response_curves/plot_traces.R")
+source("helpers/dose_response_curves/widget_plots.R")
+source("helpers/dose_response_curves/widget_layouts.R")
+source("helpers/dose_response_curves/map_widgets.R")
+source("helpers/dose_response_curves/widget_dashboards.R")
 
 esr_data <- read_csv("data/receptors/esr_assays_normalized.csv")
+
 ```
+
+```{r eval=FALSE, include=FALSE}
+#working color palette
+
+c("#BDA14DFF", 
+  "#3EBCB6FF", 
+  "#0169C4FF", 
+  "#153460FF", 
+  "#D5114EFF", 
+  "#A56EB6FF", 
+  "#4B1C57FF", 
+  "#09090CFF")
+
+c("#BDA14D80", 
+  "#3EBCB680", 
+  "#0169C480", 
+  "#15346080", 
+  "#D5114E80", 
+  "#A56EB680", 
+  "#4B1C5780", 
+  "#09090C80")
+
+c("#BDA14D33", 
+  "#3EBCB633", 
+  "#0169C433", 
+  "#15346033", 
+  "#D5114E33", 
+  "#A56EB633", 
+  "#4B1C5733", 
+  "#09090C33")
+```
+
+# Create factors for modeling
+
+```{r}
+model_data <- esr_data %>%
+  mutate(across(c(
+    subj,
+    receptor,
+    plate,
+    treat_subtype,
+    treat
+  ), ~factor(.))) %>%
+  select(subj,
+         receptor,
+         model,
+         plate,
+         treat_subtype,
+         treat,
+         log10_dose,
+         dose,
+         fold_act
+         ) %>%
+  group_by(model) %>%
+  group_split() %>%
+  set_names(., map(., \(x) unique(pull(x, "model"))))
+```
+
+```{r}
+data_by_treat <- esr_data %>%
+  mutate(group = as.character(str_glue("{model}_{treat}"))) %>%
+  mutate(across(c(
+    group,
+    subj,
+    receptor,
+    plate,
+    model,
+    treat_subtype,
+    treat
+  ), ~factor(.))) %>%
+  select(subj,
+         receptor,
+         model,
+         treat_subtype,
+         treat,
+         group,
+         log10_dose,
+         dose,
+         fold_act
+         ) %>%
+  group_by(group) %>%
+  group_split() %>%
+  set_names(., map(., \(x) as.character(unique(pull(x, "group")))))
+```
+
+```{r}
+models_by_treat <- map_depth(data_by_treat, 1, \(x) drm_base(x))
+```
+
+```{r}
+select_by_treat <- map_depth(models_by_treat, 1, \(x) drm_select(x))
+```
+
+
+```{r}
+select_byplate <- map(
+  model_data, \(x) mselect(x, fctList = list(
+    LL.2(),
+    LL.3(),    
+    LL.4(),    
+    W1.4(),    
+    W2.4()
+    ))
+  )
+```
+
+
+```{r}
+result <- model_safely(model_data,  drm_default,  ~drm_default(.x, TRUE))
+
+safe_summary <- safely(summary)
+
+result_summary <- map(result, \(x) safe_summary(x)) %>%
+  map_depth(1, \(x) compact(keep_at(x, "result"))) %>%
+    compact() %>%
+    list_flatten(name_spec = "{outer}")
+```
+
+
+
+
+
+```{r}
+dose_response_byplate <- drm(fold_act ~ dose, 
+                     curveid = plate_treat,
+                     data    = model_data, 
+                     fct     = LL.4(names = c("Slope", 
+                                              "Lower Limit", 
+                                              "Upper Limit", 
+                                              "ED50")),
+                     separate = TRUE)
+```
+
+```{r}
+dr_coefs <-  model_coef_tbl(dose_response, "LL4") %>%
+  bind_rows(model_coef_tbl(dose_response_byplate, "LL4"))
+```
+
+```{r}
+compared <- compParm(dose_response, "ED50")
+```
+
+
+```{r}
+dr_pooled <- nest(esr_data, .by = group_pooled) %>%
+  model_dose_response("linear") %>%
+  rename(lm_result  = drm_result, 
+         lm_summary = drm_summary) %>%
+  model_dose_response("default")
+```
+
+
 
 # Fitting Dose–Response Models (LL.4 Logistic)
 
@@ -49,259 +213,70 @@ The model `drm(fold_act ~ dose, fct=LL.4())` will attempt to estimate the four p
 
 >**After fitting, examine each model’s results:**
 >- Use `summary()` on the `drm_result` to see estimated parameters and standard errors.
+>- The summary of the curve fitting shows the estimates of each of the four parameters and their standard errors. The p-values tell us if the parameters are different from zero.
 >- Check if any models failed to converge or gave unreasonable estimates (e.g., extremely high EC50 or slope). We might detect these by looking at the tidy coefficients or trying to predict outside the data range.
->- If a particular fit is poor (e.g., only two points were effectively available or the response is non-sigmoidal), we might exclude that model from further analysis or treat it cautiously.
 
 ## Step 1: Plate-by-plate QC plots
 
-```{r}
-treat_vars <- c(
-  "treat_type",
-  "treat_subtype",
-  "treat",
-  "treat_name",
-  "treat_desc"
-)
 
-group_qc <- c(
+```{r}
+plate_fits <- drm_nested(esr_data, c(
   "plate",
   "genus", 
   "subj", 
   "receptor",
   "model",
-  treat_vars
-)
-
-group_pooled <- c(
-  "genus", 
-  "subj", 
-  "receptor",
-  "model",
-  treat_vars
-)
+  "treat_type",
+  "treat_subtype",
+  "treat",
+  "treat_name",
+  "treat_desc"
+))
 ```
-
-
-```{r}
-plate_fits <- esr_data %>%
-  nest(.by = group_qc) %>%
-  mutate(
-    drm_result = map(data, \(x) drm(fold_act ~ dose, data = x, fct  = LL.4(
-      names = c("Slope", "Lower Limit", "Upper Limit", "ED50")
-      ))),
-    grid = map(data, \(x) seq(min(x$dose), max(x$dose), length.out = 200)),
-    preds = map2(drm_result, grid, \(x, y) predict(
-      x, data.frame(dose = y), interval = "confidence"))
-    ) %>%
-  mutate(predict = map2(grid, preds, \(x, y) tibble(
-    dose  = x,        
-    resp  = y[,"Prediction"],
-    lower = y[,"Lower"],
-    upper = y[,"Upper"]))
-    ) %>%
-  mutate(predict = map(predict, \(x) mutate(x, log10_dose = log10(dose)))) %>%
-  select(plate, 
-         subj,
-         genus, 
-         receptor, 
-         model,
-         starts_with("treat"), 
-         data_real = data, 
-         data_pred = predict
-  )
-```
-
-```{r}
-data_list <- plate_fits %>%
-  group_by(genus,
-           subj,
-           receptor,
-           model) %>%
-  group_split() %>%
-  set_names(map(., \(x) unique(pull(x, "model")))) %>%
-  map_depth(1, \(x) group_by(x, plate)) %>%
-  map_depth(1, \(x) group_split(x)) %>%
-  map_depth(1, \(x) set_names(x, map(x, \(y) paste0("plate_", unique(pull(y, "plate")))))) %>%
-  map_depth(2, \(x) group_by(x, 
-           treat_type,
-           treat_subtype,
-           treat,
-           treat_name,
-           treat_desc)) %>%
-  map_depth(2, \(x) group_split(x)) %>%
-  map_depth(2, \(x) set_names(x, map(x, \(y) paste(unique(pull(y, "treat_subtype")), unique(pull(y, "treat")), sep = "_")))) %>%
-  map_depth(3, \(x) select(x, treat_name, treat_desc, data_real, data_pred))
-```
-
-```{r}
-
-# 3. plotly: small multiples, one card per plate×treatment
-plots_qc <- qc_df %>%
-  group_split(plate, receptor, treat) %>%
-  set_names(~ sprintf("P%02d_%s_%s", .x$plate[1], .x$receptor[1], .x$treat[1])) %>%
-  imap(function(df, label) {
-    plot_ly(df, x=~log10(dose), y=~fold_act, name="raw",
-            mode="markers", type="scatter", marker=list(size=6)) %>%
-      add_ribbons(x=~log10(dose), ymin=~lower, ymax=~upper,
-                  fillcolor="rgba(100,100,100,0.2)", line=list(color=NA)) %>%
-      add_lines(x=~log10(dose), y=~resp,
-                line=list(color="steelblue", width=2)) %>%
-      layout(title=label,
-             xaxis=list(title="log10(dose)"),
-             yaxis=list(title="fold-activation"))
-  })
-
-# then you can do subplot(plots_qc, nrows=..., margin=0.02) or display a few manually
-```
-
 
 ## Step 2: Pooled "average" curves
 
 Now we will pool data across plates and just group by the cell model and the treatment for ease of comparison.
 
 ```{r}
-pooled_fits <- esr_data %>%
-  nest(.by = group_pooled) %>%
-  mutate(
-    drm_result = map(data, \(x) drm(fold_act ~ dose, data = x, fct  = LL.4(
-      names = c("Slope", "Lower Limit", "Upper Limit", "ED50")
-      ))),
-    grid = map(data, \(x) seq(min(x$dose), max(x$dose), length.out = 200)),
-    preds = map2(drm_result, grid, \(x, y) predict(
-      x, data.frame(dose = y), interval = "confidence"))
-    ) %>%
-  mutate(predict = map2(grid, preds, \(x, y) tibble(
-    dose  = x,        
-    resp  = y[,"Prediction"],
-    lower = y[,"Lower"],
-    upper = y[,"Upper"]))
-    ) %>%
-  mutate(predict = map(predict, \(x) mutate(x, log10_dose = log10(dose)))) %>%
-  select(genus, 
-         subj,
-         receptor, 
-         model,
-         starts_with("treat"), 
-         data_real = data, 
-         data_pred = predict
-         )
+pooled_fits <- drm_nested(esr_data, c(
+  "genus", 
+  "subj", 
+  "receptor",
+  "model",
+  "treat_type",
+  "treat_subtype",
+  "treat",
+  "treat_name",
+  "treat_desc"
+))
 ```
+
+## Step 3: Compare Visuals
+
 
 ```{r}
-pooled_data_list <- pooled_fits %>%
-  group_by(genus,
-           subj,
-           receptor,
-           model) %>%
-  group_split() %>%
-  set_names(map(., \(x) unique(pull(x, "model"))))  %>%
-  map_depth(1, \(x) group_by(x, 
-           treat_type,
-           treat_subtype,
-           treat,
-           treat_name,
-           treat_desc)) %>%
-  map_depth(1, \(x) group_split(x)) %>%
-  map_depth(1, \(x) set_names(x, map(x, \(y) paste(unique(pull(y, "treat_subtype")), unique(pull(y, "treat")), sep = "_")))) %>%
-  map_depth(2, \(x) select(x, treat_name, treat_desc, data_real, data_pred))
-  
+plates <- dr_vis_summary(plate_fits, FALSE)
+
+pooled <- dr_vis_summary(pooled_fits, TRUE)
+
+summary <- navset_bar(
+  nav_panel("By Plate", plates),
+  nav_panel("Plates Pooled", pooled)
+)
+save_html(summary, "visuals/receptor_assays/model_summary.html")
 ```
+
 
 ```{r}
-esr_modeled <- esr_data %>%
-  group_by(
-    genus,
-    subj,
-    receptor,
-    model,
-    treat_type,
-    treat_subtype,
-    treat,
-    treat_name,
-    treat_desc
-  ) %>%
-  nest() %>%
-  mutate(
-    drm_result = map(data, \(x) drm(
-      fold_act ~ dose,
-      data     = x,
-      fct      = LL.4(names = c("Slope", "Lower Limit", "Upper Limit", "ED50"))
-    )),
-    drm_summary = map(drm_result, \(x) summary(x, od = FALSE))
-  ) %>%
-  mutate(
-    dose_grid = map(data, \(x) seq(min(x$dose), 
-                                   max(x$dose), 
-                                   length.out = 100)),
-    preds     = map2(drm_result, 
-                     dose_grid, \(x, y) predict(x, 
-                                                data.frame(dose = y), 
-                                                interval = "confidence"))
-  ) %>%
-  mutate(curve = map2(dose_grid, 
-                      preds, \(x, y) tibble(dose  = x,        
-                                            resp  = y[,"Prediction"],
-                                            lower = y[,"Lower"],
-                                            upper = y[,"Upper"])))
+save_html(plates, "visuals/receptor_assays/model_summary_byplate.html")
+save_html(pooled, "visuals/receptor_assays/model_summary_pooled.html")
 ```
 
-## Format Model Results for Visualizing
-
-We want to visualize the dose–response curves along with the actual data points. A typical plot will have `log10` dose on the x-axis and fold activation (or % of E2) on the y-axis.
 
 ```{r}
-curve_data <- esr_modeled %>%
-  mutate(filename = as.character(str_glue("{subj}_{receptor}"))) %>%
-  mutate(receptor = case_match(receptor, 
-                               "alpha" ~ "\u03B1", 
-                               "beta"  ~ "\u03B2")) %>%
-  mutate(label_short = as.character(str_glue("{str_to_title(subj)} ER{receptor}: {treat_name}")),
-         label = paste0(genus, " ER", receptor, "<br>", treat_name)) %>%
-  ungroup() %>%
-  select(
-    genus,
-    receptor,
-    treat,
-    treat_subtype,
-    treat_name,
-    label,
-    label_short,
-    filename,
-    curve
-  ) %>%
-  unnest(curve) %>%
-  mutate(x = log10(dose + 0.1)) %>%
-  arrange(receptor, genus, treat) %>%
-  group_by(receptor, genus, treat) %>%
-  mutate(plot_id = as.character(str_glue("plot_{cur_group_id()}"))) %>%
-  group_split() %>%
-  set_names(map(., \(x) first(x$plot_id)))
+summary
 ```
 
-
-## Visualize Model Results
-
-### Grid View of Fitted Logistic Dose-Response Curves
-
-```{r}
-grid <- dr_grid(curve_data, 4)
-save_html(grid, "visuals/receptor_assays/dr_curves.html")
-```
-
-
-
-
-## Checking Model Fits
-
-
-Here, `ED(model, 50)` gives the effective dose for 50% response. We specify `type="absolute"` if we want the EC50 in the same units as dose. The `coef(x)["d:(Intercept)"]` accesses the estimated top asymptote (often named “Upper Limit” in the model) which corresponds to the maximal fold change. *(If we fixed the lower bound at 1, then 50% of effect is halfway between 1 and d, etc., but using ED with `type="absolute"` should directly give the EC50 in original dose units.)*
-
-### Interpreting Parameters
-
-- **EC50:** The concentration producing half-maximal activation. A lower EC50 indicates higher potency (the compound activates the receptor at a low concentration). We will often take `log10` of EC50 for plotting (to compare across orders of magnitude). We might also compute a confidence interval for EC50 via ED() if needed for statistical comparison.
-
-- **Dmax**: The asymptotic maximum fold activation relative to control. If we later express it in percent of E2, Dmax (fold) can be converted to %E2 by `Dmax_percent = (Dmax / reference_fold) * 100`. Since we normalized our data to `E2=100%`, an easier way is to fit the model on the `perc_E2` scale for final visualization of efficacy. However, fitting on `fold_act` and then converting is fine because it’s a linear scaling. Dmax tells us the efficacy of the compound: if Dmax ~1 (or 100%), it’s a full agonist similar to E2; if Dmax is lower (e.g., 50%), it’s a partial agonist; if Dmax >100%, it produced a higher response than 1 nM E2 (which might happen with potent synthetic estrogens or assay noise at high doses).\n
-\n
-By collecting EC50 and Dmax for all receptor-treatment pairs, we can create a summary table.
 
 

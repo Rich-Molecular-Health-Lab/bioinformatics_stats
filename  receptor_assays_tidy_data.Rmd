@@ -29,9 +29,7 @@ conflicts_prefer(dplyr::filter)
 conflicts_prefer(dplyr::select)
 conflicts_prefer(plotly::layout)
 
-source("data/receptors/inputs.R")
-source("helpers/receptor_assays.R")
-
+assays <- read_csv("data/receptors/esr_assays_revised.csv")
 
 ```
 
@@ -39,79 +37,498 @@ source("helpers/receptor_assays.R")
 
 ## Load Assay Data
 
-This dataset is expected to be in tidy long format, where each row is a single measurement (one replicate of a given receptor–species–treatment at a certain dose). Key columns likely include:
-
-- `genus` – Species of origin (e.g., Gorilla, Loris, Human).
-- `receptor` – Receptor type (alpha = ESR1 or beta = ESR2).
-- `treat` and `treat_type`/`treat_subtype` – The treatment name (compound or extract) and its category (estrogen, isoflavone, diet, etc.).
-- `dose` (with dose_type indicating units, e.g. molar concentration for pure compounds or mg/mL for extracts).
-- `replicate` – Replicate number for that measurement.
-- `luciferase` and `b_gal` – Raw reporter signals (firefly luciferase and β-galactosidase, where β-gal serves as a transfection control).
-- `normalized` – Luciferase activity normalized to β-gal for that well (this yields a relative light unit controlling for transfection efficiency).
-- `control_mean` – The mean normalized value of the vehicle-control wells (within the same experiment/plate).
-- `fold_act` – Fold activation relative to the vehicle control, i.e. normalized / control_mean. A fold_act of 1 means no induction above baseline; >1 indicates activation above control.
-
 - Ensure dose values are numeric and in consistent units. If needed, convert doses to a common unit (e.g., molar concentrations for chemicals, or mg/mL for extracts) or add a column for the log10 of dose for convenience.
 - Check that each receptor–treatment combination has the expected number of replicates and dose points. If any treatment has only a single dose (or only the control), mark it for special handling (since a dose–response curve cannot be fit with a single point).
 
 ```{r}
-assays <- read_csv("data/receptors/esr_assays_raw.csv") %>%
-  rename(common = species) %>%
-  filter(assay %in% c("luciferase", "b_gal")) %>%
-  mutate(date          = mdy(date),
-         log10_dose    = log10(dose),
-         genus         = case_match(common, 
-                                    "gorilla" ~ "Gorilla",
-                                    "loris"   ~ "Xanthonycticebus",
-                                    "human"   ~ "Homo"
-                                    ),
-         species       = case_match(common, 
-                                    "gorilla" ~ "gorilla",
-                                    "loris"   ~ "pygmaeus",
-                                    "human"   ~ "sapiens"
-                                    ),
-         receptor      = fct_recode(receptor, !!!receptors),
-         column        = fct_recode(treatment, !!!column),
-         treat_type    = fct_recode(treatment, !!!treat_type),
-         treat_subtype = fct_recode(treatment, !!!treat_subtype),
-         treat         = fct_recode(treatment, !!!treatments))  %>%
-  left_join(diet_key, by = "treat") %>%
-  mutate(plate       = consecutive_id(date, receptor, genus),
-         model       = as.character(str_glue("{common}_{receptor}"))) %>%
-  mutate(dose_rank   = row_number(), .by = c(plate, assay, column)) %>%
-  select(date,
-         subj = common,
-         genus,
-         receptor,
-         model,
-         plate,
-         column,
-         treat_type,
-         treat_subtype,
-         treat,
-         treat_name = name,
-         treat_form = formula,
-         treat_desc = description,
-         assay,
-         dose_type,
-         dose_rank,
-         log10_dose,
-         dose,
-         value_1,
-         value_2,
-         value_3) %>%
-  pivot_longer(starts_with("value_"),
-               names_to     = "replicate",
-               names_prefix = "value_",
-               values_to    = "value") %>%
-  pivot_wider(names_from    = "assay",
-              values_from   = "value")  %>%
-  mutate(n_doses     = n_distinct(dose), .by = c(plate, treat))
+treatments <- c(
+   control               = "Control"        ,
+   vehicle_MeOH          = "Veh MeOH"       ,
+   vehicle_DMSO          = "Veh DMSO"       ,
+   standard_estradiol    =  "E2"            ,
+   standard_estrone      =  "E1"            ,
+   standard_estriol      =  "E3"            ,
+   psm_genistein         =  "GEN"           ,
+   psm_daidzein          =  "DAID"          ,
+   psm_coumestrol        =  "COU"           ,   
+   microbial_equol       =  "EQUOL"         ,
+   microbial_enterodiol  =  "ENTDIOL"       ,
+   diet_biscuit_5M1S     =  "LS Cin"        ,
+   diet_biscuit_5MA4     =  "Browse Biscuit",
+   diet_biscuit_5M1G     =  "LS Ban"        ,
+   diet_biscuit_5MA3     =  "High Fiber"    ,
+   diet_biscuit_5M6C     =  "Insect"        ,
+   diet_biscuit_5M02     =  "Leafeater"     ,
+   diet_biscuit_5M02     =  "LE Primate"    ,
+   diet_biscuit_5MA2     =  "Pellet OSU"    ,
+   diet_lettuce          =  "Lettuce"       ,
+   unknown_random        =  "Random"        ,
+   unknown_wi            =  "WI"        
+)
 
-write_csv(assays, "data/receptors/esr_assays_tidy.csv")
+receptor_labs <- tibble(
+  labs_er    = c(rep("ER\u03B1", 3), rep("ER\u03B2", 3)),
+  labs_genus = rep(c("<i>Gorilla</i>", "<i>Xanthonycticebus</i>", "<i>Homo</i>"), 2),
+  receptor   = c("gorilla_alpha", "loris_alpha", "human_alpha", "gorilla_beta", "loris_beta", "human_beta")
+) 
+
+treatment_labs <- tibble(
+  labs_treatment = c(
+    "E2"            ,
+    "E1"            ,
+    "E3"            ,
+    "Genistein"     ,
+    "Daidzein"      ,
+    "Coumestrol"    ,
+    "Equol"         ,
+    "Enterodiol"    ,
+    "Biscuit (5M1S)",
+    "Biscuit (5MA4)",
+    "Biscuit (5M1G)",
+    "Biscuit (5MA3)",
+    "Biscuit (5M6C)",
+    "Biscuit (5M02)",
+    "Biscuit (5M02)",
+    "Biscuit (5MA2)",
+    "Lettuce"       ,
+    "Random?"       ,
+    "WI" 
+  ),
+  groups_treatment = c(
+    rep("Estrogen", 3),
+    rep("PSM", 3),
+    rep("Microbial", 2),
+    rep("Diet Extract", 11)
+  ),
+  treatment      = c(
+    "standard_estradiol"  ,
+    "standard_estrone"    ,
+    "standard_estriol"    ,
+    "psm_genistein"       ,
+    "psm_daidzein"        ,
+    "psm_coumestrol"      ,
+    "microbial_equol"     ,
+    "microbial_enterodiol",
+    "diet_biscuit_5M1S"   ,
+    "diet_biscuit_5MA4"   ,
+    "diet_biscuit_5M1G"   ,
+    "diet_biscuit_5MA3"   ,
+    "diet_biscuit_5M6C"   ,
+    "diet_biscuit_5M02"   ,
+    "diet_biscuit_5M02"   ,
+    "diet_biscuit_5MA2"   ,
+    "diet_lettuce"        ,
+    "unknown_random"      ,
+    "unknown_wi"          
+  )             
+) %>% mutate(treatment = factor(treatment))
+
 ```
 
+```{r}
+esr_data <- assays %>%
+  mutate(Treatment = if_else(Dose == "Control" |  str_detect(Dose, "Veh"), Dose, Treatment)) %>%
+  mutate(receptor  = factor(as.character(str_glue("{Species}_{ER}"))),
+         treatment = fct_recode(Treatment, !!!treatments), .keep = "unused") %>%
+  arrange(Date, receptor) %>%
+  mutate(plate     = factor(consecutive_id(Date, receptor))) %>%
+  mutate(dose_type = case_when(
+           str_detect(Dose, "mg/ml") ~ "mg/ml",
+           str_detect(Dose, "Veh")   ~ "vehicle",
+           Dose == "Control"         ~ "control",
+           .default = "molar"
+           ),
+         dose = as.numeric(str_remove_all(Dose, "[^\\d|-|\\.]"))
+         ) %>%
+  mutate(dose = if_else(dose_type == "molar", as.numeric(str_glue("1e{Dose}")), dose),
+         dose_type = factor(dose_type)) %>%
+  arrange(plate, receptor, treatment, dose) %>%
+  mutate(Dose = factor(Dose)) %>%
+  mutate(dil_series = consecutive_id(Dose), .by = c(plate, treatment)) %>%
+  select(receptor,
+         plate,
+         Date,
+         treatment,
+         dose_type,
+         dil_series,
+         dose,
+         starts_with("luciferase"),
+         starts_with("bgal")
+         ) %>%
+  pivot_longer(
+    c(starts_with("luciferase"), starts_with("bgal")),
+    names_pattern = c("(^\\w+)_(\\d$)"),
+    names_to     = c("value_type", "replicate"),
+    values_to    = "value"
+    ) %>%
+  mutate(dil_series = if_else(is.na(dose), row_number(), dil_series), .by = c(receptor, plate, treatment, value_type))  %>%
+  pivot_wider(
+    names_from  = value_type,
+    values_from = value
+  ) %>%
+  rowwise() %>%
+  mutate(resp_norm = luciferase/bgal) %>%
+  ungroup() %>%
+  mutate(veh_norm = mean(resp_norm[str_starts(treatment, "vehicle")]), 
+         con_norm = mean(resp_norm[treatment == "control"]),
+         .by = "plate") %>%
+  filter(!is.na(dose)) %>%
+  rowwise() %>%
+  mutate(fold_act = resp_norm/veh_norm) %>%
+  ungroup() %>%
+  mutate(log_dose = log10(dose)) %>%
+  left_join(receptor_labs, by = "receptor") %>%
+  left_join(treatment_labs, by = "treatment") %>%
+  mutate(group_plate = factor(as.character(str_glue("{as.character(receptor)}_{as.character(plate)}_{as.character(treatment)}"))),
+         group_pooled = factor(as.character(str_glue("{as.character(receptor)}_{as.character(treatment)}")))) %>%
+  select(
+    labs_genus,
+    labs_er,
+    receptor,
+    plate,
+    group_plate,
+    group_pooled,
+    groups_treatment,
+    labs_treatment,
+    treatment,
+    dose_type,
+    dil_series,
+    log_dose,
+    dose,
+    replicate,
+    luciferase,
+    bgal,
+    resp_norm,
+    fold_act
+  )
+
+write_csv(esr_data, "data/receptors/esr_assays_tidy.csv")
+```
+
+## Select the best fit Model
+
+```{r}
+names_2 <-  c("slope","ED50")
+names_3 <-  c("slope","lower","upper")
+names_4 <-  c("slope","lower","upper","ED50")
+names_5 <-  c("slope","lower","upper","ED50", "Asymmetry")
+
+candidates <- list(
+  LL.2(names = names_2),    # 2-parameter log-logistic (fixed lower=0, fixed upper=1)
+  LL.3(names = names_3),    # 3-parameter log-logistic (estimate upper asymptote)
+  LL.4(names = names_4),    # 4-parameter log-logistic (estimate both asymptotes + slope + ED50)
+  LL.5(names = names_5),    # 5-parameter log-logistic (adds curve asymmetry)
+  W1.4(names = names_4),    # 4-parameter Weibull
+  W2.4(names = names_4)     # alternative 4-parameter Weibull
+)
+```
+
+
+```{r}
+data_plate <- esr_fit %>%
+  select(
+    group = group_plate,
+    log_dose,
+    dose,
+    fold_act
+  ) %>%
+  mutate(n_doses = n_distinct(dose), .by = "group") %>%
+  filter(n_doses > 2) %>%
+  select(-n_doses) %>%
+  group_by(group) %>%
+  group_split() %>%
+  set_names(., map_depth(., 1, \(x) as.character(first(x$group))))
+
+drc_plates <- imap(data_plate, function(d, nm) {
+  assign(nm, d, envir = .GlobalEnv)        
+  drm(fold_act ~ dose,
+      data = get(nm, envir = .GlobalEnv), 
+      fct  = LL.4(names = names_4))
+})
+```
+
+```{r warning=FALSE, message = FALSE, comment = "", echo = FALSE}
+msel_plates <- list()
+for (nm in names(drc_plates)) {
+  msel_plates[[nm]] <- mselect(drc_plates[[nm]], fctList = candidates)
+}
+```
+
+
+```{r}
+e2_references <- esr_data %>%
+  filter(treatment == "standard_estradiol") %>%
+  select(
+    group = plate,
+    log_dose,
+    dose,
+    fold_act
+  ) %>%
+  group_by(group) %>%
+  group_split() %>%
+  set_names(., map_depth(., 1, \(x) as.character(first(x$group))))
+
+drc_e2_plates <- imap(e2_references, function(d, nm) {
+  assign(nm, d, envir = .GlobalEnv)        
+  drm(fold_act ~ dose,
+      data = get(nm, envir = .GlobalEnv), 
+      fct  = LL.4(names = names_4))
+})
+```
+
+
+```{r warning=FALSE, message = FALSE, comment = "", echo = FALSE}
+msel_e2_refs <- list()
+for (nm in names(drc_e2_plates)) {
+  msel_e2_refs[[nm]] <- mselect(drc_e2_plates[[nm]], fctList = candidates)
+}
+```
+
+```{r}
+model_selection_tbl <- imap_dfr(msel_plates, ~ {
+  # .x is the matrix returned by mselect(); .y is the plate name
+  as_tibble(.x, rownames = "model") %>% 
+    mutate(plate = .y, 
+           # rename columns to something R‐friendly
+           logLik   = `logLik`, 
+           AIC      = IC,
+           ResVar   = `Res var`,
+           LoF_pval = `Lack of fit`) %>%
+    select(plate, model, logLik, AIC, ResVar, LoF_pval)
+})
+
+best_by_plate <- model_selection_tbl %>%
+  group_by(plate) %>%
+  filter(!is.na(AIC)) %>%
+  slice_min(AIC, n = 1) %>%
+  ungroup()
+
+
+# 3. (optional) pivot longer so you can plot “model vs criterion” across plates
+model_selection_long <- model_selection_tbl %>%
+  pivot_longer(logLik:LoF_pval, names_to = "criterion", values_to = "value")
+
+
+model_selection_e2tbl <- imap_dfr(msel_e2_refs, ~ {
+  # .x is the matrix returned by mselect(); .y is the plate name
+  as_tibble(.x, rownames = "model") %>% 
+    mutate(plate = .y, 
+           # rename columns to something R‐friendly
+           logLik   = `logLik`, 
+           AIC      = IC,
+           ResVar   = `Res var`,
+           LoF_pval = `Lack of fit`) %>%
+    select(plate, model, logLik, AIC, ResVar, LoF_pval)
+})
+
+best_by_e2_plate <- model_selection_e2tbl %>%
+  group_by(plate) %>%
+  filter(!is.na(AIC)) %>%
+  slice_min(AIC, n = 1) %>%
+  ungroup()
+
+
+# 3. (optional) pivot longer so you can plot “model vs criterion” across plates
+model_selection_e2_long <- model_selection_e2tbl %>%
+  pivot_longer(logLik:LoF_pval, names_to = "criterion", values_to = "value")
+```
+
+
+```{r}
+# e.g. boxplot of AIC by model
+model_selection_e2_long %>%
+  filter(criterion == "AIC") %>%
+  ggplot(aes(model, value)) +
+    geom_boxplot() +
+    coord_flip() +
+    labs(title="Distribution of E2-only AIC across plates", y="AIC", x="Candidate model")
+
+
+model_selection_long %>%
+  filter(criterion == "AIC") %>%
+  ggplot(aes(model, value)) +
+    geom_boxplot() +
+    coord_flip() +
+    labs(title="Distribution of AIC across plates", y="AIC", x="Candidate model")
+```
+
+## Apply the Best Fit Model
+
+```{r}
+data_pooled <- esr_fit %>%
+  select(
+    group = group_pooled,
+    log_dose,
+    dose,
+    fold_act
+  ) %>%
+  mutate(n_doses = n_distinct(dose), .by = "group") %>%
+  filter(n_doses > 2) %>%
+  select(-n_doses) %>%
+  group_by(group) %>%
+  group_split() %>%
+  set_names(., map_depth(., 1, \(x) as.character(first(x$group))))
+
+pooled_drc <- map(data_pooled, \(x) drm(
+  formula = fold_act ~ dose, data = x, fct = LL.4(names = names_4)
+))
+
+plates_drc <- map(data_plate, \(x) drm(
+  formula = fold_act ~ dose, data = x, fct = LL.4(names = names_4)
+))
+
+```
+
+
+```{r}
+pooled_coefs <- map(pooled_drc, \(x) coef(x)) %>%
+  enframe(name = "group_pooled", value = "coefs") %>%
+  unnest_wider(coefs) %>%
+  rename_with(~str_replace_all(., ":(.+)", "_treatment"))
+
+
+plates_coefs <- map(plates_drc, \(x) coef(x)) %>%
+  enframe(name = "group_plate", value = "coefs") %>%
+  unnest_wider(coefs) %>%
+  rename_with(~str_replace_all(., "upper", "Dmax")) %>%
+  rename_with(~str_replace_all(., ":(.+)", "_treatment_plate"))
+```
+
+
+### Generate E2 Dmax Values
+
+
+```{r}
+e2_drc <- map(e2_references, \(x) drm(
+  formula = fold_act ~ dose, data = x, fct = LL.4(names = names_4)
+))
+```
+
+
+```{r}
+e2_coefs <- map(e2_drc, \(x) coef(x)) %>%
+  enframe(name = "plate", value = "coefs") %>%
+  unnest_wider(coefs) %>%
+  rename_with(~str_replace_all(., ":(.+)", "_e2"))
+```
+
+
+## Add Other Stats for Plotting
+
+```{r}
+esr_meta <- esr_data %>%
+  distinct(
+    labs_genus,
+    labs_er,
+    receptor,
+    plate,
+    group_plate,
+    group_pooled,
+    groups_treatment,
+    labs_treatment,
+    treatment,
+    dose_type
+  )
+```
+
+```{r}
+predict_plates <- map(plates_drc, \(x) predict(
+  x, 
+  data.frame(dose = seq(min(x[["dataList"]][["dose"]]), 
+                        max(x[["dataList"]][["dose"]]), length.out = 200)),
+  interval = "confidence")) %>%
+  map2(plates_drc, \(x, y) bind_cols(as_tibble(x),
+                                     tibble(dose = c(seq(min(y[["dataList"]][["dose"]]), 
+                                                           max(y[["dataList"]][["dose"]]), 
+                                                           length.out = 200)))
+                                     )) %>%
+  map(\(x) mutate(x, log_dose = log10(dose))) %>%
+  imap(\(x, idx) mutate(x, group_plate = paste0(idx))) %>%
+  map(\(x) left_join(x, esr_meta, by = "group_plate"))
+
+predict_pooled <- map(pooled_drc, \(x) predict(
+  x, 
+  data.frame(dose = seq(min(x[["dataList"]][["dose"]]), 
+                        max(x[["dataList"]][["dose"]]), length.out = 200)),
+  interval = "confidence")) %>%
+  map2(pooled_drc, \(x, y) bind_cols(as_tibble(x),
+                                     tibble(dose = c(seq(min(y[["dataList"]][["dose"]]), 
+                                                           max(y[["dataList"]][["dose"]]), 
+                                                           length.out = 200)))
+                                     )) %>%
+  map(\(x) mutate(x, log_dose = log10(dose))) %>%
+  imap(\(x, idx) mutate(x, group_pooled = paste0(idx))) %>%
+  map(\(x) left_join(x, select(esr_meta, -c(ends_with("plate"))), by = "group_pooled"))
+```
+
+```{r}
+fit_plates <- map(plates_drc, \(x) modelFit(x)) %>%
+  map(\(x) as_tibble(x[2,])) %>%
+  list_rbind(names_to = "group_plate") %>%
+  rename_with(~paste0("mfit_plate_", .), !group_plate) %>%
+  rename_with(~str_remove_all(., "\\s"))
+
+fit_pooled <- map(pooled_drc, \(x) modelFit(x)) %>%
+  map(\(x) as_tibble(x[2,])) %>%
+  list_rbind(names_to = "group_pooled") %>%
+  rename_with(~paste0("mfit_pooled_", .), !group_pooled) %>%
+  rename_with(~str_remove_all(., "\\s"))
+```
+
+
+````{r}
+esr_fit <- esr_data %>%
+  left_join(e2_coefs, by = "plate") %>%
+  rowwise() %>%
+  mutate(rel_resp = (fold_act/upper_e2)*100) %>%
+  ungroup() %>%
+  left_join(plates_coefs, by = "group_plate") %>%
+  left_join(pooled_coefs, by = "group_pooled") %>%
+  left_join(fit_plates  , by = "group_plate") %>%
+  left_join(fit_pooled  , by = "group_pooled") %>%
+  mutate(across(ends_with("pvalue"), ~round(., 3)))
+
+
+write_csv(esr_fit, "data/receptors/esr_assays_normalized.csv")
+```
+
+
+```{r}
+summary_plates <- map(plates_drc, \(x) summary(x))
+```
+
+
+
+What you extract from each fit:
+
+- ED₅₀  — the [4th] coefficient of your LL.4 model
+- Dₘₐₓ  — the [3rd] coefficient (the upper asymptote)
+
+These two numbers are your primary summary metrics:
+
+- ED₅₀ tells you “which treatment gives half-maximal response at the lowest dose?”
+- Dₘₐₓ tells you “which treatment can drive the receptor higher, all the way up to its plateau?”
+
 #### Check Data
+
+```{r}
+subplots <- map(data_list, \(x) plot_raw(x$data_resid[[1]], x$treat_label, x$annot_resid))
+panel_set <-  
+    map_depth(subplot_names, 3, \(x) subplots[x]) %>%
+    map_depth(2, \(x) list_flatten(x))
+  
+  dr_plot_list(df, pooled = FALSE, version = "raw") %>% 
+  map_subplots(version = "raw") %>%
+ grid_panelset(type = "nav_pill")
+```
+
+
+```{r}
+panels <- navset_pill_list(!!!panel_set, widths = c(2, 10))
+```
+
+
+
 
 ```{r}
 bgal <- data_check_box(assays, 
