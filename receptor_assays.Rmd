@@ -345,15 +345,6 @@ Next I prefer to create separate tibbles for ease of data manipulation. I can re
 
 ```{r}
 data_working <- esr_data %>%
-  group_by(groups_treatment) %>%
-  group_split() %>%
-  set_names(., map(., \(x) paste0(first(x$groups_treatment)))) %>%
-  map(\(x) mutate(x, across(where(is.factor), ~fct_drop(.))))
-```
-
-
-```{r}
-data_working <- esr_data %>%
   select(dose, response, group_plate, group_pooled) %>%
   group_by(group_pooled) %>%
   group_split() %>%
@@ -390,7 +381,6 @@ scatter_plots <- esr_data %>%
   set_names(., "")
 
 scatter_navset <- navset_pill_list(!!!scatter_plots, widths = c(2, 10))
-save_html(scatter_navset, "visuals/receptor_assays/dose_response_raw.html")
 ```
 
 # Fit Data to Curves
@@ -413,10 +403,7 @@ drm_working <- function(data) {
     control  = drc_ctrl
     )
 }
-```
 
-
-```{r}
 drc_working <- map(data_working, \(x) drm_working(x))
 
 summary_safe <- safely(summary)
@@ -430,9 +417,9 @@ drc_summary$results
 ```
 
 
-## Plot Dose-Response Fitted
+# Plot Dose-Response Fitted
 
-### Residuals and Normals
+## Residuals and Normals
 
 ```{r}
 fitted <- map(drc_working, \(x) augment(x, x[["origData"]], conf.int = TRUE)) %>%
@@ -454,10 +441,7 @@ fitted <- map(drc_working, \(x) augment(x, x[["origData"]], conf.int = TRUE)) %>
     response = fitted,
     resid
   )
-```
 
-
-```{r}
 fitted_list <- dose_response_list(fitted)
 ```
 
@@ -466,13 +450,11 @@ fitted_list <- dose_response_list(fitted)
 resid_panels <- imap(fitted_list, \(x, idx) dose_response_grid(x, idx, "plot_resid_qq")) %>%
   set_names(., "")
 
-resid_qq_complete <- navset_pill_list(!!!resid_panels,
-                                      widths = c(2, 10))
-save_html(resid_qq_complete, "visuals/receptor_assays/residuals.html")
+resid_qq_complete <- navset_pill_list(!!!resid_panels, widths = c(2, 10))
 ```
 
 
-### Dose-Response Curves (Predicted and Fitted)
+## Curves (Predicted and Fitted)
 
 ```{r}
 predicted <- map(
@@ -518,25 +500,457 @@ predicted <- map(
     dose,
     response,
     color_key
-    ))
-```
-
-```{r}
-predicted_list <- dose_response_list(predicted)
+    )) %>%
+  dose_response_list()
 ```
 
 
 
 ```{r}
-curve_panels <- imap(predicted_list, \(x, idx) dose_response_grid(x, idx, "plot_curve")) %>%
+curve_panels <- imap(predicted, \(x, idx) dose_response_grid(x, idx, "plot_curve")) %>%
   set_names(., "")
 
 curve_complete <- navset_pill_list(!!!curve_panels, widths = c(2, 10))
-save_html(curve_complete, "visuals/receptor_assays/dose_response_curves.html")
+```
+
+## Dashboard for Model Visuals
+
+```{r}
+dashboard_model <- navset_tab(
+  nav_panel("Raw Dose-Response"   , scatter_navset),
+  nav_panel("Residuals"           , resid_qq_complete),
+  nav_panel("Dose-Response Curves", curve_complete)
+)
+
+save_html(dashboard_model, "visuals/receptor_assays/dashboard_dose_response.html")
+```
+
+```{r}
+c("#88CCEEFF", 
+  "#CC6677FF",
+  "#DDCC77FF",
+  "#117733FF",
+  "#332288FF", 
+  "#AA4499FF",
+  "#44AA99FF", 
+  "#999933FF", 
+  "#882255FF", 
+  "#661100FF",
+  "#6699CCFF",
+  "#888888FF")
 ```
 
 
-### ED50 Box Plot
+# Coefficients
+
+```{r}
+edx <- map(drc_working, \(x) ED(x, c(40, 60)))
+```
+
+
+```{r}
+edx_tbl <- edx %>%
+  map(\(x) as_tibble(x, rownames = "level")) %>%
+  imap(\(x, idx) mutate(x, group_pooled = idx)) %>%
+  list_rbind() %>%
+  mutate(level = str_replace_all(level, "e:1:(?=\\d0)", "ED")) %>%
+  pivot_wider(names_from = "level",
+              values_from = c("Estimate", "Std. Error"),
+              names_sep = "_") %>%
+  left_join(meta_pooled, by = "group_pooled") %>%
+  select(-c(color_key, group_pooled)) %>%
+  mutate(subject = as.character(str_extract_all(receptor, "^\\w+(?=_\\w+$)"))) %>%
+  mutate(group = as.character(str_glue(
+    "{labs_treatment}: {str_to_title(subject)}"
+  ))) %>%
+  mutate(subject = factor(subject, levels = c("human", "gorilla", "loris"))) %>%
+  mutate(labs_treatment = factor(labs_treatment), dose_type = factor(dose_type)) %>%
+  arrange(dose_type, labs_treatment, subject)
+```
+
+
+```{r}
+edx_alpha_diet <- filter(edx_tbl, str_ends(receptor, "alpha") & dose_type == "mg/ml") %>%
+  group_by(labs_treatment, subject)
+
+edx_db_alpha_diet <- plot_ly() %>%
+  add_segments(
+    data = edx_alpha_diet,
+    x    = ~Estimate_ED40,
+    xend = ~Estimate_ED60,
+    y    = ~group,
+    yend = ~group,
+    split = ~subject,
+    color = ~subject,
+    colors = c(gorilla = "#332288FF", loris = "#882255FF", human = "#117733FF"),
+    showlegend = FALSE
+  )  %>%
+  add_markers(
+    data = edx_alpha_diet,
+    x      = ~Estimate_ED40,
+    y      = ~group,
+    name   = "ED40",
+    split = ~subject,
+    color = ~subject,
+    colors = c(gorilla = "#332288FF", loris = "#882255FF", human = "#117733FF"),
+    marker = list(
+    opacity = 0.7,
+    size    = 8,
+    line = list(color = "#00000FFF", width = 1)
+    ),
+    showlegend = FALSE
+  )  %>%
+  add_markers(
+    data = edx_alpha_diet,
+    x      = ~Estimate_ED60,
+    y      = ~group,
+    name   = "ED60",
+    split = ~subject,
+    color = ~subject,
+    colors = c(gorilla = "#332288FF", loris = "#882255FF", human = "#117733FF"),
+    marker = list(
+    opacity = 0.7,
+    size    = 8,
+    line = list(color = "#00000FFF", width = 1)
+    ),
+    showlegend = FALSE
+  )  %>%
+  layout(
+    title = "ER\u03B1 - Diet",
+    xaxis = list(
+      title = "Effective Dose",
+      tickformat  = ".2f",
+      hoverformat = ".2f",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T
+      ),
+    yaxis = list(
+      title          = "",
+      side           = "left",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T,
+      showticklabels = T,
+      categoryorder  = "array",
+      categoryarray  = ~group,
+      tickmode       = "array",
+      ticks          = "inside"
+    )
+  )
+edx_db_alpha_diet
+```
+
+
+
+```{r}
+edx_db_alpha_diet <- plot_ly() %>%
+  add_segments(
+    data = filter(edx_alpha_diet, subject == "gorilla"),
+    x    = ~Estimate_ED40,
+    xend = ~Estimate_ED60,
+    y    = ~labs_treatment,
+    yend = ~labs_treatment,
+    line = list(
+      color = "#332288FF",
+      width = 2
+    ),
+    showlegend = FALSE,
+    alignmentgroup = "gorilla"
+  )  %>%
+  add_markers(
+    data = filter(edx_alpha_diet, subject == "gorilla"),
+    x      = ~Estimate_ED40,
+    y      = ~labs_treatment,
+    name   = "ED40",
+    marker = list(
+    color  = "#332288FF",
+    symbol = "circle",
+    opacity = 0.7,
+    size    = 8,
+    line = list(
+      color = "#00000FFF",
+      width = 1
+      )
+    )
+  )  %>%
+  add_markers(
+    data = filter(edx_alpha_diet, subject == "gorilla"),
+    x      = ~Estimate_ED60,
+    y      = ~labs_treatment,
+    name   = "ED40",
+    marker = list(
+    color  = "#332288FF",
+    symbol = "circle",
+    opacity = 0.7,
+    size    = 8,
+    line = list(
+      color = "#00000FFF",
+      width = 1
+      )
+    )
+  ) %>%
+  add_segments(
+    data = filter(edx_alpha_diet, subject == "loris"),
+    x    = ~Estimate_ED40,
+    xend = ~Estimate_ED60,
+    y    = ~labs_treatment,
+    yend = ~labs_treatment,
+    line = list(
+      color = "#882255FF",
+      width = 2
+    ),
+    showlegend = FALSE
+  ) %>%
+  add_markers(
+    data = filter(edx_alpha_diet, subject == "loris"),
+    x      = ~Estimate_ED40,
+    y      = ~labs_treatment,
+    name   = "ED40",
+    marker = list(
+    color  = "#882255FF",
+    symbol = "square",
+    opacity = 0.7,
+    size    = 8,
+    line = list(
+      color = "#00000FFF",
+      width = 1
+      )
+    )
+  )  %>%
+  add_markers(
+    data = filter(edx_alpha_diet, subject == "loris"),
+    x      = ~Estimate_ED60,
+    y      = ~labs_treatment,
+    name   = "ED40",
+    marker = list(
+    color  = "#882255FF",
+    symbol = "square",
+    opacity = 0.7,
+    size    = 8,
+    line = list(
+      color = "#00000FFF",
+      width = 1
+      )
+    )
+  ) %>%
+  add_segments(
+    data = filter(edx_alpha_diet, subject == "human"),
+    x    = ~Estimate_ED40,
+    xend = ~Estimate_ED60,
+    y    = ~labs_treatment,
+    yend = ~labs_treatment,
+    line = list(
+      color = "#117733FF",
+      width = 2
+    ),
+    showlegend = FALSE
+  ) %>%
+  add_markers(
+    data = filter(edx_alpha_diet, subject == "human"),
+    x      = ~Estimate_ED40,
+    y      = ~labs_treatment,
+    name   = "ED40",
+    marker = list(
+    color  = "#117733FF",
+    symbol = "square",
+    opacity = 0.7,
+    size    = 8,
+    line = list(
+      color = "#00000FFF",
+      width = 1
+      )
+    )
+  )  %>%
+  add_markers(
+    data = filter(edx_alpha_diet, subject == "human"),
+    x      = ~Estimate_ED60,
+    y      = ~labs_treatment,
+    name   = "ED40",
+    marker = list(
+    color  = "#117733FF",
+    symbol = "square",
+    opacity = 0.7,
+    size    = 8,
+    line = list(
+      color = "#00000FFF",
+      width = 1
+      )
+    )
+  ) %>%
+  layout(
+    title = "ER\u03B1 - Diet",
+    xaxis = list(
+      title = "Effective Dose",
+      tickformat  = ".2f",
+      hoverformat = ".2f",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T
+      ),
+    yaxis = list(
+      title = "Treatment + Subject",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T
+    )
+  )
+```
+
+
+
+```{r}
+edx <- edx_tbl %>%
+  col_list("subject") %>%
+  arrange(group) %>%
+  group_by(labs_er) %>%
+  group_split() %>%
+  set_names(., map(., \(x) paste0(x[["labs_er"]][1]))) %>%
+  map_depth(1, \(x) group_by(x, groups_treatment)) %>%
+  map_depth(1, \(x) group_split(x)) %>%
+  map_depth(1, \(x) set_names(x, map(x, \(y) paste0(y[["groups_treatment"]][1]))))
+```
+
+```{r}
+db_plot_diet <- function(data, name, er) {
+  if (er == "alpha") {
+    yaxis <- list(
+      title          = "Species + Treatment",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T
+    )
+  } else if (er == "beta") {
+    yaxis <- list(
+      title          = "",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T,
+      showticklabels = F
+    )
+  }
+  
+  if (name == "Diet Extract") {
+    xaxis <- list(
+      title = "Effective Dose",
+      tickformat  = ".2f",
+      hoverformat = ".2f",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T
+    )
+  } else if (name %in% c("Estrogen", "Metabolite")) {
+    xaxis <- list(
+      tickformat     = ".0e",
+      hoverformat    = ".0e",
+      exponentformat = "power",
+      zeroline       = F,
+      showgrid       = F,
+      showline       = T
+    )
+  }
+
+ plot <- plot_ly() %>%
+  add_segments(
+    data = data,
+    x    = ~Estimate_ED40,
+    xend = ~Estimate_ED60,
+    y    = ~group,
+    yend = ~group,
+    color = ~subject,
+    colors = colors,
+    showlegend = FALSE
+  ) %>%
+  add_markers(
+    x = ~Estimate_ED40,
+    y = ~group,
+    name  = "ED40",
+    color = ~subject,
+    colors = colors
+  ) %>%
+  add_markers(
+    x = ~Estimate_ED60,
+    y = ~group,
+    name  = "ED60",
+    color = ~subject,
+    colors = colors
+  ) %>%
+  layout(
+    showlegend = FALSE,
+    xaxis = xaxis,
+    yaxis = yaxis
+  )
+ return(plot)
+}
+
+db_subplots_rows <- function(groups, er) {
+  plots <- imap(groups, \(x, idx) db_plot_diet(x, idx, er))
+  
+  subplot_out <- subplot(
+    plots[["Estrogen"]],
+    plots[["Metabolite"]],
+    plots[["Diet Extract"]],
+    nrows = 3,
+    shareX = FALSE,
+    shareY = FALSE,
+    titleX = TRUE,
+    titleY = TRUE
+  )
+  
+  return(subplot_out)
+}
+
+db_subplots_cols <- function(receptors) {
+  
+  alpha <- db_subplots_rows(receptors[[1]], "alpha") %>%
+    add_annotations(
+      text    = "ER\u03B1",
+      x       = 0.5,
+      y       = 1,
+      xref    = "paper",
+      yref    = "paper",
+      xanchor = "center",
+      yanchor = "bottom",
+      showarrow = FALSE
+    )
+  beta  <- db_subplots_rows(receptors[[2]], "beta") %>%
+    add_annotations(
+      text    = "ER\u03B2",
+      x       = 0.5,
+      y       = 1,
+      xref    = "paper",
+      yref    = "paper",
+      xanchor = "center",
+      yanchor = "bottom",
+      showarrow = FALSE
+    )
+  
+  subplot_out <- subplot(
+    alpha,
+    beta,
+    nrows = 1,
+    shareX = FALSE,
+    shareY = FALSE,
+    titleX = FALSE,
+    titleY = FALSE
+  )
+  
+  return(subplot_out)
+}
+
+
+```
+
+```{r}
+db_ed <- db_subplots_cols(edx)
+db_ed
+```
+
+
+```{r}
+coefs <- map(drc_working, \(x) coef(x))
+```
+
 
 ```{r}
 groups_coefs_tbl <- map(drc_working, \(x) coef(x)) %>%
@@ -571,32 +985,5 @@ dashboard_ed50 <- navset_ed50(plates_coefs)
 
 save_html(dashboard_ed50, "visuals/receptor_assays/ed50.html")
 ```
-
-
-
-
-## Dashboard for Visuals
-
-
-
-```{r}
-dashboard <- navset_tab(
-  nav_panel("Model Selection"     , msel_plots),
-  nav_panel("Dmax Boxplots"       , plates_dmax),
-  nav_panel("Residuals"           , resid_qq_complete),
-  nav_panel("Dose-Response Curves", curve_complete),
-  nav_panel("Raw Dose-Response"   , raw_scatter_complete)
-)
-
-save_html(dashboard, "visuals/receptor_assays/model_selection_dashboard.html")
-```
-
-### Dashboard Notes
-
-**Exclude the following Treatments:**
-
-- Lettuce
-- WI
-
 
 
