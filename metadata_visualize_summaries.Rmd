@@ -1,0 +1,433 @@
+---
+title: "metadata_visualize_summaries"
+output: html_document
+---
+
+
+```{r}
+metadata_summary <- metadata %>%
+  mutate(diet_num             = as.integer(factor(diet_name)),
+         holding_num          = as.integer(factor(holding)),
+         warb_status_num      = as.integer(factor(warb_status)),
+         steps_remaining_num  = as.integer(factor(steps_remaining, levels = steps_remaining_factors)),
+         pair_access_num      = as.integer(factor(pair_access))
+         )  %>%
+  mutate(subject      = str_to_title(subject),
+         holding      = str_to_title(holding),
+         pair_access  = str_to_title(pair_access),
+         warb_status  = str_to_title(warb_status),
+         across(all_of(dose_cols), ~ rescale_dose(.x, max(.x)))) %>%
+  select(all_of(summary_variables))
+```
+
+
+```{r}
+food_subtable <- filter(nutrition, class == "Foods") %>%
+  select(diet_name, item, relative)
+
+nutrient_subtable <- filter(nutrition, class != "Foods") %>%
+  select(diet_name, class, item, relative)
+```
+
+```{r}
+library(htmltools)
+
+rating_stars <- function(rating, max_rating = 5) {
+  star_icon <- function(empty = FALSE) {
+    tagAppendAttributes(shiny::icon("star"),
+      style = paste("color:", if (empty) "#edf0f2" else "orange"),
+      "aria-hidden" = "true"
+    )
+  }
+  rounded_rating <- floor(rating + 0.5)  # always round up
+  stars <- lapply(seq_len(max_rating), function(i) {
+    if (i <= rounded_rating) star_icon() else star_icon(empty = TRUE)
+  })
+  label <- sprintf("%s out of %s stars", rating, max_rating)
+  div(title = label, role = "img", stars)
+}
+
+ratings <- data.frame(
+  Movie = c("Silent Serpent", "Nowhere to Hyde", "The Ape-Man Goes to Mars", "A Menace in Venice"),
+  Rating = c(3.65, 2.35, 4.5, 1.4),
+  Votes = c(115, 37, 60, 99)
+)
+
+reactable(ratings, columns = list(
+  Rating = colDef(cell = function(value) rating_stars(value))
+))
+```
+
+
+```{r}
+rating_bristol <- function(bristol, max_score = 6) {
+  poop_icon <- function(empty = FALSE) {
+    tagAppendAttributes(icon("poop"),
+      style = paste("color:", if (empty) "#edf0f2" else "#734939FF"),
+      "aria-hidden" = "true"
+    )
+  }
+  rounded_bristol <- floor(bristol + 0.5)  # always round up
+  icons <- lapply(seq_len(max_score), function(i) {
+    if (i <= rounded_bristol) poop_icon() else poop_icon(empty = TRUE)
+  })
+  label <- sprintf("%s out of %s score", bristol, max_score)
+  div(title = label, role = "img", icons)
+}
+```
+
+```{r}
+rating_dose <- function(dose, max_dose = 2) {
+  dose_icon <- function(empty = FALSE) {
+    tagAppendAttributes(icon("vial"),
+      style = paste("color:", if (empty) "#edf0f2" else "#2C6184FF"),
+      "aria-hidden" = "true"
+    )
+  }
+  doubled_dose <- score*2  # .5 becomes 1 and 1 becomes 2
+  doses <- lapply(seq_len(max_dose), function(i) {
+    if (i <= doubled_dose) rating_dose() else rating_dose(empty = TRUE)
+  })
+  label <- sprintf("%s out of %s dose", dose, max_dose)
+  div(title = label, role = "img", doses)
+}
+```
+
+
+
+```{r}
+vis_metadata <- reactable(
+  metadata_summary,
+    compact             = T,
+    sortable            = T,
+    showPageSizeOptions = T,
+    showSortable        = T,
+    height              = 600,
+    theme               = flatly(),
+    details             = function(index, value) {
+    nutrients <- filter(nutrient_subtable, diet_name == metadata_summary$diet_name[index])
+    foods     <- filter(food_subtable    , diet_name == metadata_summary$diet_name[index])
+      nutr.tbl <- reactable(
+        nutrients,
+        fullWidth     = FALSE,
+        theme         = flatly(),
+        columns       = list(
+                      diet_name = colDef(show = FALSE),
+                      class     = colDef(name = "Class",
+                            style = JS("function(rowInfo, column, state) {
+             const firstSorted = state.sorted[0]
+             if (!firstSorted || firstSorted.id === 'class') {
+               const prevRow = state.pageRows[rowInfo.viewIndex - 1]
+                          if (prevRow && rowInfo.values['class'] === prevRow['class']) {
+                            return { visibility: 'hidden' }
+                          }
+                        }
+                      }")),
+                      item      = colDef(name = "Nutrient"),
+                      relative  = colDef(header = tippy(
+            "Amount Fed", tooltip = "As proportion of the max fed for that nutrient over study period."),
+            cell  = data_bars(
+                 nutrients, 
+                 text_position = "outside-base", 
+                 box_shadow    = TRUE,
+                 fill_color    = paletteer_d("PNWColors::Starfish"),
+                 max_value     = 1,
+                 background    = 'transparent',
+                 number_fmt    = label_percent()
+                 ))
+        )
+        
+      )
+      
+      food.tbl <- reactable(
+        foods,
+        fullWidth     = FALSE,
+        theme         = flatly(),
+        columns       = list(
+          diet_name = colDef(show = FALSE),
+          item      = colDef(name = "Food"),
+          relative  = colDef(header = tippy(
+            "Amount Fed", tooltip = "As proportion of the total weight of that day's diet."),
+            cell  = data_bars(
+                 foods, 
+                 text_position = "outside-base", 
+                 box_shadow    = TRUE,
+                 fill_color    = paletteer_d("PNWColors::Starfish"),
+                 max_value     = 1,
+                 background    = 'transparent',
+                 number_fmt    = label_percent()
+                 )
+            )
+            
+        )
+        
+      )
+      div(class="container", style = list(margin = "8px 50px"), 
+          div(style = list(margin = "5px 5px"), food.tbl), 
+          div(style = list(margin = "5px 5px"), nutr.tbl)
+          )
+    },
+  columns = list(
+    study_day             = colDef(name = "Day"),
+    CollectionDate        = colDef(show = FALSE),
+    Subj_Certainty        = colDef(show = FALSE),
+    subject               = colDef(name = "Subject", 
+          cell = function(value, index) {
+            Subj_Certainty <- metadata_summary$Subj_Certainty[index]
+            icon           <- if(value == "Warble") icon("venus", style = "color: #BA7999FF") else if (value == "Culi") icon("mars", style = "color: #2C6184FF") else ""
+            certain        <- if(Subj_Certainty == "yes") icon("check", style = "color: #4A9152FF") else if (Subj_Certainty == "no") icon("question", style = "color: #EB7F54FF") else ""
+
+            div(class="container", div(class="container", div(certain), div(icon)), div(value))
+            
+                     }),
+    identifier            = colDef(name = "Sample ID"),
+    steps_remaining       = colDef(
+                           header   = tippy_lab_stage(),
+                           maxWidth = 60,
+                           cell     = function(value, index) {
+          icon <-  if(value == "sample not extracted") icon("poop", style = "color: #F2AF4AFF") else if (value == "extract not sequenced") icon("vial", style = "color: #C36377FF") else if (value == "sample extracted and sequenced") icon("dna", style = "color: #1D457FFF") else ""
+          div(icon)
+                           }
+    ),
+    
+  bristol         = colDef(header = tippy_bristol(),    cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "poop",
+    fill_color  = "#734939FF",
+    empty_color = "#FDF5F1FF"
+  )),
+  probiotic       = colDef(header = tippy_probiotic() , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  fiber           = colDef(header = tippy_fiber()     , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  steroid         = colDef(header = tippy_steroid()   , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  antibiotic      = colDef(header = tippy_antibiotic(), maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  antidiarrheal   = colDef(header = tippy_antidiar()  , maxWidth = 70, cell = icon_assign(
+    data        = metadata_summary,
+    icon        = "vial",
+    fill_color  = "#204D88FF",
+    empty_color = "#EFEFEFFF",
+    seq_by      = 0.5
+  )),
+  holding         = colDef(header = tippy_enclosure() , maxWidth = 70,
+                           cell = color_tiles(metadata_summary, 
+                                              colors   = paletteer_d("PNWColors::Starfish"), 
+                                              color_by = "holding_num")),
+  warb_status     = colDef(header = tippy_warb_status(),
+                           cell = color_tiles(metadata_summary, 
+                                              colors   = paletteer_d("PNWColors::Starfish"), 
+                                              color_by = "warb_status_num")),
+  pair_access     = colDef(header = tippy_pair_access(),
+                           cell = color_tiles(metadata_summary, 
+                                              colors   = paletteer_d("PNWColors::Starfish"), 
+                                              color_by = "pair_access_num"),
+                           maxWidth = 50),
+  keeper_note     = colDef(header = tippy_keeper_note()),
+  diet_name       = colDef(header = tippy_diet(),
+                           cell = color_tiles(metadata_summary,
+                                              colors     = paletteer_d("PNWColors::Starfish"),
+                                              color_by   = "diet_num",
+                                              opacity    = 0.7,
+                                              box_shadow = TRUE,
+                                              bold_text  = TRUE)),
+    Total_rel_max         = colDef(header = tippy(
+      "Relative Diet Weight", 
+      tooltip = "As proportion of maximum total diet weight over study period"),
+      align   = "center",
+      cell    = bubble_grid(data      = metadata_summary, 
+                         colors        = paletteer_d("PNWColors::Starfish"), 
+                         max_value = 1)),
+    Total_Protein         = colDef(),
+    Total_Fat             = colDef(),
+    Total_CHO_by_diff     = colDef(),
+    Total_Ash             = colDef() ,
+  subject_age       = colDef(header = tippy_subj_age(),
+                             maxWidth = 50),
+  StudbookID        = colDef(header = tippy_studbook(),
+                             maxWidth = 50),
+  SampleID          = colDef(header = tippy_sampID()),
+  SampleNotes       = colDef(header = tippy_collectNotes()),
+  ExtractID         = colDef(header = tippy_extractID()),
+  ExtractDate       = colDef(header = tippy_extractDate(),
+                             format = colFormat(date = TRUE)),
+  ExtractConc       = colDef(header = tippy_extractConc(),
+                             cell = concentration_cell(metadata_summary)),
+  ExtractKit        = colDef(header = tippy_extractKit()),
+  ExtractBox        = colDef(header = tippy_extractBox()),
+  ExtractNotes      = colDef(header = tippy_extractNotes()),
+  SequenceID        = colDef(header = tippy_seqID()),
+  LibPrepDate       = colDef(header = tippy_libprepDate(),
+                             format = colFormat(date = TRUE)),
+  LibraryCode       = colDef(header = tippy_libprepID(),
+                             maxWidth = 70),
+  LibPrepKit        = colDef(header = tippy_libprepKit()),
+  LibraryBarcode    = colDef(header = tippy_barcode(),
+                             maxWidth = 50),
+  Conc_QC2          = colDef(header = tippy_finalConc()),
+  SeqDate           = colDef(header = tippy_seqDate(),
+                             format = colFormat(date = TRUE)),
+  FlowCellType      = colDef(header = tippy_flowcell()),
+  SeqDevice         = colDef(header = tippy_seqDevice()),
+  reads_unclassified= colDef(header = tippy_reads_unclass(),
+                             cell = reads_unclass_cell(metadata_summary))
+  )
+)
+```
+
+
+
+
+```{r}
+vis_metadata <- metadata_summary %>% 
+  select(all_of(summary_variables)) %>%
+  reactable(
+    compact             = T,
+    sortable            = T,
+    showPageSizeOptions = T,
+    showSortable        = T,
+    height              = 600,
+    theme               = flatly(),
+    columns             = list(
+  study_day       = colDef(header   = tippy_study_day(),
+                           maxWidth = 50),
+  CollectionDate  = colDef(header   = tippy_collectDate(),
+                           format   = colFormat(date = TRUE)),
+  Subj_Certainty  = colDef(header   = tippy_subj_certain(),
+                           cell     = subj_certain_cell(metadata_summary),
+                           maxWidth = 50),
+  subject         = colDef(header   = tippy_subject(),
+                           cell     = subj_cell(metadata_summary)),
+  identifier      = colDef(header   = tippy_identifier()),
+  steps_remaining = colDef(header   = tippy_lab_stage(),
+                           cell     = steps_remain_cell(metadata_summary),
+                           maxWidth = 60),
+  bristol    = colDef(header = tippy_bristol(),
+                           cell = bristol_cell(metadata_summary)),
+  diet_name       = colDef(header = tippy_diet(),
+                           cell = color_tiles(metadata_summary,
+                                              color_ref  = "diet_color",
+                                              opacity    = 0.7,
+                                              box_shadow = TRUE,
+                                              bold_text  = TRUE)),
+  total_kcal      = colDef(header = tippy_total_kcal(),
+                           maxWidth = 40),
+  total_mg        = colDef(header = tippy_total_mg(),
+                           cell = nutrient_cell(metadata_summary),
+                           details = function(index) {food_subtab(metadata_summary, index)}),
+  total_proteins     = colDef(header = tippy_protein(),
+                           cell = nutrient_cell(metadata_summary),
+                           details = function(index) {nutrient_details(metadata_summary, index, proteins_expand)}),
+  total_fats         = colDef(header = tippy_fat(),
+                           cell = nutrient_cell(metadata_summary),
+                           details = function(index) {nutrient_details(metadata_summary, index, fats_expand)}),
+  CHO_fed         = colDef(header = tippy_chos(),
+                           cell = nutrient_cell(metadata_summary),
+                           details = function(index) {nutrient_details(metadata_summary, index, CHOs_expand)}),
+  mineral_fed     = colDef(header = tippy_ash(),
+                           cell = nutrient_cell(metadata_summary),
+                           details = function(index) {nutrient_details(metadata_summary, index, Ash_expand)}),
+  vitamins        = colDef(header = tippy_vitamins(),
+                           cell = function(value) {"Expand Details \u230e"},
+                           details = function(index) {nutrient_details(metadata_summary, index, vitamins_expand)}),
+  probiotic       = colDef(header = tippy_probiotic(),
+                           cell = supplement_cell(metadata_summary, "droplet"),
+                           maxWidth = 70),
+  fiber           = colDef(header = tippy_fiber(),
+                           cell = supplement_cell(metadata_summary, "capsules"),
+                           maxWidth = 70),
+  steroid         = colDef(header = tippy_steroid(),
+                           cell = supplement_cell(metadata_summary, "syringe"),
+                           maxWidth = 70),
+  antibiotic      = colDef(header = tippy_antibiotic(),
+                           cell = supplement_cell(metadata_summary, "prescription-bottle-medical"),
+                           maxWidth = 70),
+  antidiarrheal   = colDef(header = tippy_antidiar(),
+                           cell = supplement_cell(metadata_summary, "poop"),
+                           maxWidth = 70),
+  holding         = colDef(header = tippy_enclosure(),
+                           cell = color_tiles(metadata_summary, color_ref = "holding_color"),
+                           maxWidth = 70),
+  warb_status     = colDef(header = tippy_warb_status(),
+                           cell = color_tiles(metadata_summary, color_ref = "warb_status_color")),
+  pair_access     = colDef(header = tippy_pair_access(),
+                           cell = pair_access_cell(metadata_summary),
+                           maxWidth = 50),
+  keeper_note     = colDef(header = tippy_keeper_note()),
+  Sex               = colDef(name = "Sex" ,
+                             cell = sex_cell(metadata_summary)),
+  subject_age       = colDef(header = tippy_subj_age(),
+                             maxWidth = 50),
+  StudbookID        = colDef(header = tippy_studbook(),
+                             maxWidth = 50),
+  SampleID          = colDef(header = tippy_sampID()),
+  SampleNotes       = colDef(header = tippy_collectNotes()),
+  ExtractID         = colDef(header = tippy_extractID()),
+  ExtractDate       = colDef(header = tippy_extractDate(),
+                             format = colFormat(date = TRUE)),
+  ExtractConc       = colDef(header = tippy_extractConc(),
+                             cell = concentration_cell(metadata_summary)),
+  ExtractKit        = colDef(header = tippy_extractKit()),
+  ExtractBox        = colDef(header = tippy_extractBox()),
+  ExtractNotes      = colDef(header = tippy_extractNotes()),
+  SequenceID        = colDef(header = tippy_seqID()),
+  LibPrepDate       = colDef(header = tippy_libprepDate(),
+                             format = colFormat(date = TRUE)),
+  LibraryCode       = colDef(header = tippy_libprepID(),
+                             maxWidth = 70),
+  LibPrepKit        = colDef(header = tippy_libprepKit()),
+  LibraryBarcode    = colDef(header = tippy_barcode(),
+                             maxWidth = 50),
+  Conc_QC2          = colDef(header = tippy_finalConc(),
+                             cell = concentration_cell(metadata_summary)),
+  SeqDate           = colDef(header = tippy_seqDate(),
+                             format = colFormat(date = TRUE)),
+  FlowCellType      = colDef(header = tippy_flowcell()),
+  SeqDevice         = colDef(header = tippy_seqDevice()),
+  reads_unclassified= colDef(header = tippy_reads_unclass(),
+                             cell = reads_unclass_cell(metadata_summary)),
+  holding_color     = colDef(show = FALSE),
+  icon_vitamins     = colDef(show = FALSE),
+  color_pair_access     = colDef(show = FALSE),
+  icon_pair_access      = colDef(show = FALSE),
+  icon_steps_remaining  = colDef(show = FALSE),
+  color_steps_remaining = colDef(show = FALSE),
+  icon_subject          = colDef(show = FALSE),
+  color_subject         = colDef(show = FALSE),
+  warb_status_color     = colDef(show = FALSE),
+  icon_Subj_Certainty   = colDef(show = FALSE),
+  color_Subj_Certainty  = colDef(show = FALSE),
+  diet_color            = colDef(show = FALSE)
+    )
+  ) %>%
+  add_title("Metadata Summary for Pygmy Loris Microbiome Project") %>%
+  add_subtitle("One row per sample, includes nested tibbles with nutrition data (hover headers for details)") %>%
+  add_source(paste0("Last updated on ", today()))
+
+save_reactable_test(vis_metadata, path$metadata$reactable)
+```
+
+```{r}
+vis_metadata
+```

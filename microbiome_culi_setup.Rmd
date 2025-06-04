@@ -1,0 +1,61 @@
+---
+title: "Preparing 16S Data for MicroEco-Based Analysis"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: litera
+    toc: true
+    toc_float: true
+  
+---
+
+```{r}
+knitr::opts_chunk$set(
+  warning=FALSE,
+  message=FALSE,
+  echo=TRUE,
+  comment=""
+)
+
+library(conflicted)
+library(tidyverse)
+library(bslib)
+library(htmltools)
+library(microeco)
+
+source("setup/knit_engines.R")
+source("setup/conflicted.R")
+```
+
+# Intro
+
+## This Workflow
+
+This is the current recommended pipeline for processing **full-length 16S reads and count data** generated from the EPI2ME Labs wf-16s workflow.  
+
+## Some Background
+
+Microbiome data analysis has rapidly evolved into a cornerstone of biological and ecological research, offering insights into how microbial communities influence everything from human health to environmental ecosystems. However, this type of analysis often involves multiple complex steps: data normalization, diversity calculations, community composition comparisons, and advanced visualizations.  
+
+>For more information on some of the statistical tests I often use/recommend, see the tutorial in this directory called [Data_Notes](Data_Notes.html).
+
+## MicroEco
+
+The [microeco R package](https://chiliubio.github.io/microeco_tutorial/) provides an elegant and comprehensive solution by integrating many of the most current and popular microbiome analysis approaches into a unified framework. This package simplifies workflows, making it easy to prepare datasets, calculate metrics, and create publication-quality visualizations. Importantly, microeco is designed to work seamlessly with ggplot2 and other widely used R packages, offering flexibility for customization and compatibility with established workflows. If you click the link above, you will find a very comprehensive tutorial presenting the full array of analysis options.  
+
+In this workflow, we will prepare our datasets for use with microeco, ensuring that our data is clean, structured, and ready for downstream analyses such as diversity calculations, community comparisons, and informative visualizations.  
+
+### First Use
+
+MicroEco installation can be a bit tricky the first time, simply because of the number of dependencies. I created a [separate markdown file to walk you through the packages you will need](https://rich-molecular-health-lab.github.io/workflows_first_use/microeco_first_use.html), but the tutorial on [MicroEco's page does an even better job of explaining things](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence). If this is your first time on this workflow, I recommend you start with that, ensure all packages have been installed, and then proceed with this.  
+
+## The Data Used Here
+
+I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original .Rmd script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
+
+### Previous Scripts
+
+You should have already completed the [SampleInventory](https://rich-molecular-health-lab.github.io/SampleInventory.html) and [MetadataSetup](https://rich-molecular-health-lab.github.io/MetadataSetup.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
+

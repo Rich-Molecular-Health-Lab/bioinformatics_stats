@@ -1,0 +1,21 @@
+---
+title: "time_series_culi"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(
+  warning=FALSE,
+  message=FALSE,
+  echo=TRUE,
+  comment=""
+)
+
+library(conflicted)
+library(tidyverse)
+library(bslib)
+library(htmltools)
+library(microeco)
+library(mecodev)
+```
+

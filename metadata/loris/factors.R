@@ -955,7 +955,3 @@ summary_variables <- c(
   "warb_status_num"    , 
   "steps_remaining_num" 
 )
-
-
-
-source(here("metadata/loris/reactable_rendering.R"))
