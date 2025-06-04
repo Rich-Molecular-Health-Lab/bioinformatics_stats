@@ -1,0 +1,154 @@
+---
+title: "Receptor Assay Results"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output: 
+  flexdashboard::flex_dashboard:
+    theme:
+      bootswatch: minty
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(conflicted)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(drc)
+library(shiny)
+library(bslib)
+library(flexdashboard)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = ""
+  )
+
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::select)
+conflicts_prefer(plotly::layout)
+
+source("data/receptors/inputs.R")
+source("helpers/receptor_assays.R")
+
+esr_data <- read_csv("data/receptors/esr_assays_normalized.csv") %>%
+  group_by(
+    genus,
+    receptor,
+    treat_type,
+    treat_subtype,
+    treat,
+    treat_name
+  ) %>%
+  nest() %>%
+  mutate(
+    drm_result = map(data, \(x) drm(
+      fold_act ~ dose,
+      data = x,
+      fct  = LL.4()
+    )),
+    drm_summary = map(drm_result, \(x) summary(x, od = FALSE))
+  ) %>%
+  mutate(
+    dose_grid = map(data, \(x) seq(min(x$dose), 
+                                   max(x$dose), 
+                                   length.out = 100)),
+    preds     = map2(drm_result, 
+                     dose_grid, \(x, y) predict(x, 
+                                                data.frame(dose = y), 
+                                                interval = "confidence"))
+  ) %>%
+  mutate(curve = map2(dose_grid, 
+                      preds, \(x, y) tibble(dose  = x,        
+                                            resp  = y[,"Prediction"],
+                                            lower = y[,"Lower"],
+                                            upper = y[,"Upper"])))
+
+curve_data <- esr_data %>%
+  mutate(subj     = case_match(genus,
+                               "Gorilla" ~ "gorilla",
+                               "Xanthonycticebus" ~ "loris",
+                               "Homo" ~ "human")) %>%
+  mutate(filename = as.character(str_glue("{subj}_{receptor}"))) %>%
+  mutate(receptor = case_match(receptor, 
+                               "alpha" ~ "\u03B1", 
+                               "beta"  ~ "\u03B2")) %>%
+  mutate(label_short = paste(str_to_title(subj), receptor, 
+                       str_to_title(treat_subtype), 
+                       str_to_title(treat), sep = " "),
+         label = paste0(genus, 
+                        " ER", 
+                        receptor, 
+                        "<br>", 
+                        treat_name)) %>%
+  mutate(card_id = as.character(str_glue("{str_to_title(subj)} ER{receptor}: {treat}"))) %>%
+  ungroup() %>%
+  select(
+    genus,
+    receptor,
+    treat,
+    treat_subtype,
+    treat_name,
+    label,
+    label_short,
+    card_id,
+    filename,
+    curve
+  ) %>%
+  unnest(curve) %>%
+  mutate(x = log10(dose + 0.1)) %>%
+  arrange(receptor, genus, treat) %>%
+  group_by(receptor, genus, treat) %>%
+  group_split() %>%
+  set_names(map(., \(x) first(x$label)))
+```
+
+Column {data-width=650 .tabset}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+card_list <- imap(curve_data, \(x, idx) plot_card(x, idx)) %>% set_names(., "")
+```
+
+
+```{r}
+panels <- map(card_list, \(x) {nav_panel(title = x[["attribs"]][["id"]], value = div(x))})
+```
+
+```{r}
+panels <- map(curve_data, \(x) {nav_panel(title = first(x[["card_id"]]), value = plot_card(x, idx))})
+```
+
+
+```{r}
+card_tabs <- navset_tab(!!!panels)
+card_tabs
+```
+
+### Chart B
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart C
+
+```{r}
+
+```
+
+### Chart D
+
+```{r}
+
+```
+
