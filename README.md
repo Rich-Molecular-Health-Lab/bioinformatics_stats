@@ -13,17 +13,17 @@ Overview
 
 If you are working with any molecular samples in the lab, you should begin with the following workflows (in order):
 
-1. [SampleInventory.Rmd](SampleInventory.Rmd) & [SampleInventory.html](SampleInventory.html) - a script to streamline and standardize the information we maintain about every sample's process of purification and analysis for reliable downstream integration.
-2. [MetadataSetup.Rmd](MetadataSetup.Rmd) & [MetadataSetup.html](MetadataSetup.html) - a tutorial that models some best practices for brainstorming, listing, and organizing key potential independent variables for a given study and matching a score for each variable to each sample in one dataframe.
-3. [MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) & [MinIONReadProcessing.html](MinIONReadProcessing.html) - a tutorial to use the HCC cluster to process the raw sequencing data (.pod5 files) that we get from the ONT MinION sequencer directly after any sequencing run.
+1. [SampleInventory.Rmd](SampleInventory.Rmd) & [SampleInventory.html](https://rich-molecular-health-lab.github.io/read_processing/SampleInventory.html) - a script to streamline and standardize the information we maintain about every sample's process of purification and analysis for reliable downstream integration.
+2. [MetadataSetup.Rmd](MetadataSetup.Rmd) & [MetadataSetup.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html) - a tutorial that models some best practices for brainstorming, listing, and organizing key potential independent variables for a given study and matching a score for each variable to each sample in one dataframe.
+3. [MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) & [MinIONReadProcessing.html](https://rich-molecular-health-lab.github.io/read_processing/MinIONReadProcessing.html) - a tutorial to use the HCC cluster to process the raw sequencing data (.pod5 files) that we get from the ONT MinION sequencer directly after any sequencing run.
   - *Note: with the new Linux laptop we may be able to shift some of these scripts to local runs rather than using the high performance nodes on the HCC. If this works, I will add a modified script to run the pipeline locally.*
-4. [Data_Notes.Rmd](Data_Notes.Rmd) & [Data_Notes.html](Data_Notes.html) - some notes, thoughts, and examples on the options we most often use for testing different hypotheses with the types of data we generate.
+4. [Data_Notes.Rmd](Data_Notes.Rmd) & [Data_Notes.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/Data_Notes.html) - some notes, thoughts, and examples on the options we most often use for testing different hypotheses with the types of data we generate.
 
 If you are working with microbiome data, then you should follow these tutorials with the MicroEco Setup:
 
-5. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [MicroEcoDataPrep.html](MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
+5. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
   - *Note: the [MicroEco package manual](https://chiliubio.github.io/microeco_tutorial/) is also a helpful reference for this.*
-6. [ExploreResults_LorisMicrobiome.Rmd](ExploreResults_LorisMicrobiome.Rmd) & [ExploreResults_LorisMicrobiome.html](ExploreResults_LorisMicrobiome.html) - in prep tutorial to use microeco for exploratory analysis and summary stats using loris microbiome data. Note: you must follow the MicroEcoDataPrep script to prepare datasets that will work with this pipeline.
+6. [ExploreResults_LorisMicrobiome.Rmd](ExploreResults_LorisMicrobiome.Rmd) & [ExploreResults_LorisMicrobiome.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/ExploreResults_LorisMicrobiome.html) - in prep tutorial to use microeco for exploratory analysis and summary stats using loris microbiome data. Note: you must follow the MicroEcoDataPrep script to prepare datasets that will work with this pipeline.
 
 
 The raw scripts with chunk of code that you can run directly (assuming you download the entire repository with necessary dependencies) are in .Rmd format. I also use the knitr package to create "prettier" (but read-only) versions of those files, which are easier to read and study on their own.
@@ -56,12 +56,11 @@ Main R-Markdown (.Rmd) Files to Start From (each also available as a knitted htm
 
 R Markdown File                                      |Knitted HTML Link                                      |  purpose
 -----------------------------------------------------|-------------------------------------------------------|------------------------------------------------------------------------------------
-[SampleInventory.Rmd](SampleInventory.Rmd)           |[SampleInventory.html](SampleInventory.html)           |  Maintain records of all Rich Lab samples and export samplesheets for Dorado.
-[MetadataSetup.Rmd](MetadataSetup.Rmd)               |[MetadataSetup.html](MetadataSetup.html)               |  Create predictor variables, code them, and then match to samples.
-[MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) |[MinIONReadProcessing.html](MinIONReadProcessing.html) |  Basecall, demultiplex, filter, clean, and organize raw ONT sequence data.
-[MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd)         |[MicroEcoDataPrep.html](MicroEcoDataPrep.html)         |  Prepare aligned reads and other wf-16s outputs for analysis using MicroEco.
-[Data_Notes.Rmd](Data_Notes.Rmd)                     |[Data_Notes.html](Data_Notes.html)                     |  Review basic statistical options available for some of our main datasets.
-[dummy_samples.Rmd](dummy_samples.Rmd)               |[dummy_samples.Rmd](dummy_samples.html)                |  Export formatted tables with dummy data for samples to test different pipelines.
+[SampleInventory.Rmd](SampleInventory.Rmd)           |[SampleInventory.html](https://rich-molecular-health-lab.github.io/read_processing/SampleInventory.html)           |  Maintain records of all Rich Lab samples and export samplesheets for Dorado.
+[MetadataSetup.Rmd](MetadataSetup.Rmd)               |[MetadataSetup.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html)               |  Create predictor variables, code them, and then match to samples.
+[MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) |[MinIONReadProcessing.html](https://rich-molecular-health-lab.github.io/read_processing/MinIONReadProcessing.html) |  Basecall, demultiplex, filter, clean, and organize raw ONT sequence data.
+[MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd)         |[MicroEcoDataPrep.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html)         |  Prepare aligned reads and other wf-16s outputs for analysis using MicroEco.
+[Data_Notes.Rmd](Data_Notes.Rmd)                     |[Data_Notes.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/Data_Notes.html)                     |  Review basic statistical options available for some of our main datasets.
 
 Scripts not specific to R languages:
 
@@ -100,9 +99,9 @@ Highlighted Summaries or Graphics
 ---------------------------------------------------------------------
 These links take you to full-page summary tables or graphics compiled for some of the in-progress analyses.
 
-- [Summary Table of Loris Metadata](metadata/loris/loris_metadata_summary.html) 
-- [Summary Table of Sequencing Depths for Loris 16S Data](visuals/loris_depth_summary.html)
-- [Histogram of Sequencing Depths for Loris 16S Data](visuals/loris_depth_hist.html)
+- [Summary Table of Loris Metadata](https://rich-molecular-health-lab.github.io/bioinformatics_stats/metadata/loris/loris_metadata_summary.html) 
+- [Summary Table of Sequencing Depths for Loris 16S Data](https://rich-molecular-health-lab.github.io/bioinformatics_stats/visuals/loris_depth_summary.html)
+- [Histogram of Sequencing Depths for Loris 16S Data](https://rich-molecular-health-lab.github.io/bioinformatics_stats/visuals/loris_depth_hist.html)
 
 
 
