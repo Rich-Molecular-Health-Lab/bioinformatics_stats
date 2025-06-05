@@ -8,15 +8,15 @@ nameby_begin <- function(list) {
 
 diet_trials <- list(
   list(begin = ymd(path$day1   ), diet = "baseline"),
-  list(begin = ymd("2023-11-23"), diet = "oatgel"), 
+  list(begin = ymd("2023-11-23"), diet = "oatmeal_gel"), 
   list(begin = ymd("2023-12-14"), diet = "baseline"),
-  list(begin = ymd("2024-01-25"), diet = "oatgel"),
+  list(begin = ymd("2024-01-25"), diet = "oatmeal_gel"),
   list(begin = ymd("2024-05-29"), diet = "baseline"), 
-  list(begin = ymd("2024-06-15"), diet = "biscuit_elim"),
-  list(begin = ymd("2024-06-29"), diet = "lessBug_moreEgg"),
-  list(begin = ymd("2024-07-13"), diet = "seasonals"), 
+  list(begin = ymd("2024-06-15"), diet = "biscuit_elimination"),
+  list(begin = ymd("2024-06-29"), diet = "less_bugs_more_egg"),
+  list(begin = ymd("2024-07-13"), diet = "sweet_potato_green_beans_carrots_pumpkin"), 
   list(begin = ymd("2024-07-27"), diet = "baseline"),  
-  list(begin = ymd("2024-08-10"), diet = "oatgel"), 
+  list(begin = ymd("2024-08-10"), diet = "oatmeal_gel"), 
   list(begin = ymd("2024-08-24"), diet = "baseline"), 
   list(begin = ymd("2024-09-21"), diet = "low_lectin"), 
   list(begin = ymd("2024-10-19"), diet = "baseline")
@@ -26,7 +26,7 @@ warble_trials <- list(
   list(begin = ymd(path$day1   ), diet = "baseline")
 ) %>% enframe(name = NULL) %>% 
   unnest_wider(value) %>%
-  mutate(diet_name = diet, .keep = "unused") %>%
+  mutate(diet_name = str_to_lower(diet), .keep = "unused") %>%
   mutate(end = today(), subject = "warble")
 
 supplement_details <- list(

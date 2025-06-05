@@ -4,13 +4,10 @@ author: "Alicia Rich"
 output:
   html_document:
     theme:
-      bootswatch: litera
+      bslib: true
+    css: journal.css
     toc: true
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-    code_folding: "show"
-    fig_caption: true
+    toc_float: true
     df_print: paged
 params:
   sampleset: "loris"
@@ -24,6 +21,7 @@ global             <- config::get(config = "default")
 library(tidyverse)
 library(bslib)
 library(htmltools)
+library(conflicted)
 
 source("setup/conflicted.R")
 source("setup/default_inputs.R")
@@ -32,13 +30,9 @@ source("setup/knit_engines.R")
 ```
 
 
-```{r, include = F}
+```{r}
 source("metadata/loris/factors.R")
 source("metadata/loris/diet_schedule.R")
-```
-
-
-```{r, include = F}
 source("metadata/loris/nutrition.R")
 source("metadata/loris/metadata_key.R")
 source("metadata/loris/hdz_loris_log.R")
@@ -69,7 +63,7 @@ page_fluid(
       open = FALSE,
       accordion_panel(
         "Show/Hide External File",
-        tagList(tags$pre(includeText(here("config.yml"))))
+        tagList(tags$pre(includeText("config.yml")))
     )
   )
 )
@@ -82,8 +76,8 @@ page_fluid(
     accordion(
       open = FALSE,
       accordion_panel(
-        "Show/Hide External Script",
-        tagList(tags$pre(includeText(here(global$setup))))
+        "config_paths.R",
+        tagList(tags$pre(includeText("setup/config_paths.R")))
     )
   )
 )
@@ -95,7 +89,7 @@ The code in the chunk above also generated a list of formatted codes for each av
 
 ### Other Setup Scripts
 
-The script that I pasted above sources additional scripts that I run routinely at the start of any work to bring in functions and other inputs with shorter code chunks. You can flip through the text from those scripts below.
+The script that I pasted above sources additional scripts that I run routinely at the start of any work to bring in functions and other inputs with shorter code chunks as well as the text of the yaml header for this R Markdown file. You can flip through the text from those below.
 
 ```{r, echo = FALSE}
 page_fluid(
@@ -103,16 +97,16 @@ page_fluid(
       title = "Other External Setup Scripts",
       open = FALSE,
       accordion_panel(
+        "yaml Header",
+        tagList(tags$pre(includeText("setup/header_default.txt")))
+    ),
+      accordion_panel(
         "conflicted.R",
         tagList(tags$pre(includeText("setup/conflicted.R")))
     ),
       accordion_panel(
         "knit_engines.R",
         tagList(tags$pre(includeText("setup/knit_engines.R")))
-    ),
-      accordion_panel(
-        "config_paths.R",
-        tagList(tags$pre(includeText("setup/config_paths.R")))
     )
   )
 )
@@ -123,30 +117,30 @@ page_fluid(
 I also source external scripts to bring in different configurations of metadata to use in this workflow. Again, it just keeps my markdown file tidier while also making it easier for me to run code from those scripts in different files or stages of analysis while ensuring I only need to make changes to the code or data in one location to apply it everywhere. Toggle the panels below if you would like to see the code in those scripts.
   - *Note: I am including the scripts that I use for loris metadata. These may vary for other datasets we use.*
 
-```{r}
+```{r, echo = FALSE}
 page_fluid(
     accordion(
       title = "External Metadata Scripts",
       open = FALSE,
       accordion_panel(
         "Render a Key for Metadata Variables with Descriptions",
-        tagList(tags$pre(includeText(here("metadata/loris/metadata_key.R"))))
+        tagList(tags$pre(includeText("metadata/loris/metadata_key.R")))
        ),
       accordion_panel(
         "Nutrition Data from HDZ",
-        tagList(tags$pre(includeText(here("metadata/loris/nutrition.R"))))
+        tagList(tags$pre(includeText("metadata/loris/nutrition.R")))
     ),
       accordion_panel(
         "Dates of Diet Trials and Other States/Events",
-        tagList(tags$pre(includeText(here("metadata/loris/hdz_loris_log.R"))))
+        tagList(tags$pre(includeText("metadata/loris/hdz_loris_log.R")))
     ),
       accordion_panel(
         "Formatting Diet Lists into Tables",
-        tagList(tags$pre(includeText(here("metadata/loris/diet_tables.R"))))
+        tagList(tags$pre(includeText("metadata/loris/diet_schedule.R")))
     ),
       accordion_panel(
         "Assign colors and titles to factors for visualization",
-        tagList(tags$pre(includeText(here("metadata/loris/factors.R"))))
+        tagList(tags$pre(includeText("metadata/loris/factors.R")))
        )
     )
   )
@@ -164,7 +158,7 @@ Once we combine all the pieces together, we will have a metadata table with one 
 
 ```{r}
 sample.days <- tibble(CollectionDate = seq.Date(
-                                from = ymd(loris$day1), 
+                                from = ymd(path$day1), 
                                 to   = today(), 
                                 by   = "day")
                       ) %>%
@@ -180,9 +174,7 @@ sample.days <- tibble(CollectionDate = seq.Date(
 First I will read in the sample inventory, which is actually already a metadata table itself. Later we will join this to our daily metadata table to create one large dataframe with all our variable scores matched to a sample.
 
 ```{r}
-samples <- read.table(path$inventories$all_stages, 
-                      header = T, 
-                      sep = "\t") %>%
+samples <- read_tsv(path$inventories$all_stages) %>%
             filter(!is.na(CollectionDate)) %>%
   mutate(across(any_of(date.vars),   ~ ymd(.)),
          across(any_of(yn.vars),     ~ str_to_lower(as.character(.))),
@@ -202,7 +194,7 @@ samples <- read.table(path$inventories$all_stages,
     CollectionDate < new_holding_start$warble & subject == "warble" ~ "old",
                              .default = "new"))
 
-print(head(samples))
+samples
 
 ```
 
@@ -279,27 +271,36 @@ I organized the schedule of diet trials into a nested list based on the day that
 Note that the script I am drawing from for this table also nested more detailed tables into individual columns. This is a way to organize our multi-level nutritional data into a single source that is easier to manipulate and restructure, depending on the scale or variables we want to include. So each row will represent one day, and each column represents a value for one of our variables. The nested columns contain a single table linking that day to that dataset, and additional rows organized by other variables.  
 
 ```{r}
-nutrients <- read.csv("metadata/loris/nutrients_bydiet.csv", header = TRUE) %>%
+nutrients <- read_csv("metadata/loris/nutrients_bydiet.csv", show_col_types = FALSE) %>%
+  rename_with(~str_replace_all(., "\\s", "_")) %>%
+  rename_with(~str_replace_all(., "\\.{3}", "col")) %>%
   select(diet_name = Diet,
-         class     = Nutrient.Class,
+         class     = Nutrient_Class,
          item      = Nutrient,
-         fed       = X,
-         units     = X.1) %>%
+         fed       = col4,
+         units     = col5) %>%
   filter(!is.na(fed)) %>%
   mutate(item = case_when(str_detect(units, "DM") ~ "Dry Matter", 
                           str_detect(units, "kcal") ~"KCal",
-                          .default = item),
-         fed   = if_else(units == "g" | units == "g as fed" | units == "g DM", fed*1000, fed)) %>%
-  mutate(units = case_when(units == "g" | units == "g as fed" | units == "g DM" ~ "mg", 
-                           item == "Ca:P" ~ "ratio",
-                           .default = units)) %>%
+                          .default = item)) %>%
+  mutate(units = case_when(
+    units == "g" | units == "g as fed" | units == "g DM" ~ "mg", 
+    str_detect(item, ":")  ~ "ratio",
+    .default = units)
+    ) %>%
+  mutate(fed   = if_else(units %in% c("g", "g as fed", "g DM"), fed*1000, fed)) %>%
   group_by(class, item) %>%
   mutate(relative    = fed/max(fed),
          relative_to = "item_max") %>% ungroup()
+```
 
-nutrition <- read.csv("metadata/loris/foods_bydiet.csv", header = TRUE) %>%
+
+```{r}
+nutrition <- read_csv("metadata/loris/foods_bydiet.csv", show_col_types = FALSE) %>%
+  rename_with(~str_replace_all(., "\\s", "_")) %>%
+  rename_with(~str_remove_all(., "\\(|\\)")) %>%
   mutate(item  = str_to_sentence(Feeds),
-         fed   = Fed..g. * 1000,
+         fed   = Fed_g * 1000,
          class = "Foods",
          units = "mg") %>%
   select(diet_name = Diet,
@@ -326,33 +327,26 @@ write.table(nutrition,
 nutrition_wide <- nutrition %>%
   select(diet_name, class, item, relative) %>%
   mutate(
-    across(c(class, item), 
-                ~ str_replace_all(.,
-              "\\s|:", "_")),
-    across(c(class, item), 
-                ~ str_remove_all(., "[(),+]"))) %>%
-  mutate(item = if_else(item == "Total", 
-                        str_glue("{item}", "{class}", .sep = "_"),
-                        item)) %>%
-  pivot_wider(id_cols     = "diet_name",
-              names_from  = "item",
+    across(c(class, item), ~ as.character(str_replace_all(., "\\s|:", "_"))),
+    across(c(class, item), ~ str_remove_all(., "[(),+]"))) %>%
+  pivot_wider(names_from  = c("class", "item"),
+              names_sep   = "_",
               values_from = "relative",
-              values_fill = 0,
-              names_sep   = "_") %>%
+              values_fill = 0) %>%
   relocate(
     ends_with("_Total"),
     starts_with("Total_"), .after = "diet_name") %>%
-  rename(Total_rel_max = Total_Total)
+  mutate(diet_name = str_replace_all(
+    str_to_lower(diet_name), "%\\s|,\\s|\\s|/", "_")) %>%
+  relocate(diet_name)
 ```
 
 ```{r}
 diet <- enframe(diet_trials, name = NULL) %>%
   unnest_wider(value) %>%
-  mutate(diet_name = diet, 
-         subject   = "culi", .keep = "unused") %>%
-  mutate(end = if_else(begin < max(begin), 
-                       lead(begin) - days(1), 
-                       today())) %>%
+  rename(diet_name = diet) %>%
+  mutate(subject   = "culi", diet_name = str_to_lower(diet_name)) %>%
+  mutate(end = if_else(begin < max(begin), lead(begin) - days(1), today())) %>%
   bind_rows(warble_trials) %>%
   mutate(date = map2(begin, end, seq, by = "day")) %>%  
   unnest(date) %>%
@@ -360,7 +354,7 @@ diet <- enframe(diet_trials, name = NULL) %>%
   relocate(date) %>% distinct() %>%
   left_join(nutrition_wide, by = join_by(diet_name))
 
-print(head(diet))
+diet
 ```
 
 Now we will do the same for the list that I created for each medication or supplement administered. Because these all have different dosage units and relative effects, I will adjust the dose units to represent the proportion of the max dosage administered. This makes the data easier to interpret and relate.  
@@ -390,7 +384,8 @@ diet_supplements <- enframe(supplements, name = NULL) %>%
   relocate(date) %>%
   right_join(diet, by = join_by(subject, date)) %>% distinct()
 
-print(head(diet_supplements))
+
+diet_supplements
 ```
 
 ## Subject Info
@@ -398,14 +393,15 @@ print(head(diet_supplements))
 Now I will read in some useful info about each subject from their AZA studbook.
 
 ```{r, warning = FALSE}
-studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
+studbook.info <- read_csv(path$metadata$studbook, show_col_types = FALSE) %>%
+  rename_with(~str_replace_all(., "\\s", "_")) %>%
   mutate(
           subject       = factor(str_to_lower(Name), levels = unique(str_to_lower(Name))),
           StudbookID    = factor(ID, levels = unique(ID)),
           Sex           = factor(Sex, levels = unique(Sex)),
           MotherID      = factor(Mother, levels = unique(Mother)),
           FatherID      = factor(Father, levels = unique(Father)),
-          BirthLocation = factor(Birth.Location, levels = unique(Birth.Location)),
+          BirthLocation = factor(Birth_Location, levels = unique(Birth_Location)),
           BirthYear     = year(make_date(year = Born))
           ) %>%
   select(
@@ -422,11 +418,9 @@ studbook.info <- read.csv(path$metadata$studbook, header = TRUE) %>%
 ## Bristol Scores
 
 ```{r}
-bristols <- read.table(path$metadata$bristol, 
-                       header = TRUE, 
-                       sep    = "\t") %>%
+bristols <- read_tsv(path$metadata$bristol) %>%
   mutate(date = ymd(date))
-print(head(bristols))
+bristols
 ```
 
 
@@ -456,13 +450,13 @@ metadata <- samples %>%
 write.table(metadata, path$metadata$summary , row.names = F, sep = "\t")
 
 
-print(head(metadata))
+metadata
 ```
 
 
 # Next Steps
 
->Now you should proceed to the MicroEco Workflow to Begin Merging Metadata with Microbiome Results for Analysis.
+>Now you should proceed to a Bioinformatics or Statistical Workflow to Begin Merging Metadata with Results for Analysis.
 
 
 

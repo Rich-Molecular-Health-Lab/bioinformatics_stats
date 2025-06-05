@@ -1,5 +1,5 @@
 nutrition_factors <- list(
-  foods    = c("biscuit", "HDZ_oatgel", "invertebrates",  "protein_rotate", "gum_arabic", "seasonal_veggies"),
+  foods    = c("biscuit", "HDZ_oatmeal_gel", "invertebrates",  "protein_rotate", "gum_arabic", "seasonal_veggies"),
   classes  = c("proteins", "fats", "CHOs", "Ash", "vitamins", "total"),
   proteins = c("methionine", "taurine", "total", "proteins_total"),
   fats     = c("omega3", "omega6", "total", "fats_total"),
@@ -16,10 +16,10 @@ holding_factors <- c(
 
 diet_factors <- c(
   "baseline",
-  "oatgel",
-  "biscuit_elim",
-  "lessBug_moreEgg",
-  "seasonals",
+  "oatmeal_gel",
+  "biscuit_elimination",
+  "less_Bugs_more_Egg",
+  "sweet_potato_green_beans_carrots_pumpkin",
   "low_lectin",
   "gum36_veg37_invert27",
   "water31_root31_protein19_gum19"
@@ -136,10 +136,10 @@ supplement_color <- c("#985A71FF")
 
 rename_diets <- c(
   "Baseline"                         = "baseline",
-  "Oat Gel"                          = "oatgel",
-  "Biscuit Elimination"              = "biscuit_elim",
-  "Less Bugg/More Egg"               = "lessBug_moreEgg",
-  "Seasonal Veggies"                 = "seasonals",
+  "Oatmeal Gel"                          = "oatmeal_gel",
+  "Biscuit Elimination"              = "biscuit_elimination",
+  "Less Bugg/More Egg"               = "less_Bugs_more_Egg",
+  "Seasonal Veggies"                 = "sweet_potato_green_beans_carrots_pumpkin",
   "Low Lectin"                       = "low_lectin",
   "Gum:Veggies:Invertebrates Ratio"  = "gum36_veg37_invert27",
   "Watery:Root:Protein:Gum Ratio"    = "water31_root31_protein19_gum19"
@@ -147,7 +147,7 @@ rename_diets <- c(
 
 rename_foods <- c(
  "Biscuit"                      = "biscuit", 
- "Oat Gel"                      = "HDZ_oatgel", 
+ "Oatmeal Gel"                      = "HDZ_oatmeal_gel", 
  "Invertebrates"                = "invertebrates",  
  "Protein Rotation"             = "protein_rotate", 
  "Egg (whole, cooked)"          = "egg_whole_cooked"       ,
@@ -715,7 +715,7 @@ env_vars <- list(
   
   "Diet Composition" = c(
     "Biscuit"                   = "Biscuit", 
-    "Oat Gel"                   = "Oat_Gel", 
+    "Oatmeal Gel"                   = "Oat_Gel", 
     "Invertebrates"             = "Invertebrates",  
     "Protein Rotation"          = "Protein_Rotation", 
     "Gum Arabic"                =  "Gum_Arabic", 

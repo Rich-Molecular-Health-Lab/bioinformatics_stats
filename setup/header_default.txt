@@ -1,0 +1,14 @@
+---
+output:
+  html_document:
+    theme:
+      bslib: true
+    css: journal.css
+    toc: true
+    toc_float: true
+    df_print: paged
+params:
+  sampleset: "loris"
+  seqrun: "hdz18"
+                     
+---

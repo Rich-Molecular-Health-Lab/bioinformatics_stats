@@ -41,7 +41,7 @@ knitr::knit_engines$set(terminal = function(options) {
 })
 
 
-opts_chunk$set(message = FALSE,
+knitr::opts_chunk$set(message = FALSE,
                warning = FALSE,
                echo    = TRUE,
                include = TRUE,
