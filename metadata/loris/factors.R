@@ -284,7 +284,6 @@ ordered_variables = c(
 )
 
 
-
 microeco_cols <- c(
   "study_day",
   "subject",

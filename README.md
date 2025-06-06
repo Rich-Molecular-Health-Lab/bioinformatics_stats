@@ -21,7 +21,7 @@ If you are working with any molecular samples in the lab, you should begin with 
 
 If you are working with microbiome data, then you should follow these tutorials with the MicroEco Setup:
 
-5. [MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd) & [https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
+5. [microbiome_new_data.Rmd](microbiome_new_data.Rmd) & [microbiome_new_data.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/microbiome_new_data.html) - tutorial for microbiome data cleaning and prep that uses the MicroEco package in R for downstream stats and visualization.
   - *Note: the [MicroEco package manual](https://chiliubio.github.io/microeco_tutorial/) is also a helpful reference for this.*
 6. [ExploreResults_LorisMicrobiome.Rmd](ExploreResults_LorisMicrobiome.Rmd) & [ExploreResults_LorisMicrobiome.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/ExploreResults_LorisMicrobiome.html) - in prep tutorial to use microeco for exploratory analysis and summary stats using loris microbiome data. Note: you must follow the MicroEcoDataPrep script to prepare datasets that will work with this pipeline.
 
@@ -30,7 +30,7 @@ The raw scripts with chunk of code that you can run directly (assuming you downl
 - To view any of the html files, first download the raw file, and then open it in the browser of your choice (it will automatically open in whichever browser you set as your default).
 - To use the .Rmd files, I recommend you [pull or clone the repository to your R Studio](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github). You can also download the individual Rmd files and then open them in your R Studio, but keep in mind that you will not have the files referenced in the code.
 
-Once you look through these, you should work on your own [MetadataSetup.Rmd](MetadataSetup.Rmd) script for the hypotheses you are trying to test. You can download the tutorial as a template and edit it from there.
+Once you look through these, you should work on your own [MetadataSetup](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html) script for the hypotheses you are trying to test. You can download the tutorial as a template and edit it from there.
 
 I will add more tutorials and guides later, including details on how to best use github and R Studio to push and pull your own repositories to this site.
 - In the meantime see [here](https://happygitwithr.com/) and [here](https://docs.github.com/en/get-started/start-your-journey/git-and-github-learning-resources).
@@ -59,7 +59,7 @@ R Markdown File                                      |Knitted HTML Link         
 [SampleInventory.Rmd](SampleInventory.Rmd)           |[SampleInventory.html](https://rich-molecular-health-lab.github.io/read_processing/SampleInventory.html)           |  Maintain records of all Rich Lab samples and export samplesheets for Dorado.
 [MetadataSetup.Rmd](MetadataSetup.Rmd)               |[MetadataSetup.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html)               |  Create predictor variables, code them, and then match to samples.
 [MinIONReadProcessing.Rmd](MinIONReadProcessing.Rmd) |[MinIONReadProcessing.html](https://rich-molecular-health-lab.github.io/read_processing/MinIONReadProcessing.html) |  Basecall, demultiplex, filter, clean, and organize raw ONT sequence data.
-[MicroEcoDataPrep.Rmd](MicroEcoDataPrep.Rmd)         |[MicroEcoDataPrep.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html)         |  Prepare aligned reads and other wf-16s outputs for analysis using MicroEco.
+[microbiome_new_data.Rmd](MicroEcoDataPrep.Rmd)      |[microbiome_new_data.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/microbiome_new_data.html)         |  Prepare aligned reads and other wf-16s outputs for analysis using MicroEco.
 [Data_Notes.Rmd](Data_Notes.Rmd)                     |[Data_Notes.html](https://rich-molecular-health-lab.github.io/bioinformatics_stats/Data_Notes.html)                     |  Review basic statistical options available for some of our main datasets.
 
 Scripts not specific to R languages:
