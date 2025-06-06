@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/Data_Notes.html</loc>
+    <lastmod>2025-02-22T15:15:54-06:00</lastmod>
+  </url>
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/ExploreResults_LorisMicrobiome.html</loc>
+    <lastmod>2025-03-03T01:09:22-06:00</lastmod>
+  </url>
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/FetchDataNOAA.html</loc>
+    <lastmod>2025-03-18T23:52:20-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/</loc>
+    <lastmod>2025-06-05T22:44:25-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/MetadataSetup.html</loc>
+    <lastmod>2025-06-05T22:41:15-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/microbiome_new_data.html</loc>
+    <lastmod>2025-06-05T22:25:06-05:00</lastmod>
+  </url>
+  <url>
+    <loc>https://rich-molecular-health-lab.github.io/bioinformatics_stats/MicroEcoDataPrep.html</loc>
+    <lastmod>2025-05-01T19:12:35-05:00</lastmod>
+  </url>
+</urlset>
