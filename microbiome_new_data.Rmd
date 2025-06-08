@@ -6,10 +6,10 @@ output:
   html_document:
     theme:
       bslib: true
-    css: journal.css
     toc: true
-    toc_float: true
+    toc_depth: 3
     df_print: paged
+    css: journal.css
 params:
   email: "'aliciarich@unomaha.edu'"
   sampleset: "loris"
@@ -85,6 +85,7 @@ metadata
 ```{r}
 sample.list <- metadata %>% 
                distinct(identifier, subject, collection_date) %>%
+               filter(subject != "unknown") %>%
                arrange(subject, collection_date) %>%
                distinct(identifier) %>%
                    map(\(x) as.list(x)) %>%

@@ -284,15 +284,15 @@ methods_16s:
   n_taxa_barplot: 12
   abund_threshold: 0
   loris:
-    rarefy: 4500
+    rarefy: 3500
     norm: "SRS"
     min_abund: 0.00001
-    min_freq: 1
+    min_freq: 0.01
     include_lowest: TRUE
     unifrac: TRUE
     betadiv: "aitchison"
     alpha_pd: TRUE
     tax4fun_db: "Ref99NR"
-    loris_rarefy: 4500
+    loris_rarefy: 3500
     keg_minID: 97
     
