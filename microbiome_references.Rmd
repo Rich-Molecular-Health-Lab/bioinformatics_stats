@@ -24,7 +24,8 @@ library(ape)
 library(gtExtras)
 library(treedataverse)
 library(treeio)
-library(msa)
+library(phangorn)
+library(phylotools)
 
 source("setup/knit_engines_simple.R")
 source("setup/conflicted.R")
@@ -80,7 +81,9 @@ Transfer the fetch_references.txt file from your local directory to the proper d
 
 Now you need to switch to the terminal and log into the HCC. We will use the entrez-direct package to interface with NCBI's databases adn fetch our reference sequences. If you have not used the HCC before, then refer to the [MinIONReadProcessing](https://rich-molecular-health-lab.github.io/tutorials/MinIONReadProcessing.html) script for more details.
 
-### Batch Script Header
+>*Note: I recently discovered the R package [`taxreturn`](https://alexpiper.github.io/taxreturn/index.html) which looks like an appealing alternative to do this straight from the R console, so feel free to experiment with it if you are feeling adventurous.*
+
+### Batch Script
 
 ```{terminal, warning = FALSE, echo = FALSE}
 #!/bin/bash
@@ -126,7 +129,7 @@ Once the script finishes running, transfer the `refs_unaligned.fasta` file from 
 
 ---
 
-## Align Sequences
+## Relabel Sequences
 
 ```{r}
 refs_unaligned <- treeio::read.fasta("microeco/loris/refs_unaligned.fasta")
@@ -154,19 +157,108 @@ refs_labels <- enframe(labels(refs_unaligned), name = NULL, value = "label") %>%
 write_tsv(refs_labels, "microeco/loris/reference_key.tsv")
 ```
 
+```{r}
+refs_rename <- refs_labels %>%
+  select(label, taxid)
+
+rename.fasta("microeco/loris/refs_unaligned.fasta", refs_rename, "microeco/loris/refs_renamed.fasta")
+```
+
+---
+
+## Align Sequences
+
+### Batch Script
+
+```{terminal, warning = FALSE, echo = FALSE}
+#!/bin/bash
+#SBATCH --time=1:00:00
+#SBATCH --job-name=align_muscle
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/align_muscle_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/align_muscle_%A_%a.out
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=250GB
+#SBATCH --partition=guest
+
+module purge
+module load muscle/5.1
+
+input_fasta="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_renamed.fasta"
+aligned_fasta="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_aligned.fasta"
+
+muscle -super5 $input_fasta -output $aligned_fasta
+
+```
+
+### Submit Batch Script
+
+```{terminal, warning = FALSE, echo = FALSE}
+cd "/work/richlab/aliciarich/bioinformatics_stats/batch_scripts"
+sbatch "align_muscle.sh"
+```
+
+Once the script finishes running, transfer the `refs_aligned.fasta` file from the directory on Swan to the local matching directory to run the next step in R.
+
+---
+
+## Build Tree
 
 ```{r}
-refs_aligned <- msa(refs_unaligned, method = "Muscle", order = "input")
+refs_aligned <- read.phyDat(
+  "microeco/loris/refs_aligned.fasta", 
+  format = "fasta", 
+  type   = "DNA"
+  )
 ```
 
 
+```{r}
+refs_dist <- dist.ml(refs_aligned)
+refs_tree <- NJ(refs_dist)
+```
 
-## Load Data
 
 ```{r}
-tree <- read.newick(file = "microeco/loris/tree.newick")
-tax_table <- read_tsv("microeco/loris/taxonomy_table.tsv")
+fit_tree  <- pml(fit_tree, data = refs_aligned)
+fit_gtr   <- optim.pml(
+  fit_tree,
+  model     = "GTR",
+  optInv    = TRUE,    # estimate proportion of invariant sites
+  optGamma  = TRUE,    # estimate gamma shape
+  optEdge   = TRUE,    # optimize branch lengths
+  control   = pml.control(trace = 0)
+)
 ```
+
+
+```{r}
+tree_boots <- boostrap.pml(
+  fit_gtr,
+  bs        = 100,        # number of replicates
+  optNni    = TRUE,       # optimize NNI swaps per replicate
+  multicore = TRUE,       # parallelize
+  ncores    = parallel::detectCores()
+)
+```
+
+**The basics of this approach:**
+
+- Distance-based start (`NJ` on `dist.ml`) gives a reasonable topology for downstream ML
+- `GTR+Γ+I` is a general model; we can simplify (e.g. HKY) if our data are small
+- `optim.pml` jointly optimizes tree, rates, and site parameters—fast and reliable
+- Bootstrapping (100–500 reps) provides support values we can display in `microeco`  
+
+```{r}
+tree_plot <- plotBS(fit_gtr$tree, tree_boots, p = 50, type = "phylogram")
+tree_plot
+```
+
+```{r}
+phylo_tree <- fit_gtr$tree
+```
+
+
 
 ## Join Taxonomic Data to Tree
 

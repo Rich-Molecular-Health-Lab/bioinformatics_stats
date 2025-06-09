@@ -34,7 +34,7 @@ source("setup/conflicted.R")
 
 ```
 
-```{r}
+```{r echo=FALSE, results='asis'}
 download_link(
   link           = "https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats/blob/372564c53131ce256c985eb769a5762c8e0f020d/microbiome_normalize_abundance.Rmd",
   button_label   = "Download Rmd Script",
@@ -72,7 +72,7 @@ I am writing this script with a version of our lab's pygmy loris microbiome data
 
 ### Previous Scripts
 
-You should have already completed the [SampleInventory](https://rich-molecular-health-lab.github.io/tutorials/SampleInventory.html), [MetadataSetup](https://rich-molecular-health-lab.github.io/tutorials/MetadataSetup.html), and [microbiome_new_data](https://rich-molecular-health-lab.github.io/tutorials/microbiome_new_data.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables.  
+You should have already completed the [SampleInventory](https://rich-molecular-health-lab.github.io/tutorials/SampleInventory.html) and [MetadataSetup](https://rich-molecular-health-lab.github.io/tutorials/MetadataSetup.html), which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables. Then you followed  [microbiome_tidy_alignments](https://rich-molecular-health-lab.github.io/tutorials/microbiome_tidy_alignments.html) to construct your sample, otu, and taxonomy tables, followed by [microbiome_references](https://rich-molecular-health-lab.github.io/tutorials/microbiome_references.html) to create a reference FASTA file and a phylogenetic tree.
 
 ---
 
@@ -80,7 +80,7 @@ You should have already completed the [SampleInventory](https://rich-molecular-h
 
 ## Load Data
 
-```{r results='asis'}
+```{r echo=FALSE, results='asis'}
 page_fluid(
 layout_column_wrap(
   download_file(
