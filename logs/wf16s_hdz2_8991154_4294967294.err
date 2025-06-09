@@ -3,4 +3,4 @@
 The Nextflow module loads Apptainer and uses the Apptainer Nextflow Engine.
 To avoid errors, please do not use the `-profile` argument with Nextflow.
 -------------------------------------------------------------------------------------------- 
-[33mNextflow 24.10.3 is available - Please consider updating your version to it(B[m
+[33mNextflow 24.10.3 is available - Please consider updating your version to it(B[m

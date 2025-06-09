@@ -1,0 +1,765 @@
+---
+title: "Beta Diversity Basics for Microbiome Data"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    css: journal.css
+    toc: true
+    toc_float: true
+    df_print: paged
+  
+---
+
+```{r setup, include=FALSE}
+library(conflicted)
+library(tidyverse)
+library(bslib)
+library(htmltools)
+library(htmlwidgets)
+library(seqinr)
+library(ape)
+library(gtExtras)
+library(plotly)
+library(paletteer)
+library(microeco)
+library(mecodev)
+library(mecoturn)
+
+source("setup/knit_engines.R")
+source("setup/conflicted.R")
+
+```
+
+```{r}
+download_link(
+  link           = "https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats/blob/372564c53131ce256c985eb769a5762c8e0f020d/microbiome_betadiversity.Rmd",
+  button_label   = "Download Rmd Script",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+)
+```
+
+
+
+# Intro
+
+## This Workflow
+
+This script can help get you started with the basic options for visualizing and analyzing beta diversity metrics for your 16S microbiome data.
+
+## MicroEco
+
+The [microeco R package](https://chiliubio.github.io/microeco_tutorial/) provides an elegant and comprehensive solution by integrating many of the most current and popular microbiome analysis approaches into a unified framework. This package simplifies workflows, making it easy to prepare datasets, calculate metrics, and create publication-quality visualizations. Importantly, microeco is designed to work seamlessly with ggplot2 and other widely used R packages, offering flexibility for customization and compatibility with established workflows. If you click the link above, you will find a very comprehensive tutorial presenting the full array of analysis options.
+
+## The Data Used Here
+
+I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original .Rmd script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
+
+### Previous Scripts
+
+You should have already completed the [SampleInventory](https://rich-molecular-health-lab.github.io/tutorials/SampleInventory.html), [MetadataSetup](https://rich-molecular-health-lab.github.io/tutorials/MetadataSetup.html), and [microbiome_new_data](https://rich-molecular-health-lab.github.io/tutorials/microbiome_new_data.html) workflows, which prepared formatted files that you can import here to begin connecting your outcome metrics to your independent variables. Finally, you should have cleaned and normalized your results using [microbiome_normalize_abundance](https://rich-molecular-health-lab.github.io/tutorials/microbiome_normalize_abundance.html).
+
+---
+
+# Workflow
+
+## Load Data
+
+```{r}
+download_file(
+  path           = "microeco/loris/data_rarefied.RData",
+  output_name    = "data_rarefied",
+  button_label   = "Download data",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+)
+```
+
+
+```{r}
+load("microeco/loris/data_rarefied.RData")
+data_rarefied$tidy_dataset()
+```
+
+### Subset Samples
+
+For now I am only interested in Culi's samples, so I am going to subset my microtable object for a version that ignores Warble.
+
+```{r}
+data_culi <- clone(data_rarefied)
+data_culi$sample_table <- subset(data_culi$sample_table, subject == "culi")
+data_culi$tidy_dataset()
+```
+
+## Supplement Predictors
+
+Let's look at whether supplements cluster Culi's samples.
+
+```{r}
+beta_probiotic <- trans_beta$new(
+  dataset = data_culi, 
+  group   = "supplement_probiotic", 
+  measure = "wei_unifrac"
+  )
+```
+
+
+For exploring how Culi’s community composition shifts with probiotic dose, we have two complementary choices:
+
+1.	**Unconstrained** ordination (to visualize overall patterns, then color‐code by dose)
+2.	**Constrained** ordination (to directly pull out the dose effect as a linear gradient)
+
+>For first-pass visualization we will use **PCoA**.
+>>Then, to formally test dose effects we can switch to **RDA** or **db-RDA** (if we want to stick with distances and possibly add covariates).
+
+### Unconstrained: PCoA (Principal Coordinates Analysis)
+
+- We’ve already computed an **Aitchison distance** (Euclidean on CLR-transformed counts), which is metric—so PCoA is both fast and interpretable.
+
+- PCoA will give us the axes that capture most variation in the CLR space, letting us see whether high-dose vs. low-dose samples cluster apart.
+
+<details>
+<summary>**Additional Options for Ordination Calculations**</summary>
+<br>
+| Argument | Applies to PCoA? | Default & effect | When to tweak it |
+|:---------|:-----------------|:-----------------|:-----------------|
+| **ncomp** | Yes | 2 – returns the first two axes for plotting.| Increase (e.g. ncomp = 3) if you want a 3D plot or to inspect axes beyond two. |
+| **taxa_level** | No | NULL – uses your full OTU/ASV table. | Only for abundance‐based ordinations (PCA, DCA, NMDS with NMDS_matrix = FALSE). You wouldn’t collapse features before a PCoA. |
+| **NMDS_matrix** | No | TRUE – tells NMDS to use a distance matrix as input. | Irrelevant for PCoA. |
+| **trans** | No | FALSE – square‐root transform species abundances before PCA/DCA. | Not used by PCoA; it’s a site‐loadings transformation for species‐score ordinations (PCA/DCA). |
+| **scale_species** | No | FALSE – whether to scale species‐loadings for interpretability in PCA/DCA. | Again, only meaningful for PCA/DCA, not PCoA. |
+| **scale_species_ratio** | No | 0.8 – how big to draw species‐loadings relative to sample cloud in PCA/DCA. | Not used by PCoA. |
+| **orthoI** | No | NA – number of orthogonal components for (O)PLS-DA. | Only for supervised PLS-DA/OPLS-DA, not PCoA. |
+</details>
+
+#### Calculate Ordination
+
+```{r}
+beta_probiotic$cal_ordination(method = "PCoA")
+```
+
+#### Plot Ordination - `microeco` default
+
+```{r}
+beta_probiotic$plot_ordination()
+```
+
+
+#### Plot Ordination - `plotly`
+
+##### Extract Tibbles with Results
+
+```{r}
+pcoa_probiotic  <- beta_probiotic$res_ordination$scores %>%
+  mutate(hover = as.character(str_glue("Dose: {supplement_probiotic}<br>Day: {collection_day}")))
+
+xlab <- paste0("PC1 [", beta_probiotic$res_ordination$eig["PCo1"], "%]")
+
+ylab <- paste0("PC2 [", beta_probiotic$res_ordination$eig["PCo2"], "%]")
+```
+
+##### Plot on 2D Scatter
+
+```{r}
+
+col.pal <- paletteer_c(
+  "ggthemes::Sunset-Sunrise Diverging", 
+  n = n_distinct(pcoa_probiotic$supplement_probiotic)
+  ) %>%
+  as.character()
+
+plotly_beta_probiotic <- plot_ly(data = pcoa_probiotic) %>%
+  add_trace(
+    x             = ~PCo1,
+    y             = ~PCo2,
+    color         = ~supplement_probiotic,
+    colors        = col.pal,
+    split         = ~supplement_probiotic,
+    text          = ~hover,
+    name          = ~collection_day,
+    type          = "scatter",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol  = "circle-dot",
+      size    = 10,
+      opacity = 0.8,
+      line    = list(width = 1.5, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    margin = list(autoexpand = TRUE)
+  ) %>%
+  hide_colorbar()
+
+plotly_beta_probiotic
+
+```
+
+##### 3D Scatter
+
+Plotly's best advantage for Ordination is that we can plot in more than 2 dimensions.
+
+```{r}
+beta_probiotic$cal_ordination(method = "PCoA", ncomp = 3)
+pcoa_probiotic  <- beta_probiotic$res_ordination$scores %>%
+  mutate(hover = as.character(str_glue("Dose: {supplement_probiotic}<br>Day: {collection_day}")))
+
+
+xlab <- paste0("PC1 [", beta_probiotic$res_ordination$eig["PCo1"], "%]")
+
+ylab <- paste0("PC2 [", beta_probiotic$res_ordination$eig["PCo2"], "%]")
+
+zlab <- paste0("PC3 [", beta_probiotic$res_ordination$eig["PCo3"], "%]")
+
+col.pal <- paletteer_c(
+  "ggthemes::Sunset-Sunrise Diverging", 
+  n = n_distinct(pcoa_probiotic$supplement_probiotic)
+  ) %>%
+  as.character()
+
+plotly_beta_probiotic <- plot_ly(data = pcoa_probiotic) %>%
+  add_trace(
+    x             = ~PCo1,
+    y             = ~PCo2,
+    z             = ~PCo3,
+    color         = ~supplement_probiotic,
+    colors        = col.pal,
+    split         = ~supplement_probiotic,
+    text          = ~hover,
+    name          = ~collection_day,
+    type          = "scatter3d",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol   = "circle",
+      opacity  = 0.6,
+      line     = list(width = 2, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+     scene = list(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    zaxis  = list(
+      title          = zlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+     )
+  ) %>%
+  hide_colorbar()
+
+save_html(plotly_beta_probiotic, "visuals/loris_beta_probiotic.html")
+
+plotly_beta_probiotic
+
+```
+
+## Additional Predictors
+
+Now I am going to make some plotting functions to explore relationships with other variables.
+
+```{r}
+plotly_PCoA <- function(dataset, group, dimensions, palette = NULL) {
+  
+  if (is.null(palette)) {
+    pal <- "ggthemes::Sunset-Sunrise Diverging"
+  } else if (!is.null(palette)) {
+    pal <- palette
+  }
+  
+  pcoa  <- dataset$res_ordination$scores
+  
+  pcoa$group <- pcoa[[paste0(group)]]
+
+xlab <- paste0("PC1 [", dataset$res_ordination$eig["PCo1"], "%]")
+
+ylab <- paste0("PC2 [", dataset$res_ordination$eig["PCo2"], "%]")
+
+if (dimensions == 3) {
+zlab <- paste0("PC3 [", dataset$res_ordination$eig["PCo3"], "%]")
+} else if (dimensions == 2) {
+  zlab <- NULL
+}
+
+col.pal <- paletteer_c(
+  pal, 
+  n = n_distinct(pcoa[[paste0(group)]])
+  ) %>%
+  as.character()
+
+if (dimensions == 3) {
+plot <- plot_ly(data = pcoa) %>%
+  add_trace(
+    x             = ~PCo1,
+    y             = ~PCo2,
+    z             = ~PCo3,
+    color         = ~group,
+    colors        = col.pal,
+    split         = ~group,
+    text          = ~group,
+    name          = ~collection_day,
+    type          = "scatter3d",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol   = "circle",
+      opacity  = 0.6,
+      line     = list(width = 2, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+     scene = list(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    zaxis  = list(
+      title          = zlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+     )
+  ) %>%
+  hide_colorbar()
+} else if (dimensions == 2) {
+  plot <- plot_ly(data = pcoa) %>%
+  add_trace(
+    x             = ~PCo1,
+    y             = ~PCo2,
+    color         = ~group,
+    colors        = col.pal,
+    split         = ~group,
+    text          = ~group,
+    name          = ~collection_day,
+    type          = "scatter",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol  = "circle-dot",
+      size    = 10,
+      opacity = 0.8,
+      line    = list(width = 1.5, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+  ) %>%
+  hide_colorbar()
+}
+
+return(plot)
+}
+```
+
+### Ordinations
+
+```{r}
+beta_diet <- trans_beta$new(
+  dataset = data_culi, 
+  group   = "diet_name", 
+  measure = "wei_unifrac"
+  )
+
+beta_diet$cal_ordination(method = "PCoA", ncomp = 3)
+
+plot_diet <- plotly_PCoA(beta_diet, "diet_name", 3, palette = "ggthemes::Temperature Diverging")
+plot_diet
+```
+
+```{r}
+beta_steroid <- trans_beta$new(
+  dataset = data_culi, 
+  group   = "supplement_steroid", 
+  measure = "wei_unifrac"
+  )
+
+beta_steroid$cal_ordination(method = "PCoA", ncomp = 3)
+
+plot_steroid <- plotly_PCoA(beta_steroid, "supplement_steroid", 3)
+plot_steroid
+```
+
+
+```{r}
+beta_bristol <- trans_beta$new(
+  dataset = data_culi, 
+  group   = "bristol_mean", 
+  measure = "wei_unifrac"
+  )
+
+beta_bristol$cal_ordination(method = "PCoA", ncomp = 3)
+
+plot_bristol <- plotly_PCoA(beta_bristol, "bristol_mean", 3)
+plot_bristol
+```
+
+## Other Approaches
+
+We aren't seeing much clear clustering with the approach we have used so far, so we can try some other beta diversity methods.
+
+### Bray Curtis Dissimilarity
+
+>Classic “compositional” dissimilarity; sensitive to abundant taxa
+
+```{r}
+data_culi$cal_betadiv(method = "bray")
+beta_bray  <- trans_beta$new(
+  dataset = data_culi, 
+  group   = "diet_name", 
+  measure = "bray"
+  )
+```
+
+### NMDS
+
+>Non‐metric MDS on any distance matrix—often teases out subtle gradients
+
+
+```{r}
+plotly_NMDS <- function(dataset, group, dimensions, palette = NULL) {
+  
+  if (is.null(palette)) {
+    pal <- "ggthemes::Sunset-Sunrise Diverging"
+  } else if (!is.null(palette)) {
+    pal <- palette
+  }
+  
+  nmds  <- dataset$res_ordination$scores
+  
+  nmds$group <- nmds[[paste0(group)]]
+
+xlab <- paste0("MDS1 [", dataset$res_ordination$eig["MDS1"], "%]")
+
+ylab <- paste0("MDS2 [", dataset$res_ordination$eig["MDS2"], "%]")
+
+if (dimensions == 3) {
+zlab <- paste0("MDS3 [", dataset$res_ordination$eig["MDS3"], "%]")
+} else if (dimensions == 2) {
+  zlab <- NULL
+}
+
+col.pal <- paletteer_c(
+  pal, 
+  n = n_distinct(nmds[[paste0(group)]])
+  ) %>%
+  as.character()
+
+if (dimensions == 3) {
+plot <- plot_ly(data = nmds) %>%
+  add_trace(
+    x             = ~MDS1,
+    y             = ~MDS2,
+    z             = ~MDS3,
+    color         = ~group,
+    colors        = col.pal,
+    split         = ~group,
+    text          = ~group,
+    name          = ~collection_day,
+    type          = "scatter3d",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol   = "circle",
+      opacity  = 0.6,
+      line     = list(width = 2, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+     scene = list(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    zaxis  = list(
+      title          = zlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+     )
+  ) %>%
+  hide_colorbar()
+} else if (dimensions == 2) {
+  plot <- plot_ly(data = nmds) %>%
+  add_trace(
+    x             = ~MDS1,
+    y             = ~MDS2,
+    color         = ~group,
+    colors        = col.pal,
+    split         = ~group,
+    text          = ~group,
+    name          = ~collection_day,
+    type          = "scatter",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol  = "circle-dot",
+      size    = 10,
+      opacity = 0.8,
+      line    = list(width = 1.5, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+  ) %>%
+  hide_colorbar()
+}
+
+return(plot)
+}
+
+```
+
+
+```{r}
+beta_bray$cal_ordination(method = "NMDS", ncomp = 3) 
+```
+
+```{r}
+plot_bray <- plotly_NMDS(beta_bray, "diet_name", 3)
+plot_bray
+```
+
+### DCA (Detrended Correspondence Analysis)
+
+>Good for unimodal species responses, especially when there’s a “arch” effect in PCA
+
+```{r}
+plotly_DCA <- function(dataset, group, dimensions, palette = NULL) {
+  
+  if (is.null(palette)) {
+    pal <- "ggthemes::Sunset-Sunrise Diverging"
+  } else if (!is.null(palette)) {
+    pal <- palette
+  }
+  
+  dca  <- dataset$res_ordination$scores
+  
+  dca$group <- dca[[paste0(group)]]
+
+xlab <- paste0("DCA1 [", dataset$res_ordination$eig["DCA1"], "%]")
+
+ylab <- paste0("DCA2 [", dataset$res_ordination$eig["DCA2"], "%]")
+
+if (dimensions == 3) {
+zlab <- paste0("DCA3 [", dataset$res_ordination$eig["DCA3"], "%]")
+} else if (dimensions == 2) {
+  zlab <- NULL
+}
+
+col.pal <- paletteer_c(
+  pal, 
+  n = n_distinct(dca[[paste0(group)]])
+  ) %>%
+  as.character()
+
+if (dimensions == 3) {
+plot <- plot_ly(data = dca) %>%
+  add_trace(
+    x             = ~DCA1,
+    y             = ~DCA2,
+    z             = ~DCA3,
+    color         = ~group,
+    colors        = col.pal,
+    split         = ~group,
+    text          = ~group,
+    name          = ~collection_day,
+    type          = "scatter3d",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol   = "circle",
+      opacity  = 0.6,
+      line     = list(width = 2, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+     scene = list(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    zaxis  = list(
+      title          = zlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline       = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+     )
+  ) %>%
+  hide_colorbar()
+} else if (dimensions == 2) {
+  plot <- plot_ly(data = dca) %>%
+  add_trace(
+    x             = ~DCA1,
+    y             = ~DCA2,
+    color         = ~group,
+    colors        = col.pal,
+    split         = ~group,
+    text          = ~group,
+    name          = ~collection_day,
+    type          = "scatter",
+    mode          = "markers",
+    showlegend    = F,
+    marker        = list(
+      symbol  = "circle-dot",
+      size    = 10,
+      opacity = 0.8,
+      line    = list(width = 1.5, color = "#000000FF")
+      )
+  ) %>%
+   layout(
+    xaxis  = list(
+      title          = xlab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    ),
+    yaxis  = list(
+      title          = ylab,
+      showgrid       = F,
+      showticklabels = F,
+      zeroline   = F,
+      linecolor      = "#00000080",
+      hoverformat    = ".1f"
+    )
+  ) %>%
+  hide_colorbar()
+}
+
+return(plot)
+}
+
+```
+
+
+```{r}
+beta_bray$cal_ordination(method = "DCA", ncomp = 3) 
+```
+
+```{r}
+plot_dca <- plotly_DCA(beta_bray, "diet_name", 3)
+plot_dca
+```
+
+### Euclidean Distances
+
+
+

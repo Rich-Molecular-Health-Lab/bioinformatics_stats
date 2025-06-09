@@ -10,10 +10,6 @@ output:
     toc: true
     toc_float: true
     df_print: paged
-params:
-  email: "'aliciarich@unomaha.edu'"
-  sampleset: "loris"
-  seqrun: "hdz18"
   
 ---
 
@@ -31,12 +27,22 @@ library(paletteer)
 library(microeco)
 library(mecodev)
 library(mecoturn)
+library(downloadthis)
 
 source("setup/knit_engines.R")
 source("setup/conflicted.R")
-source("setup/default_inputs.R")
-source("setup/config_paths.R")
 
+```
+
+```{r}
+download_link(
+  link           = "https://github.com/Rich-Molecular-Health-Lab/bioinformatics_stats/blob/372564c53131ce256c985eb769a5762c8e0f020d/microbiome_normalize_abundance.Rmd",
+  button_label   = "Download Rmd Script",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+)
 ```
 
 
@@ -45,8 +51,6 @@ source("setup/config_paths.R")
 ## This Workflow
 
 This is the current recommended pipeline for normalizing **16S count data** to convert raw read counts into relative abundances.  
-  
-[Find the original R Markdown script and all dependencies here.]()
 
 ## Some Background
 
@@ -76,6 +80,63 @@ You should have already completed the [SampleInventory](https://rich-molecular-h
 
 ## Load Data
 
+```{r results='asis'}
+page_fluid(
+layout_column_wrap(
+  download_file(
+  path           = "microeco/loris/sample_table.tsv",
+  output_name    = "microeco/loris/sample_table",
+  button_label   = "Download sample_table.tsv",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+),
+
+download_file(
+  path           = "microeco/loris/otu_table.tsv",
+  output_name    = "microeco/loris/otu_table",
+  button_label   = "Download otu_table.tsv",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+),
+
+download_file(
+  path           = "microeco/loris/taxonomy_table.tsv",
+  output_name    = "microeco/loris/taxonomy_table",
+  button_label   = "Download taxonomy_table.tsv",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+),
+
+download_file(
+  path           = "microeco/loris/tree.newick",
+  output_name    = "microeco/loris/tree",
+  button_label   = "Download tree.newick",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+),
+
+download_file(
+  path           = "microeco/loris/representative_seqs.fasta",
+  output_name    = "microeco/loris/representative_seqs",
+  button_label   = "Download representative_seqs.fasta",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = TRUE
+)
+)
+)
+```
+
+
 ```{r}
 sample_table <- read_tsv("microeco/loris/sample_table.tsv", show_col_types = FALSE)  %>%
   mutate(across(ends_with("date"), ~ymd(.))) %>%
@@ -86,7 +147,6 @@ tax_table    <- read_tsv("microeco/loris/taxonomy_table.tsv", show_col_types = F
   column_to_rownames("organism")
 phylo_tree   <- read.tree("microeco/loris/tree.newick")
 rep_fasta    <- read.tree("microeco/loris/representative_seqs.fasta")
-rep_fasta_tax4fun    <- read.tree("microeco/loris/representative_seqs_tax4fun.fasta")
 
 
 sample_table
@@ -109,26 +169,80 @@ dataset <- microtable$new(
 
 # MicroEco Basic Stats and Data Cleaning
 
-## Rarefaction
+## Technical Replicates
+
+We will start by handling our duplicated observations. That includes (1) samples that were sequenced more than once and (2) days where we gathered more than one sample per individual.  
   
-Rarefaction is a technique used to standardize the number of reads across samples in a microbiome dataset. This ensures that differences in sample diversity and composition are not driven by varying sequencing depths but reflect true biological patterns.  
+There are several ways to handle this, each with their own tradeoffs. For now, we are going to use `microeco`'s `merge_samples` function to merge all data for each day and subject.
 
 ```{r}
+sample_table_merged <- sample_table %>%
+  rownames_to_column("identifier") %>%
+  select(-identifier) %>%
+  distinct() %>%
+  column_to_rownames("subject_day")
+data_merged <- clone(dataset)
+data_merged <- data_merged$merge_samples("subject_day")
+data_merged$sample_table <- data.frame(sample_table_merged[rownames(data_merged$sample_table), ])
+data_merged$tidy_dataset()
+```
+
+
+## Merge & Filter Taxa
+
+Next, we are going to merge taxa so that our lowest taxonomic level is limited to **genus**. This is to prevent zero-heavy data creating noise in our abundances.  
+   
+Then, to focus on the most relevant features of the microbial communities, we apply a filtering step to remove low-abundance taxa. Filtering reduces noise and ensures that downstream analyses are driven by biologically meaningful patterns rather than rare or sporadic taxa. 
+  
+**From the microeco manual:**  
+
+- **rel_abund**
+  - default 0; the relative abundance threshold, such as 0.0001.
+- **freq**
+  - default 1; the occurrence frequency threshold. For example, the number 2 represents filtering the feature that occurs less than 2 times. A number smaller than 1 is also allowable. For instance, the number 0.1 represents filtering the feature that occurs in less than 10% samples.
+- **include_lowest**
+  - default TRUE; whether include the feature with the threshold.
+  
+```{r}
+data_filt <- clone(data_merged)
+data_filt <- data_filt$merge_taxa(taxa = "Genus")
+data_filt$tidy_dataset()
+data_filt$filter_taxa(rel_abund = 0.00001, freq = 2)
+data_filt$tidy_dataset()
+save(data_filt, file = "microeco/loris/data_filt.RData")
+```
+
+## Rarefaction
+
+Now we will normalize with rarefaction. Rarefaction is a technique used to standardize the number of reads across samples in a microbiome dataset. This ensures that differences in sample diversity and composition are not driven by varying sequencing depths but reflect true biological patterns.  
+
+```{r}
+data_rarefied <- clone(data_merged)
+
 rarefaction <- trans_rarefy$new(
-  dataset, 
+  data_rarefied, 
   alphadiv = "Observed",
   depth    = c(seq.int(0, 8000, by = 500))
   )
+
+meta <- sample_table_merged %>%
+  rownames_to_column("SampleID")
+
+rarefact <- rarefaction$res_rarefy %>%
+  left_join(meta, by = "SampleID")
 ```
 
 In the chunk above, I set `alphadiv` to `"Observed"` so that our outcome variable is simply the total number of unique species kept in the data at that depth value (i.e., *Species Richness*). We can also use species diversity metrics that incorporate evenness (e.g., *Shannon Index*) and compare both.
 
 ```{r}
 rarefaction_shannon <- trans_rarefy$new(
-  dataset, 
+  data_rarefied, 
   alphadiv = "Shannon",
   depth    = c(seq.int(0, 8000, by = 500))
   )
+
+rarefact_shannon <- rarefaction_shannon$res_rarefy %>%
+  left_join(meta, by = "SampleID")
 ```
 
 
@@ -139,27 +253,28 @@ I will plot the default rarefaction plot first, which shows each sample as an in
 
 ```{r}
 rare.pal <- paletteer_c(
-  "harrypotter::ravenclaw", 
-  n = length(unique(rarefaction$res_rarefy$SampleID))
+  "pals::isol", 
+  n = length(unique(rarefact$diet_name))
   ) %>%
   as.character() %>%
-  set_names(unique(rarefaction$res_rarefy$SampleID))
+  set_names(unique(rarefact$diet_name))
 
-rarefaction_plot <- plot_ly(data = rarefaction$res_rarefy) %>%
+rarefaction_plot <- plot_ly(data = rarefact) %>%
   add_trace(
     x           = ~seqnum,
     y           = ~Observed,
-    color       = ~SampleID,
+    color       = ~diet_name,
     colors      = rare.pal,
     split       = ~SampleID,
     name        = ~SampleID,
+    text        = ~diet_name,
     type        = "scatter",
     mode        = "lines+markers",
     line  = list(
       shape     = "spline",
       smoothing = 1.3,
       width     = 1,
-      opacity   = 1
+      opacity   = 0.8
     ),
     marker      = list(
       size      = 4,
@@ -191,21 +306,22 @@ rarefaction_plot <- plot_ly(data = rarefaction$res_rarefy) %>%
   ) %>%
   hide_legend()
 
-rarefaction_shannon_plot <- plot_ly(data = rarefaction_shannon$res_rarefy) %>%
+rarefaction_shannon_plot <- plot_ly(data = rarefact_shannon) %>%
   add_trace(
     x           = ~seqnum,
     y           = ~Shannon,
-    color       = ~SampleID,
+    color       = ~diet_name,
     colors      = rare.pal,
     split       = ~SampleID,
     name        = ~SampleID,
+    text        = ~diet_name,
     type        = "scatter",
     mode        = "lines+markers",
     line  = list(
       shape     = "spline",
       smoothing = 1.3,
       width     = 1,
-      opacity   = 1
+      opacity   = 0.8
     ),
     marker      = list(
       size      = 4,
@@ -538,38 +654,12 @@ rare_summary_plot
 ```
 
 
-Now you should qualitatively analyze your graph and try to find the ideal inflection points to maximize how many samples you keep in your data and how much of the true species richness you will be able to represent. I am going to go with 3.5K reads in this case. That keeps sample size, species richness, and shannon diversity all above the mean, so it seems like a decent balance.
+Now you should qualitatively analyze your graph and try to find the ideal inflection points to maximize how many samples you keep in your data and how much of the true species richness you will be able to represent. I am going to go with 3K reads in this case. That keeps sample size, species richness, and shannon diversity all at or above the mean, so it seems like a decent balance.
 
 ```{r}
-dataset$rarefy_samples(method = "SRS", sample.size = 3500)
+data_rarefied$rarefy_samples(method = "SRS", sample.size = 3000)
+data_rarefied$filter_taxa(rel_abund = 0.00001, freq = 2)
 ```
-
-## Technical Replicates
-
-Now that we have rarefied all sequenced libraries, we need to handle our duplicated observations. That includes (1) samples that were sequenced more than once and (2) days where we gathered more than one sample per individual.  
-  
-There are several ways to handle this, each with their own tradeoffs. For now, we are going to use `microeco`'s `merge_samples` function to merge all data for each day and subject.
-
-```{r}
-sample_table_merged <- sample_table %>%
-  rownames_to_column("identifier") %>%
-  select(-identifier) %>%
-  distinct() %>%
-  column_to_rownames("subject_day")
-
-dataset <- dataset$merge_samples("subject_day")
-
-dataset$sample_table <- data.frame(sample_table_merged[rownames(dataset$sample_table), ])
-```
-
-## Taxonomic Level
-
-I am also going to limit our lowest taxonomic level to genus. We can group into higher levels for individual stats and plots later, but I want to calculate our basic metrics like alpha diversity using genus.
-
-```{r}
-dataset$merge_taxa(taxa = "Genus")
-```
-
 
 ## Relative Abundance
 
@@ -577,30 +667,14 @@ After rarefaction and merging replicates, we calculate relative abundances to ex
   
 
 ```{r}
-dataset$cal_abund()
-```
-
-## Filter Taxa
-
-To focus on the most relevant features of the microbial communities, we apply a filtering step to remove low-abundance taxa. Filtering reduces noise and ensures that downstream analyses are driven by biologically meaningful patterns rather than rare or sporadic taxa. 
-  
-**From the microeco manual:**  
-- **rel_abund**
-  - default 0; the relative abundance threshold, such as 0.0001.
-- **freq**
-  - default 1; the occurrence frequency threshold. For example, the number 2 represents filtering the feature that occurs less than 2 times. A number smaller than 1 is also allowable. For instance, the number 0.1 represents filtering the feature that occurs in less than 10% samples.
-- **include_lowest**
-  - default TRUE; whether include the feature with the threshold.
-
-```{r}
-dataset$filter_taxa(rel_abund = 0.00001, freq = 0.01, for_taxa_abund = TRUE)
+data_rarefied$cal_abund()
 ```
 
 I will also use the `save_abund` function to export this abundance table as a `tsv` file.
 
 ```{r}
-dataset$save_abund(
-  dirpath = "microeco/loris/abundance",
+data_rarefied$save_abund(
+  dirpath = "microeco/loris/rarefied/abundance",
   rm_un   = TRUE,
   sep     = "\t"
 )
@@ -610,24 +684,141 @@ dataset$save_abund(
 ## Diversity Metrics
 
 Diversity metrics help us understand the structure of microbial communities within and across samples. **Alpha diversity** measures the richness and evenness of taxa within individual samples, providing insights into the complexity of each community. **Beta diversity** assesses differences in microbial composition between samples, revealing how communities vary across conditions or groups. In this step, we calculate alpha diversity for each dataset and beta diversity using UniFrac and Aitchinson distance metrics to capture both phylogenetic and compositional differences.  
-  
+
+Because I rarefied the dataset that did not yet have the merged taxa, I will also merge so that Genus is my lowest level for calculating these metrics.  
+   
 I will also use the `save_alphadiv` and `save_betadiv` function to export these tables as a `csv` files.
 
 ```{r}
-dataset$cal_alphadiv(PD = TRUE)
-dataset$save_alphadiv(dirpath = "microeco/loris")
-
-dataset$cal_betadiv(method = "aitchison", unifrac = TRUE)
-dataset$save_betadiv(dirpath = "microeco/loris")
-
-dataset$alpha_diversity
-as_tibble(dataset$beta_diversity$aitchison)
-as_tibble(dataset$beta_diversity$wei_unifrac)
-as_tibble(dataset$beta_diversity$unwei_unifrac)
+data_rarefied <- data_rarefied$merge_taxa(taxa = "Genus")
+data_rarefied$tidy_dataset()
 ```
 
 
+```{r}
+data_rarefied$cal_alphadiv(PD = TRUE)
+```
 
+
+```{r}
+data_rarefied$save_alphadiv(dirpath = "microeco/loris/rarefied")
+data_rarefied$cal_betadiv(method = "aitchison", unifrac = TRUE)
+data_rarefied$save_betadiv(dirpath = "microeco/loris/rarefied")
+
+data_rarefied$alpha_diversity
+as_tibble(data_rarefied$beta_diversity$aitchison)
+as_tibble(data_rarefied$beta_diversity$wei_unifrac)
+as_tibble(data_rarefied$beta_diversity$unwei_unifrac)
+```
+
+
+## Export Clean Dataset
+
+I will also export the complete dataset that we normalized and filtered so that I can easily convert this back into a `microeco` object in other workflows without needing to repeat the normalization process here.
+
+```{r}
+data_rarefied$save_table(dirpath = "microeco/loris/rarefied/microtable", sep = "\t")
+```
+
+Alternatively, we can save the entire microtable data object as `.RData` to preserve all information in a single file.
+
+```{r}
+save(data_rarefied, file = "microeco/loris/data_rarefied.RData")
+```
+
+
+# Alternatives to Rarefaction
+
+If you notice issues with uniformity across samples (as I later did with these data), you may want to consider skipping rarefaction and normalizing another way. Rarefaction can be controversial, as it throws away data and can flatten true biological variation when depths are low and uneven—as I found with Bray–Curtis in these data. In cases like this, we can try one of these composition-aware normalizations:
+
+| Method                           | Rationale                                                      | Code (microeco)                                    |
+|----------------------------------|----------------------------------------------------------------|----------------------------------------------------|
+|**TSS (Total‐sum scaling)**       |Convert to proportions (no reads discarded)                     |`dataset$cal_abund()`; `dataset$cal_betadiv("bray")`|
+|**CLR (Centered log‐ratio)**      |Puts data in Euclidean space; compositionally aware             |`dataset$trans_norm("CLR")` → Euclid + PCoA         |
+|**RCLR (Robust CLR)**             |Downweights zeros; better for sparse ONT data                   |`dataset$trans_norm("RCLR")`                        |
+|**GMPR (geometric mean pairwise)**|Normalizes library size via pairwise ratios; robust to outliers |`dataset$trans_norm("GMPR")`                        |
+|**CSS (Cumulative sum scaling)**  |Reduces bias from very abundant features                        |`dataset$trans_norm("CSS")`                         |
+|**DESeq2 (median-ratio / RLE)**   |Borrowed from RNA-seq: handles size factors & dispersion        |`dataset$trans_norm("DESeq2")`                      |
+|**TMM (trimmed mean of M-values)**|EdgeR’s approach—robust to extreme counts                       |`dataset$trans_norm("TMM")`                         |
+|**Wrench**                        |Corrects for compositional bias & varying depths                |`dataset$trans_norm("Wrench")`                      | 
+
+## TSS (Total‐sum scaling)
+
+```{r}
+data_tss <- clone(data_filt)
+data_tss$cal_abund()
+data_tss$cal_alphadiv(PD = TRUE)
+data_tss$cal_betadiv(method = "aitchison", unifrac = TRUE)
+data_tss$save_alphadiv(dirpath = "microeco/loris/tss")
+data_tss$save_betadiv(dirpath  = "microeco/loris/tss")
+data_tss$save_abund(dirpath    = "microeco/loris/tss/abundance", rm_un = TRUE, sep = "\t")
+data_tss$save_table(dirpath    = "microeco/loris/tss/microtable", sep = "\t")
+
+save(data_tss, file = "microeco/loris/data_tss.RData")
+```
+
+
+## CLR (Centered log‐ratio)
+
+```{r}
+ data_clr  <- clone(data_filt)
+trans_clr <- trans_norm$new(dataset = data_clr)
+trans_clr$norm(method = "clr")
+ data_clr  <- trans_clr$dataset
+ data_clr$cal_betadiv(method = "euclidean", unifrac = TRUE)
+ data_clr$save_betadiv(dirpath = "microeco/loris/clr")
+ data_clr$save_abund(dirpath   = "microeco/loris/clr/abundance", rm_un = TRUE, sep = "\t")
+ data_clr$save_table(dirpath   = "microeco/loris/clr/microtable", sep = "\t")
+save(data_clr, file = "microeco/loris/data_clr.RData")
+```
+
+## RCLR (Robust CLR)
+
+```{r}
+ data_rclr  <- clone(data_filt)
+trans_rclr <- trans_norm$new(dataset = data_rclr)
+trans_rclr$norm(method = "rclr")
+ data_rclr  <- trans_rclr$dataset
+ data_rclr$cal_betadiv(method = "euclidean", unifrac = TRUE)
+ data_rclr$save_betadiv(dirpath = "microeco/loris/rclr")
+ data_rclr$save_abund(dirpath   = "microeco/loris/rclr/abundance", rm_un = TRUE, sep = "\t")
+ data_rclr$save_table(dirpath   = "microeco/loris/rclr/microtable", sep = "\t")
+save(data_rclr, file = "microeco/loris/data_rclr.RData")
+```
+## GMPR (geometric mean pairwise)
+
+
+```{r}
+data_gmpr  <- clone(data_filt)
+trans_gmpr <- trans_norm$new(dataset = data_gmpr)
+trans_gmpr$norm(method = "GMPR", intersect.no = 1)
+```
+
+```{r}
+data_gmpr  <- trans_gmpr$dataset
+ data_gmpr$cal_betadiv(method = "euclidean", unifrac = TRUE)
+ data_gmpr$save_betadiv(dirpath = "microeco/loris/gmpr")
+ data_gmpr$save_abund(dirpath   = "microeco/loris/gmpr/abundance", rm_un = TRUE, sep = "\t")
+ data_gmpr$save_table(dirpath   = "microeco/loris/gmpr/microtable", sep = "\t")
+save(data_gmpr, file = "microeco/loris/data_gmpr.RData")
+```
+
+## Wrench
+
+```{r}
+data_wrench  <- clone(data_filt)
+trans_wrench <- trans_norm$new(dataset = data_wrench)
+trans_wrench$norm(method = "Wrench", condition = "diet_name")
+```
+
+```{r}
+data_wrench  <- trans_wrench$dataset
+ data_wrench$cal_betadiv(method = "bray", unifrac = TRUE)
+ data_wrench$save_betadiv(dirpath = "microeco/loris/wrench")
+ data_wrench$save_abund(dirpath   = "microeco/loris/wrench/abundance", rm_un = TRUE, sep = "\t")
+ data_wrench$save_table(dirpath   = "microeco/loris/wrench/microtable", sep = "\t")
+save(data_wrench, file = "microeco/loris/data_wrench.RData")
+```
 
 
 

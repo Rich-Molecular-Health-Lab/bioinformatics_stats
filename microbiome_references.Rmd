@@ -1,0 +1,192 @@
+---
+title: "Working with 16S Data and Reference Sequences"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    df_print: paged
+    css: journal.css
+  
+---
+
+```{r setup, include=FALSE}
+library(conflicted)
+library(tidyverse)
+library(bslib)
+library(htmltools)
+library(microeco)
+library(seqinr)
+library(ape)
+library(gtExtras)
+library(treedataverse)
+library(treeio)
+library(msa)
+
+source("setup/knit_engines_simple.R")
+source("setup/conflicted.R")
+
+```
+
+# Intro
+
+## This Workflow
+
+This workflow takes an excerpt from the `microbiome_new_data` script with instructions for constructing a representative phylogenetic tree from your 16S sequencing results and expands on that to increase the flexibility of your phylogenetic tree data for downstream processing. 
+
+## Phylo Trees and ONT Data
+
+Some of the standard microbiome profiling metrics rely on on an OTU approach developed for the more traditional short-read sequences produced by Illumina and other nextgen platforms. Constructing representative sequences for each OTU enables phylogenetic analyses that can be particularly useful in visualizations.  
+  
+ONT Reads are generally still too messy and long to smoothly produce consensus sequences for each taxon. I use a workaround to enable us to still generate some phylogenetic estimates and graphics, though we will really be visualizing the relationships between the reference sequences for each taxon that our reads align to. The first step of this will use Entrez Direct to source a reference fasta for each of the taxids from our minimap2 results.  
+
+
+## The Data Used Here
+
+I am writing this script with a version of our lab's pygmy loris microbiome data. If you are working on one of our other microbiome projects, it should be fairly simple to adapt the original .Rmd script you are reading to a different dataset, especially if you make use of the params settings in the yaml header at the top.
+
+## Recommended Reading
+
+For a helpful guide, I recommend you look at this online book: [Data Integration, Manipulation and Visualization of Phylogenetic Trees](https://yulab-smu.top/treedata-book/index.html).
+
+# The Workflow
+
+## Fetch Reference FASTA Sequences
+
+### Taxonomy List
+
+First, we will read in our raw alignment data gathered from the wf-16s output.
+
+```{r}
+alignments <- read_tsv("microeco/loris/alignments.tsv")
+refseqs <- distinct(alignments, ref, taxid)
+write_tsv(refseqs, "microeco/loris/fetch_references.txt")
+```
+
+
+Transfer the fetch_references.txt file from your local directory to the proper directory on Swan and then run the script below.  
+  
+<details>
+<summary>***Tip***</summary>
+<p>I create a mirror of my repository/directory on Swan so that I can just keep updating repositories as I move between swan and my local R consol.</p>
+</details>
+
+---
+
+## Fetch New References Using Entrez Direct
+
+Now you need to switch to the terminal and log into the HCC. We will use the entrez-direct package to interface with NCBI's databases adn fetch our reference sequences. If you have not used the HCC before, then refer to the [MinIONReadProcessing](https://rich-molecular-health-lab.github.io/tutorials/MinIONReadProcessing.html) script for more details.
+
+### Batch Script Header
+
+```{terminal, warning = FALSE, echo = FALSE}
+#!/bin/bash
+#SBATCH --time=1:00:00
+#SBATCH --job-name=fetch_refs
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/fetch_refs_%A_%a.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/fetch_refs_%A_%a.out
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=100GB
+#SBATCH --partition=guest
+
+module purge
+module load entrez-direct
+module load seqkit 
+
+uid_file="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/fetch_references.txt"
+accessions_file="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/accessions.txt"
+fasta_file="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_unaligned.fasta"
+
+
+> "$fasta_file"
+
+cut -f1 "$uid_file" > "$accessions_file"
+
+if efetch -db nuccore -input "$accessions_file" -format fasta -email "aliciarich@unomaha.edu" > "$fasta_file"; then
+    echo "Sequences fetched successfully."
+else
+    echo "Error fetching sequences." >&2
+    exit 1
+fi
+
+```
+
+### Submit Batch Script
+
+```{terminal, warning = FALSE, echo = FALSE}
+cd "/work/richlab/aliciarich/bioinformatics_stats/batch_scripts"
+sbatch "fetch_refs.sh"
+```
+
+Once the script finishes running, transfer the `refs_unaligned.fasta` file from the directory on Swan to the local matching directory to run the next step in R.
+
+---
+
+## Align Sequences
+
+```{r}
+refs_unaligned <- treeio::read.fasta("microeco/loris/refs_unaligned.fasta")
+```
+
+```{r}
+refs_labels <- enframe(labels(refs_unaligned), name = NULL, value = "label") %>%
+  mutate(accession = str_extract(label, "^\\w{2}_\\d+\\.\\d(?=\\s.+)")) %>%
+  left_join(select(alignments, superkingdom:taxid), by = join_by(accession == ref)) %>%
+  mutate(taxid = as.character(str_glue("txid{taxid}"))) %>%
+  arrange(superkingdom,
+          phylum,
+          class,
+          order,
+          family,
+          genus,
+          species,
+          accession) %>%
+  select(
+    superkingdom:species,
+    taxid,
+    accession,
+    label
+  )
+write_tsv(refs_labels, "microeco/loris/reference_key.tsv")
+```
+
+
+```{r}
+refs_aligned <- msa(refs_unaligned, method = "Muscle", order = "input")
+```
+
+
+
+## Load Data
+
+```{r}
+tree <- read.newick(file = "microeco/loris/tree.newick")
+tax_table <- read_tsv("microeco/loris/taxonomy_table.tsv")
+```
+
+## Join Taxonomic Data to Tree
+
+```{r}
+tree_tbl <- as_tibble(tree)
+
+
+tree_genus_tbl <- tree_tbl %>%
+  full_join(tax_table, by = join_by(label == organism)) %>%
+  mutate(label = case_when(
+    Genus == "g__" & Family == "f__" & Order == "o__" & Class == "c__" & Phylum == "p__" ~Kingdom,
+    Genus == "g__" & Family == "f__" & Order == "o__" & Class == "c__" & Phylum != "p__" ~Phylum,
+    Genus == "g__" & Family == "f__" & Order == "o__" & Class != "c__" ~Class,
+    Genus == "g__" & Family == "f__" & Order != "o__" ~Order,
+    Genus == "g__" & Family != "f__" ~Family,
+    Genus != "g__" ~ Genus,
+    .default = Genus
+  )) %>%
+  select(-Species)
+
+```
+
+

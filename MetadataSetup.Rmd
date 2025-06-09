@@ -468,6 +468,7 @@ metadata <- samples %>%
     collection_date        = CollectionDate ,
     environment_holding    = holding        ,
     bristol_min                             ,
+    bristol_mean                            ,
     bristol_max                             ,
     repro_warb_status        = warb_status  ,
     environment_pair_access  = pair_access  ,
