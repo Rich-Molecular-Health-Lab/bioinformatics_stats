@@ -43,6 +43,23 @@ load("microeco/loris/sample_table.RData")
 load("microeco/loris/otu_table.RData")
 ```
 
+## Sample Metadata as Factors
+
+Phyloseq will only capture numeric/factor values (not strings) for the metadata, so we need to reformat our character columns.
+
+```{r}
+sample_data <- sample.table %>%
+  arrange(subject, collection_day) %>%
+  mutate(subject_certainty       = fct_recode(subject_certainty  , "0" = "no" , "1" = "yes"),
+         environment_holding     = fct_recode(environment_holding, "0" = "old", "1" = "new"),
+         environment_pair_access = fct_recode(environment_pair_access, "0" = "n", "1" = "y"),
+         repro_warb_status       = fct_recode(repro_warb_status, "0" = "anestrus", "1" = "estrus")) %>%
+  mutate(across(where(is.character), ~factor(.))) %>%
+  mutate(diet_name = fct_inorder(diet_name))
+```
+
+  
+
 # Phyloseq Object
 
 ```{r}
