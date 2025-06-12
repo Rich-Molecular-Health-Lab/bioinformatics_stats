@@ -22,10 +22,11 @@ library(microeco)
 library(seqinr)
 library(ape)
 library(gtExtras)
+library(ggtree)
 library(treedataverse)
-library(treeio)
-library(phangorn)
 library(phylotools)
+library(TreeTools)
+
 
 source("setup/knit_engines_simple.R")
 source("setup/conflicted.R")
@@ -133,9 +134,7 @@ Once the script finishes running, transfer the `refs_unaligned.fasta` file from 
 
 ```{r}
 refs_unaligned <- treeio::read.fasta("microeco/loris/refs_unaligned.fasta")
-```
 
-```{r}
 refs_labels <- enframe(labels(refs_unaligned), name = NULL, value = "label") %>%
   mutate(accession = str_extract(label, "^\\w{2}_\\d+\\.\\d(?=\\s.+)")) %>%
   left_join(select(alignments, superkingdom:taxid), by = join_by(accession == ref)) %>%
@@ -166,119 +165,447 @@ rename.fasta("microeco/loris/refs_unaligned.fasta", refs_rename, "microeco/loris
 
 ---
 
-## Align Sequences
+## Align Sequences and Build ML Tree
 
 ### Batch Script
 
 ```{terminal, warning = FALSE, echo = FALSE}
 #!/bin/bash
-#SBATCH --time=1:00:00
-#SBATCH --job-name=align_muscle
-#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/align_muscle_%A_%a.err
-#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/align_muscle_%A_%a.out
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --mem=250GB
+#SBATCH --job-name=mafft_iqtree
+#SBATCH --error=/work/richlab/aliciarich/bioinformatics_stats/logs/mafft_iqtree_%A.err
+#SBATCH --output=/work/richlab/aliciarich/bioinformatics_stats/logs/mafft_iqtree_%A.out
 #SBATCH --partition=guest
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8         
+#SBATCH --mem=64G                 
+#SBATCH --time=6:00:00            
 
 module purge
-module load muscle/5.1
+module load mafft/7.526
+module load iqtree/2.3
+
 
 input_fasta="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_renamed.fasta"
-aligned_fasta="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_aligned.fasta"
+aligned_fasta="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_aligned_mafft.fasta"
+out_prefix="/work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_tree"
 
-muscle -super5 $input_fasta -output $aligned_fasta
+mafft \
+  --thread 8 \
+  --retree 2 \
+  --maxiterate 1000 \
+  "$input_fasta" > "$aligned_fasta"
+  
 
+iqtree -s $aligned_fasta \
+        -m MFP+MERGE \
+        -B 1000 \
+        -T $SLURM_CPUS_PER_TASK \
+        -pre "$out_prefix" \
+        -redo
+  
 ```
 
 ### Submit Batch Script
 
 ```{terminal, warning = FALSE, echo = FALSE}
 cd "/work/richlab/aliciarich/bioinformatics_stats/batch_scripts"
-sbatch "align_muscle.sh"
+sbatch "mafft_iqtree.sh"
 ```
 
-Once the script finishes running, transfer the `refs_aligned.fasta` file from the directory on Swan to the local matching directory to run the next step in R.
+Once the script finishes running, transfer the `refs_aligned.fasta` and `refs_tree.tree` files from the directory on Swan to the local matching directory to run the next step in R.
+
+#### Note the Final Model Used
+
+I also like to extract the bottom of the log file produced to keep this note on the alignment model that the MAFFT algorithm selected. It just makes it easier for copying and pasting into manuscripts later.
+
+```
+alg=A, model=DNA200 (2), 1.53 (4.59), -0.00 (-0.00), noshift, amax=0.0
+8 thread(s)
+
+Strategy:
+ FFT-NS-i (Accurate but slow)
+ Iterative refinement method (max. 16 iterations)
+```
 
 ---
 
-## Build Tree
+## Verify Tree
 
 ```{r}
-refs_aligned <- read.phyDat(
-  "microeco/loris/refs_aligned.fasta", 
-  format = "fasta", 
-  type   = "DNA"
-  )
-```
-
-
-```{r}
-refs_dist <- dist.ml(refs_aligned)
-refs_tree <- NJ(refs_dist)
-```
-
-
-```{r}
-fit_tree  <- pml(fit_tree, data = refs_aligned)
-fit_gtr   <- optim.pml(
-  fit_tree,
-  model     = "GTR",
-  optInv    = TRUE,    # estimate proportion of invariant sites
-  optGamma  = TRUE,    # estimate gamma shape
-  optEdge   = TRUE,    # optimize branch lengths
-  control   = pml.control(trace = 0)
-)
-```
-
-
-```{r}
-tree_boots <- boostrap.pml(
-  fit_gtr,
-  bs        = 100,        # number of replicates
-  optNni    = TRUE,       # optimize NNI swaps per replicate
-  multicore = TRUE,       # parallelize
-  ncores    = parallel::detectCores()
-)
-```
-
-**The basics of this approach:**
-
-- Distance-based start (`NJ` on `dist.ml`) gives a reasonable topology for downstream ML
-- `GTR+Γ+I` is a general model; we can simplify (e.g. HKY) if our data are small
-- `optim.pml` jointly optimizes tree, rates, and site parameters—fast and reliable
-- Bootstrapping (100–500 reps) provides support values we can display in `microeco`  
-
-```{r}
-tree_plot <- plotBS(fit_gtr$tree, tree_boots, p = 50, type = "phylogram")
-tree_plot
+refs_aligned <- treeio::read.fasta("microeco/loris/refs_aligned_mafft.fasta")
 ```
 
 ```{r}
-phylo_tree <- fit_gtr$tree
+phylo_tree <- read.tree("microeco/loris/refs_tree.treefile")
 ```
 
 
+## Collapse to Genus Level
 
-## Join Taxonomic Data to Tree
+### Join Taxonomic Data to Tree
 
 ```{r}
-tree_tbl <- as_tibble(tree)
+load("microeco/loris/tax_table.RData")
 
-
-tree_genus_tbl <- tree_tbl %>%
-  full_join(tax_table, by = join_by(label == organism)) %>%
-  mutate(label = case_when(
-    Genus == "g__" & Family == "f__" & Order == "o__" & Class == "c__" & Phylum == "p__" ~Kingdom,
-    Genus == "g__" & Family == "f__" & Order == "o__" & Class == "c__" & Phylum != "p__" ~Phylum,
-    Genus == "g__" & Family == "f__" & Order == "o__" & Class != "c__" ~Class,
-    Genus == "g__" & Family == "f__" & Order != "o__" ~Order,
-    Genus == "g__" & Family != "f__" ~Family,
+tax_table <- tax.table %>%
+  rownames_to_column("label") %>%
+  mutate(label_genus = case_when(
+    Genus == "g__" & Family == "f__" & Order == "o__" & Class == "c__" & Phylum == "p__" ~as.character(str_glue("{Genus}{Family}{Order}{Class}{Phylum}{Kingdom}")),
+    Genus == "g__" & Family == "f__" & Order == "o__" & Class == "c__" & Phylum != "p__" ~as.character(str_glue("{Genus}{Family}{Order}{Class}{Phylum}")),
+    Genus == "g__" & Family == "f__" & Order == "o__" & Class != "c__" ~as.character(str_glue("{Genus}{Family}{Order}{Class}")),
+    Genus == "g__" & Family == "f__" & Order != "o__" ~as.character(str_glue("{Genus}{Family}{Order}")),
+    Genus == "g__" & Family != "f__" ~as.character(str_glue("{Genus}{Family}")),
     Genus != "g__" ~ Genus,
     .default = Genus
-  )) %>%
-  select(-Species)
+  ))  %>%
+  mutate(label_family = case_when(
+    Family == "f__" & Order == "o__" & Class == "c__" & Phylum == "p__" ~as.character(str_glue("{Family}{Order}{Class}{Phylum}{Kingdom}")),
+    Family == "f__" & Order == "o__" & Class == "c__" & Phylum != "p__" ~as.character(str_glue("{Family}{Order}{Class}{Phylum}")),
+    Family == "f__" & Order == "o__" & Class != "c__" ~as.character(str_glue("{Family}{Order}{Class}")),
+    Family == "f__" & Order != "o__"                  ~as.character(str_glue("{Family}{Order}")),
+    Family != "f__" ~ Family,
+    .default = Family
+  ))  %>%
+  mutate(label_order = case_when(
+    Order == "o__" & Class == "c__" & Phylum == "p__" ~as.character(str_glue("{Order}{Class}{Phylum}{Kingdom}")),
+    Order == "o__" & Class == "c__" & Phylum != "p__" ~as.character(str_glue("{Order}{Class}{Phylum}")),
+    Order == "o__" & Class != "c__"                   ~as.character(str_glue("{Order}{Class}")),
+    Order != "o__" ~ Order,
+    .default = Order
+  ))  %>%
+  mutate(label_class = case_when(
+    Class == "c__" & Phylum == "p__" ~as.character(str_glue("{Class}{Phylum}{Kingdom}")),
+    Class == "c__" & Phylum != "p__" ~as.character(str_glue("{Class}{Phylum}")),
+    Class != "c__" ~ Class,
+    .default = Class
+  ))  %>%
+  mutate(label_phylum = case_when(
+    Phylum == "p__" ~as.character(str_glue("{Phylum}{Kingdom}")),
+    Phylum != "p__" ~ Phylum,
+    .default = Phylum
+  ))
+```
+
+```{r}
+tree_tbl <- as_tibble(phylo_tree) %>%
+  full_join(tax_table, by = "label")
+```
+
+```{r}
+tree_grouped <- as_tibble(phylo_tree) %>%
+  groupOTU(split(tree_tbl$label, tree_tbl$label_phylum ),"phylum", overlap = "overwrite") %>%
+  groupOTU(split(tree_tbl$label, tree_tbl$label_class ), "class" , overlap = "overwrite") %>%
+  groupOTU(split(tree_tbl$label, tree_tbl$label_order ), "order" , overlap = "overwrite") %>%
+  groupOTU(split(tree_tbl$label, tree_tbl$label_family), "family", overlap = "overwrite") %>%
+  groupOTU(split(tree_tbl$label, tree_tbl$label_genus ), "genus" , overlap = "overwrite") %>%
+  as.treedata()
+```
+
+
+
+```{r}
+view_tree <- ggtree(tree_grouped, branch.length = "none") +
+  aes(color = phylum) +
+  theme(legend.position="none")
+view_tree
+```
+
+
+```{r}
+phylo_genus <- phyloseq(
+  otu_table(otu.table, taxa_are_rows = TRUE),
+  phy_tree(phylo_tree),
+  tax_table(as.matrix(tax.table)),
+  sample_data(sample.table)
+  ) %>%
+  tax_glom("Genus")
+```
+
+```{r}
+ggtree(phylo_genus)
+```
+
+
+
+```{r}
+gen_singles <- tree_tbl %>%
+  filter(genus_count == 1) %>%
+  select(clade = label_genus, node)
+
+gen_nodes <- split(tree_tbl$node, tree_tbl$label_genus) %>%
+  keep(\(x) length(x) > 1)
+
+getCladeNode <- function(tree, nodesvec, gname) {
+  nodenum <- getMRCA(tree, tip = nodesvec)
+  tibble(clade = gname, node = nodenum)
+}
+
+genNodes <- imap(gen_nodes, \(x, idx) getCladeNode(phylo_tree, x, idx)) %>%
+  list_rbind() %>%
+  bind_rows(gen_singles) %>%
+  arrange(node)
 
 ```
+
+
+```{r}
+collapsed_tree <- reduce(
+  genNodes$node, 
+  \(x, y) collapse(x, y, mode = "max", fill = "transparent"), 
+  .init = view_tree
+  ) %<+% genNodes
+
+collapsed_tree +
+  geom_label(aes(label = clade))
+```
+
+```{r}
+genus_data <- as.treedata(collapsed_tree) %>%
+  as_tibble() %>%
+  left_join(tax_table, by = "label") %>%
+  relocate(label_genus, .after = clade) %>%
+  arrange(label_genus, node)
+```
+
+
+```{r}
+genus_tree <- collapsed_tree
+
+genus_tree$data <- genus_tree$data %>%
+  mutate(
+    isTip = if_else(is.na(clade), FALSE, TRUE),
+    label = if_else(!is.na(clade), clade, NA)
+    )
+```
+
+```{r}
+genus_tree
+```
+
+
+
+```{r}
+orders <- split(tree_tbl$node, tree_tbl$label_order) %>%
+  keep(\(x) length(x) > 1) 
+```
+
+```{r}
+collapse_orders <- function(tree, group) {
+  tree %>%
+  CollapseEdge(group)
+}
+
+order_tree <- reduce(orders, collapse_orders, .init = phylo_tree)
+```
+
+
+```{r}
+for (i in seq_along(orders)) {
+  order  <- names(orders)[[i]]
+  otu    <- orders[[i]]
+}
+```
+
+
+```{r}
+for (order in orders) {
+  order_tree <- groupOTU(as_tibble(phylo_tree), order, overlap = "origin")
+}
+
+```
+
+
+
+```{r}
+plot(order_tree)
+```
+
+
+```{r}
+nodes_phylum <- split(tree@data$node, tree@data$label_phylum) %>%
+  map(\(x) as.integer(x))
+
+collapse_phylum <- map(nodes_phylum, \(x) getMRCA(phylo_tree, x)) %>%
+  keep(\(x) length(x) > 0)
+
+for (mrca in collapse_phylum) {
+  tree_phylum <- TreeTools::CollapseNode(phylo_tree, node = mrca)
+}
+
+plot(tree_phylum)
+```
+
+
+```{r}
+genus_tbl <- tree_tbl %>%
+  mutate(label = label_genus)
+
+tree_genus <- as.treedata(genus_tbl)
+
+view_genus_tree <- ggtree(tree_genus, branch.length='none')
+view_genus_tree
+```
+
+
+```{r}
+class_tbl <- tree_tbl %>%
+  mutate(label = label_class)
+
+tree_class <- as.treedata(class_tbl)
+
+view_class_tree <- ggtree(tree_class, branch.length='none')
+view_class_tree
+```
+
+
+```{r}
+tree <- as.treedata(tree_tbl)
+```
+
+
+```{r}
+plot(tree@phylo)
+```
+
+```{r}
+nodes_genus <- split(tree@data$node, tree@data$label_genus) %>%
+  map(\(x) as.integer(x))
+
+collapse_genus <- map(nodes_genus, \(x) getMRCA(tree@phylo, x)) %>%
+  keep(\(x) length(x) > 0)
+
+for (mrca in collapse_genus) {
+  tree_genus <- TreeTools::CollapseNode(tree@phylo, node = mrca)
+}
+
+plot(tree_genus)
+```
+
+
+```{r}
+plot(phylo_tree)
+
+nodes_phylum <- split(tree@data$node, tree@data$label_phylum) %>%
+  map(\(x) as.integer(x))
+
+collapse_phylum <- map(nodes_phylum, \(x) getMRCA(phylo_tree, x)) %>%
+  keep(\(x) length(x) > 0)
+
+for (mrca in collapse_phylum) {
+  tree_phylum <- TreeTools::CollapseNode(phylo_tree, node = mrca)
+}
+
+plot(tree_phylum)
+```
+
+
+
+
+```{r}
+nodes_genus <- split(tree@data$node, tree@data$label_genus) %>%
+  map(\(x) as.integer(x))
+
+collapse_genus <- map(nodes_genus, \(x) getMRCA(tree@phylo, x)) %>%
+  keep(\(x) length(x) > 0)
+```
+
+
+```{r}
+for (mrca in collapse_genus) {
+  tree_genus <- TreeTools::CollapseNode(tree@phylo, node = mrca)
+}
+```
+
+
+
+```{r}
+tree <- as.treedata(tree_tbl)
+tree_view <- ggtree(tree, branch.length='none')
+
+nodes_genus <- split(tree@data$node, tree@data$label_genus) %>%
+  map(\(x) as.integer(x))
+
+collapse_genus <- map(nodes_genus, \(x) getMRCA(phylo_tree, x)) %>%
+  keep(\(x) length(x) > 0)
+
+tree_genus <- tree_view
+
+for (mrca in collapse_genus) {
+  tree_genus <- ggtree::collapse(tree_genus, node = mrca)
+}
+```
+
+```{r}
+tree_view
+tree_genus
+```
+
+```{r}
+genus_phylo <- as
+```
+
+
+
+```{r}
+nodes_phylum <- split(tree@data$node, tree@data$label_phylum) %>%
+  map(\(x) as.integer(x))
+
+collapse_phylum <- map(nodes_phylum, \(x) getMRCA(phylo_tree, x)) %>%
+  keep(\(x) length(x) > 0)
+
+tree_phylum <- tree_view
+
+for (mrca in collapse_phylum) {
+ggtree::collapse(tree_phylum, node = mrca)
+}
+```
+
+
+
+```{r}
+for (g in unique(tax$Genus)) {
+  tips <- tax$organism[tax$Genus == g]
+  # skip monospecific genera
+  if (length(tips) < 2) next
+  mrca <- getMRCA(phy, tips)
+  # collapse that node (turns the clade into a single multifurcation)
+  phy <- collapse(phy, node = mrca)
+}
+
+# 4) write out, if you like
+write.tree(phy, "microeco/loris/tree.genus_collapsed.nwk")
+
+# 5) visualise
+p <- ggtree(phy, branch.length = "none") +
+     geom_tiplab()
+
+```
+
+
+
+```{r}
+tree_phylum <- imap(nodes_phylum, \(x, idx) groupClade(as_tibble(tree), .node = x, group_name = idx))
+```
+
+
+```{r}
+for (clade in nodes_phylum) {
+tidytree::groupClade(as_tibble(tree_phylum), .node = clade)
+}
+```
+
+```{r}
+tree_phylum
+tree_view
+```
+
+
+
+```{r}
+ancestors_genus <- map(nodes_genus, \(x) getMRCA(phylo_tree, x)) %>%
+  modify2(., nodes_genus, \(x, y) if (is.null(x)) y else x)
+```
+
 
 

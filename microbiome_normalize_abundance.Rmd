@@ -114,9 +114,9 @@ download_file(
 ),
 
 download_file(
-  path           = "microeco/loris/tree.newick",
-  output_name    = "microeco/loris/tree",
-  button_label   = "Download tree.newick",
+  path           = "microeco/loris/refs_tree.treefile",
+  output_name    = "microeco/loris/refs_tree",
+  button_label   = "Download refs_tree.treefile",
   button_type    = "danger",
   has_icon       = TRUE,
   icon           = "fa fa-save",
@@ -124,9 +124,9 @@ download_file(
 ),
 
 download_file(
-  path           = "microeco/loris/representative_seqs.fasta",
-  output_name    = "microeco/loris/representative_seqs",
-  button_label   = "Download representative_seqs.fasta",
+  path           = "microeco/loris/refs_aligned_mafft.fasta",
+  output_name    = "microeco/loris/refs_aligned",
+  button_label   = "Download refs_aligned_mafft.fasta",
   button_type    = "danger",
   has_icon       = TRUE,
   icon           = "fa fa-save",
@@ -145,8 +145,8 @@ otu_table    <- read_tsv("microeco/loris/otu_table.tsv", show_col_types = FALSE)
   column_to_rownames("organism")
 tax_table    <- read_tsv("microeco/loris/taxonomy_table.tsv", show_col_types = FALSE) %>%
   column_to_rownames("organism")
-phylo_tree   <- read.tree("microeco/loris/tree.newick")
-rep_fasta    <- read.tree("microeco/loris/representative_seqs.fasta")
+phylo_tree   <- read.tree("microeco/loris/refs_tree.treefile")
+rep_fasta    <- read.fasta("microeco/loris/refs_aligned_mafft.fasta")
 
 
 sample_table
@@ -206,6 +206,10 @@ Then, to focus on the most relevant features of the microbial communities, we ap
 ```{r}
 data_filt <- clone(data_merged)
 data_filt <- data_filt$merge_taxa(taxa = "Genus")
+```
+
+
+```{r}
 data_filt$tidy_dataset()
 data_filt$filter_taxa(rel_abund = 0.00001, freq = 2)
 data_filt$tidy_dataset()

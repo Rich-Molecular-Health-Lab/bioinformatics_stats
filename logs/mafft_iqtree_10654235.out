@@ -1,0 +1,2489 @@
+IQ-TREE multicore version 2.3.4 COVID-edition for Linux x86 64-bit built Jun 18 2024
+Developed by Bui Quang Minh, James Barbetti, Nguyen Lam Tung, Olga Chernomor,
+Heiko Schmidt, Dominik Schrempf, Michael Woodhams, Ly Trong Nhan, Thomas Wong
+
+Host:    c0807.swan.hcc.unl.edu (AVX512, FMA3, 251 GB RAM)
+Command: iqtree -s /work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_aligned_mafft.fasta -m MFP+MERGE -B 1000 -T 8 -pre /work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_tree -redo
+Seed:    425419 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Tue Jun 10 15:25:40 2025
+Kernel:  AVX+FMA - 8 threads (8 CPU cores detected)
+
+Reading alignment file /work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_aligned_mafft.fasta ... Fasta format detected
+Reading fasta file: done in 0.115814 secs using 91.16% CPU
+Alignment most likely contains DNA/RNA sequences
+WARNING: 9 sites contain only gaps or ambiguous characters.
+Alignment has 2244 sequences with 2778 columns, 2325 distinct patterns
+1598 parsimony-informative, 372 singleton sites, 808 constant sites
+             Gap/Ambiguity  Composition  p-value
+Analyzing sequences: done in 0.00208088 secs using 767.9% CPU
+   1  txid180400    47.73%    passed     67.32%
+   2  txid61645     48.81%    passed     91.02%
+   3  txid61646     47.88%    passed     99.85%
+   4  txid61652     48.09%    passed     98.34%
+   5  txid301154    52.99%    passed     86.45%
+   6  txid1089553   47.37%    failed      0.06%
+   7  txid86185     45.97%    passed     80.02%
+   8  txid162028    45.75%    failed      3.18%
+   9  txid215803    46.72%    passed     14.23%
+  10  txid228603    46.36%    passed     50.68%
+  11  txid228604    46.26%    passed     69.57%
+  12  txid228899    46.00%    passed     97.45%
+  13  txid253314    47.95%    passed     83.27%
+  14  txid279810    47.73%    passed     42.67%
+  15  txid88233     43.88%    passed     10.91%
+  16  txid60246     48.96%    failed      0.19%
+  17  txid588       46.22%    passed     65.83%
+  18  txid65401     46.54%    passed     86.44%
+  19  txid67824     45.68%    passed     98.79%
+  20  txid67827     45.39%    passed     99.67%
+  21  txid67774     47.41%    passed     75.62%
+  22  txid70584     49.10%    passed     77.28%
+  23  txid70586     49.03%    passed     75.76%
+  24  txid39844     46.87%    passed     59.48%
+  25  txid73098     49.28%    passed     97.35%
+  26  txid85401     46.11%    passed     24.55%
+  27  txid85403     45.97%    passed     25.66%
+  28  txid75588     45.43%    passed     79.05%
+  29  txid44008     45.68%    passed     77.64%
+  30  txid76758     45.43%    passed     87.68%
+  31  txid76760     45.21%    passed     81.67%
+  32  txid651740    45.43%    passed     89.24%
+  33  txid1286820   45.50%    passed     64.22%
+  34  txid81464     44.96%    passed     92.72%
+  35  txid87012     48.88%    failed      0.07%
+  36  txid78543     45.43%    passed     86.22%
+  37  txid78544     45.46%    passed     77.21%
+  38  txid12917     45.61%    passed     97.16%
+  39  txid296       47.52%    passed     62.23%
+  40  txid99594     45.25%    passed     21.63%
+  41  txid99656     46.11%    passed     20.13%
+  42  txid93063     48.09%    passed     96.18%
+  43  txid100176    46.47%    passed     65.93%
+  44  txid2801452   45.21%    failed      2.31%
+  45  txid117208    45.18%    passed     34.38%
+  46  txid123841    47.55%    failed      1.51%
+  47  txid129847    46.00%    passed     83.34%
+  48  txid129817    45.97%    passed     75.56%
+  49  txid160825    47.52%    passed     77.44%
+  50  txid135739    45.03%    passed     64.66%
+  51  txid137778    47.62%    failed      3.18%
+  52  txid140626    47.70%    passed     13.79%
+  53  txid171523    43.88%    passed     19.91%
+  54  txid180286    47.88%    passed      9.06%
+  55  txid182403    48.56%    failed      3.67%
+  56  txid198618    47.62%    passed     84.72%
+  57  txid198620    47.62%    passed     89.56%
+  58  txid187326    49.21%    passed     57.24%
+  59  txid1220589   45.43%    passed     82.03%
+  60  txid82376     45.79%    passed     81.41%
+  61  txid83617     45.61%    passed     85.21%
+  62  txid1727      48.34%    failed      3.91%
+  63  txid78398     46.54%    passed     96.19%
+  64  txid69395     48.20%    passed     85.22%
+  65  txid69396     48.20%    passed     89.44%
+  66  txid82989     45.86%    passed     97.95%
+  67  txid82990     46.18%    passed     98.73%
+  68  txid82981     46.65%    passed     95.93%
+  69  txid82983     46.36%    passed     87.93%
+  70  txid82985     46.54%    passed     95.33%
+  71  txid745277    47.01%    passed     89.08%
+  72  txid82995     46.18%    passed     95.57%
+  73  txid28151     45.93%    passed     97.53%
+  74  txid51        44.78%    passed      6.54%
+  75  txid83446     44.74%    passed     19.43%
+  76  txid108980    48.20%    passed     27.94%
+  77  txid126157    46.51%    passed     95.83%
+  78  txid108981    47.23%    passed     74.80%
+  79  txid249188    47.16%    passed     26.93%
+  80  txid28210     50.83%    passed     84.34%
+  81  txid153721    46.44%    passed     27.07%
+  82  txid119000    46.29%    passed     31.54%
+  83  txid158847    45.36%    passed     57.79%
+  84  txid1296      45.00%    passed     16.45%
+  85  txid185008    46.90%    passed     41.29%
+  86  txid225992    51.58%    passed     95.90%
+  87  txid29468     49.35%    passed     43.91%
+  88  txid200991    44.89%    passed     36.00%
+  89  txid1300165   51.08%    passed     85.88%
+  90  txid208479    46.08%    passed     43.48%
+  91  txid208962    46.22%    passed     99.27%
+  92  txid215691    46.11%    passed     58.64%
+  93  txid94        47.91%    passed      6.79%
+  94  txid217070    47.91%    failed      4.65%
+  95  txid219574    45.57%    passed     72.88%
+  96  txid257984    46.33%    passed     14.92%
+  97  txid244366    49.17%    passed     96.29%
+  98  txid155866    43.99%    failed      3.61%
+  99  txid157227    45.79%    passed     83.73%
+ 100  txid157228    45.75%    passed     68.67%
+ 101  txid157225    45.72%    passed     77.43%
+ 102  txid160404    46.18%    passed     26.14%
+ 103  txid411467    46.62%    passed     94.72%
+ 104  txid215580    45.39%    passed      8.72%
+ 105  txid218144    45.57%    passed     53.97%
+ 106  txid218208    47.95%    passed     92.62%
+ 107  txid259063    48.38%    passed     44.33%
+ 108  txid261164    46.22%    passed     43.45%
+ 109  txid28220     47.73%    passed     97.60%
+ 110  txid784       47.48%    failed      0.99%
+ 111  txid46125     49.42%    passed     82.06%
+ 112  txid47885     45.03%    passed     87.01%
+ 113  txid214482    47.05%    passed     91.38%
+ 114  txid61        46.58%    passed     51.70%
+ 115  txid1379      44.67%    failed      3.65%
+ 116  txid28139     47.34%    passed     70.63%
+ 117  txid35830     47.34%    passed     48.11%
+ 118  txid1265      50.22%    passed     10.65%
+ 119  txid2718      47.23%    passed     96.74%
+ 120  txid216       46.80%    failed      0.91%
+ 121  txid831       46.83%    passed     19.96%
+ 122  txid47229     46.22%    passed     90.15%
+ 123  txid50960     48.81%    passed      7.26%
+ 124  txid749       49.42%    passed     50.44%
+ 125  txid553       47.62%    passed     98.12%
+ 126  txid57002     48.74%    passed     86.03%
+ 127  txid73780     46.36%    passed     42.96%
+ 128  txid60036     46.90%    passed     76.01%
+ 129  txid1286362   46.15%    passed     70.80%
+ 130  txid37658     46.58%    passed     35.86%
+ 131  txid29322     46.40%    passed     84.59%
+ 132  txid33025     45.72%    passed     82.97%
+ 133  txid79881     45.86%    passed     91.55%
+ 134  txid1267      47.52%    passed     14.57%
+ 135  txid35785     49.71%    passed      8.17%
+ 136  txid36850     46.83%    passed     58.23%
+ 137  txid36835     47.01%    failed      3.07%
+ 138  txid37929     47.05%    passed     13.00%
+ 139  txid47246     46.69%    passed     98.18%
+ 140  txid40215     47.48%    passed     51.23%
+ 141  txid39950     45.86%    passed      7.23%
+ 142  txid180164    46.87%    passed     58.63%
+ 143  txid53443     47.55%    passed     21.92%
+ 144  txid53442     46.94%    passed     34.28%
+ 145  txid623       46.44%    passed     99.02%
+ 146  txid622       46.47%    passed     99.54%
+ 147  txid182773    52.27%    passed     66.60%
+ 148  txid53245     45.90%    passed     82.99%
+ 149  txid29581     47.12%    passed     66.00%
+ 150  txid158627    44.96%    passed     91.16%
+ 151  txid57664     46.69%    passed     97.74%
+ 152  txid29370     46.18%    passed     50.71%
+ 153  txid69974     48.27%    passed     64.13%
+ 154  txid53400     48.74%    passed     95.02%
+ 155  txid81943     49.86%    passed     83.03%
+ 156  txid87458     45.93%    passed     74.59%
+ 157  txid82347     47.08%    passed     39.79%
+ 158  txid2738      47.12%    passed     52.78%
+ 159  txid84031     47.08%    passed     37.80%
+ 160  txid84024     47.01%    passed     73.25%
+ 161  txid69825     46.44%    passed     64.54%
+ 162  txid71452     48.70%    passed     57.26%
+ 163  txid262208    45.46%    passed      7.47%
+ 164  txid246432    46.22%    failed      3.50%
+ 165  txid631       47.41%    passed     97.95%
+ 166  txid161493    44.24%    failed      1.10%
+ 167  txid536231    46.69%    passed     65.26%
+ 168  txid169435    50.86%    passed     84.16%
+ 169  txid395965    49.28%    passed     77.43%
+ 170  txid214853    47.37%    passed     37.58%
+ 171  txid471875    49.86%    passed     75.10%
+ 172  txid431944    48.06%    passed     84.71%
+ 173  txid95149     46.69%    failed      3.99%
+ 174  txid122355    45.03%    passed     51.49%
+ 175  txid152682    48.20%    passed     97.42%
+ 176  txid169176    48.96%    passed     95.77%
+ 177  txid172043    48.63%    passed     85.86%
+ 178  txid1006000   47.48%    passed     97.53%
+ 179  txid67825     46.18%    passed     93.79%
+ 180  txid67826     45.25%    passed     92.77%
+ 181  txid57706     44.92%    passed     98.64%
+ 182  txid67829     44.92%    passed     99.37%
+ 183  txid76761     45.25%    passed     75.75%
+ 184  txid97089     46.90%    passed     21.15%
+ 185  txid94868     45.93%    passed     44.52%
+ 186  txid100134    44.82%    passed     60.70%
+ 187  txid108003    47.34%    passed     31.17%
+ 188  txid160434    45.90%    passed     97.96%
+ 189  txid135082    45.14%    passed     84.46%
+ 190  txid580       47.48%    passed     98.96%
+ 191  txid156456    49.32%    passed      5.51%
+ 192  txid154288    45.72%    passed     64.77%
+ 193  txid180295    44.35%    passed     34.72%
+ 194  txid194702    46.26%    passed     96.56%
+ 195  txid209880    44.67%    passed     27.97%
+ 196  txid69359     48.74%    passed     42.63%
+ 197  txid76853     45.75%    passed     59.57%
+ 198  txid74316     49.03%    passed     88.03%
+ 199  txid1006003   45.82%    passed     96.98%
+ 200  txid90730     45.46%    passed     81.11%
+ 201  txid109327    46.44%    passed     44.93%
+ 202  txid105841    47.59%    passed     34.76%
+ 203  txid179628    48.34%    passed     68.31%
+ 204  txid180588    46.18%    passed     41.35%
+ 205  txid198093    46.54%    passed     12.43%
+ 206  txid200452    46.22%    passed     93.69%
+ 207  txid200451    46.29%    passed     71.14%
+ 208  txid200450    46.29%    passed     75.31%
+ 209  txid194326    43.92%    passed      9.94%
+ 210  txid204936    44.71%    passed     91.37%
+ 211  txid208224    47.80%    passed     91.35%
+ 212  txid214473    47.37%    passed      8.52%
+ 213  txid147645    47.48%    passed     86.30%
+ 214  txid171674    48.96%    failed      4.80%
+ 215  txid257708    46.65%    failed      0.19%
+ 216  txid237576    50.54%    failed      3.33%
+ 217  txid257003    47.37%    passed     78.70%
+ 218  txid273793    48.81%    passed     52.28%
+ 219  txid29408     49.35%    passed      5.85%
+ 220  txid1589      45.32%    passed      8.70%
+ 221  txid78257     45.50%    failed      0.02%
+ 222  txid40519     50.65%    passed      9.65%
+ 223  txid57000     48.70%    passed     42.66%
+ 224  txid1561      45.72%    passed     72.57%
+ 225  txid1520      45.90%    passed     52.44%
+ 226  txid29542     44.67%    passed     46.30%
+ 227  txid29356     47.52%    passed     68.69%
+ 228  txid414       47.55%    passed     59.29%
+ 229  txid39770     47.37%    passed     88.99%
+ 230  txid37625     48.24%    passed     99.32%
+ 231  txid37626     48.38%    passed     99.86%
+ 232  txid42253     45.32%    failed      3.84%
+ 233  txid61171     49.96%    passed     15.06%
+ 234  txid87650     45.93%    passed     58.52%
+ 235  txid292800    44.20%    passed     82.55%
+ 236  txid78554     46.65%    passed      6.79%
+ 237  txid162496    50.11%    passed      8.24%
+ 238  txid33039     49.10%    passed     48.93%
+ 239  txid43064     44.20%    passed     67.91%
+ 240  txid411470    46.80%    passed     67.96%
+ 241  txid633147    47.08%    failed      0.00%
+ 242  txid997349    48.27%    failed      0.00%
+ 243  txid77585     48.06%    failed      0.00%
+ 244  txid35839     46.00%    passed     47.27%
+ 245  txid1449339   45.14%    passed     86.54%
+ 246  txid29379     46.90%    passed     27.43%
+ 247  txid1288      46.83%    passed      7.72%
+ 248  txid82992     46.11%    passed     97.25%
+ 249  txid137591    45.07%    failed      3.48%
+ 250  txid154046    48.63%    passed     57.12%
+ 251  txid159728    45.86%    passed     89.67%
+ 252  txid1752      45.64%    failed      4.63%
+ 253  txid94138     46.22%    passed      9.31%
+ 254  txid201828    44.74%    passed      6.83%
+ 255  txid29375     48.27%    passed     48.93%
+ 256  txid577       47.66%    passed     99.78%
+ 257  txid76122     47.80%    passed     81.74%
+ 258  txid155892    47.52%    passed     83.77%
+ 259  txid82996     45.93%    passed     95.64%
+ 260  txid137545    45.72%    passed     95.55%
+ 261  txid28026     45.54%    failed      0.08%
+ 262  txid50715     47.80%    failed      4.60%
+ 263  txid1071      47.26%    failed      0.32%
+ 264  txid50712     49.32%    passed     23.55%
+ 265  txid57037     45.25%    passed     54.85%
+ 266  txid518634    45.28%    failed      0.05%
+ 267  txid81895     48.42%    passed     19.46%
+ 268  txid33968     47.88%    passed     15.54%
+ 269  txid116087    51.66%    passed     14.14%
+ 270  txid1747      46.51%    failed      0.08%
+ 271  txid1215114   46.58%    passed     81.35%
+ 272  txid183670    47.41%    passed     28.36%
+ 273  txid2750      46.44%    passed     64.39%
+ 274  txid200615    46.65%    passed     21.46%
+ 275  txid201973    45.43%    failed      0.01%
+ 276  txid203699    47.84%    passed     91.90%
+ 277  txid28454     48.27%    passed     34.41%
+ 278  txid265291    46.15%    passed     73.95%
+ 279  txid266128    47.34%    passed     92.84%
+ 280  txid269069    48.34%    passed     16.94%
+ 281  txid144191    48.42%    passed     15.49%
+ 282  txid279208    46.44%    passed     55.53%
+ 283  txid888743    46.22%    failed      2.56%
+ 284  txid1956      46.80%    failed      0.42%
+ 285  txid1122184   48.24%    passed     58.34%
+ 286  txid484018    46.36%    passed     41.14%
+ 287  txid470145    46.36%    passed     15.36%
+ 288  txid290053    49.42%    passed     30.60%
+ 289  txid310300    47.52%    failed      2.44%
+ 290  txid909663    46.65%    passed     77.88%
+ 291  txid329854    46.58%    failed      1.22%
+ 292  txid338188    46.54%    failed      0.42%
+ 293  txid823       46.44%    passed     98.91%
+ 294  txid46503     46.29%    passed     13.67%
+ 295  txid357276    46.26%    passed     27.02%
+ 296  txid360411    48.70%    passed     36.46%
+ 297  txid1002367   46.44%    passed     87.37%
+ 298  txid363832    46.18%    failed      1.83%
+ 299  txid363843    46.83%    passed     92.14%
+ 300  txid363885    46.40%    passed     73.83%
+ 301  txid363863    47.01%    passed     11.19%
+ 302  txid358       47.55%    passed     94.14%
+ 303  txid418184    50.29%    passed     90.59%
+ 304  txid374426    48.27%    passed     16.46%
+ 305  txid376804    47.59%    passed     92.30%
+ 306  txid717605    45.00%    failed      4.66%
+ 307  txid387090    46.29%    passed     90.24%
+ 308  txid387661    46.29%    passed      7.65%
+ 309  txid392842    46.33%    failed      3.37%
+ 310  txid398045    44.56%    passed     15.72%
+ 311  txid462367    46.87%    passed     13.87%
+ 312  txid398037    46.76%    passed      8.69%
+ 313  txid33946     46.98%    passed     66.31%
+ 314  txid133448    46.36%    passed     89.05%
+ 315  txid407975    47.19%    passed     44.32%
+ 316  txid418853    48.67%    passed     90.05%
+ 317  txid742816    51.69%    passed     87.83%
+ 318  txid1331058   48.20%    passed     23.85%
+ 319  txid470446    46.65%    failed      2.72%
+ 320  txid742743    45.25%    passed     27.22%
+ 321  txid544644    46.58%    passed     69.37%
+ 322  txid544645    46.51%    passed     40.89%
+ 323  txid67828     45.03%    passed     98.68%
+ 324  txid33964     45.82%    passed     20.48%
+ 325  txid420662    45.50%    passed     54.35%
+ 326  txid521       45.21%    passed     95.52%
+ 327  txid152490    46.98%    failed      0.75%
+ 328  txid180332    45.10%    passed     48.55%
+ 329  txid1423732   45.39%    passed     57.76%
+ 330  txid146817    46.51%    passed     48.54%
+ 331  txid95300     46.29%    passed     79.71%
+ 332  txid1298959   48.27%    passed     81.56%
+ 333  txid69666     48.34%    passed     85.67%
+ 334  txid1006004   45.86%    passed     98.51%
+ 335  txid61651     46.18%    passed     97.01%
+ 336  txid694315    46.08%    passed     31.04%
+ 337  txid98513     48.31%    passed     87.77%
+ 338  txid53254     47.26%    passed     69.57%
+ 339  txid622312    47.66%    passed     57.36%
+ 340  txid1191460   47.34%    passed     57.80%
+ 341  txid1255      43.56%    passed      5.99%
+ 342  txid2749      44.38%    passed     61.02%
+ 343  txid1132444   48.24%    passed     62.20%
+ 344  txid1010      46.33%    passed     93.39%
+ 345  txid833       49.24%    passed     10.18%
+ 346  txid196024    46.08%    passed     87.04%
+ 347  txid223903    48.13%    passed     83.38%
+ 348  txid395963    49.21%    passed     88.53%
+ 349  txid231435    48.56%    passed     85.72%
+ 350  txid237610    47.48%    passed     94.60%
+ 351  txid244566    46.29%    passed     75.31%
+ 352  txid333367    47.52%    passed     33.71%
+ 353  txid265175    48.63%    passed     98.76%
+ 354  txid272917    45.64%    passed     43.24%
+ 355  txid279827    47.26%    passed     58.27%
+ 356  txid293647    44.96%    passed     35.63%
+ 357  txid299767    45.54%    passed     98.81%
+ 358  txid429134    47.77%    passed     88.59%
+ 359  txid317010    45.64%    passed     72.45%
+ 360  txid332950    45.57%    passed     82.53%
+ 361  txid158850    45.43%    passed     61.53%
+ 362  txid587       46.11%    passed     73.05%
+ 363  txid333965    45.39%    passed     77.76%
+ 364  txid343876    46.36%    failed      0.09%
+ 365  txid60519     44.28%    passed     21.52%
+ 366  txid360055    48.67%    passed     50.05%
+ 367  txid360056    47.95%    passed     83.31%
+ 368  txid247       46.54%    failed      0.41%
+ 369  txid354352    49.57%    passed     80.33%
+ 370  txid354351    47.59%    passed     72.39%
+ 371  txid43617     48.67%    passed     57.85%
+ 372  txid370959    49.24%    passed     86.28%
+ 373  txid373043    50.07%    passed     10.97%
+ 374  txid373040    47.34%    passed     80.79%
+ 375  txid376807    46.44%    failed      4.16%
+ 376  txid390879    48.31%    passed     58.01%
+ 377  txid391905    48.70%    passed     69.51%
+ 378  txid402171    49.17%    passed     32.50%
+ 379  txid404900    51.40%    failed      1.42%
+ 380  txid405446    45.57%    passed     89.18%
+ 381  txid419475    50.07%    passed     89.36%
+ 382  txid571255    50.07%    passed     86.48%
+ 383  txid434464    49.06%    passed      8.94%
+ 384  txid457921    50.97%    passed     96.39%
+ 385  txid488546    46.11%    failed      0.16%
+ 386  txid512383    48.52%    passed     21.78%
+ 387  txid53463     47.80%    passed     55.92%
+ 388  txid213224    49.64%    passed     86.76%
+ 389  txid225196    46.26%    passed     99.94%
+ 390  txid223390    50.04%    passed     60.25%
+ 391  txid883106    48.63%    failed      0.00%
+ 392  txid301302    47.62%    passed     69.41%
+ 393  txid713586    48.09%    passed     20.36%
+ 394  txid248039    47.05%    passed     39.08%
+ 395  txid264463    49.96%    passed     16.77%
+ 396  txid888742    46.40%    passed     86.96%
+ 397  txid278994    46.65%    passed     33.52%
+ 398  txid291644    48.92%    passed     23.43%
+ 399  txid693986    49.03%    passed     23.50%
+ 400  txid45498     47.01%    passed      8.78%
+ 401  txid292733    46.22%    passed     54.89%
+ 402  txid314235    49.57%    passed     82.12%
+ 403  txid304413    45.43%    passed     71.71%
+ 404  txid308994    49.75%    passed     11.96%
+ 405  txid1408      48.38%    passed     96.75%
+ 406  txid311182    46.29%    passed     88.11%
+ 407  txid310400    49.06%    passed     84.88%
+ 408  txid314319    47.77%    passed     49.18%
+ 409  txid321982    46.80%    passed     80.10%
+ 410  txid321983    47.08%    passed     89.66%
+ 411  txid1682      45.46%    failed      0.05%
+ 412  txid1690      45.07%    failed      0.01%
+ 413  txid51665     48.96%    passed     25.99%
+ 414  txid33987     44.13%    passed     48.13%
+ 415  txid41170     44.20%    passed     87.73%
+ 416  txid649638    47.44%    passed     19.77%
+ 417  txid331696    50.11%    passed     28.44%
+ 418  txid334735    46.22%    passed     49.01%
+ 419  txid334736    46.11%    passed     60.28%
+ 420  txid341220    48.24%    passed     24.88%
+ 421  txid339722    48.78%    passed      8.50%
+ 422  txid345631    47.41%    passed     98.60%
+ 423  txid345632    45.72%    passed     57.57%
+ 424  txid32021     51.73%    failed      0.47%
+ 425  txid28080     51.73%    failed      0.31%
+ 426  txid348582    47.12%    passed     13.38%
+ 427  txid344880    48.13%    passed     93.15%
+ 428  txid349750    47.91%    passed     96.16%
+ 429  txid349094    44.56%    passed     33.57%
+ 430  txid349095    44.10%    passed     52.41%
+ 431  txid349096    44.74%    passed     94.04%
+ 432  txid358742    49.78%    passed     40.57%
+ 433  txid358743    48.88%    passed     36.55%
+ 434  txid363631    48.96%    passed     92.44%
+ 435  txid1364      48.31%    failed      0.59%
+ 436  txid1121026   50.83%    passed     89.43%
+ 437  txid370977    49.50%    passed     69.17%
+ 438  txid371674    50.54%    passed     31.42%
+ 439  txid372072    50.54%    passed     75.53%
+ 440  txid1121267   49.96%    failed      0.11%
+ 441  txid160453    46.72%    passed     61.14%
+ 442  txid160454    46.72%    passed     80.55%
+ 443  txid375927    46.94%    failed      4.66%
+ 444  txid376733    48.60%    passed     76.37%
+ 445  txid376815    46.80%    passed     96.69%
+ 446  txid379893    47.80%    passed     95.04%
+ 447  txid381308    53.31%    passed     86.66%
+ 448  txid384678    51.66%    passed     91.49%
+ 449  txid570835    48.78%    passed     88.47%
+ 450  txid391953    47.77%    passed     33.53%
+ 451  txid393310    51.26%    passed      9.04%
+ 452  txid397271    46.62%    passed     78.00%
+ 453  txid102862    50.22%    passed     68.99%
+ 454  txid407188    46.58%    passed     96.86%
+ 455  txid1116389   48.27%    passed     90.81%
+ 456  txid33043     48.24%    passed     43.12%
+ 457  txid1121115   48.27%    passed     57.61%
+ 458  txid414052    48.13%    passed     10.79%
+ 459  txid414049    46.51%    passed     73.59%
+ 460  txid423477    51.62%    passed     72.28%
+ 461  txid418854    48.02%    passed     61.09%
+ 462  txid416586    45.10%    passed     73.47%
+ 463  txid417367    47.95%    passed     97.26%
+ 464  txid418707    51.30%    passed     50.96%
+ 465  txid424796    48.96%    passed     80.44%
+ 466  txid424704    48.85%    failed      2.87%
+ 467  txid424757    50.40%    passed     82.83%
+ 468  txid555088    48.13%    passed     97.33%
+ 469  txid429726    51.58%    passed     86.97%
+ 470  txid1121861   49.14%    failed      0.65%
+ 471  txid438033    48.20%    passed     39.61%
+ 472  txid439703    47.66%    passed     48.49%
+ 473  txid442526    47.62%    passed     95.47%
+ 474  txid1123067   48.70%    failed      4.56%
+ 475  txid460384    47.98%    passed     43.56%
+ 476  txid450365    48.20%    passed     67.99%
+ 477  txid450364    46.69%    passed     60.34%
+ 478  txid453836    49.57%    passed     20.25%
+ 479  txid53393     46.00%    passed     28.78%
+ 480  txid1122958   49.75%    passed     70.00%
+ 481  txid459472    47.26%    passed     40.09%
+ 482  txid1449981   46.00%    passed     97.34%
+ 483  txid470565    47.70%    passed     61.65%
+ 484  txid28254     49.53%    passed     55.36%
+ 485  txid476279    52.56%    passed     68.82%
+ 486  txid483547    44.02%    passed     14.68%
+ 487  txid56        45.28%    passed     34.33%
+ 488  txid487316    48.81%    passed     50.09%
+ 489  txid488485    48.78%    passed     85.84%
+ 490  txid490979    51.26%    failed      1.79%
+ 491  txid491921    49.68%    passed     47.23%
+ 492  txid493780    50.25%    failed      2.22%
+ 493  txid501571    46.69%    passed     82.91%
+ 494  txid501496    46.40%    passed     49.47%
+ 495  txid508451    45.07%    passed     25.47%
+ 496  txid115979    45.68%    passed     90.09%
+ 497  txid1207063   47.77%    passed     32.02%
+ 498  txid538021    48.49%    passed      9.91%
+ 499  txid543615    48.49%    failed      4.28%
+ 500  txid563170    47.08%    passed      6.18%
+ 501  txid563172    49.39%    failed      3.09%
+ 502  txid1121830   50.04%    failed      3.34%
+ 503  txid616952    48.09%    passed     43.32%
+ 504  txid493       46.69%    passed     91.97%
+ 505  txid28113     47.41%    passed     60.90%
+ 506  txid39484     47.88%    passed     96.09%
+ 507  txid2153      47.52%    passed     54.08%
+ 508  txid2089      48.63%    failed      0.00%
+ 509  txid2751      46.80%    passed     56.42%
+ 510  txid1626      45.93%    passed     38.69%
+ 511  txid1629334   46.18%    passed     77.02%
+ 512  txid1336250   47.48%    passed     12.26%
+ 513  txid85075     47.77%    passed     62.82%
+ 514  txid59779     48.52%    passed     77.39%
+ 515  txid82801     45.82%    passed     54.00%
+ 516  txid1134912   49.32%    passed     47.42%
+ 517  txid595536    49.24%    passed     48.64%
+ 518  txid28085     49.03%    passed     61.35%
+ 519  txid44749     46.00%    passed     88.87%
+ 520  txid640081    44.82%    passed     98.37%
+ 521  txid706587    48.27%    passed     61.09%
+ 522  txid78587     47.84%    passed     99.91%
+ 523  txid314260    47.44%    passed     85.32%
+ 524  txid439375    46.87%    passed     74.20%
+ 525  txid426355    46.87%    passed     12.55%
+ 526  txid323097    46.40%    passed     89.90%
+ 527  txid166501    46.26%    failed      0.00%
+ 528  txid84112     46.11%    failed      0.00%
+ 529  txid33871     46.04%    failed      0.00%
+ 530  txid652620    46.08%    failed      3.26%
+ 531  txid781       46.08%    failed      4.27%
+ 532  txid28049     45.68%    failed      0.00%
+ 533  txid1018      45.68%    failed      2.18%
+ 534  txid435590    45.64%    passed     24.76%
+ 535  txid530564    45.64%    passed     93.93%
+ 536  txid28118     45.57%    passed      6.49%
+ 537  txid642492    45.57%    passed     28.44%
+ 538  txid694427    45.43%    failed      1.22%
+ 539  txid700598    45.36%    passed      7.13%
+ 540  txid861360    45.32%    passed     12.97%
+ 541  txid515619    45.25%    passed     75.19%
+ 542  txid1718      45.14%    passed      5.14%
+ 543  txid120       45.14%    passed     52.58%
+ 544  txid1033854   45.07%    passed     48.28%
+ 545  txid379066    45.18%    failed      0.07%
+ 546  txid351091    44.92%    passed     66.99%
+ 547  txid585394    44.74%    passed     59.36%
+ 548  txid349521    44.74%    passed     91.58%
+ 549  txid465817    44.60%    passed     90.75%
+ 550  txid54736     44.49%    passed     94.56%
+ 551  txid585054    44.49%    passed     98.89%
+ 552  txid630626    44.42%    passed     94.37%
+ 553  txid90371     44.42%    passed     99.92%
+ 554  txid80816     44.42%    passed     77.65%
+ 555  txid351605    44.31%    passed     77.97%
+ 556  txid452637    44.17%    passed     57.30%
+ 557  txid115778    44.20%    passed     12.77%
+ 558  txid342451    44.10%    passed      7.57%
+ 559  txid404380    44.02%    passed     89.03%
+ 560  txid28232     43.99%    passed     48.82%
+ 561  txid338963    43.92%    passed     60.68%
+ 562  txid768486    43.74%    passed     65.96%
+ 563  txid272123    46.83%    passed     78.24%
+ 564  txid251229    46.72%    passed     49.42%
+ 565  txid908937    44.82%    passed      7.54%
+ 566  txid862908    44.02%    passed     30.39%
+ 567  txid1028307   44.56%    passed     98.79%
+ 568  txid316277    43.88%    passed     59.99%
+ 569  txid1148157   44.67%    passed     39.26%
+ 570  txid84030     45.32%    passed     71.57%
+ 571  txid43305     44.67%    passed     47.92%
+ 572  txid1064535   44.13%    passed     80.45%
+ 573  txid720554    41.18%    passed     67.32%
+ 574  txid47880     46.58%    passed     83.26%
+ 575  txid1353      44.17%    passed     64.12%
+ 576  txid1249      47.08%    failed      1.70%
+ 577  txid887325    46.33%    failed      2.26%
+ 578  txid539       45.90%    passed     88.93%
+ 579  txid537007    46.29%    passed     64.09%
+ 580  txid83        49.39%    passed     74.77%
+ 581  txid1532      46.26%    passed     44.70%
+ 582  txid1377      47.01%    passed     27.75%
+ 583  txid68334     47.41%    passed     91.75%
+ 584  txid45851     45.61%    passed     18.84%
+ 585  txid1732      45.25%    passed     72.39%
+ 586  txid39493     46.11%    passed     60.96%
+ 587  txid1541      46.22%    passed     57.18%
+ 588  txid1083      46.98%    passed     58.95%
+ 589  txid933080    45.14%    passed     91.72%
+ 590  txid186651    46.87%    passed     25.71%
+ 591  txid183417    45.64%    passed     71.54%
+ 592  txid290052    44.96%    passed     74.51%
+ 593  txid889268    45.36%    passed      9.94%
+ 594  txid290055    45.21%    passed     58.72%
+ 595  txid39482     45.25%    passed     73.42%
+ 596  txid43143     45.28%    passed     41.43%
+ 597  txid1737      46.18%    passed     74.30%
+ 598  txid44576     47.37%    passed     77.20%
+ 599  txid1266370   47.44%    passed     98.01%
+ 600  txid35703     45.86%    passed     99.53%
+ 601  txid648       46.22%    passed     88.96%
+ 602  txid624       44.92%    passed     99.28%
+ 603  txid47498     49.60%    passed     55.68%
+ 604  txid39495     47.52%    passed     15.25%
+ 605  txid449       45.36%    passed     32.59%
+ 606  txid47671     45.86%    passed     94.11%
+ 607  txid384636    46.76%    passed     47.45%
+ 608  txid621       45.46%    passed     99.46%
+ 609  txid758823    47.95%    passed     94.09%
+ 610  txid1141662   47.01%    passed     69.21%
+ 611  txid777       47.26%    passed     90.07%
+ 612  txid1474      46.87%    passed     99.32%
+ 613  txid41202     44.78%    passed     87.39%
+ 614  txid1607      46.00%    passed     24.83%
+ 615  txid1613      45.93%    passed     52.70%
+ 616  txid66270     45.14%    passed     93.08%
+ 617  txid182337    44.96%    passed     97.15%
+ 618  txid83655     45.03%    passed     98.96%
+ 619  txid158877    45.03%    passed     99.12%
+ 620  txid34062     45.21%    passed     12.98%
+ 621  txid565       46.80%    passed     92.68%
+ 622  txid221276    48.16%    passed     92.48%
+ 623  txid1056810   49.14%    passed     47.99%
+ 624  txid53398     50.07%    passed     75.91%
+ 625  txid366649    46.04%    passed     96.40%
+ 626  txid1264931   48.70%    passed     95.74%
+ 627  txid28077     49.14%    passed     34.58%
+ 628  txid1437875   48.60%    failed      1.71%
+ 629  txid410840    47.84%    passed     56.37%
+ 630  txid490573    46.40%    failed      1.19%
+ 631  txid648751    49.57%    failed      3.30%
+ 632  txid649196    48.92%    passed     25.23%
+ 633  txid558165    46.94%    passed     55.24%
+ 634  txid655015    48.63%    passed     42.21%
+ 635  txid947013    47.01%    passed      8.31%
+ 636  txid1003091   51.48%    passed     59.69%
+ 637  txid661481    48.52%    passed      5.66%
+ 638  txid1209958   47.16%    passed     48.36%
+ 639  txid676965    46.44%    failed      0.49%
+ 640  txid682526    47.19%    passed     37.66%
+ 641  txid692370    48.31%    passed     93.95%
+ 642  txid708199    47.98%    passed     17.86%
+ 643  txid718002    49.68%    passed     96.81%
+ 644  txid747304    47.08%    passed     93.37%
+ 645  txid1123687   46.04%    passed     20.71%
+ 646  txid1146892   51.15%    passed     94.53%
+ 647  txid762261    48.02%    passed     88.66%
+ 648  txid877384    47.84%    passed     61.20%
+ 649  txid910540    50.11%    passed     17.17%
+ 650  txid913761    46.08%    passed     97.94%
+ 651  txid930197    48.67%    passed     86.12%
+ 652  txid1036181   49.53%    failed      2.66%
+ 653  txid1038855   46.72%    passed     20.55%
+ 654  txid1166073   48.09%    passed     25.45%
+ 655  txid1166078   48.09%    passed     28.58%
+ 656  txid1141846   46.44%    passed     92.77%
+ 657  txid1156395   45.93%    failed      0.72%
+ 658  txid1177574   46.58%    passed     88.29%
+ 659  txid1197717   47.91%    passed     72.96%
+ 660  txid1198245   46.83%    failed      0.02%
+ 661  txid1196024   48.42%    failed      1.10%
+ 662  txid1194168   47.62%    passed     96.64%
+ 663  txid1224513   48.67%    passed     15.41%
+ 664  txid549       47.84%    passed     97.85%
+ 665  txid61648     48.24%    passed     99.48%
+ 666  txid69280     47.48%    passed     76.62%
+ 667  txid40324     47.19%    passed     97.47%
+ 668  txid298       45.93%    passed     84.71%
+ 669  txid48935     47.95%    passed     95.16%
+ 670  txid54313     51.01%    passed     76.36%
+ 671  txid1028      46.87%    passed     13.91%
+ 672  txid200616    46.72%    passed      5.63%
+ 673  txid241425    47.95%    passed     81.34%
+ 674  txid29369     45.46%    passed     38.63%
+ 675  txid1902      46.87%    failed      0.34%
+ 676  txid176291    43.77%    passed     11.81%
+ 677  txid342942    46.29%    passed     61.30%
+ 678  txid363844    46.29%    passed     97.18%
+ 679  txid394805    45.10%    passed     69.58%
+ 680  txid400775    48.88%    passed     86.25%
+ 681  txid1421      46.83%    passed     88.69%
+ 682  txid28031     46.83%    passed     93.02%
+ 683  txid1423804   45.07%    passed     35.86%
+ 684  txid290589    46.40%    passed     96.86%
+ 685  txid258723    46.33%    passed     66.03%
+ 686  txid1122177   47.84%    passed     80.52%
+ 687  txid442969    49.10%    passed     27.02%
+ 688  txid96241     46.90%    passed     97.27%
+ 689  txid1622      46.40%    passed     27.14%
+ 690  txid504468    46.44%    failed      1.86%
+ 691  txid546871    47.52%    passed     13.83%
+ 692  txid547188    47.41%    passed     71.30%
+ 693  txid1294259   47.59%    failed      0.00%
+ 694  txid571898    46.47%    passed     45.43%
+ 695  txid573739    46.40%    passed     86.03%
+ 696  txid574930    46.54%    failed      2.62%
+ 697  txid1236509   45.10%    failed      2.40%
+ 698  txid945713    47.41%    passed     71.18%
+ 699  txid762984    46.76%    passed     23.97%
+ 700  txid626937    46.11%    passed     64.09%
+ 701  txid626940    42.04%    passed     55.26%
+ 702  txid47678     46.80%    failed      2.11%
+ 703  txid246787    46.98%    failed      1.74%
+ 704  txid28111     46.44%    passed      6.20%
+ 705  txid817       46.36%    failed      0.65%
+ 706  txid204516    46.80%    passed      6.81%
+ 707  txid1203608   46.98%    failed      4.14%
+ 708  txid28116     47.48%    failed      0.22%
+ 709  txid449673    46.87%    passed     17.17%
+ 710  txid818       47.41%    failed      0.64%
+ 711  txid820       46.83%    passed     16.66%
+ 712  txid657309    47.30%    failed      0.17%
+ 713  txid656747    47.59%    failed      0.38%
+ 714  txid663606    46.47%    failed      0.05%
+ 715  txid1294026   46.62%    failed      0.00%
+ 716  txid569       46.98%    passed     79.92%
+ 717  txid685828    48.24%    passed     98.79%
+ 718  txid29363     46.87%    passed     49.96%
+ 719  txid29466     45.14%    passed     72.60%
+ 720  txid1236538   46.36%    passed     15.79%
+ 721  txid1077285   46.90%    failed      0.89%
+ 722  txid763034    46.51%    passed     28.29%
+ 723  txid477666    46.51%    failed      4.15%
+ 724  txid1236498   46.26%    failed      0.65%
+ 725  txid1236512   46.44%    passed      6.75%
+ 726  txid487174    46.69%    passed     15.91%
+ 727  txid927665    46.87%    failed      2.94%
+ 728  txid454154    46.72%    passed     48.97%
+ 729  txid454155    46.44%    passed     42.42%
+ 730  txid887901    47.77%    passed     90.32%
+ 731  txid305719    46.22%    failed      0.12%
+ 732  txid242750    46.18%    passed     25.25%
+ 733  txid873513    46.72%    failed      0.10%
+ 734  txid28127     46.26%    passed     60.58%
+ 735  txid28128     46.76%    passed     71.69%
+ 736  txid28129     46.29%    passed      5.48%
+ 737  txid76123     46.72%    passed     63.40%
+ 738  txid840       46.36%    failed      3.56%
+ 739  txid28133     46.72%    passed     25.28%
+ 740  txid28135     46.69%    passed     62.41%
+ 741  txid185294    46.33%    passed     70.70%
+ 742  txid28112     46.51%    passed     41.99%
+ 743  txid1121308   47.30%    passed     30.52%
+ 744  txid45254     46.33%    failed      1.93%
+ 745  txid742766    46.44%    failed      2.34%
+ 746  txid1505      47.34%    passed     91.65%
+ 747  txid393480    47.19%    failed      0.16%
+ 748  txid1223802   47.88%    passed     71.01%
+ 749  txid214856    46.47%    passed     60.00%
+ 750  txid328813    46.40%    passed     53.90%
+ 751  txid28117     46.44%    passed     31.77%
+ 752  txid328814    46.51%    passed     72.39%
+ 753  txid753702    45.75%    passed     80.75%
+ 754  txid1515      46.40%    passed     77.70%
+ 755  txid157692    46.98%    failed      0.00%
+ 756  txid39483     45.86%    passed     73.95%
+ 757  txid147206    47.23%    failed      0.00%
+ 758  txid147207    47.23%    failed      0.00%
+ 759  txid1437609   45.93%    failed      0.31%
+ 760  txid768533    49.53%    passed     22.76%
+ 761  txid572010    46.98%    failed      0.00%
+ 762  txid866807    46.54%    passed     76.56%
+ 763  txid1236513   46.51%    failed      0.43%
+ 764  txid1236514   46.58%    failed      0.31%
+ 765  txid871327    46.40%    passed      7.73%
+ 766  txid915438    46.36%    passed     85.92%
+ 767  txid1298597   46.94%    passed     10.00%
+ 768  txid536633    46.33%    passed     58.65%
+ 769  txid1547      46.44%    passed      9.37%
+ 770  txid1492      46.94%    passed     32.34%
+ 771  txid1736      46.58%    passed     45.63%
+ 772  txid935294    47.01%    passed     24.02%
+ 773  txid1583      46.04%    failed      3.17%
+ 774  txid1305      47.08%    passed     51.00%
+ 775  txid1363      45.64%    passed     16.12%
+ 776  txid442868    46.29%    passed      8.33%
+ 777  txid1121114   46.26%    passed     42.57%
+ 778  txid742725    46.36%    passed     40.45%
+ 779  txid742742    47.12%    failed      0.00%
+ 780  txid762983    46.80%    passed     55.30%
+ 781  txid930806    48.60%    passed     85.08%
+ 782  txid930972    48.09%    passed     77.41%
+ 783  txid1423802   43.77%    passed     45.42%
+ 784  txid1291734   46.44%    passed     59.66%
+ 785  txid1122219   57.63%    passed     44.80%
+ 786  txid285729    49.93%    failed      0.31%
+ 787  txid987056    47.37%    passed     19.06%
+ 788  txid1559      46.83%    passed     47.94%
+ 789  txid28038     46.40%    passed     27.40%
+ 790  txid1597      46.22%    passed     61.06%
+ 791  txid471       47.44%    passed     49.14%
+ 792  txid28090     47.55%    passed     57.20%
+ 793  txid29388     46.98%    passed     16.06%
+ 794  txid28119     46.40%    passed     70.95%
+ 795  txid218538    44.92%    failed      2.29%
+ 796  txid309120    45.00%    passed     11.46%
+ 797  txid1527      45.61%    passed     33.54%
+ 798  txid856       47.12%    failed      0.55%
+ 799  txid2741      45.00%    passed     99.36%
+ 800  txid28446     46.18%    passed     20.81%
+ 801  txid537011    46.40%    passed     89.13%
+ 802  txid1110546   45.28%    passed     77.03%
+ 803  txid582       47.26%    passed     94.69%
+ 804  txid47883     47.37%    passed     70.78%
+ 805  txid41276     50.11%    passed     85.61%
+ 806  txid287       47.41%    passed     97.30%
+ 807  txid47878     47.41%    passed     62.57%
+ 808  txid293       50.07%    passed     76.46%
+ 809  txid32013     47.59%    passed     93.40%
+ 810  txid180198    49.21%    passed     53.65%
+ 811  txid518       47.59%    passed     75.56%
+ 812  txid294       47.37%    passed     77.28%
+ 813  txid303       47.41%    passed     85.74%
+ 814  txid281       49.24%    passed     49.07%
+ 815  txid80866     47.52%    passed     99.54%
+ 816  txid285       47.52%    passed     99.78%
+ 817  txid28212     49.17%    passed     80.41%
+ 818  txid85698     47.59%    passed     88.56%
+ 819  txid28104     49.24%    passed     52.95%
+ 820  txid398       49.39%    passed     92.47%
+ 821  txid34087     47.62%    failed      2.94%
+ 822  txid40683     49.17%    passed     95.29%
+ 823  txid40681     49.17%    passed     92.62%
+ 824  txid40682     49.17%    passed     94.71%
+ 825  txid2752      46.58%    passed     67.26%
+ 826  txid46256     46.15%    failed      0.70%
+ 827  txid2748      46.69%    passed     66.16%
+ 828  txid1373      46.87%    passed     43.01%
+ 829  txid1603      46.08%    failed      2.29%
+ 830  txid1599      46.04%    passed     27.13%
+ 831  txid196015    47.59%    passed     20.76%
+ 832  txid1215098   47.41%    passed     83.04%
+ 833  txid47882     47.41%    passed     77.93%
+ 834  txid93064     49.17%    passed     89.05%
+ 835  txid191770    46.87%    passed     68.62%
+ 836  txid28101     49.24%    passed     84.47%
+ 837  txid53345     46.54%    passed     72.86%
+ 838  txid1352      48.70%    passed     70.25%
+ 839  txid53346     46.51%    passed     81.80%
+ 840  txid44007     46.58%    passed     57.16%
+ 841  txid1139996   46.62%    passed     78.59%
+ 842  txid57732     46.69%    passed     81.12%
+ 843  txid214095    46.54%    passed     84.00%
+ 844  txid155618    46.54%    passed     74.90%
+ 845  txid155617    46.54%    passed     72.50%
+ 846  txid154621    46.62%    passed     60.69%
+ 847  txid258256    49.35%    passed     94.42%
+ 848  txid1366      46.65%    failed      3.26%
+ 849  txid1358      47.01%    passed     15.20%
+ 850  txid266121    49.24%    passed     56.50%
+ 851  txid304207    46.15%    passed     76.22%
+ 852  txid69284     47.08%    passed     94.31%
+ 853  txid564064    48.49%    passed     80.45%
+ 854  txid336566    47.12%    passed     96.93%
+ 855  txid417368    46.51%    passed     63.59%
+ 856  txid273168    49.10%    passed     93.05%
+ 857  txid562       47.30%    passed     98.48%
+ 858  txid615       47.19%    passed     96.32%
+ 859  txid40216     47.44%    passed     64.76%
+ 860  txid55211     47.16%    passed     91.33%
+ 861  txid566       47.26%    passed     97.94%
+ 862  txid75659     47.59%    passed     65.41%
+ 863  txid55508     47.66%    passed     79.16%
+ 864  txid618       47.26%    passed     95.62%
+ 865  txid304       47.84%    passed     83.73%
+ 866  txid1215104   47.48%    passed     94.67%
+ 867  txid309788    46.80%    passed     95.60%
+ 868  txid1321609   47.44%    passed     96.46%
+ 869  txid46679     47.41%    passed     68.38%
+ 870  txid70775     47.37%    passed     91.71%
+ 871  txid29442     47.37%    passed     78.86%
+ 872  txid158852    47.19%    passed     86.97%
+ 873  txid426702    46.83%    passed     84.42%
+ 874  txid359365    46.83%    passed     78.85%
+ 875  txid470028    49.35%    passed     98.64%
+ 876  txid525640    50.07%    passed     34.83%
+ 877  txid582850    46.83%    passed     57.94%
+ 878  txid670293    47.66%    failed      2.15%
+ 879  txid1114878   46.80%    passed     81.37%
+ 880  txid1391729   49.39%    passed     71.37%
+ 881  txid1329250   46.94%    failed      3.76%
+ 882  txid649762    46.94%    passed     63.46%
+ 883  txid1445607   48.92%    failed      0.51%
+ 884  txid1150298   48.81%    passed     74.67%
+ 885  txid1151742   47.34%    passed      8.98%
+ 886  txid1173082   48.09%    passed     99.33%
+ 887  txid1281486   45.46%    passed     14.71%
+ 888  txid1325564   50.76%    passed     25.50%
+ 889  txid1612      45.46%    passed      6.60%
+ 890  txid584       46.11%    passed     58.68%
+ 891  txid71451     46.00%    passed     65.05%
+ 892  txid54291     48.31%    passed     97.78%
+ 893  txid552       46.76%    passed     79.33%
+ 894  txid157268    47.84%    failed      0.63%
+ 895  txid398626    46.90%    failed      0.80%
+ 896  txid169056    46.54%    passed     97.26%
+ 897  txid178338    46.94%    passed     10.99%
+ 898  txid1159753   44.17%    passed     51.98%
+ 899  txid71656     45.97%    passed     65.69%
+ 900  txid1121120   46.00%    passed     92.56%
+ 901  txid1535      45.82%    passed     77.28%
+ 902  txid152335    50.68%    passed     22.36%
+ 903  txid171865    47.16%    passed     97.19%
+ 904  txid168384    47.59%    passed     32.96%
+ 905  txid130776    48.52%    failed      3.41%
+ 906  txid38502     47.08%    failed      1.68%
+ 907  txid1117955   45.82%    passed     71.33%
+ 908  txid33935     45.90%    passed     92.95%
+ 909  txid552535    51.62%    failed      1.92%
+ 910  txid360054    49.93%    passed     96.45%
+ 911  txid33888     47.05%    passed     37.58%
+ 912  txid425306    46.83%    passed     63.52%
+ 913  txid1132028   45.18%    passed     68.34%
+ 914  txid497724    46.54%    failed      0.43%
+ 915  txid361872    47.16%    failed      2.71%
+ 916  txid203192    46.00%    passed     90.91%
+ 917  txid162292    49.32%    passed     53.21%
+ 918  txid102148    46.72%    passed     10.99%
+ 919  txid115545    47.16%    passed     16.41%
+ 920  txid1231      46.08%    passed     89.55%
+ 921  txid215200    45.68%    passed     45.95%
+ 922  txid1032240   49.28%    failed      0.00%
+ 923  txid253257    46.54%    passed     61.21%
+ 924  txid243690    46.87%    passed     23.89%
+ 925  txid244830    45.39%    passed     27.61%
+ 926  txid255519    50.94%    passed     97.74%
+ 927  txid497964    51.04%    passed     98.68%
+ 928  txid28037     47.12%    passed     49.64%
+ 929  txid574096    44.82%    passed     94.99%
+ 930  txid264030    46.83%    failed      0.05%
+ 931  txid270498    47.70%    passed     73.18%
+ 932  txid281375    46.26%    passed     21.34%
+ 933  txid281376    46.26%    passed     49.54%
+ 934  txid1396      46.51%    passed     82.99%
+ 935  txid410       49.42%    passed     26.81%
+ 936  txid1590      45.36%    passed      9.35%
+ 937  txid28898     51.73%    failed      0.37%
+ 938  txid1121302   47.70%    passed     72.32%
+ 939  txid363952    47.80%    passed     99.93%
+ 940  txid1140002   46.69%    passed     71.40%
+ 941  txid1351      46.62%    passed     87.77%
+ 942  txid39645     51.62%    passed     85.32%
+ 943  txid382777    45.07%    passed     25.72%
+ 944  txid83460     45.93%    passed     17.94%
+ 945  txid585       46.80%    passed     61.39%
+ 946  txid520999    46.80%    passed     55.11%
+ 947  txid666       47.26%    passed     91.09%
+ 948  txid1224748   44.53%    passed     78.71%
+ 949  txid424218    46.15%    passed     85.02%
+ 950  txid1368429   48.31%    passed     98.28%
+ 951  txid1205680   47.98%    passed     38.32%
+ 952  txid29489     45.82%    passed     87.92%
+ 953  txid497725    46.69%    passed     83.52%
+ 954  txid465797    44.96%    passed     31.21%
+ 955  txid452922    49.35%    passed     98.63%
+ 956  txid86175     46.11%    passed     94.89%
+ 957  txid53336     48.88%    passed     97.55%
+ 958  txid470933    51.51%    passed     96.83%
+ 959  txid470931    48.52%    passed     94.09%
+ 960  txid470932    48.09%    passed     67.99%
+ 961  txid470934    48.78%    passed     94.57%
+ 962  txid455078    49.10%    passed     37.44%
+ 963  txid28320     48.16%    passed     41.97%
+ 964  txid985008    45.79%    passed     25.50%
+ 965  txid888828    45.82%    passed     24.17%
+ 966  txid686340    47.91%    passed     92.68%
+ 967  txid649758    48.52%    passed     11.72%
+ 968  txid472693    51.80%    passed     89.40%
+ 969  txid472705    51.62%    passed     87.46%
+ 970  txid491919    45.97%    passed     99.93%
+ 971  txid512410    47.08%    passed     99.51%
+ 972  txid517011    47.66%    passed     94.40%
+ 973  txid1302272   46.04%    passed     45.97%
+ 974  txid538381    47.88%    passed     76.57%
+ 975  txid542833    44.56%    passed      9.86%
+ 976  txid542300    49.57%    passed     76.79%
+ 977  txid545534    48.49%    passed     73.61%
+ 978  txid559315    51.19%    passed     73.17%
+ 979  txid569857    46.83%    passed     28.24%
+ 980  txid558537    44.78%    passed     99.76%
+ 981  txid558155    47.30%    passed     73.47%
+ 982  txid589010    45.72%    passed     35.53%
+ 983  txid1705      47.91%    passed     12.69%
+ 984  txid562969    47.91%    passed     57.61%
+ 985  txid563996    48.09%    passed     94.13%
+ 986  txid633415    45.90%    passed     84.26%
+ 987  txid633417    45.90%    passed     86.69%
+ 988  txid568603    47.73%    passed     87.00%
+ 989  txid709510    47.55%    passed     58.83%
+ 990  txid574956    47.41%    passed     85.57%
+ 991  txid1403343   48.81%    passed     95.00%
+ 992  txid578943    47.52%    passed     74.58%
+ 993  txid580166    47.77%    passed     34.27%
+ 994  txid617001    46.15%    passed     69.48%
+ 995  txid617002    45.21%    passed     71.12%
+ 996  txid585455    47.62%    passed     64.52%
+ 997  txid587738    48.38%    passed     94.04%
+ 998  txid588932    48.96%    passed     91.60%
+ 999  txid80877     47.98%    passed     79.07%
+1000  txid1298596   49.46%    passed     47.08%
+1001  txid472694    50.50%    passed     97.05%
+1002  txid69218     50.22%    passed     99.76%
+1003  txid1030841   47.34%    passed     94.85%
+1004  txid1032488   47.44%    passed     96.23%
+1005  txid487698    46.62%    passed     97.08%
+1006  txid59814     45.79%    passed     96.03%
+1007  txid649197    46.44%    passed     97.37%
+1008  txid617123    42.62%    failed      0.17%
+1009  txid634430    47.88%    passed     85.55%
+1010  txid648894    49.64%    passed     88.65%
+1011  txid648995    50.36%    passed     96.38%
+1012  txid650004    48.45%    passed     90.08%
+1013  txid549685    47.12%    passed     72.55%
+1014  txid546367    46.36%    passed     78.44%
+1015  txid674054    46.15%    passed     84.09%
+1016  txid560361    48.38%    passed     29.71%
+1017  txid522262    49.14%    passed     19.69%
+1018  txid1031542   46.65%    failed      0.82%
+1019  txid604330    48.60%    failed      0.00%
+1020  txid634155    50.32%    passed     31.97%
+1021  txid643672    48.49%    failed      0.00%
+1022  txid663610    49.28%    passed     89.38%
+1023  txid702115    48.34%    passed     95.39%
+1024  txid1032241   52.88%    failed      0.00%
+1025  txid714549    49.28%    failed      3.92%
+1026  txid1232575   49.35%    passed     31.52%
+1027  txid759620    47.41%    passed      5.53%
+1028  txid767694    49.50%    passed     12.01%
+1029  txid859143    45.79%    passed     90.25%
+1030  txid876269    49.32%    passed     90.72%
+1031  txid1237149   49.21%    passed     49.15%
+1032  txid209897    47.62%    passed     33.52%
+1033  txid1544      45.10%    passed     76.07%
+1034  txid649756    45.25%    passed     59.29%
+1035  txid104087    45.03%    passed     90.24%
+1036  txid1368418   50.65%    passed     93.08%
+1037  txid665118    48.78%    passed     72.87%
+1038  txid665467    48.06%    passed     55.96%
+1039  txid657642    49.57%    passed     78.08%
+1040  txid658225    46.83%    passed     91.63%
+1041  txid665913    46.22%    passed     87.00%
+1042  txid665914    46.40%    passed     80.43%
+1043  txid670291    48.20%    passed     47.90%
+1044  txid747645    48.09%    failed      0.00%
+1045  txid676599    46.87%    passed     95.23%
+1046  txid684066    47.73%    passed     34.57%
+1047  txid687525    47.23%    passed     12.36%
+1048  txid688867    48.02%    passed     33.07%
+1049  txid688913    48.02%    passed     30.94%
+1050  txid747076    49.93%    passed      6.06%
+1051  txid709509    52.30%    passed     63.54%
+1052  txid1231190   47.88%    passed     58.79%
+1053  txid745365    46.04%    passed     47.65%
+1054  txid508661    52.48%    passed     91.65%
+1055  txid1354262   44.89%    passed     97.94%
+1056  txid882211    47.77%    passed     63.98%
+1057  txid755172    47.26%    passed     70.39%
+1058  txid357441    48.27%    passed     57.80%
+1059  txid33959     44.46%    passed     26.58%
+1060  txid1556      45.54%    passed     84.39%
+1061  txid1389922   45.75%    passed     94.16%
+1062  txid981326    44.92%    passed     42.82%
+1063  txid29430     44.92%    passed     43.44%
+1064  txid40214     44.92%    passed     42.82%
+1065  txid106648    44.89%    passed     30.35%
+1066  txid106649    44.89%    passed     42.74%
+1067  txid1120926   44.92%    passed     53.09%
+1068  txid202951    44.92%    passed     39.42%
+1069  txid202955    44.92%    passed     33.56%
+1070  txid47959     45.10%    passed     50.78%
+1071  txid470       45.46%    passed     56.42%
+1072  txid573       44.92%    passed     99.65%
+1073  txid865       45.21%    passed     83.05%
+1074  txid545       48.63%    passed     99.18%
+1075  txid760012    48.27%    passed     54.79%
+1076  txid1341679   49.86%    passed     63.46%
+1077  txid796942    50.47%    passed     42.36%
+1078  txid796384    48.38%    failed      4.74%
+1079  txid317       48.02%    passed     88.16%
+1080  txid33069     48.09%    passed     78.89%
+1081  txid47879     48.09%    passed     80.06%
+1082  txid871664    50.61%    passed     37.87%
+1083  txid403962    46.76%    failed      1.70%
+1084  txid988946    47.84%    passed     73.79%
+1085  txid879566    50.47%    failed      2.83%
+1086  txid1079      46.76%    passed     15.53%
+1087  txid889453    46.51%    passed     22.73%
+1088  txid930854    46.00%    passed     54.12%
+1089  txid927083    45.79%    passed      5.73%
+1090  txid69219     45.75%    passed     98.70%
+1091  txid228654    47.12%    passed     55.67%
+1092  txid1051899   47.62%    passed     90.44%
+1093  txid1077675   48.85%    passed     59.41%
+1094  txid654363    47.05%    failed      1.48%
+1095  txid979627    48.34%    passed      5.11%
+1096  txid1002795   45.39%    passed     88.46%
+1097  txid1076550   51.62%    passed     98.10%
+1098  txid1531      52.84%    passed     41.13%
+1099  txid1007096   49.28%    passed     58.94%
+1100  txid1033732   46.72%    passed     73.49%
+1101  txid1033736   46.33%    passed     10.95%
+1102  txid180957    44.92%    passed     94.87%
+1103  txid554       44.92%    passed     94.88%
+1104  txid1107316   47.34%    passed     91.63%
+1105  txid1069987   49.10%    passed     84.74%
+1106  txid55207     44.92%    passed     98.37%
+1107  txid1175631   44.89%    passed     95.83%
+1108  txid1158459   46.00%    passed     99.28%
+1109  txid671218    47.70%    passed     65.56%
+1110  txid1134687   50.11%    passed     99.27%
+1111  txid1235480   47.98%    passed      6.55%
+1112  txid1129897   47.08%    failed      0.00%
+1113  txid1245469   46.58%    passed     76.44%
+1114  txid80867     48.67%    passed     95.63%
+1115  txid1177982   45.93%    passed     94.37%
+1116  txid1071947   50.94%    passed     19.54%
+1117  txid1029756   47.80%    passed     93.12%
+1118  txid28197     48.20%    failed      0.00%
+1119  txid522485    48.34%    failed      0.21%
+1120  txid195       48.34%    failed      0.11%
+1121  txid824       48.34%    failed      0.09%
+1122  txid650054    48.34%    failed      1.20%
+1123  txid204       48.42%    failed      0.04%
+1124  txid1388748   46.29%    passed     96.22%
+1125  txid1297617   46.90%    passed     79.49%
+1126  txid1334046   48.20%    passed     50.93%
+1127  txid1400387   48.96%    passed     77.74%
+1128  txid1410040   45.14%    passed     99.36%
+1129  txid1442587   47.98%    passed     73.22%
+1130  txid1432052   50.00%    passed     37.50%
+1131  txid1512      47.59%    passed     31.69%
+1132  txid215       46.69%    failed      4.37%
+1133  txid56774     46.15%    passed     73.82%
+1134  txid316       47.59%    passed     93.22%
+1135  txid571       45.93%    passed     98.40%
+1136  txid55212     47.52%    passed     91.67%
+1137  txid645       45.90%    passed     78.62%
+1138  txid651       47.44%    passed     86.63%
+1139  txid36832     47.34%    passed     35.68%
+1140  txid29364     46.04%    passed     42.98%
+1141  txid679200    47.05%    passed     10.78%
+1142  txid644       44.71%    passed     82.88%
+1143  txid1005996   49.57%    passed     97.87%
+1144  txid339       45.93%    passed     96.51%
+1145  txid136492    45.61%    passed     72.04%
+1146  txid37734     48.85%    passed     58.84%
+1147  txid84037     47.41%    passed     36.99%
+1148  txid44009     49.71%    passed     50.04%
+1149  txid384638    45.25%    passed     53.80%
+1150  txid483       44.96%    passed     92.63%
+1151  txid195103    45.54%    passed     51.86%
+1152  txid614       44.49%    passed     90.94%
+1153  txid1005039   46.00%    passed     52.29%
+1154  txid1196095   44.64%    passed     15.93%
+1155  txid216778    44.35%    passed     97.80%
+1156  txid397865    44.85%    passed     24.63%
+1157  txid1285583   45.14%    passed      5.24%
+1158  txid547122    48.99%    passed     22.54%
+1159  txid1513892   46.58%    passed     92.84%
+1160  txid732237    47.73%    passed     96.65%
+1161  txid1082276   48.06%    passed     63.15%
+1162  txid1259973   47.73%    passed     94.56%
+1163  txid1384459   46.54%    passed     69.89%
+1164  txid1385975   48.16%    passed     77.53%
+1165  txid1296539   47.88%    passed     61.08%
+1166  txid195064    45.00%    passed     29.84%
+1167  txid864828    48.38%    passed     79.59%
+1168  txid796943    49.78%    passed      5.99%
+1169  txid796944    48.38%    passed      9.95%
+1170  txid1005665   49.46%    passed     89.84%
+1171  txid1005667   49.71%    passed     78.29%
+1172  txid1033731   48.78%    passed     53.07%
+1173  txid1034346   46.04%    passed     15.92%
+1174  txid1034345   51.73%    failed      0.00%
+1175  txid1115758   47.23%    passed     62.38%
+1176  txid1177755   48.02%    passed     36.02%
+1177  txid1177756   48.02%    passed     42.06%
+1178  txid1518501   46.36%    passed     72.52%
+1179  txid1325125   51.22%    failed      0.00%
+1180  txid1267766   48.02%    passed     78.66%
+1181  txid1398493   48.92%    passed     98.39%
+1182  txid1508507   51.62%    passed     89.57%
+1183  txid395937    48.67%    failed      0.48%
+1184  txid732238    45.72%    passed     86.86%
+1185  txid1214924   46.22%    passed     91.55%
+1186  txid1391654   46.62%    passed     46.50%
+1187  txid1397265   48.16%    failed      1.63%
+1188  txid1472417   46.51%    passed     22.29%
+1189  txid1296536   48.56%    passed     97.86%
+1190  txid1350067   50.76%    failed      0.46%
+1191  txid1229656   55.40%    passed     47.16%
+1192  txid1233113   47.73%    passed     15.99%
+1193  txid1249552   49.24%    passed     98.52%
+1194  txid1340425   47.55%    passed     45.99%
+1195  txid1544694   45.97%    passed     58.91%
+1196  txid158823    44.85%    passed     97.42%
+1197  txid1052257   48.20%    passed      7.00%
+1198  txid1155801   49.32%    passed     42.02%
+1199  txid1081799   48.38%    passed      6.90%
+1200  txid1324217   48.88%    passed     54.25%
+1201  txid1204385   44.46%    failed      1.64%
+1202  txid433338    48.06%    failed      0.08%
+1203  txid368607    49.53%    passed     70.56%
+1204  txid861299    50.29%    failed      0.00%
+1205  txid946333    47.91%    passed     85.67%
+1206  txid1007095   47.70%    passed     39.59%
+1207  txid619688    45.90%    passed     88.32%
+1208  txid1161401   48.42%    passed     81.33%
+1209  txid1232428   45.32%    passed     61.23%
+1210  txid1301100   46.87%    passed     58.73%
+1211  txid1232430   45.18%    passed     38.04%
+1212  txid938278    46.72%    passed     15.50%
+1213  txid497967    48.34%    passed     93.65%
+1214  txid526714    48.63%    passed     70.25%
+1215  txid1384638   46.80%    failed      1.22%
+1216  txid1384639   46.58%    failed      1.93%
+1217  txid1416875   50.29%    failed      0.61%
+1218  txid1380046   51.30%    passed     86.13%
+1219  txid1302690   46.26%    passed     69.94%
+1220  txid1096246   49.28%    passed     58.03%
+1221  txid1607837   44.49%    passed     23.32%
+1222  txid1282438   47.91%    passed     46.53%
+1223  txid1224511   48.45%    passed     92.29%
+1224  txid1305696   47.95%    passed     95.12%
+1225  txid796573    45.50%    passed     98.84%
+1226  txid1294048   51.30%    passed     36.18%
+1227  txid1191678   49.03%    passed     91.06%
+1228  txid451876    48.09%    passed     79.26%
+1229  txid1289106   46.40%    passed     93.23%
+1230  txid1404360   48.45%    failed      1.66%
+1231  txid1344948   48.60%    passed     81.18%
+1232  txid1241761   47.34%    passed     84.96%
+1233  txid1111115   48.16%    passed     95.02%
+1234  txid1247510   47.66%    passed     89.35%
+1235  txid1443941   49.46%    passed     53.60%
+1236  txid1501239   47.48%    passed     97.50%
+1237  txid1346286   48.92%    failed      2.92%
+1238  txid915173    50.32%    passed     37.32%
+1239  txid940145    47.26%    failed      0.94%
+1240  txid1510391   45.36%    passed     50.47%
+1241  txid1482074   48.67%    passed     67.88%
+1242  txid1463164   47.48%    passed     98.85%
+1243  txid1484053   48.06%    passed     59.49%
+1244  txid879612    43.63%    passed     64.82%
+1245  txid888845    44.20%    passed     24.66%
+1246  txid1462919   48.02%    passed     47.15%
+1247  txid708132    47.52%    passed     64.73%
+1248  txid1473598   49.14%    passed     66.79%
+1249  txid1465490   47.41%    failed      1.26%
+1250  txid1176648   47.16%    passed     49.19%
+1251  txid433321    48.56%    passed     63.82%
+1252  txid1465616   49.03%    passed     80.76%
+1253  txid268404    46.26%    passed     66.84%
+1254  txid1451356   45.28%    passed     39.67%
+1255  txid471799    46.47%    failed      0.00%
+1256  txid1507286   48.92%    passed     10.25%
+1257  txid1333996   49.35%    passed     70.64%
+1258  txid1530123   47.44%    passed     49.74%
+1259  txid70346     45.03%    passed     72.61%
+1260  txid1463597   47.70%    passed     70.79%
+1261  txid1419723   49.89%    failed      3.50%
+1262  txid1553448   51.62%    passed     75.68%
+1263  txid1324935   49.24%    failed      0.00%
+1264  txid1232681   45.64%    passed     22.20%
+1265  txid1439726   50.79%    passed     44.09%
+1266  txid873516    49.42%    passed     45.69%
+1267  txid1337051   48.42%    passed     41.80%
+1268  txid1299998   47.12%    failed      0.00%
+1269  txid1217282   48.24%    passed      9.23%
+1270  txid1393051   49.32%    passed     91.42%
+1271  txid1306993   48.13%    passed     82.02%
+1272  txid1368474   51.80%    passed     67.17%
+1273  txid1505757   47.77%    passed     99.44%
+1274  txid1331911   47.98%    passed     11.60%
+1275  txid1331910   46.62%    failed      0.19%
+1276  txid1433126   45.75%    passed     18.80%
+1277  txid929101    46.15%    passed     38.53%
+1278  txid1155073   48.20%    passed     66.17%
+1279  txid940139    47.88%    passed     75.06%
+1280  txid1777866   46.83%    passed     57.04%
+1281  txid1777867   46.87%    passed     57.02%
+1282  txid1591088   46.47%    failed      0.59%
+1283  txid1610748   47.77%    failed      0.58%
+1284  txid1513468   47.34%    passed     91.91%
+1285  txid1435342   46.44%    passed     45.79%
+1286  txid1487935   49.46%    passed     98.00%
+1287  txid879568    48.45%    passed     82.66%
+1288  txid1536901   47.59%    passed     94.01%
+1289  txid1447062   47.91%    passed     95.93%
+1290  txid1494461   46.80%    failed      0.80%
+1291  txid1499973   45.86%    passed     99.73%
+1292  txid1563157   47.80%    passed     54.33%
+1293  txid1555112   47.48%    failed      0.00%
+1294  txid1379270   45.10%    failed      0.01%
+1295  txid1310417   47.16%    passed      5.00%
+1296  txid1541063   48.02%    passed     63.18%
+1297  txid1631477   49.32%    passed     81.50%
+1298  txid1579333   49.53%    passed     23.14%
+1299  txid1560201   46.18%    passed     80.74%
+1300  txid1532023   47.73%    passed     88.63%
+1301  txid463025    50.47%    passed     75.96%
+1302  txid463014    50.47%    passed     74.61%
+1303  txid1675686   47.66%    passed     29.38%
+1304  txid1671480   50.14%    passed     45.57%
+1305  txid1548455   46.11%    passed     76.05%
+1306  txid1615494   45.93%    passed     83.49%
+1307  txid1605892   47.84%    failed      0.76%
+1308  txid1798155   51.73%    failed      0.18%
+1309  txid1619234   49.53%    passed     32.92%
+1310  txid1460447   49.42%    passed     42.00%
+1311  txid1458355   46.26%    passed     79.00%
+1312  txid1612308   49.42%    passed     92.70%
+1313  txid985250    46.26%    passed     88.07%
+1314  txid1232426   53.96%    failed      0.00%
+1315  txid1562132   47.66%    passed     50.55%
+1316  txid1505588   47.80%    passed     81.23%
+1317  txid1796615   50.40%    passed     61.93%
+1318  txid1796618   46.54%    passed     51.58%
+1319  txid1796622   48.31%    passed     55.81%
+1320  txid1417852   70.91%    passed     87.64%
+1321  txid1796636   47.88%    passed     79.40%
+1322  txid1796646   47.44%    passed     19.05%
+1323  txid1796644   48.78%    passed     41.34%
+1324  txid1414720   46.80%    passed     72.89%
+1325  txid1414721   50.07%    passed     78.69%
+1326  txid1033741   46.90%    passed      8.84%
+1327  txid1203465   52.66%    failed      1.63%
+1328  txid1499687   45.43%    passed     27.93%
+1329  txid1632013   46.90%    passed     35.74%
+1330  txid1640685   45.79%    passed     53.68%
+1331  txid1673717   46.80%    passed     66.99%
+1332  txid1720294   46.36%    passed     41.09%
+1333  txid1745713   46.29%    passed     53.36%
+1334  txid1776382   45.90%    passed     79.00%
+1335  txid1776384   46.80%    passed     62.55%
+1336  txid1776391   47.23%    passed     59.02%
+1337  txid1805714   46.04%    passed     69.22%
+1338  txid1816678   46.15%    passed     78.04%
+1339  txid1841856   46.40%    passed     57.81%
+1340  txid1841857   46.29%    passed     11.54%
+1341  txid1841864   46.33%    failed      0.00%
+1342  txid1841865   46.33%    passed     95.05%
+1343  txid1841867   46.87%    passed     96.19%
+1344  txid1852367   46.76%    passed     84.35%
+1345  txid1852370   46.26%    passed     76.60%
+1346  txid1401443   51.12%    passed     79.77%
+1347  txid1673609   46.72%    passed     25.25%
+1348  txid1590622   48.06%    passed     86.46%
+1349  txid1397514   52.09%    passed     21.78%
+1350  txid1411144   46.40%    passed      8.17%
+1351  txid1654716   47.16%    passed     84.51%
+1352  txid1132695   49.64%    passed     78.53%
+1353  txid1235591   48.74%    passed     60.55%
+1354  txid642589    47.98%    passed     68.72%
+1355  txid1665476   46.54%    passed     41.54%
+1356  txid1955250   46.29%    passed     91.53%
+1357  txid765888    47.05%    passed     37.85%
+1358  txid1234595   50.22%    passed     82.42%
+1359  txid1603871   46.62%    passed      9.32%
+1360  txid1458337   46.58%    failed      2.58%
+1361  txid1572751   46.65%    passed     71.38%
+1362  txid1503981   47.80%    passed     84.46%
+1363  txid1442381   49.21%    failed      1.41%
+1364  txid539813    45.21%    passed     98.33%
+1365  txid1755100   45.79%    failed      0.47%
+1366  txid1510573   51.58%    passed     84.57%
+1367  txid58169     46.90%    passed     90.89%
+1368  txid1510570   51.58%    passed     80.18%
+1369  txid1510574   51.58%    passed     85.63%
+1370  txid574964    54.86%    passed     90.82%
+1371  txid1462999   49.78%    passed     82.93%
+1372  txid1871023   46.40%    passed     67.75%
+1373  txid1870988   46.22%    passed     96.20%
+1374  txid1871029   48.92%    passed     89.43%
+1375  txid1871003   46.29%    passed     56.41%
+1376  txid1852379   44.85%    passed      9.15%
+1377  txid1852378   45.00%    passed     43.79%
+1378  txid1870999   46.26%    failed      0.00%
+1379  txid1907654   47.05%    failed      0.00%
+1380  txid1871008   47.01%    failed      0.00%
+1381  txid1852381   46.15%    passed     50.67%
+1382  txid1917868   46.26%    passed     51.69%
+1383  txid1917870   47.70%    passed     33.13%
+1384  txid1720200   46.40%    passed     53.96%
+1385  txid1871016   47.01%    failed      0.00%
+1386  txid1958780   46.69%    passed     80.25%
+1387  txid1871019   47.23%    failed      0.00%
+1388  txid1816687   46.33%    passed      7.60%
+1389  txid1903261   45.75%    passed     79.89%
+1390  txid1871024   46.33%    passed     90.84%
+1391  txid1548547   46.87%    passed     98.52%
+1392  txid1597969   49.21%    passed     77.86%
+1393  txid1002691   47.41%    passed     92.16%
+1394  txid1002689   47.34%    passed     87.30%
+1395  txid1591105   49.86%    passed     48.16%
+1396  txid1380048   49.64%    passed     10.47%
+1397  txid1445656   45.61%    passed     93.14%
+1398  txid1670619   47.88%    passed     92.20%
+1399  txid1436998   46.04%    passed     33.20%
+1400  txid1908690   50.04%    failed      1.44%
+1401  txid1210884   46.40%    passed     58.69%
+1402  txid1615681   47.26%    passed     89.29%
+1403  txid1546155   46.33%    passed     99.43%
+1404  txid1502156   47.91%    passed     56.23%
+1405  txid1742923   46.36%    passed      7.82%
+1406  txid1653434   51.58%    passed     39.92%
+1407  txid1705616   47.19%    passed     25.90%
+1408  txid1324350   45.18%    passed     59.23%
+1409  txid881260    48.06%    passed     96.10%
+1410  txid1563158   47.66%    passed     94.56%
+1411  txid1750598   45.25%    passed     90.79%
+1412  txid1542729   49.28%    passed     18.22%
+1413  txid1608996   45.10%    passed     49.69%
+1414  txid1608994   45.10%    passed     63.81%
+1415  txid1720247   47.55%    failed      4.81%
+1416  txid1507448   48.78%    passed     97.03%
+1417  txid1679466   45.21%    failed      0.12%
+1418  txid1532856   48.42%    passed     91.18%
+1419  txid1685415   47.01%    passed     98.23%
+1420  txid1619313   51.76%    passed     89.73%
+1421  txid1462571   46.40%    passed      5.67%
+1422  txid280147    46.40%    passed     52.32%
+1423  txid1776740   46.40%    passed     49.40%
+1424  txid1776741   46.36%    passed     44.10%
+1425  txid1182568   49.86%    passed     33.08%
+1426  txid1339210   47.01%    passed     48.03%
+1427  txid1461579   46.04%    passed     23.70%
+1428  txid1677920   47.48%    failed      0.24%
+1429  txid1822381   47.34%    passed     94.79%
+1430  txid1530191   47.16%    passed     87.68%
+1431  txid1550730   49.57%    passed     87.79%
+1432  txid1553431   46.54%    passed     76.91%
+1433  txid1285242   48.06%    passed     82.97%
+1434  txid1437059   47.98%    passed     87.28%
+1435  txid1639882   49.14%    failed      0.04%
+1436  txid1571208   49.75%    passed     36.61%
+1437  txid626774    46.87%    passed     68.61%
+1438  txid1758466   45.46%    passed      7.74%
+1439  txid1783360   47.66%    passed     89.13%
+1440  txid1678841   47.95%    passed     45.99%
+1441  txid1908521   48.38%    passed     12.71%
+1442  txid1788301   48.70%    passed     73.16%
+1443  txid1703337   46.33%    passed     42.15%
+1444  txid433293    46.76%    passed     59.65%
+1445  txid433286    46.80%    passed     32.30%
+1446  txid1550024   45.32%    passed     84.80%
+1447  txid1658519   48.78%    passed     38.77%
+1448  txid1612172   45.46%    passed     17.47%
+1449  txid1547922   46.26%    passed     52.87%
+1450  txid1437009   47.88%    passed     65.18%
+1451  txid1783356   49.35%    passed     88.04%
+1452  txid1658620   47.37%    failed      1.80%
+1453  txid1628085   50.22%    passed     74.06%
+1454  txid682973    45.93%    passed     79.41%
+1455  txid1744844   49.96%    passed     63.35%
+1456  txid1795310   48.13%    passed     44.41%
+1457  txid1811807   47.30%    passed     93.11%
+1458  txid1353888   46.62%    passed     89.45%
+1459  txid1884793   47.48%    passed     28.33%
+1460  txid1805431   49.78%    passed     60.82%
+1461  txid1794912   45.68%    passed     87.52%
+1462  txid1849041   50.94%    passed     73.15%
+1463  txid1806892   46.36%    passed     69.40%
+1464  txid1849014   47.80%    passed     91.90%
+1465  txid1817965   49.03%    failed      1.37%
+1466  txid1785128   45.07%    passed     50.25%
+1467  txid1522175   46.90%    passed     61.36%
+1468  txid1679721   45.25%    passed     60.20%
+1469  txid433279    46.58%    passed     17.53%
+1470  txid1752142   46.29%    passed     60.91%
+1471  txid326424    45.64%    failed      0.01%
+1472  txid1742264   46.29%    passed     39.87%
+1473  txid1781166   46.76%    passed     20.35%
+1474  txid1770529   49.39%    passed     42.03%
+1475  txid1643805   46.44%    passed     99.54%
+1476  txid1382359   54.72%    passed     52.44%
+1477  txid1771310   49.28%    passed     79.25%
+1478  txid1737444   49.21%    passed     89.66%
+1479  txid1945662   49.71%    passed     82.89%
+1480  txid1714359   48.81%    passed     67.93%
+1481  txid1045317   48.60%    passed     89.82%
+1482  txid1905730   44.46%    passed     92.71%
+1483  txid1643336   45.46%    passed     81.60%
+1484  txid1854496   48.42%    passed     35.31%
+1485  txid1914243   51.91%    passed     98.12%
+1486  txid624405    49.32%    passed     11.29%
+1487  txid1469948   49.17%    passed     56.04%
+1488  txid1867774   47.91%    passed     59.26%
+1489  txid1885912   45.82%    passed     10.28%
+1490  txid1743235   46.90%    passed     28.39%
+1491  txid1920512   49.32%    passed     10.46%
+1492  txid1871022   46.72%    failed      0.00%
+1493  txid1853130   44.60%    passed     91.17%
+1494  txid1955013   44.53%    passed     12.08%
+1495  txid1770058   50.22%    passed     94.48%
+1496  txid915099    49.06%    passed     74.84%
+1497  txid1978549   48.70%    passed     83.20%
+1498  txid1933880   45.39%    passed      9.25%
+1499  txid1868793   47.59%    passed     93.54%
+1500  txid1868794   48.34%    passed     84.94%
+1501  txid1912855   46.29%    passed     46.10%
+1502  txid1650663   46.69%    passed     72.24%
+1503  txid1450156   49.14%    passed     69.32%
+1504  txid1852309   47.70%    passed     56.15%
+1505  txid980251    48.20%    passed     33.11%
+1506  txid1855912   45.79%    passed      5.00%
+1507  txid1646377   53.89%    passed     84.28%
+1508  txid1646373   53.64%    passed     87.95%
+1509  txid1867797   45.00%    passed      7.06%
+1510  txid1735103   49.32%    passed     51.98%
+1511  txid1615674   48.60%    passed     66.29%
+1512  txid1615673   48.60%    passed     67.72%
+1513  txid1871111   44.60%    passed     41.44%
+1514  txid1917182   48.60%    passed     91.80%
+1515  txid1908258   45.68%    passed     20.44%
+1516  txid1907939   51.15%    passed     29.59%
+1517  txid1906745   47.77%    passed     42.54%
+1518  txid2026657   44.17%    passed     10.51%
+1519  txid1841482   48.88%    passed     19.63%
+1520  txid1675036   43.81%    passed     49.70%
+1521  txid1653435   49.71%    passed     69.53%
+1522  txid1776423   49.21%    passed     69.15%
+1523  txid1905846   47.73%    passed     89.99%
+1524  txid1963835   47.41%    failed      0.65%
+1525  txid1796921   47.26%    passed     68.19%
+1526  txid1631247   47.37%    passed     52.28%
+1527  txid1631249   48.09%    passed     55.76%
+1528  txid1864941   47.05%    failed      4.69%
+1529  txid1892554   47.55%    passed     47.97%
+1530  txid2026192   45.68%    passed     76.86%
+1531  txid2027871   48.52%    passed     22.44%
+1532  txid1886787   48.34%    passed     89.54%
+1533  txid1450134   47.66%    passed     98.32%
+1534  txid2027858   47.26%    passed     48.50%
+1535  txid1785162   44.89%    passed     83.30%
+1536  txid1737357   51.48%    passed     95.39%
+1537  txid1886785   47.26%    passed     95.95%
+1538  txid947919    46.54%    passed     69.42%
+1539  txid2035993   49.50%    passed     83.55%
+1540  txid2029869   46.33%    passed     27.70%
+1541  txid2029860   48.88%    failed      0.00%
+1542  txid1714681   46.44%    passed     44.98%
+1543  txid1714682   46.44%    passed     50.12%
+1544  txid1640674   50.04%    failed      0.83%
+1545  txid2038680   46.36%    passed      6.98%
+1546  txid433287    47.05%    passed     13.12%
+1547  txid2040573   48.78%    passed     90.97%
+1548  txid1781167   46.40%    passed     84.13%
+1549  txid2038730   48.81%    failed      3.34%
+1550  txid1915074   46.87%    passed     88.35%
+1551  txid2042057   44.78%    passed     97.25%
+1552  txid1912896   48.99%    failed      0.41%
+1553  txid1912894   48.42%    failed      0.22%
+1554  txid1983306   47.80%    passed      6.54%
+1555  txid1707435   48.02%    passed     83.44%
+1556  txid1636719   45.36%    passed     97.64%
+1557  txid915180    47.34%    passed     25.66%
+1558  txid1911421   46.65%    failed      1.44%
+1559  txid1897729   48.60%    passed     69.75%
+1560  txid1940240   46.76%    failed      3.28%
+1561  txid1348470   52.30%    passed     67.26%
+1562  txid1909734   47.77%    passed     44.92%
+1563  txid1968274   47.26%    passed     78.05%
+1564  txid2005703   45.36%    passed     60.68%
+1565  txid692036    47.62%    passed     94.97%
+1566  txid1897629   47.77%    passed      7.18%
+1567  txid1897628   48.02%    passed      8.71%
+1568  txid1166337   49.17%    passed     82.17%
+1569  txid1571224   46.98%    passed     96.57%
+1570  txid1926625   46.44%    failed      0.39%
+1571  txid433296    47.44%    passed     47.35%
+1572  txid1267217   46.47%    passed     70.43%
+1573  txid2058152   47.77%    passed     99.82%
+1574  txid1987580   50.32%    passed     77.10%
+1575  txid1981099   46.94%    passed     33.59%
+1576  txid2024524   46.26%    failed      2.03%
+1577  txid1639646   48.49%    passed      8.45%
+1578  txid2078947   49.17%    failed      0.05%
+1579  txid1201031   44.96%    passed     95.48%
+1580  txid889272    44.20%    passed     24.03%
+1581  txid2003188   46.80%    failed      0.00%
+1582  txid2025493   47.66%    passed     42.20%
+1583  txid2014610   46.15%    failed      0.00%
+1584  txid2049468   50.14%    passed     86.84%
+1585  txid1973495   50.32%    passed     65.84%
+1586  txid1969806   48.96%    failed      3.50%
+1587  txid86192     46.69%    passed     86.63%
+1588  txid1789672   49.17%    failed      1.28%
+1589  txid1751295   47.16%    passed     43.41%
+1590  txid1892851   46.36%    passed      8.48%
+1591  txid2670329   49.28%    passed     75.79%
+1592  txid2040292   45.32%    failed      4.63%
+1593  txid1853278   45.79%    passed     92.42%
+1594  txid2558362   48.13%    passed     66.51%
+1595  txid2675388   47.95%    passed     17.76%
+1596  txid2575867   48.78%    failed      1.43%
+1597  txid2585369   47.70%    failed      3.04%
+1598  txid1854641   49.28%    passed     83.16%
+1599  txid2268757   47.48%    passed     70.49%
+1600  txid2044587   48.52%    passed     41.57%
+1601  txid2305463   45.36%    passed     35.65%
+1602  txid2364273   48.74%    passed     81.94%
+1603  txid2570226   48.74%    passed     82.19%
+1604  txid2562681   48.67%    passed     82.70%
+1605  txid2004650   43.12%    passed     26.70%
+1606  txid2685834   45.18%    passed     33.69%
+1607  txid1656888   47.34%    passed     12.77%
+1608  txid2321403   45.72%    passed     20.26%
+1609  txid2678302   47.41%    passed     11.98%
+1610  txid2267246   43.70%    passed     96.14%
+1611  txid2294114   49.24%    passed     74.37%
+1612  txid1932778   49.57%    passed     25.25%
+1613  txid2358141   44.74%    passed     35.49%
+1614  txid2496871   47.77%    passed     70.15%
+1615  txid2490854   47.66%    passed     11.75%
+1616  txid2708319   50.07%    passed     93.49%
+1617  txid2707057   49.39%    passed     67.52%
+1618  txid2580413   46.26%    passed     50.36%
+1619  txid2202825   47.98%    passed     64.53%
+1620  txid2527970   45.72%    passed     88.20%
+1621  txid2527984   45.79%    passed     99.38%
+1622  txid2527989   44.56%    failed      0.00%
+1623  txid2267266   49.60%    passed     87.75%
+1624  txid1263962   49.24%    passed     29.56%
+1625  txid2584944   50.79%    passed     93.61%
+1626  txid1836198   46.58%    passed     89.91%
+1627  txid1836200   46.40%    passed     92.10%
+1628  txid1836199   46.94%    passed     97.08%
+1629  txid1148196   48.16%    passed     50.89%
+1630  txid1720203   46.44%    passed     34.73%
+1631  txid2448455   48.96%    passed     90.11%
+1632  txid1806202   47.91%    passed     68.11%
+1633  txid2488750   48.99%    passed     40.95%
+1634  txid2056231   45.10%    passed     90.05%
+1635  txid1816691   45.54%    passed     61.34%
+1636  txid1173586   47.26%    passed     97.29%
+1637  txid2741498   46.69%    passed     29.72%
+1638  txid2741499   46.18%    passed     96.41%
+1639  txid2528244   48.74%    passed     78.09%
+1640  txid2529380   44.71%    passed     95.14%
+1641  txid2482751   47.48%    passed     92.34%
+1642  txid2664430   51.01%    failed      0.17%
+1643  txid2508720   46.40%    passed     71.05%
+1644  txid1748967   47.37%    passed     98.40%
+1645  txid2663030   47.70%    passed     32.14%
+1646  txid2508543   48.88%    passed     72.68%
+1647  txid2498452   46.94%    passed     80.46%
+1648  txid2213226   45.46%    passed     44.92%
+1649  txid2508881   45.86%    passed      5.62%
+1650  txid2574798   46.94%    passed     58.93%
+1651  txid2509240   44.78%    passed     45.48%
+1652  txid2500547   46.54%    failed      2.81%
+1653  txid2518971   44.49%    passed     35.58%
+1654  txid2530391   44.64%    failed      0.29%
+1655  txid2491866   50.04%    passed     64.97%
+1656  txid2491114   48.13%    failed      0.12%
+1657  txid2751477   46.18%    passed     58.85%
+1658  txid2751478   46.18%    passed     49.90%
+1659  txid2654252   46.26%    passed     62.56%
+1660  txid1912897   44.89%    passed     73.83%
+1661  txid2136183   45.10%    passed     36.31%
+1662  txid2306995   49.17%    passed     76.80%
+1663  txid2789776   49.78%    failed      0.82%
+1664  txid2493111   48.85%    passed     69.03%
+1665  txid1979270   47.73%    passed     64.78%
+1666  txid2077091   46.44%    failed      4.16%
+1667  txid2364882   46.36%    passed     49.55%
+1668  txid2082392   49.46%    passed     96.75%
+1669  txid2233532   46.47%    passed     62.62%
+1670  txid2162893   48.02%    passed     11.16%
+1671  txid2249811   48.06%    passed     64.78%
+1672  txid2495579   46.36%    passed     83.68%
+1673  txid2291814   45.18%    failed      1.93%
+1674  txid2816234   46.83%    passed     56.78%
+1675  txid693223    46.62%    passed     86.17%
+1676  txid2859516   46.36%    passed     85.07%
+1677  txid2798044   45.97%    passed     63.22%
+1678  txid2571273   47.44%    passed     35.18%
+1679  txid1852018   46.22%    passed      5.18%
+1680  txid2036206   45.61%    passed     93.65%
+1681  txid913108    48.60%    failed      0.82%
+1682  txid2893045   45.00%    passed     11.22%
+1683  txid2164067   47.73%    failed      2.30%
+1684  txid2528023   46.11%    failed      0.00%
+1685  txid2528021   45.39%    passed     92.50%
+1686  txid1930274   45.07%    passed     64.24%
+1687  txid1930276   44.49%    passed     62.52%
+1688  txid2528020   45.79%    passed     49.04%
+1689  txid2528026   45.75%    failed      4.21%
+1690  txid2527972   44.74%    passed     74.26%
+1691  txid2528009   45.00%    passed     51.81%
+1692  txid1912090   47.05%    passed     18.18%
+1693  txid2527985   44.35%    passed     68.95%
+1694  txid2528024   44.85%    passed     77.51%
+1695  txid2527983   45.46%    passed     14.50%
+1696  txid2528007   45.10%    passed     66.79%
+1697  txid2528022   45.18%    passed     63.22%
+1698  txid2528027   45.14%    passed     28.89%
+1699  txid1938618   45.18%    passed     74.19%
+1700  txid2527991   44.96%    passed     55.89%
+1701  txid2528000   45.10%    passed     36.30%
+1702  txid2528002   45.18%    passed     79.94%
+1703  txid2821844   49.60%    passed     31.36%
+1704  txid2748684   50.83%    passed     72.09%
+1705  txid2818044   45.28%    passed     82.21%
+1706  txid1653858   44.82%    passed     74.41%
+1707  txid2068655   49.60%    passed     36.23%
+1708  txid2755051   47.77%    passed      7.83%
+1709  txid2558931   45.28%    failed      0.19%
+1710  txid2678306   45.28%    passed      7.25%
+1711  txid2798583   48.70%    passed     86.15%
+1712  txid2133944   46.87%    passed     49.28%
+1713  txid2714858   49.46%    passed     98.65%
+1714  txid2712698   47.91%    passed     84.22%
+1715  txid2094025   46.58%    passed      7.07%
+1716  txid2751370   45.18%    failed      0.16%
+1717  txid2751153   47.26%    passed     82.99%
+1718  txid2780922   47.80%    passed     73.14%
+1719  txid1871031   48.42%    failed      0.00%
+1720  txid1852385   46.80%    failed      0.00%
+1721  txid2108523   46.69%    passed     95.15%
+1722  txid2565932   46.98%    passed     12.59%
+1723  txid2559926   49.14%    passed     26.95%
+1724  txid2559929   49.57%    passed     76.51%
+1725  txid1862385   48.49%    passed     57.40%
+1726  txid2027290   45.00%    passed     59.99%
+1727  txid2582921   47.37%    passed     17.54%
+1728  txid2420890   44.85%    passed     45.62%
+1729  txid2650773   45.46%    failed      0.07%
+1730  txid1183401   46.54%    passed     92.14%
+1731  txid2576756   45.28%    passed     94.36%
+1732  txid2692566   46.58%    failed      4.13%
+1733  txid2749962   44.35%    failed      0.68%
+1734  txid2681549   47.98%    passed     81.71%
+1735  txid2603288   45.10%    passed     78.37%
+1736  txid712710    47.80%    passed     28.61%
+1737  txid2559928   48.16%    failed      0.53%
+1738  txid2530451   45.86%    passed     77.97%
+1739  txid2499852   48.34%    passed     24.59%
+1740  txid2560861   48.67%    passed     78.28%
+1741  txid2559804   46.90%    passed     89.92%
+1742  txid2785331   49.39%    passed     76.17%
+1743  txid2817476   44.02%    passed     65.19%
+1744  txid413882    44.60%    passed     47.53%
+1745  txid2886352   50.68%    passed     93.63%
+1746  txid1812858   46.40%    passed     17.64%
+1747  txid2172103   47.05%    passed     95.04%
+1748  txid2080755   46.72%    failed      0.00%
+1749  txid2093857   48.63%    passed     77.93%
+1750  txid2116657   45.39%    passed     94.67%
+1751  txid2171757   46.69%    passed      5.91%
+1752  txid2884962   46.65%    passed     82.82%
+1753  txid2886350   46.44%    passed     79.49%
+1754  txid2884079   49.24%    passed     93.68%
+1755  txid2884078   48.34%    passed     62.16%
+1756  txid2886050   50.61%    passed     60.81%
+1757  txid35833     47.66%    passed     16.96%
+1758  txid226526    49.06%    failed      2.12%
+1759  txid1702241   53.49%    passed     64.60%
+1760  txid2594593   46.69%    passed     99.16%
+1761  txid2695856   47.44%    passed     67.80%
+1762  txid2801997   47.01%    passed     73.17%
+1763  txid644215    46.58%    passed     85.83%
+1764  txid708113    52.30%    passed     84.88%
+1765  txid1225642   49.21%    failed      0.51%
+1766  txid1408099   47.12%    passed     36.69%
+1767  txid89152     49.24%    passed     63.47%
+1768  txid137838    47.34%    passed     31.07%
+1769  txid105843    46.69%    passed     78.70%
+1770  txid485880    50.61%    passed     87.69%
+1771  txid222136    47.70%    failed      4.69%
+1772  txid1935204   46.65%    failed      0.00%
+1773  txid370407    45.39%    passed     95.06%
+1774  txid2607284   48.60%    failed      1.60%
+1775  txid515393    48.31%    passed     84.80%
+1776  txid515947    46.72%    passed     18.83%
+1777  txid2792603   47.44%    passed     48.36%
+1778  txid160660    47.41%    passed     70.22%
+1779  txid1216362   48.60%    failed      0.21%
+1780  txid673271    47.66%    passed     74.55%
+1781  txid52        46.11%    passed     12.30%
+1782  txid83447     44.20%    passed     12.00%
+1783  txid86176     45.57%    passed     93.95%
+1784  txid1347366   46.83%    passed     36.99%
+1785  txid1400001   47.98%    passed     12.68%
+1786  txid1421430   48.92%    passed     72.60%
+1787  txid1461581   46.00%    passed     79.05%
+1788  txid1055468   47.62%    passed     82.75%
+1789  txid1111454   47.73%    passed     56.41%
+1790  txid1842532   46.90%    passed     80.71%
+1791  txid1176533   47.12%    passed     78.40%
+1792  txid1156431   49.21%    passed     55.42%
+1793  txid1141887   48.38%    passed     63.40%
+1794  txid1229621   50.40%    passed     48.29%
+1795  txid1232431   46.04%    passed     86.69%
+1796  txid1288494   47.52%    passed     98.18%
+1797  txid1323375   46.00%    passed     19.79%
+1798  txid1353941   52.20%    passed     46.63%
+1799  txid1534408   48.52%    passed     96.35%
+1800  txid2045208   47.66%    passed     81.84%
+1801  txid1365611   50.25%    passed     84.14%
+1802  txid1379910   47.62%    passed     69.05%
+1803  txid1395940   48.52%    passed     84.86%
+1804  txid1217715   46.36%    passed     36.38%
+1805  txid1443480   47.84%    passed     84.97%
+1806  txid1453545   47.48%    passed     46.45%
+1807  txid1465635   47.70%    passed     95.11%
+1808  txid1503749   47.37%    passed     28.56%
+1809  txid1592631   47.66%    passed     95.10%
+1810  txid1513793   47.26%    passed     85.70%
+1811  txid1523623   44.31%    passed     65.23%
+1812  txid1538103   49.28%    passed     82.45%
+1813  txid1563222   46.33%    passed     97.06%
+1814  txid1576369   48.67%    passed     39.66%
+1815  txid1634986   46.65%    failed      2.17%
+1816  txid1588748   47.91%    passed     49.51%
+1817  txid2742824   46.87%    passed     56.40%
+1818  txid1638099   48.67%    passed      7.83%
+1819  txid1441714   48.60%    passed     73.17%
+1820  txid1751901   50.58%    passed     10.59%
+1821  txid1712410   47.34%    passed     60.73%
+1822  txid1796616   45.25%    passed     62.74%
+1823  txid92488     48.85%    passed     95.72%
+1824  txid1507512   46.33%    passed     54.57%
+1825  txid1797754   47.70%    passed     85.88%
+1826  txid1813879   49.28%    passed     90.52%
+1827  txid1498499   48.96%    passed     35.02%
+1828  txid1842727   47.19%    passed     95.04%
+1829  txid2662420   45.57%    passed     42.76%
+1830  txid1655500   50.58%    failed      0.12%
+1831  txid1850242   46.58%    passed     87.74%
+1832  txid1851429   50.83%    passed     91.85%
+1833  txid1854500   48.13%    failed      1.08%
+1834  txid2316085   48.52%    passed     67.12%
+1835  txid2750624   48.49%    passed     66.94%
+1836  txid2750625   48.52%    passed     67.67%
+1837  txid1676614   44.96%    passed     21.41%
+1838  txid1907578   51.73%    passed     99.57%
+1839  txid1855283   48.96%    passed     82.04%
+1840  txid1855371   46.47%    passed     94.02%
+1841  txid2055137   48.16%    passed     85.64%
+1842  txid1960156   47.05%    passed     95.58%
+1843  txid1936003   44.85%    passed     78.26%
+1844  txid1879050   44.74%    passed     43.02%
+1845  txid2231721   47.84%    failed      3.81%
+1846  txid2497436   44.64%    passed     99.55%
+1847  txid2494701   44.64%    passed     99.36%
+1848  txid2126740   49.57%    passed     51.71%
+1849  txid1727145   47.48%    passed     59.94%
+1850  txid1682490   47.37%    passed     88.25%
+1851  txid480930    45.68%    passed     34.41%
+1852  txid2025510   48.85%    passed     59.23%
+1853  txid2219043   48.49%    passed     86.74%
+1854  txid2182793   46.47%    passed     22.47%
+1855  txid2654621   46.83%    passed     88.44%
+1856  txid2316025   46.26%    passed     32.11%
+1857  txid2585119   47.30%    passed     77.20%
+1858  txid2559923   46.44%    passed     39.93%
+1859  txid2607908   48.96%    passed     72.01%
+1860  txid2668065   48.96%    passed     45.03%
+1861  txid2708063   48.99%    passed     89.86%
+1862  txid2714353   47.70%    passed     68.81%
+1863  txid2714355   47.77%    passed     83.36%
+1864  txid2714358   47.70%    passed     71.83%
+1865  txid2778911   48.45%    passed     15.13%
+1866  txid2740531   46.54%    passed     64.25%
+1867  txid2760804   47.30%    passed     97.56%
+1868  txid2799580   49.06%    passed     35.86%
+1869  txid2799574   47.88%    passed     56.94%
+1870  txid2799577   48.96%    passed     48.82%
+1871  txid2707299   45.86%    failed      0.00%
+1872  txid2847858   44.38%    passed     88.73%
+1873  txid2854755   46.29%    passed     63.19%
+1874  txid2899822   46.22%    passed     77.58%
+1875  txid2819619   44.46%    passed     45.86%
+1876  txid1499684   47.01%    passed     66.26%
+1877  txid1499686   46.00%    passed     73.36%
+1878  txid1564166   50.97%    passed      7.68%
+1879  txid1650661   46.18%    passed     95.00%
+1880  txid1686285   46.36%    passed     46.17%
+1881  txid1673718   45.86%    failed      1.44%
+1882  txid1673720   46.65%    passed     87.99%
+1883  txid1673721   45.32%    passed     89.58%
+1884  txid1675792   48.52%    passed     98.33%
+1885  txid1689270   46.18%    passed     97.97%
+1886  txid1702285   46.29%    passed     99.82%
+1887  txid1720313   46.44%    passed     88.01%
+1888  txid1720204   47.01%    failed      0.00%
+1889  txid1720300   46.36%    passed     27.31%
+1890  txid1755099   46.00%    passed     90.57%
+1891  txid1776379   46.26%    passed     24.00%
+1892  txid1776388   46.22%    passed     26.75%
+1893  txid2479838   45.00%    passed     48.95%
+1894  txid2479840   45.07%    passed     15.90%
+1895  txid2293832   49.89%    passed     67.20%
+1896  txid2293833   49.71%    passed     79.97%
+1897  txid2590867   46.04%    failed      0.00%
+1898  txid2712865   45.14%    failed      0.00%
+1899  txid2730405   44.28%    passed     97.88%
+1900  txid2219695   44.92%    failed      0.47%
+1901  txid2364791   43.99%    passed     46.03%
+1902  txid1805478   46.80%    failed      0.00%
+1903  txid2045214   46.90%    passed     99.65%
+1904  txid1841855   47.98%    failed      1.14%
+1905  txid1841863   47.05%    failed      0.00%
+1906  txid1841866   46.26%    passed     72.88%
+1907  txid1841868   46.83%    passed     83.22%
+1908  txid1852365   47.12%    failed      0.15%
+1909  txid1852382   46.26%    passed     50.68%
+1910  txid1852384   46.36%    passed     47.13%
+1911  txid1870987   47.05%    failed      0.00%
+1912  txid1870991   46.44%    passed     32.99%
+1913  txid1870993   46.72%    passed     53.98%
+1914  txid1871006   46.47%    failed      0.69%
+1915  txid1871009   46.29%    passed     10.48%
+1916  txid1871013   47.84%    passed      6.74%
+1917  txid1871018   46.98%    passed     86.83%
+1918  txid1871021   46.15%    passed     80.87%
+1919  txid1903262   46.33%    passed     67.82%
+1920  txid1907658   46.40%    passed     89.16%
+1921  txid2060916   45.07%    failed      0.00%
+1922  txid1917867   48.34%    passed     96.93%
+1923  txid1917873   47.88%    passed     60.61%
+1924  txid1926283   48.02%    passed     47.70%
+1925  txid1936059   48.49%    passed     76.51%
+1926  txid1940621   47.30%    passed     86.40%
+1927  txid1937461   48.56%    failed      0.00%
+1928  txid1944642   48.34%    passed     87.50%
+1929  txid1944635   47.62%    passed     81.01%
+1930  txid1944636   47.84%    passed      5.92%
+1931  txid1964213   50.11%    passed     64.81%
+1932  txid1964384   46.69%    failed      0.00%
+1933  txid1987501   45.50%    passed     54.00%
+1934  txid2002841   45.57%    passed     11.17%
+1935  txid2014528   46.22%    passed     67.90%
+1936  txid2014781   45.93%    passed     46.42%
+1937  txid2024197   46.54%    passed      5.04%
+1938  txid2042309   48.06%    failed      2.64%
+1939  txid2044573   45.21%    passed     24.90%
+1940  txid2045301   43.99%    passed     65.51%
+1941  txid2058294   44.35%    passed     80.24%
+1942  txid2086584   45.00%    passed     70.65%
+1943  txid2086583   45.46%    passed     66.27%
+1944  txid2161819   44.64%    passed     75.91%
+1945  txid2161821   43.70%    passed     43.39%
+1946  txid2303751   46.44%    passed     80.78%
+1947  txid2218256   47.30%    passed     93.89%
+1948  txid2137581   43.09%    failed      0.00%
+1949  txid2608987   46.65%    passed     52.30%
+1950  txid2100821   44.74%    passed     56.34%
+1951  txid1943631   46.04%    passed     82.32%
+1952  txid53409     45.21%    passed     84.02%
+1953  txid2032623   47.77%    passed     50.49%
+1954  txid2020948   48.74%    passed     55.06%
+1955  txid2183553   48.09%    passed     75.30%
+1956  txid2072847   47.48%    passed     78.76%
+1957  txid2041044   45.57%    passed     46.13%
+1958  txid2220096   52.52%    failed      4.83%
+1959  txid2306996   49.21%    passed     75.01%
+1960  txid2050967   50.29%    passed     67.23%
+1961  txid2602015   48.13%    passed     27.47%
+1962  txid2056226   46.76%    failed      0.63%
+1963  txid1785145   44.67%    passed     81.39%
+1964  txid2364649   46.76%    passed     83.84%
+1965  txid2144175   49.75%    passed     48.48%
+1966  txid2172652   48.20%    passed     83.02%
+1967  txid2093420   47.77%    passed     15.07%
+1968  txid2093424   47.77%    passed     41.81%
+1969  txid2093419   47.77%    passed     46.64%
+1970  txid2071710   45.00%    passed     98.93%
+1971  txid2022662   45.57%    passed     99.85%
+1972  txid2050966   48.74%    passed     71.34%
+1973  txid2080838   44.71%    passed     98.47%
+1974  txid2233999   46.11%    failed      1.23%
+1975  txid2093856   49.75%    failed      1.81%
+1976  txid2094150   46.11%    passed     63.75%
+1977  txid2094151   50.36%    passed      9.45%
+1978  txid2094024   46.29%    passed     13.47%
+1979  txid2697028   45.10%    passed     78.35%
+1980  txid1868589   47.16%    passed     65.56%
+1981  txid2764322   44.71%    passed     91.51%
+1982  txid742719    46.04%    passed     42.71%
+1983  txid2303410   45.07%    passed     37.68%
+1984  txid2294116   47.77%    failed      3.26%
+1985  txid2696678   48.16%    passed     42.85%
+1986  txid2152716   44.53%    passed     49.92%
+1987  txid759821    45.68%    passed     72.79%
+1988  txid2170551   48.13%    passed     80.83%
+1989  txid2171756   51.51%    passed     76.14%
+1990  txid2233542   45.57%    passed     49.83%
+1991  txid2211145   46.87%    passed     88.51%
+1992  txid2211140   48.92%    passed     87.88%
+1993  txid2213015   45.10%    passed     78.67%
+1994  txid2201815   44.10%    passed      5.37%
+1995  txid2602016   48.13%    passed     17.88%
+1996  txid2233774   48.67%    passed     74.95%
+1997  txid2594794   46.76%    passed     97.39%
+1998  txid2053833   46.58%    passed     74.06%
+1999  txid2496028   50.79%    passed     73.68%
+2000  txid2592657   45.25%    passed      5.47%
+2001  txid2211183   49.96%    passed     98.90%
+2002  txid2282419   46.00%    passed      9.19%
+2003  txid2290935   50.47%    passed     15.87%
+2004  txid1886670   44.02%    passed     98.67%
+2005  txid2293435   46.11%    failed      0.90%
+2006  txid2040648   46.11%    failed      0.60%
+2007  txid2528631   45.18%    failed      1.71%
+2008  txid2607589   45.90%    passed     98.05%
+2009  txid2748310   45.97%    passed     99.17%
+2010  txid2303539   47.19%    passed     42.60%
+2011  txid2480810   46.80%    passed     98.75%
+2012  txid2305907   46.51%    passed     77.10%
+2013  txid2320271   48.06%    passed     25.49%
+2014  txid2325572   45.43%    passed     94.38%
+2015  txid2315862   44.96%    passed     18.27%
+2016  txid2599295   47.62%    passed      9.78%
+2017  txid2268407   44.31%    passed     97.52%
+2018  txid2489010   47.37%    passed     99.16%
+2019  txid2494702   50.68%    passed     98.19%
+2020  txid2497875   45.00%    passed     98.60%
+2021  txid2565782   45.64%    passed     65.47%
+2022  txid2502779   47.73%    passed     66.97%
+2023  txid2486010   47.80%    passed     57.16%
+2024  txid2486011   48.13%    passed     46.09%
+2025  txid2486012   47.73%    passed     62.46%
+2026  txid2486013   48.02%    passed     32.49%
+2027  txid2486014   48.56%    passed     58.74%
+2028  txid2555902   49.82%    passed      5.36%
+2029  txid1969733   44.28%    passed     86.03%
+2030  txid2488306   44.49%    passed     87.88%
+2031  txid2488730   47.55%    passed     71.08%
+2032  txid2821487   47.52%    passed      5.93%
+2033  txid2763028   51.62%    passed     54.40%
+2034  txid2662362   45.93%    passed     36.54%
+2035  txid2495496   46.94%    passed     44.25%
+2036  txid2306974   45.46%    failed      0.03%
+2037  txid2510188   47.80%    failed      0.15%
+2038  txid2510190   47.55%    failed      0.19%
+2039  txid2530390   44.64%    failed      0.38%
+2040  txid2527978   44.56%    passed     81.85%
+2041  txid2527973   44.56%    passed     68.64%
+2042  txid2527964   44.60%    passed     70.18%
+2043  txid2528003   44.56%    passed     72.44%
+2044  txid2527982   45.75%    passed     81.14%
+2045  txid2529381   44.71%    passed     99.56%
+2046  txid2529382   44.64%    passed     99.55%
+2047  txid2518605   46.76%    passed     99.22%
+2048  txid2650158   46.29%    failed      0.67%
+2049  txid2546448   50.07%    passed     89.06%
+2050  txid2725666   48.99%    passed     63.41%
+2051  txid2505970   45.64%    failed      0.20%
+2052  txid2666183   44.82%    passed     79.34%
+2053  txid2528245   46.62%    passed     74.89%
+2054  txid2899544   49.21%    passed     91.47%
+2055  txid2267891   45.64%    failed      0.13%
+2056  txid2419603   44.85%    passed     41.79%
+2057  txid2419601   44.82%    passed     39.37%
+2058  txid2579935   47.23%    passed     93.31%
+2059  txid2528239   48.85%    passed     90.52%
+2060  txid2584469   52.30%    failed      0.00%
+2061  txid2715163   45.97%    passed     42.93%
+2062  txid2771362   48.20%    passed     99.11%
+2063  txid2779355   47.12%    passed     35.57%
+2064  txid2779357   48.34%    failed      0.00%
+2065  txid2779352   48.42%    passed     95.82%
+2066  txid2779351   48.85%    passed     81.88%
+2067  txid2779354   47.01%    passed     56.91%
+2068  txid2682781   49.28%    passed     68.98%
+2069  txid2587529   44.56%    passed     96.81%
+2070  txid2562449   46.94%    passed     99.72%
+2071  txid2603815   53.06%    failed      0.00%
+2072  txid2714946   46.69%    passed     75.67%
+2073  txid2592382   47.12%    passed     80.70%
+2074  txid2594882   59.36%    passed     72.50%
+2075  txid2690837   46.11%    failed      0.00%
+2076  txid2601677   47.37%    failed      0.38%
+2077  txid2601703   52.27%    passed     71.29%
+2078  txid2606214   47.23%    passed     96.83%
+2079  txid2609964   47.44%    passed     80.89%
+2080  txid2743470   48.49%    passed     81.08%
+2081  txid2608982   47.30%    passed     88.81%
+2082  txid2735555   46.94%    passed     93.80%
+2083  txid2054641   45.72%    passed     98.94%
+2084  txid2605778   47.16%    passed     28.96%
+2085  txid2652274   48.45%    passed     54.62%
+2086  txid1896222   45.25%    failed      0.14%
+2087  txid1945871   45.21%    passed     71.44%
+2088  txid2652279   47.34%    failed      0.00%
+2089  txid2605782   46.40%    passed     75.99%
+2090  txid2652276   46.65%    passed     30.02%
+2091  txid2606638   46.04%    passed     54.01%
+2092  txid2606633   46.47%    passed     40.24%
+2093  txid2606708   49.86%    passed     34.24%
+2094  txid2606632   46.90%    passed     52.13%
+2095  txid2606636   45.97%    passed     41.02%
+2096  txid2606634   46.58%    passed     25.36%
+2097  txid2606640   47.05%    passed     84.55%
+2098  txid2605790   48.45%    passed     97.06%
+2099  txid2652309   45.86%    passed     70.58%
+2100  txid2606629   46.47%    passed     40.90%
+2101  txid2606626   47.48%    failed      0.11%
+2102  txid2606635   47.08%    passed     20.82%
+2103  txid2606630   46.47%    passed     20.15%
+2104  txid2743358   46.26%    passed     80.26%
+2105  txid2604328   47.44%    passed     79.70%
+2106  txid2699427   49.93%    passed     15.47%
+2107  txid2653932   44.49%    passed     99.67%
+2108  txid2664442   46.51%    passed     94.72%
+2109  txid2697030   48.20%    passed     49.57%
+2110  txid2696063   49.39%    passed     51.37%
+2111  txid2665159   47.62%    passed     78.97%
+2112  txid2743612   48.09%    passed     62.53%
+2113  txid2728851   48.63%    passed     96.14%
+2114  txid2728837   46.62%    passed     90.47%
+2115  txid2675322   45.50%    failed      0.01%
+2116  txid2681310   44.67%    passed     71.96%
+2117  txid2691583   47.19%    passed     95.69%
+2118  txid2703884   46.76%    passed     94.14%
+2119  txid2703885   46.72%    passed     94.29%
+2120  txid2787622   46.72%    passed     88.14%
+2121  txid2681861   46.69%    passed     60.24%
+2122  txid2683196   49.75%    passed     32.22%
+2123  txid2710758   46.40%    passed     42.47%
+2124  txid2494733   45.72%    passed      7.25%
+2125  txid2686094   49.50%    passed     97.51%
+2126  txid2818388   48.45%    passed     28.41%
+2127  txid2729622   46.44%    passed     42.16%
+2128  txid2774137   48.78%    passed     98.75%
+2129  txid2704465   48.74%    passed     39.86%
+2130  txid2729623   46.58%    passed     68.83%
+2131  txid2703882   46.72%    passed     92.47%
+2132  txid2737662   50.76%    passed     90.29%
+2133  txid2716334   46.47%    passed     10.95%
+2134  txid2656746   44.46%    passed     98.26%
+2135  txid2715164   45.97%    passed     40.31%
+2136  txid568768    44.49%    passed     92.72%
+2137  txid2722706   46.29%    passed     42.81%
+2138  txid2732487   46.76%    passed     54.57%
+2139  txid2725494   49.21%    passed     90.94%
+2140  txid2725493   50.22%    passed     80.97%
+2141  txid2740517   47.52%    passed     92.00%
+2142  txid2715279   46.90%    failed      0.00%
+2143  txid2762760   47.48%    passed     11.83%
+2144  txid2779519   48.24%    failed      0.00%
+2145  txid2779518   45.97%    passed     45.92%
+2146  txid2812555   49.28%    passed     83.41%
+2147  txid2811429   49.21%    failed      4.83%
+2148  txid2738446   47.48%    passed     34.44%
+2149  txid2810512   48.81%    passed      7.89%
+2150  txid2502215   46.65%    passed     53.60%
+2151  txid2726362   47.26%    passed     73.06%
+2152  txid2800387   46.40%    passed     49.68%
+2153  txid2745197   46.29%    passed     73.08%
+2154  txid2746702   46.98%    passed     91.66%
+2155  txid2771361   52.12%    passed     18.27%
+2156  txid2053287   52.59%    passed     36.60%
+2157  txid2771355   48.38%    passed     87.62%
+2158  txid2778729   48.81%    passed     56.79%
+2159  txid2759526   49.46%    passed     80.34%
+2160  txid2788944   49.46%    passed     56.93%
+2161  txid2784388   48.63%    passed     64.98%
+2162  txid2752306   45.82%    passed     86.69%
+2163  txid2762557   45.75%    failed      0.06%
+2164  txid2763107   46.44%    passed     88.28%
+2165  txid2725562   45.10%    passed     76.86%
+2166  txid2763654   48.99%    passed     28.47%
+2167  txid2763660   51.26%    passed     75.46%
+2168  txid2763661   49.28%    passed      7.92%
+2169  txid2763655   49.46%    passed     25.93%
+2170  txid2763656   49.75%    passed     89.67%
+2171  txid2763657   49.96%    passed     54.60%
+2172  txid2763659   49.78%    passed     23.98%
+2173  txid2763670   51.98%    passed     43.97%
+2174  txid2763665   67.82%    passed     13.86%
+2175  txid2763664   50.32%    passed     51.77%
+2176  txid2763668   48.99%    passed     32.18%
+2177  txid2763669   49.82%    passed     25.31%
+2178  txid2763666   49.28%    passed     58.44%
+2179  txid2763671   49.57%    passed     70.59%
+2180  txid2763667   49.96%    passed     60.02%
+2181  txid2764712   52.48%    passed     77.51%
+2182  txid2763645   49.96%    passed     34.22%
+2183  txid1000568   47.08%    passed     34.17%
+2184  txid2850322   44.85%    passed     11.55%
+2185  txid2850323   44.92%    passed     17.01%
+2186  txid2770636   45.97%    passed     24.06%
+2187  txid2815362   44.67%    passed     88.95%
+2188  txid2814293   50.00%    passed     96.28%
+2189  txid2774189   51.98%    passed     71.74%
+2190  txid2699469   44.85%    passed     54.80%
+2191  txid2782349   46.04%    passed     33.54%
+2192  txid2782351   45.97%    passed      8.43%
+2193  txid2792859   48.92%    passed      5.85%
+2194  txid2805490   45.93%    passed     74.89%
+2195  txid2794352   45.97%    passed     89.64%
+2196  txid2762577   44.67%    passed     89.90%
+2197  txid2762576   44.67%    passed     89.42%
+2198  txid2835040   47.88%    passed     31.42%
+2199  txid2802396   56.12%    passed     34.91%
+2200  txid2822762   49.60%    passed     40.00%
+2201  txid2796366   44.74%    passed     99.17%
+2202  txid2815733   46.54%    passed     86.67%
+2203  txid2810613   49.50%    passed     87.91%
+2204  txid2816244   51.58%    passed     79.43%
+2205  txid2816248   51.58%    passed     87.92%
+2206  txid2816249   51.58%    passed     85.15%
+2207  txid2816250   51.58%    passed     84.57%
+2208  txid2816474   50.00%    passed     80.53%
+2209  txid2827099   44.67%    passed     71.70%
+2210  txid2804533   46.40%    failed      0.96%
+2211  txid2829994   49.89%    passed     22.94%
+2212  txid2831190   48.56%    passed     28.73%
+2213  txid2831590   44.64%    passed     98.34%
+2214  txid2833594   47.23%    passed     80.82%
+2215  txid2833595   48.99%    passed     93.76%
+2216  txid2834112   50.07%    passed     21.33%
+2217  txid2847989   49.46%    passed     87.05%
+2218  txid2837202   47.41%    passed     96.92%
+2219  txid2839759   43.99%    passed     60.06%
+2220  txid2843196   48.70%    passed     86.45%
+2221  txid2843197   48.70%    passed     89.07%
+2222  txid2834432   48.45%    failed      0.10%
+2223  txid2834434   45.32%    failed      0.02%
+2224  txid2809028   45.57%    failed      0.28%
+2225  txid2834437   45.43%    failed      0.06%
+2226  txid2859001   46.65%    passed     81.62%
+2227  txid2815720   44.85%    passed     71.55%
+2228  txid2867412   52.84%    failed      0.43%
+2229  txid2871820   46.69%    passed     94.66%
+2230  txid2710591   43.59%    passed     67.49%
+2231  txid2815358   50.83%    passed     99.75%
+2232  txid2880703   66.88%    passed     28.96%
+2233  txid2885351   47.37%    passed     71.75%
+2234  txid2890313   44.85%    passed     70.71%
+2235  txid2026240   45.82%    passed     99.47%
+2236  txid2905877   51.30%    failed      1.13%
+2237  txid2929842   44.64%    passed     93.23%
+2238  txid2901869   47.95%    passed     95.30%
+2239  txid2930083   48.78%    failed      0.00%
+2240  txid1977882   47.44%    passed     12.28%
+2241  txid2683713   50.65%    failed      1.38%
+2242  txid2025884   46.94%    passed     40.17%
+2243  txid2895469   44.56%    passed     89.90%
+2244  txid51515     52.52%    passed     88.00%
+WARNING: 172 sequences contain more than 50% gaps/ambiguity
+****  TOTAL         47.33%  309 sequences failed composition chi2 test (p-value<5%; df=3)
+NOTE: txid2816250 is identical to txid1510573 but kept for subsequent analysis
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 3.451 seconds
+Perform fast likelihood tree search using GTR+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+1. Initial log-likelihood: -513120.700
+2. Current log-likelihood: -513119.202
+Optimal log-likelihood: -513118.939
+Rate parameters:  A-C: 0.84607  A-G: 2.29448  A-T: 1.42400  C-G: 0.77543  C-T: 3.82981  G-T: 1.00000
+Base frequencies:  A: 0.252  C: 0.231  G: 0.315  T: 0.202
+Proportion of invariable sites: 0.104
+Gamma shape alpha: 0.523
+Parameters optimization took 2 rounds (3.031 sec)
+Time for fast ML tree search: 25.116 seconds
+
+NOTE: ModelFinder requires 1705 MB RAM!
+ModelFinder will test up to 484 DNA models (sample size: 2778) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+  1  GTR+F         618510.868   4493 1246007.737  41629091.737 1272648.920
+  2  GTR+F+I       600340.788   4494 1209669.577  41610729.577 1236316.689
+  3  GTR+F+G4      514191.183   4494 1037370.366  41438430.366 1064017.479
+  4  GTR+F+I+G4    513118.864   4495 1035227.727  41454267.727 1061880.769
+  5  GTR+F+R2      540902.060   4495 1090794.120  41509834.120 1117447.161
+  6  GTR+F+R3      524107.368   4497 1057208.736  41512220.736 1083873.636
+  7  GTR+F+R4      517112.344   4499 1043222.688  41534222.688 1069899.448
+  8  GTR+F+R5      514137.750   4501 1037277.500  41564281.500 1063966.119
+  9  GTR+F+R6      511318.242   4503 1031642.484  41594666.484 1058342.962
+ 10  GTR+F+R7      509389.452   4505 1027788.904  41626848.904 1054501.241
+ 11  GTR+F+R8      508903.329   4507 1026820.658  41661932.658 1053544.854
+ 12  GTR+F+R9      508471.532   4509 1025961.063  41697141.063 1052697.118
+ 13  GTR+F+R10     508224.948   4511 1025471.896  41732735.896 1052219.809
+ 14  GTR+F+I+R2    532789.583   4496 1074571.166  41511595.166 1101230.138
+ 15  GTR+F+I+R3    520228.805   4498 1049453.610  41522457.610 1076124.440
+ 16  GTR+F+I+R4    514606.782   4500 1038213.564  41547213.564 1064896.254
+ 17  GTR+F+I+R5    512308.298   4502 1033620.596  41578632.596 1060315.145
+ 18  GTR+F+I+R6    509414.179   4504 1027836.358  41608876.358 1054542.765
+ 19  GTR+F+I+R7    508586.299   4506 1026184.598  41643268.598 1052902.865
+ 20  GTR+F+I+R8    508175.706   4508 1025367.412  41678511.412 1052097.537
+ 21  GTR+F+I+R9    507896.678   4510 1024813.357  41714033.357 1051555.341
+ 22  GTR+F+I+R10   507727.786   4512 1024479.572  41749791.572 1051233.415
+ 44  SYM+I+R10     507544.134   4509 1024106.268  41695286.268 1050842.323
+ 66  TVM+F+I+R10   508575.490   4511 1026172.981  41733436.981 1052920.894
+ 88  TVMe+I+R10    507655.623   4508 1024327.246  41677471.246 1051057.371
+110  TIM3+F+I+R10  507784.596   4510 1024589.192  41713809.192 1051331.176
+132  TIM3e+I+R10   507630.055   4507 1024274.110  41659386.110 1050998.306
+154  TIM2+F+I+R10  507993.466   4510 1025006.933  41714226.933 1051748.917
+176  TIM2e+I+R10   507845.212   4507 1024704.424  41659816.424 1051428.620
+198  TIM+F+I+R10   508193.376   4510 1025406.751  41714626.751 1052148.735
+220  TIMe+I+R10    507829.473   4507 1024672.946  41659784.946 1051397.142
+242  TPM3u+F+I+R10 508860.798   4509 1026739.597  41697919.597 1053475.651
+264  TPM3+I+R10    507745.263   4506 1024502.527  41641586.527 1051220.793
+286  TPM2u+F+I+R10 509098.732   4509 1027215.463  41698395.463 1053951.518
+308  TPM2+I+R10    507968.146   4506 1024948.292  41642032.292 1051666.558
+330  K3Pu+F+I+R10  509284.948   4509 1027587.896  41698767.896 1054323.951
+352  K3P+I+R10     507949.033   4506 1024910.066  41641994.066 1051628.332
+374  TN+F+I+R10    508227.595   4509 1025473.190  41696653.190 1052209.245
+396  TNe+I+R10     507874.646   4506 1024761.292  41641845.292 1051479.559
+418  HKY+F+I+R10   509318.084   4508 1027652.169  41680796.169 1054382.294
+440  K2P+I+R10     507993.795   4505 1024997.590  41624057.590 1051709.927
+462  F81+F+I+R10   522784.646   4507 1054583.291  41689695.291 1081307.487
+484  JC+I+R10      521278.811   4504 1051565.622  41632605.622 1078272.029
+Akaike Information Criterion:           SYM+I+R10
+Corrected Akaike Information Criterion: GTR+F+G4
+Bayesian Information Criterion:         SYM+I+R10
+Best-fit model: SYM+I+R10 chosen according to BIC
+
+All model information printed to /work/richlab/aliciarich/bioinformatics_stats/microeco/loris/refs_tree.model.gz
+CPU time for ModelFinder: 72692.978 seconds (20h:11m:32s)
+Wall-clock time for ModelFinder: 9378.543 seconds (2h:36m:18s)
+Generating 1000 samples for ultrafast bootstrap (seed: 425419)...
+
+NOTE: 1705 MB RAM (1 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+1. Initial log-likelihood: -507544.134
+2. Current log-likelihood: -507543.620
+3. Current log-likelihood: -507543.345
+4. Current log-likelihood: -507543.168
+5. Current log-likelihood: -507542.893
+6. Current log-likelihood: -507542.628
+7. Current log-likelihood: -507542.460
+8. Current log-likelihood: -507542.299
+9. Current log-likelihood: -507542.147
+10. Current log-likelihood: -507541.996
+11. Current log-likelihood: -507541.843
+12. Current log-likelihood: -507541.698
+13. Current log-likelihood: -507541.562
+14. Current log-likelihood: -507541.432
+15. Current log-likelihood: -507541.295
+16. Current log-likelihood: -507541.145
+17. Current log-likelihood: -507540.998
+18. Current log-likelihood: -507540.855
+19. Current log-likelihood: -507540.709
+20. Current log-likelihood: -507540.568
+21. Current log-likelihood: -507540.437
+22. Current log-likelihood: -507540.302
+23. Current log-likelihood: -507540.174
+24. Current log-likelihood: -507540.042
+25. Current log-likelihood: -507539.912
+26. Current log-likelihood: -507539.776
+27. Current log-likelihood: -507539.644
+28. Current log-likelihood: -507539.516
+29. Current log-likelihood: -507539.396
+30. Current log-likelihood: -507539.277
+31. Current log-likelihood: -507539.160
+32. Current log-likelihood: -507539.046
+33. Current log-likelihood: -507538.936
+34. Current log-likelihood: -507538.826
+35. Current log-likelihood: -507538.718
+36. Current log-likelihood: -507538.612
+37. Current log-likelihood: -507538.506
+38. Current log-likelihood: -507538.402
+39. Current log-likelihood: -507538.288
+40. Current log-likelihood: -507538.175
+41. Current log-likelihood: -507538.064
+42. Current log-likelihood: -507537.958
+43. Current log-likelihood: -507537.856
+44. Current log-likelihood: -507537.755
+Optimal log-likelihood: -507537.606
+Rate parameters:  A-C: 0.82715  A-G: 2.74758  A-T: 1.23894  C-G: 0.88034  C-T: 3.20589  G-T: 1.00000
+Base frequencies:  A: 0.250  C: 0.250  G: 0.250  T: 0.250
+Proportion of invariable sites: 0.090
+Site proportion and rates:  (0.178,0.012) (0.100,0.061) (0.092,0.147) (0.046,0.279) (0.066,0.429) (0.088,0.686) (0.088,1.068) (0.077,1.675) (0.094,2.539) (0.083,5.028)
+Parameters optimization took 44 rounds (289.057 sec)
+Wrote distance file to... 
+Computing ML distances based on estimated model parameters...
+Calculating distance matrix: done in 5.46898 secs using 798% CPU
+Computing ML distances took 5.480357 sec (of wall-clock time) 43.670168 sec (of CPU time)
+Setting up auxiliary I and S matrices: done in 0.0150083 secs using 630.3% CPU
+Computing RapidNJ tree took 2.453240 sec (of wall-clock time) 3.541941 sec (of CPU time)
+Log-likelihood of RapidNJ tree: -515956.660
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 343.283 second
+Computing log-likelihood of 98 initial trees ... 133.803 seconds
+Current best score: -507537.606
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -507354.760
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 2: -506736.501
+Iteration 10 / LogL: -507055.192 / Time: 2h:58m:13s
+Iteration 20 / LogL: -507305.622 / Time: 3h:6m:40s
+Finish initializing candidate tree set (20)
+Current best tree score: -506736.501 / CPU time: 1505.862
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Iteration 30 / LogL: -506803.159 / Time: 3h:10m:29s (1h:24m:52s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 33: -506627.222
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 39: -506614.670
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 40: -506609.313
+Iteration 40 / LogL: -506609.313 / Time: 3h:18m:9s (1h:47m:19s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 45: -506532.524
+Iteration 50 / LogL: -506576.308 / Time: 3h:22m:25s (1h:29m:23s left)
+Log-likelihood cutoff on original alignment: -507196.361
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 53: -506514.852
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 54: -506413.816
+Iteration 60 / LogL: -506707.613 / Time: 3h:27m:10s (1h:21m:3s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 64: -506376.346
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 69: -506373.036
+Iteration 70 / LogL: -506373.572 / Time: 3h:32m:11s (1h:20m:11s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 74: -506264.790
+Iteration 80 / LogL: -506769.294 / Time: 3h:36m:33s (1h:11m:41s left)
+Iteration 90 / LogL: -506377.701 / Time: 3h:40m:31s (1h:0m:36s left)
+Iteration 100 / LogL: -506367.689 / Time: 3h:44m:33s (0h:51m:0s left)
+Log-likelihood cutoff on original alignment: -507020.603
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.912
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 110 / LogL: -506501.004 / Time: 3h:49m:0s (1h:0m:1s left)
+Iteration 120 / LogL: -507220.855 / Time: 3h:52m:58s (0h:51m:32s left)
+Iteration 130 / LogL: -506354.803 / Time: 3h:57m:6s (0h:43m:50s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 138: -506243.911
+Iteration 140 / LogL: -506472.083 / Time: 4h:1m:23s (0h:59m:59s left)
+Iteration 150 / LogL: -506363.918 / Time: 4h:5m:33s (0h:52m:42s left)
+Log-likelihood cutoff on original alignment: -507004.637
+Iteration 160 / LogL: -506446.966 / Time: 4h:9m:54s (0h:45m:54s left)
+Iteration 170 / LogL: -506254.655 / Time: 4h:13m:56s (0h:39m:17s left)
+Iteration 180 / LogL: -506446.880 / Time: 4h:17m:52s (0h:32m:54s left)
+Iteration 190 / LogL: -506544.901 / Time: 4h:21m:44s (0h:26m:46s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 192: -506240.612
+Iteration 200 / LogL: -506369.816 / Time: 4h:25m:55s (0h:50m:40s left)
+Log-likelihood cutoff on original alignment: -506747.578
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.980
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 210 / LogL: -506640.243 / Time: 4h:30m:2s (0h:48m:58s left)
+Iteration 220 / LogL: -506488.723 / Time: 4h:34m:6s (0h:43m:1s left)
+Iteration 230 / LogL: -506376.200 / Time: 4h:38m:19s (0h:37m:17s left)
+Iteration 240 / LogL: -506432.159 / Time: 4h:42m:15s (0h:31m:37s left)
+Iteration 250 / LogL: -506389.417 / Time: 4h:46m:19s (0h:26m:6s left)
+Log-likelihood cutoff on original alignment: -506697.932
+Iteration 260 / LogL: -506462.040 / Time: 4h:50m:33s (0h:20m:44s left)
+Iteration 270 / LogL: -506677.199 / Time: 4h:54m:36s (0h:15m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 272: -506194.046
+Iteration 280 / LogL: -506556.687 / Time: 4h:58m:52s (0h:47m:0s left)
+Iteration 290 / LogL: -506267.806 / Time: 5h:2m:45s (0h:41m:33s left)
+Iteration 300 / LogL: -506649.295 / Time: 5h:6m:54s (0h:36m:15s left)
+Log-likelihood cutoff on original alignment: -506697.932
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.976
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 310 / LogL: -506275.938 / Time: 5h:11m:14s (0h:45m:7s left)
+Iteration 320 / LogL: -506450.764 / Time: 5h:15m:14s (0h:39m:51s left)
+Iteration 330 / LogL: -506391.680 / Time: 5h:19m:18s (0h:34m:40s left)
+Iteration 340 / LogL: -506517.146 / Time: 5h:23m:28s (0h:29m:35s left)
+Iteration 350 / LogL: -506475.310 / Time: 5h:27m:32s (0h:24m:31s left)
+Log-likelihood cutoff on original alignment: -506697.932
+Iteration 360 / LogL: -506731.544 / Time: 5h:31m:56s (0h:19m:34s left)
+Iteration 370 / LogL: -506422.418 / Time: 5h:36m:5s (0h:14m:37s left)

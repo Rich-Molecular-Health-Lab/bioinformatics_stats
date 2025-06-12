@@ -1,0 +1,147 @@
+---
+title: "Preprocessing Microbiome Data with Phyloseq"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    df_print: paged
+    css: journal.css
+  
+---
+
+```{r setup, include=FALSE}
+library(conflicted)
+library(tidyverse)
+library(bslib)
+library(htmltools)
+library(microeco)
+library(seqinr)
+library(ape)
+library(gtExtras)
+library(treedataverse)
+library(phyloseq)
+library(microbiome)
+library(Biostrings)
+
+
+source("setup/knit_engines_simple.R")
+source("setup/conflicted.R")
+
+```
+
+# Load Data
+
+```{r}
+tree <- read.tree("microeco/loris/refs_tree.treefile")
+seqs <- readDNAStringSet("microeco/loris/refs_aligned_mafft.fasta")
+load("microeco/loris/tax_table.RData")
+load("microeco/loris/sample_table.RData")
+load("microeco/loris/otu_table.RData")
+```
+
+# Phyloseq Object
+
+```{r}
+phylo <- phyloseq(
+  tax_table(as.matrix(tax.table)),
+  otu_table(as.matrix(otu.table), taxa_are_rows = TRUE),
+  sample_data(sample.table),
+  phy_tree(tree),
+  refseq(seqs)
+)
+```
+
+## Rename Taxa as OTUs
+
+```{r}
+taxa_names(phylo)[1:20]
+taxa_names(phylo) <- paste0("OTU", seq_along(taxa_names(phylo)))
+taxa_names(phylo)[1:20]
+```
+
+## Prune Taxa
+
+Drop the OTUs with the lowest abundances. First let's see how many OTUs we lose at different thresholds
+
+```{r}
+length(taxa_sums(phylo)[taxa_sums(phylo) <= 1])
+length(taxa_sums(phylo)[taxa_sums(phylo) <= 2])
+```
+
+```{r}
+rare_otus <- names(taxa_sums(phylo)[taxa_sums(phylo) <= 1])
+keep_otus <- names(taxa_sums(phylo)[taxa_sums(phylo) > 1])
+
+length(rare_otus)
+length(keep_otus)
+```
+
+We will remove 599 otus where the total abundance is less than or equal to 1 and keep the 1645 otus with a total abundance of at least 2.
+
+```{r}
+phylo_pruned <- prune_taxa(keep_otus, phylo)
+```
+
+
+## Merge Samples by Subject + Day
+
+>Note that I am using sum instead of mean so facilitate rarefaction after merging.
+
+```{r}
+phylo_merged <- phylo_pruned %>%
+  merge_samples("subject_day", fun = sum)
+```
+
+## Collapse Taxa to Genus Level
+
+```{r}
+phylo_genus <- phylo_merged %>%
+  tax_glom("Genus")
+```
+
+## Another Pruning Check
+
+Let's look at our OTUs now that we merged to the Genus level
+
+```{r}
+length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 1])
+length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 2])
+length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 1])
+length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 2])
+```
+
+Let's do one more pruning step to only keep the genera with total abundances greater than 2 (613 genera total).
+
+```{r}
+rare_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 2])
+keep_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 2])
+
+length(rare_genera)
+length(keep_genera)
+```
+
+
+```{r}
+phylo_clean <- prune_taxa(keep_genera, phylo_genus)
+```
+
+## Export Clean Phyloseq Object
+
+```{r}
+save(phylo_clean, file = "microeco/loris/phyloseq_genus.RData")
+```
+
+# Extract Components
+
+```{r}
+clean_samples <- phylo_clean@sam_data
+clean_otu     <- phylo_clean@otu_table
+clean_tree    <- phylo_clean@phy_tree
+clean_seqs    <- phylo_clean@refseq
+clean_tax     <- phylo_clean@tax_table
+```
+

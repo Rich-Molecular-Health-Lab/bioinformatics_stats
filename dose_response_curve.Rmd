@@ -1,0 +1,671 @@
+---
+title: "Receptor Assay Data Processing - Dose Resonse Curves"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    df_print: paged
+    css: journal.css
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(conflicted)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(bslib)
+library(paletteer)
+library(drc)
+library(broom)
+library(skimr)
+
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = ""
+  )
+
+source("setup/conflicted.R")
+source("plot_functions/dose_response.R")
+
+assay_img <- function(basename) {
+  paste0("https://raw.githubusercontent.com/Rich-Molecular-Health-Lab/bioinformatics_stats/a4a076e3d790ded0aed7a3c352ccb22291b467b8/images/", basename, ".png")
+}
+
+```
+
+# Background
+
+## Resources for Dose-Response Analysis and Nonlinear Regression
+
+- [Prism's Curve Fitting Guide](https://www.graphpad.com/guides/prism/latest/curve-fitting/index.htm)
+  - *Good background that is intended for Graphpad software but can inform application in R*
+- [Random R Tutorial](https://rstudio-pubs-static.s3.amazonaws.com/788707_37e78b45ea234e778c901227fba475ed.html)
+- [Statistical Analysis of Agricultural Experiments using R](https://rstats4ag.org/dose-response-curves.html)
+- [DRC R Package](https://doseresponse.github.io/drc/index.html)
+
+## Example Studies with Similar Methods
+
+## Most Likely Model Choice: The Four-Parameter Logistic
+
+The LL.4 model (four-parameter logistic) is a flexible choice for dose–response curves. It has parameters for the bottom asymptote (baseline response), top asymptote (max response), the slope (Hill coefficient), and the ED50/EC50 (dose producing 50% of max response). In drc, you can specify this model with fct = LL.4(). It’s good practice to name the parameters for clarity, e.g. LL.4(names = c("Slope","Lower","Upper","EC50")), so outputs and comparisons refer to “EC50” directly.
+
+### Choosing Model Parameters
+
+In drc, you can fit curves for multiple treatments in one call using a grouping factor. By default, this fits an independent LL.4 curve for each treatment group (i.e. each treatment gets its own Lower, Upper, Slope, EC50). If needed, you can constrain certain parameters across groups using the pmodels argument (e.g. to assume a common slope for all curves), but typically you will allow each ligand its own parameters unless you have a reason to assume similarity in shape.
+
+#### Constraining Top and Bottom Plateaus
+
+- **Bottom plateau (Lower asymptote):** The vehicle (no ligand) wells on each plate define the baseline. 
+  - If your normalization set vehicle response to 0 (e.g. you subtracted the luminescence of vehicle wells), you can fix the bottom at 0 for all curves.
+    - We do this in step 1 of the data normalizing below with `resp_norm = luciferase/bgal`.
+  - If your data were normalized as a fold-change (vehicle = 1.0 by definition), then after further normalization to E2 the vehicle might be a small positive fraction (e.g. 5% of E2).
+    - We do this in step 2 of data normalizing below with `veh_norm = mean(resp_norm[str_starts(treatment, "vehicle")])` and then `fold_act = resp_norm/veh_norm`.
+    - In that case, you might allow the model to fit a small positive bottom, or explicitly set the bottom equal to that fraction if it’s consistent.
+  - Generally, include enough low-dose or zero-dose points so the model can estimate the baseline if not fixed.
+  - It’s often safe to assume 0% activity at zero dose in these assays and fix the bottom to 0, since any slight positive basal signal can be considered background.
+  
+- **Top plateau (Upper asymptote):** Because each plate is normalized to the E2 maximum, E2 itself should reach ~100%.
+  - For full agonists that you expect to reach E2’s efficacy, you can fix their top at 1 (100%) to reflect the plate normalization.
+    - This ensures the fitted curve will asymptote at the E2 level.
+  - However, for partial agonists (as we should expect here), their maximum may be lower – let their top be a free parameter so the model can fit the actual plateau.
+  - In practice, if you fit all treatments in one model as shown above, each treatment gets its own “Upper” parameter by default.
+  - You can also fit each treatment separately with its controls:
+    - *for example, to fix `top = 1` for E2’s own curve but not others, you might fit E2’s curve independently with `LL.4(fixed=c(NA,NA,1,NA))` and fit other ligands with full LL.4.*
+
+- **Some of our curves do not reach a plateau in range.** If some dose–response curves haven’t reached a clear plateau at the highest dose, leaving the top unconstrained can lead to high uncertainty or overestimation of the top.
+  - In such cases, if the compound is presumed to be a full agonist, a pragmatic approach is to constrain the top to 100% (using the control) to enable a more stable EC50 estimate.
+    - This effectively assumes the curve would plateau at the E2 level if higher doses were possible.
+  - If the compound might be partial or you’re unsure (safer approach here), it’s safer to collect more data or acknowledge the larger uncertainty in EC50.
+  - **Always document if you constrained a plateau based on assumptions.** You can compare the model fit with and without the constraint (e.g. via AIC or an F-test for dropping a parameter) to ensure it doesn’t significantly worsen the fit.
+  
+>You could fit curves with different fixed parameters in one combined model using curveid and specify a list of formulas (pmodels) to fix parameters by group, but it’s often simpler to fit separately when applying different constraints to different treatments.
+
+#### Addressing Heteroscedasticity in the Response
+
+It’s common in reporter assays that variability (residual error) increases with the signal magnitude (“heteroscedasticity”). Indeed, if data are expressed as fold-activation, higher fold-changes often have larger absolute variance. Ignoring this can violate the constant-variance assumption of ordinary least squares.  
+  
+**There are two main approaches to handle this in drc:**
+
+1.  **Weighted non-linear regression:** Apply weights proportional to the inverse of variance. 
+
+  a.) In `drm()`, the weights argument allows you to assign a weight to each observation.
+    - Importantly, drc expects weights on the scale of standard deviation, not variance. This means if you want to weight by inverse variance `∝ 1/σ²`, you should supply `weights = 1/σ` (since the weights are multiplied inside the squared residual term).
+    - For example, if the residual standard deviation grows roughly in proportion to the mean response (`σ ∝ Y`), you can weight by `1/Y` (so that `weight² ∝ 1/Y²`, countering the variance increase).
+    -`In practice, one might use an initial fit to estimate how residuals scale with fitted values, then set weights accordingly.
+    - If you know the empirical variance at each dose or have a model of variance, use `weights = 1/sd_est`.
+  b.) The key is that **high responses get lower weight.**  
+    - Do note that using observed response in the weight can introduce a **slight bias** (since `residual = observed - fitted`), so some analysts instead iterate: fit unweighted, compute weights from fitted values, then refit.
+    
+2.  **Variance-stabilizing transformations:** The `drc` authors recommend a “*transform-both-sides*” approach (Box–Cox transformation) rather than relying on uncertain weight values.
+
+  a.) Essentially, you find a transformation of the response (e.g. log, square-root) that makes the variance roughly constant.
+    - For instance, taking logarithm of the response often stabilizes multiplicative error.
+    - The drc package provides a helper `boxcox()` function to estimate an optimal transformation exponent (`λ`).
+    - A log-transform corresponds to `λ → 0`. If a log-scale is appropriate (common for fold-changes), you could fit the model on `log(response)` scale.
+    - `drm()` has `bcVal` and `bcAdd` arguments to automatically transform the response during fitting.
+      - For example, `drm(..., bcVal=0, bcAdd=1)` would add 1 and take log (`log10` if you specify `logDose` differently) – you might add a constant if there are zeros. 
+      - Transforming both the response and model ensures the EC50 is estimated on the original scale while accounting for heteroscedasticity.
+
+
+#### Normalizing to E2 Within Plates and Preserving Comparability
+
+**Within-plate normalization is crucial** when combining data from multiple plates or comparing across receptors. Since each plate may have a different absolute signal (due to cell numbers, reagent lots, etc.), using E2 as an internal standard makes results comparable.  
+  
+The typical workflow is:
+
+1.  **Include controls on each plate:** Ensure each plate has vehicle (baseline) wells and saturating E2 wells (defining 0% and 100% response benchmarks).
+
+2.	**Normalize plate-wise:** For each plate, scale the raw responses so that the `vehicle = 0` (or 1.0 in fold-change terms) and the `max E2 response = 1.0` (100%). There are a few ways to do this.
+  a.  One common approach is to subtract the mean vehicle signal from all wells and then divide by the mean E2 signal (after subtraction).
+    - For example, `norm_resp = (raw_signal – mean_vehicle) / (mean_E2 – mean_vehicle)`. This yields 0 for vehicle and 1 for E2 on that plate.
+    - If you had already expressed data as “fold activation” (ratio to vehicle), then vehicle is 1 and E2 might be, say, 20. In that case, you can simply **divide all fold-change values by the E2 fold-change**, so E2 becomes 1.0 and vehicle becomes `1/20 = 0.05` in normalized units.
+    
+3.	**Check scaling consistency:** After normalization, all plates should be on the same response scale (0 to 1 relative to E2).
+  a.  This means a partial agonist reaching 50% of E2 on its plate will have a top ~0.5, regardless of the absolute signals on that plate.
+    - Comparability is preserved because every response is relative to an internal 100% standard.
+    - This allows pooling data and comparing ligands across plates or even across different receptor experiments, as long as each experiment’s E2 defines 100% for that context.
+  
+>By normalizing within-plate, you’ve eliminated plate-to-plate differences in dynamic range. When comparing across different receptors (say ERα vs ERβ reporter assays), you would typically normalize each within its own context (each with its own E2 control). This way, an EC50 or efficacy comparison reflects biological differences, not plate signal magnitude. Keep in mind that if one receptor has inherently lower efficacy for all ligands, that won’t show up in normalized data (since each has its own 100%). If comparing maximal efficacy across receptors is of interest, you might include a reference compound and compare its normalized max or use an un-normalized metric. But for most purposes (potency ranking, relative efficacy), within-plate normalization is the correct approach.
+
+
+### Selecting the Best Fit Model
+
+It’s often wise to inspect the fit of each curve. If a curve’s top plateau is poorly defined because the highest tested dose didn’t saturate the response, the model might estimate an unreliable top (sometimes above 100% or with a wide confidence interval). In such cases, you have two options: (1) Leave the top free and accept that the EC50 will have wider uncertainty (the data don’t fully constrain the top), or (2) if you have strong theoretical reason the compound is a full agonist like E2, consider fixing the top at 100%. The latter can stabilize the EC50 estimate but should only be done if you are confident the ligand would reach E2’s level at a higher dose. Always check the fitted top: if the free-fit top is not significantly different from 1 (e.g. its confidence interval includes 1), fixing it to 1 is reasonable; if the free-fit top is much lower, the compound is likely partial and fixing it to 100% would mis-model the data.
+
+---
+
+# Load Data
+
+## Set Factor Keys and Metadata Tibbles
+
+```{r}
+treatments <- c(
+   control       = "Control"        ,
+   MeOH          = "Veh MeOH"       ,
+   DMSO          = "Veh DMSO"       ,
+   estradiol     =  "E2"            ,
+   estrone       =  "E1"            ,
+   estriol       =  "E3"            ,
+   genistein     =  "GEN"           ,
+   daidzein      =  "DAID"          ,
+   coumestrol    =  "COU"           ,   
+   equol         =  "EQUOL"         ,
+   enterodiol    =  "ENTDIOL"       ,
+   "5M1S"        =  "LS Cin"        ,
+   "5MA4"        =  "Browse Biscuit",
+   "5M1G"        =  "LS Ban"        ,
+   "5MA3"        =  "High Fiber"    ,
+   "5M6C"        =  "Insect"        ,
+   "5M02"        =  "Leafeater"     ,
+   "5M02"        =  "LE Primate"    ,
+   "5MA2"        =  "Pellet OSU"    ,
+   lettuce       =  "Lettuce"       ,
+   random        =  "Random"        ,
+   wi            =  "WI"        
+)
+
+treatment_class <- c(
+ control  = "control",
+ vehicle  = "MeOH",
+ vehicle  = "DMSO",
+ estrogen = "estradiol"  ,
+ estrogen = "estrone"    ,
+ estrogen = "estriol"    ,
+ metabolite = "genistein",
+ metabolite = "daidzein" ,
+ metabolite = "coumestrol",
+ metabolite = "equol"     ,
+ metabolite = "enterodiol",
+ biscuit = "5M1S"   ,
+ biscuit = "5MA4"   ,
+ biscuit = "5M1G"   ,
+ biscuit = "5MA3"   ,
+ biscuit = "5M6C"   ,
+ biscuit = "5M02"   ,
+ biscuit = "5M02"   ,
+ biscuit = "5MA2"   ,
+ produce = "lettuce"        ,
+ unknown = "random"      ,
+ unknown = "wi"          
+)
+
+subject_factor  <- c("loris", "gorilla", "human")
+receptor_factor <- c("alpha", "beta")
+
+dose_type <- c(
+  "base"  =  "control",
+  "base"  =  "vehicle",
+  "molar"  =  "estrogen",
+  "molar"  =  "metabolite",
+  "mg/ml"  =  "biscuit",
+  "mg/ml"  =  "produce",
+  "mg/ml"  =  "unknown"
+)
+
+```
+
+## Load and Tidy Main Dataframe
+
+```{r}
+assays <- read_csv("data/receptors/esr_assays_revised.csv") %>%
+  mutate(Treatment = if_else(Dose == "Control" |  str_detect(Dose, "Veh"), Dose, Treatment)) %>%
+  mutate(treatment = fct_recode(Treatment, !!!treatments), 
+         date      = mdy(Date),
+         .keep = "unused") %>%
+  mutate(subject  = factor(Species, levels = subject_factor, ordered = T),
+         receptor = factor(ER, levels = receptor_factor, ordered = T), .keep = "unused") %>%
+  mutate(treatment_class = fct_recode(treatment, !!!treatment_class),
+         dose_type       = fct_recode(treatment_class, !!!dose_type)) %>%
+  mutate(Dose = case_when(
+    dose_type == "molar" ~ as.character(str_glue("1e{Dose}")),
+    dose_type == "mg/ml" ~ as.character(str_remove_all(Dose, "\\smg/ml")),
+    dose_type == "base"  ~ "0"
+  )) %>%
+  mutate(dose = as.numeric(Dose), .keep = "unused") %>%
+  select(
+    date,
+    subject,
+    receptor,
+    dose_type,
+    treatment_class,
+    treatment,
+    dose,
+    starts_with("luciferase"),
+    starts_with("bgal")
+  ) %>%
+  arrange(date, subject, receptor, treatment_class, treatment, desc(dose)) %>%
+  mutate(plate_id = consecutive_id(date, subject, receptor)) %>%
+  mutate(row_id   = row_number(), .by = c("date", "subject", "receptor", "treatment")) %>%
+  relocate(plate_id, row_id) %>%
+  pivot_longer(
+    c(starts_with("luciferase"), starts_with("bgal")),
+    names_pattern = c("(^\\w+)_(\\d$)"),
+    names_to      = c("value_type", "replicate"),
+    values_to     = "value"
+    )  %>%
+  pivot_wider(
+    names_from  = value_type,
+    values_from = value
+  ) %>%
+  rowwise() %>%
+  mutate(ratio = luciferase/bgal) %>%
+  ungroup() %>%
+  mutate(mean_vehicle = mean(ratio[treatment_class == "vehicle"]), .by = "plate_id") %>%
+  rowwise() %>%
+  mutate(fold_act = ratio/mean_vehicle) %>%
+  ungroup() %>%
+  filter(dose_type != "base") %>%
+  mutate(e2_max = mean(fold_act[treatment=="estradiol" & dose == 1e-9]), .by = "plate_id") %>%
+  rowwise() %>%
+  mutate(response = fold_act/e2_max) %>%
+  ungroup() %>%
+  mutate(across(c("plate_id", "row_id"), ~fct_inseq(as.character(.)))) %>%
+  mutate(across(where(is.factor), ~fct_drop(.))) %>%
+  filter(treatment_class != "produce" & treatment_class != "unknown") %>%
+  arrange(receptor, subject, treatment_class, treatment, plate_id, desc(dose)) %>%
+  mutate(
+    curve_id = as.character(str_glue(
+      "{receptor}_{subject}_{treatment_class}_{treatment}_{plate_id}"
+      )),
+    model_group = as.character(str_glue(
+      "{receptor}_{treatment_class}"
+    ))
+    ) %>%
+  relocate(model_group, .before = treatment) %>%
+  relocate(curve_id, .before = dose) %>%
+  group_by(curve_id) %>%
+  filter(n_distinct(dose) > 2) %>%
+  ungroup()
+skim(assays)
+```
+
+### Create Concise, Nested Version for Analysis
+
+```{r}
+assays_split <- assays  %>%
+  mutate(curve_id = factor(curve_id, levels = unique(curve_id))) %>%
+  select(
+    plate_id,
+    date,
+    subject,
+    receptor,
+    dose_type,
+    treatment_class,
+    model_group,
+    treatment,
+    curve_id,
+    dose,
+    response
+  ) %>%
+  group_by(model_group) %>%
+  group_split() %>%
+  set_names(., map(., \(x) paste0(x$model_group[1])))
+```
+
+
+---
+
+# Verify Normalization Approaches
+
+Now it is a good idea to look at some raw scatter plots of the dose-response data to decide whether we are making any incorrect assumptions in our chosen thresholds and normalization strategies.
+
+```{r}
+data_plot <- list_rbind(assays_split)
+
+scatter_dashboard <- receptor_tabset(data_plot)
+```
+
+```{r echo=FALSE, results='asis'}
+scatter_dashboard
+```
+
+
+<details>
+<summary>**Notes on Plots**</summary>
+<br>
+
+- It looks like the loris erb is causing the estrogen model to fail. The response values are absurdly high, so I need to look back and reevaluate those. This could be related to the issues Ctubbs mentioned in the loris erb sequence, so I should try pulling it out of the models and reassessing.
+- After looking more closely at the data, the issue is with my selected baseline E2 response. 1e-9 (1 nM) does not always capture the inflection/plateau that I want to normalize my response values against. This is especially true for loris erb, where a huge jump happens from no response to response, and this often occurs at concentrations higher than 1 nM, so I am getting inflated response values.
+  - A better approach to control for this will be using an average E2 value across 2-3 dilution factors as the baseline.
+  - I need to decide on 2-3 dilution factors for all erb experiments and 2-3 for all era experiments.
+    - It looks like the lowest meaninful response for era is usually ~1e-9 in some human/gorilla cases and 1e-8 for lorises.
+    - I am actually going to use different E2 max dilutions for lorises to account for consistently reduced erb sensitivity, relative to humans and gorillas.
+    - **Human** and **gorilla** **ER\u03B2** will be **1e-9, 1e-8, 1e-7**. **Loris** **ER\u03B2** will be **1e-7, 1e-6, 1e-5**.
+      - *I need to keep an eye on the loris erb values still though, as each response at these dilutions still varies much more than humans and gorillas. Loris erb may need to get excluded from the analysis for now.*
+    - I can use the same values for all three species on **ER\u03B1**: **1e-10, 1e-9, 1e-8**.
+</details>
+
+## Recalculate Responses
+
+```{r}
+esr_data <- assays %>%
+  filter(plate_id != 2) %>%
+  mutate(
+    e2_max = case_when(
+      subject == "loris" & receptor == "beta" ~mean(
+        fold_act[treatment=="estradiol" & between(dose, 1e-7, 1e-5)]
+        ),
+      subject %in% c("human", "gorilla") & receptor == "beta" ~mean(
+        fold_act[treatment=="estradiol" & between(dose, 1e-9, 1e-7)]
+        ),
+      subject == "loris" & receptor == "alpha" ~mean(
+        fold_act[treatment=="estradiol" & between(dose, 1e-10, 1e-8)]
+        ),
+      subject == "gorilla" & receptor == "alpha" ~mean(
+        fold_act[treatment=="estradiol" & between(dose, 1e-10, 1e-8)]
+        ),
+      subject == "human" & receptor == "alpha" ~mean(
+        fold_act[treatment=="estradiol" & between(dose, 1e-10, 1e-8)]
+        )
+      ), 
+    .by = "plate_id"
+    ) %>%
+  rowwise() %>%
+  mutate(response = fold_act/e2_max) %>%
+  ungroup()
+```
+
+### Plot Updated Values
+
+```{r}
+data_plot <- esr_data  %>%
+  mutate(curve_id = factor(curve_id, levels = unique(curve_id))) %>%
+  select(
+    plate_id,
+    date,
+    subject,
+    receptor,
+    dose_type,
+    treatment_class,
+    model_group,
+    treatment,
+    curve_id,
+    dose,
+    response
+  )
+
+e2_dashboard <- single_treatment_tabset(data_plot, filter = "estradiol")
+```
+
+```{r echo=FALSE, results='asis'}
+e2_dashboard
+```
+
+<details>
+<summary>**Notes on Re-Plots**</summary>
+<br>
+
+- Now the scale for **ER\u03B2** is a little off, particularly for gorillas.
+  - Trying a switch to `between(dose, 1e-10, 1e-8)` for gorillas and humans to see how that changes it.
+  - Once I switched to `between(dose, 1e-9, 1e-7)` for gorillas and humans the scale looks really nice for **ER\u03B2**.
+- I am also concerned looking at **ER\u03B1** that the gorilla points from 2022-05-27 could be outliers skewing the data. I will keep them in for now but consider removing them later.
+- The scale for gorillas is also a little off on **ER\u03B1**.
+  - After much experimenting, I will actually try removing the 5-27 data for gorillas to see if the scale evens out.
+    - This looks much better, so I will be **excluding *plate 2*** moving forward.
+</details>
+
+Now I will look at all the plots again with the updated normalization.
+
+```{r}
+scatter_dashboard <- receptor_tabset(data_plot)
+```
+
+```{r echo=FALSE, results='asis'}
+scatter_dashboard
+```
+
+<details>
+<summary>**Notes on Plots**</summary>
+<br>
+
+- I may need to exclude the *5ma2* biscuit from the data if the curves cannot fit to a global model. The pattern looks overdispersed.
+- It may also be worth excluding the *coumestrol* treatments, as the dilutions are not consistent.
+
+</details>
+
+---
+
+## Export Backup of Dataset
+
+```{r}
+write_csv(esr_data, "data/receptors/esr_assays_tidy.csv")
+save(esr_data, file = "data/receptors/esr_data.RData")
+skim(esr_data)
+```
+
+## Split into List for Mapping Models
+
+```{r}
+data_split <- esr_data  %>%
+  mutate(curve_id = factor(curve_id, levels = unique(curve_id))) %>%
+  select(
+    plate_id,
+    date,
+    subject,
+    receptor,
+    dose_type,
+    treatment_class,
+    model_group,
+    treatment,
+    curve_id,
+    dose,
+    response
+  ) %>%
+  group_by(model_group) %>%
+  group_split() %>%
+  set_names(., map(., \(x) paste0(x$model_group[1])))
+
+```
+
+---
+
+# Fitting a Dose-Response Model
+
+
+```{r}
+drc_ctrl <- drmc( 
+  errorm    = FALSE,
+  noMessage = TRUE,
+  trace     = FALSE
+)
+
+drc <- map(
+  data_split, \(x) drm(
+    formula = response ~ dose,
+    curveid = curve_id,
+    data    = x,
+    fct     = LL.4(
+      names = c("slope","lower","upper","ED50")
+      ),
+    control = drc_ctrl
+  )
+)
+```
+
+## Visualize Fitted Data
+
+```{r}
+drm_data <- map(
+  drc, \(x) summary(x)
+  )
+```
+
+```{r}
+drm_data
+```
+
+<details>
+<summary>**Notes on Initial Results**</summary>
+<br>
+
+- Many of the plate/receptor/species/treatment combinations do not have enough data points for the curve to fit all the parameters.
+  - I could try filtering out the data that remain at flatline or the treatments that never elicit more than a %20 response.
+- I am actually going to try switching to a hierarchical model to deal with this.
+</details>
+
+## Hierarchical (Mixed‐Effects) Model
+
+<details>
+<summary><h3>Why hierarchical pooling helps</h3></summary>
+
+- **Partial pooling**
+  - A fully pooled model (one global curve) ignores species-level differences.
+  - A fully separate fit (six independent fits) can’t estimate a plateau for a curve that never reaches one. 
+  - A hierarchical model sits in between: each curve has its own parameters, but they’re treated as random draws from a species‐ or treatment‐level distribution. 
+    - That way, a Loris ER β curve with only a 5 % max will still get an informed plateau from the ensemble of all ER β curves.
+    
+- **Stabilizes flat curves**
+  - Instead of fitting slope, upper, and ED₅₀ independently for each Loris curve (which fails), you assume:  
+  
+d_i \sim \mathcal{N}(\mu_d,\,\sigma_d^2),
+e_i \sim \mathcal{N}(\mu_e,\,\sigma_e^2),
+b_i \sim \mathcal{N}(\mu_b,\,\sigma_b^2),
+  
+  - the optimizer only has to estimate the hyper-parameters (\mu_b,\mu_d,\mu_e,\sigma_b,\sigma_d,\sigma_e) plus each curve’s random deviations.
+    - those deviations for the weak Loris data will shrink toward the group mean, preventing infinite or NaN estimates.
+    
+</details>
+
+<details>
+<summary><h3>`medrc` Package</h3></summary>
+`medrc` is an extension of the `drc` package, so we will use it for this. `medrc` builds on drc to give us a two‐stage or mixed‐effects hierarchical dose–response fit, plus ready‐made inference on EDₓ parameters. Compared to hand‐rolling our own `nlme` or `lme4` solution, it:
+
+	1.	Keeps the familiar `drc` syntax (`LL.4`, etc.)
+	2.	Automatically pools curves in a “random‐effects” sense, so the tiny Loris ERβ signals borrow strength from Gorilla/Human plateaus and slopes
+	3.	Estimates EDₓ and their CIs in one go, via either:
+	
+    - Two‐stage meta‐analysis (`metafor`), or
+    - Single‐stage nonlinear mixed‐effects (`nlme`/Lindstrom‐Bates)
+
+</details>
+
+```{r}
+library(medrc)
+```
+
+### Fit a hierarchical LL.4 with random slope, plateau and ED50 per curve
+
+```{r}
+data_medrc <- esr_data  %>%
+  mutate(across(where(is.factor), ~as.character(.)))  %>%
+  mutate(
+    group_id = factor(as.character(str_glue(
+      "{subject}_{treatment}"
+    ))),
+    plate_id = factor(plate_id)
+    ) %>%
+  select(
+    receptor,
+    dose_type,
+    treatment_class,
+    treatment,
+    subject,
+    group_id,
+    plate_id,
+    date,
+    dose,
+    response
+  )
+
+alpha_medrc <- filter(data_medrc, receptor == "alpha")
+beta_medrc  <- filter(data_medrc, receptor == "beta")
+```
+
+```{r}
+beta_drc <- metadrm(
+    data    = beta_medrc,
+    formula = response ~ dose,
+    ind     = plate_id,
+    cid2    = group_id,
+    pms2    = list(~group_id, ~1, ~1, ~group_id),
+    struct  = "UN",
+    method  = "REML",
+    fct     = LL.4()
+    )
+  
+```
+
+
+```{r}
+meta_drc <- map(
+  data_medrc, \(x) metadrm(
+    data    = x,
+    formula = response ~ dose,
+    ind     = plate_id,
+    cid2    = group_id,
+    pms2    = list(~group_id, ~1, ~1, ~group_id),
+    struct  = "UN",
+    method  = "REML",
+    fct     = LL.4(
+      fixed = c(NA, 0, NA, NA)
+      ),
+    control = drc_ctrl
+    )
+  )
+
+```
+
+
+
+```{r}
+meta_drc <- metadrm(
+    formula = response ~ dose,
+    ind     = curve_id,
+    cid2    = model_group,
+    struct  = "UN",
+    method  = "REML",
+    data    = data_medrc,
+    fct     = LL.4(
+      fixed = c(NA, 0, NA, NA),
+      names = c("slope","lower","upper","ED50")
+      ),
+    control = drc_ctrl
+)
+
+```
+
+
+```{r}
+# two‐stage (metafor) approach
+fit2stage <- metadrm(
+  response ~ dose,
+  fct      = LL.4(fixed = c(NA,0,NA,NA)),
+  curveid  = curve_id,
+  data     = df_global
+)
+# or single‐stage nlme approach
+fit_nlme <- medrc::nlmerDrm(
+  response ~ dose,
+  fct       = LL.4(fixed = c(NA,0,NA,NA)),
+  curveid   = curveid,
+  data      = df_global,
+  method    = "PB"    # or "ML", etc.
+)
+```
+
+
+
+```{r}
+drc_mixed <- map(
+  data_split, \(x) drm(
+    formula = response ~ dose,
+    curveid = curve_id,
+    data    = x,
+    fct     = LL.4(
+      names = c("slope","lower","upper","ED50")
+      ),
+    control = drc_ctrl
+  )
+)
+
+```
+
+
