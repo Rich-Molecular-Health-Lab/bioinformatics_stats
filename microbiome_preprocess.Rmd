@@ -24,11 +24,12 @@ library(gtExtras)
 library(treedataverse)
 library(phyloseq)
 library(Biostrings)
-library(paletteer)
-
+library(ggsci)
+library(skimr)
 
 source("setup/knit_engines_simple.R")
 source("setup/conflicted.R")
+
 ```
 
 
@@ -108,6 +109,34 @@ The `treedataverse` suite provides tools for managing, sharing, and visualizing 
 
 ---
 
+# Helper Functions
+
+I created the functions below because I repeatedly use these code chunks to view summaries of my data after each step of processing.
+
+```{r}
+my_skim <- skim_with(numeric = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
+
+skim_phyloseq <- function(phyloseq) {
+ psmelt(phyloseq) %>% 
+    select(-c(
+      subject_certainty, 
+      subject_studbook_id, 
+      subject_dam_id, 
+      subject_sire_id, 
+      subject_birth_location, 
+      subject_age)) %>%
+    group_by(subject) %>% my_skim() %>% select(-complete_rate) %>% mutate(across(where(is.numeric), ~round(., 2)))
+}
+
+view_tree <- function(phyloseq) {
+  ggtree(phyloseq, branch.length = "none", aes(color = Phylum)) + 
+  scale_color_ucscgb("default", na.value = "#00000080") +
+  theme_tree(legend.position = "none")
+}
+```
+
+---
+
 # Load Data
 
 >Note that I use `.RData` files to load some of the data below. You could load these same objects in the form of more widely applicable files, if you wish (*see below for explaination*).
@@ -152,21 +181,18 @@ phylo <- phyloseq(
 )
 ```
 
-  geom_tippoint(aes(color = Phylum)) +
 ## Preview Starting Data
 
 ```{r}
-ggtree(phylo, branch.length = "none", aes(color = Phylum)) + 
-  scale_color_paletteer_d("trekcolors::lcars_series") +
-  theme_tree(legend.position = "none")
+skim_phyloseq(phylo)
+```
+
+
+```{r}
+view_tree(phylo) + ggtitle("Species-Level OTUs before Filtering")
 ```
 
 That looks like some very dense, messy taxonomic data!
-
-```{r results='asis'}
-skimr::skim(as_tibble(sam_data(phylo)))
-```
-
 
 ---
 
@@ -177,34 +203,19 @@ First we will create a version that merges the replicated samples so that we hav
 >This pooling step creates **one composite sample per subject per day**, avoiding pseudo‐replication in downstream diversity metrics.
 
 ```{r results='asis'}
-phylo_merged <- phylo %>%
-  merge_samples("subject_day")
+phylo_merged <- phylo %>% merge_samples("subject_day")
 
-
-skimr::skim(as_tibble(sam_data(phylo_merged)))
+skim_phyloseq(phylo_merged)
 ```
 
 
 # Clean up Taxonomy
-
-## Rename Taxa as OTUs
-
-```{r}
-taxa_names(phylo_merged)[1:20]
-taxa_names(phylo_merged) <- paste0("OTU", 1:ntaxa(phylo_merged))
-taxa_names(phylo_merged)[1:20]
-```
 
 ## Prune Taxa
 
 Drop the OTUs with the lowest abundances. Constraining your dataset to taxa with >1 total read helps stabilize diversity estimates and speeds up tree operations.  
   
 **First let's see how many OTUs we lose at different thresholds**
-
-```{r}
-length(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 1])
-length(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 2])
-```
 
 ```{r}
 rare_otus <- names(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 1])
@@ -214,18 +225,15 @@ length(rare_otus)
 length(keep_otus)
 ```
 
-We will remove 599 otus where the total abundance is less than or equal to 1 and keep the 1645 otus with a total abundance of at least 2.
+We will remove 599 otus where the total abundance is less than or equal to 1 and keep the 1645 otus with a total abundance of at least 2. (*You can change the value in the `keep_otus` function above to use a higher/lower threshold.*)
 
 ```{r}
 phylo_pruned <- prune_taxa(keep_otus, phylo_merged)
+skim_phyloseq(phylo_pruned)
 ```
 
-
 ```{r}
-view_pruned <- ggtree(phylo_pruned, branch.length = "none", aes(color = Phylum)) + 
-  theme_tree(legend.position = "none")
-
-view_pruned
+view_tree(phylo_pruned) + ggtitle("Species-Level OTUs after Filtering")
 ```
 
 
@@ -235,50 +243,44 @@ Collapsing at genus level reduces complexity and allows genus‐scale ecological
 
 ```{r}
 phylo_genus <- phylo_pruned %>% tax_glom("Genus")
-```
-
-```{r}
-taxa_names(phylo_merged)[1:20]
-taxa_names(phylo_merged) <- paste0("OTU", 1:ntaxa(phylo_merged))
-taxa_names(phylo_merged)[1:20]
+skim_phyloseq(phylo_genus)
 ```
 
 
 ```{r}
-ggtree(phylo_genus, branch.length = "none", aes(color = Phylum)) + 
-  theme_tree(legend.position = "none")
+view_tree(phylo_genus) + ggtitle("Genus-Level OTUs")
 ```
 
 ## Another Pruning Check
 
 Let's look at our OTUs now that we merged to the Genus level
 
+
 ```{r}
-length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 1])
-length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 2])
-length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 1])
-length(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 2])
+rare_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 2])
+keep_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 2])
+length(rare_genera)
+length(keep_genera)
 ```
 
 Let's do one more pruning step to only keep the genera with total abundances greater than 2 (613 genera total).
 
 ```{r}
-rare_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 2])
-keep_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 2])
-
-length(rare_genera)
-length(keep_genera)
+phylo_clean <- prune_taxa(keep_genera, phylo_genus)
+skim_phyloseq(phylo_clean)
 ```
-
+```{r}
+view_tree <- function(phyloseq) {
+  ggtree(phyloseq, branch.length = "none", aes(color = Phylum)) + 
+  scale_color_ucscgb("default", na.value = "#00000080") +
+  theme_tree(legend.position = "none")
+}
+```
 
 ```{r}
-phylo_clean <- prune_taxa(keep_genera, phylo_genus)
-
-
-ggtree(phylo_clean, branch.length = "none", aes(color = Phylum)) + 
-  theme_tree(legend.position = "none")
-
+view_tree(phylo_clean) + ggtitle("Genus-Level OTUs")
 ```
+
 
 ## Extract and Save Clean Phyloseq Objects
 
@@ -292,11 +294,6 @@ save(clean_tree      , file = "microeco/loris/tree_genus.RData")
 save(phylo_melt_clean, file = "microeco/loris/phyloseq_melt_genus.RData")
 ```
 
-```{r results='asis'}
-skimr::skim(phylo_melt_clean)
-```
-
-
 # Subset Additional Taxonomic Levels
 
 Working at multiple ranks lets you compare community structure from broad (Phylum) to fine (Genus) scales in the same pipeline.
@@ -306,31 +303,13 @@ fam_phylo <- phylo_clean %>% tax_glom("Family")
 ord_phylo <- phylo_clean %>% tax_glom("Order")
 cla_phylo <- phylo_clean %>% tax_glom("Class")
 phy_phylo <- phylo_clean %>% tax_glom("Phylum")
-```
-
-
-```{r}
-ggtree(fam_phylo, branch.length = "none", aes(color = Phylum)) + 
-  geom_label(aes(x = branch, label = Order)) +
-  theme_tree(legend.position = "none")
-```
-
-
-```{r}
-ggtree(ord_phylo, branch.length = "none")
-ggtree(cla_phylo, branch.length = "none")
-ggtree(phy_phylo, branch.length = "none")
+view_tree(fam_phylo) + ggtitle("Family-Level OTUs") 
+view_tree(ord_phylo) + ggtitle("Order-Level OTUs") 
+view_tree(cla_phylo) + ggtitle("Class-Level OTUs")  + geom_text(aes(label = Class ), hjust = -0.05, size = 2) + coord_cartesian(clip = "off") + theme(plot.margin = margin(5, 65, 5, 5, "pt"))
+view_tree(phy_phylo) + ggtitle("Phylum-Level OTUs") + geom_text(aes(label = Phylum), hjust = -0.05, size = 3) + coord_cartesian(clip = "off") + theme(plot.margin = margin(5, 65, 5, 5, "pt"))
 ```
 
 ## Extract and Save for Other Levels
-
-```{r}
-ggtree(fam_phylo, branch.length = "none") + 
-  geom_tippoint(aes(color = Phylum)) +
-  scale_color_paletteer_d("ggthemes::Hue_Circle") +
-  theme_tree(legend.position = "none")
-```
-
 
 ```{r}
 fam_phylo_melt     <- psmelt(fam_phylo)
