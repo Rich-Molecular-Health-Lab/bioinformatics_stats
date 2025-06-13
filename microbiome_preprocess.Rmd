@@ -18,22 +18,104 @@ library(conflicted)
 library(tidyverse)
 library(bslib)
 library(htmltools)
-library(microeco)
 library(seqinr)
 library(ape)
 library(gtExtras)
 library(treedataverse)
 library(phyloseq)
-library(microbiome)
 library(Biostrings)
+library(paletteer)
 
 
 source("setup/knit_engines_simple.R")
 source("setup/conflicted.R")
-
 ```
 
+
+# Preprocessing Overview
+
+In this section we will take raw microbiome count data and turn it into a clean, analysis-ready `phyloseq` object.  You will:
+
+1.	**Load your core inputs**
+
+  - A rooted phylogenetic tree (`refs_tree.treefile`)
+    - produced in the [`microbiome_references` tutorial](https://rich-molecular-health-lab.github.io/tutorials/microbiome_references.html).
+  - Representative 16S sequences (`refs_aligned_mafft.fasta`)
+    - produced in the [`microbiome_references` tutorial](https://rich-molecular-health-lab.github.io/tutorials/microbiome_references.html).
+  - A taxonomic assignment table (`tax_table.RData`)
+    - produced in the [`microbiome_alignments` tutorial](https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html).
+  - Sample metadata (`sample_table.RData`)
+    - produced in the [`metadata_setup` tutorial](https://rich-molecular-health-lab.github.io/tutorials/metadata_setup.html) and then prepared for microbiomes in [`microbiome_alignments`]((https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html).
+  - An OTU count table (`otu_table.RData`)
+    - produced in the [`microbiome_alignments` tutorial](https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html).
+	
+2.	**Merge replicate samples**
+
+  - Pool all reads for the same subject on the same day into a single sample.  OTU counts are summed, and numeric metadata are averaged.
+
+3.	**Clean up taxonomy & prune**
+
+  - Rename each tip to a simple “OTU1…OTUn” label
+  - Remove very low-abundance OTUs (e.g. total count ≤ 1)
+  - Collapse your count table and tree to the Genus rank
+  - Perform a second pruning step so that only genera with meaningful counts remain
+
+4.	**Save analysis-ready objects**
+
+  - A cleaned, genus-level phyloseq object (`phyloseq_genus.RData`)
+  - Its melted version (`phyloseq_melt_genus.RData`) for ggplot workflows
+  - The pruned, genus-level tree (`tree_genus.RData`)
+  - Analogous objects for Family, Order, Class, and Phylum
+
+## By the end of this stage, you will have one phyloseq object per taxonomic level, each containing:
+
+  - A consistent OTU (or Genus/Family…) count table
+  - Matched sample metadata and taxonomic table
+  - A pruned phylogenetic tree
+  
+# Packages Used
+
+In this script we mostly use the `phyloseq` package, designed for microbiome analysis.
+
+## `phyloseq` Utility
+
+- Integrates OTU/ASV tables, sample metadata, taxonomy, phylogenetic trees, and (optionally) reference sequences in one S4 object.
+- Provides convenient methods for merging, pruning, rarefaction, distance calculations, and plotting.
+- Under the hood, relies on Bioconductor classes (DataFrames, XStringSets, phylo).
+
+>Note: there is much overlap between `phyloseq`, `microeco`, and `microbiome`, but each makes some steps more streamlined than others, so I prefer to switch between them for different stages of analysis.
+
+We will also use the `treedataverse` package suite for some visualization to check in on our data quality.
+
+## `treedataverse` Utility
+
+The `treedataverse` suite provides tools for managing, sharing, and visualizing phylogenetic trees in R. It builds on the Dataverse platform to store trees (and associated data) in versioned, citable repositories. With `treedataverse`, you can:
+
+  - Upload or download phylo objects directly from a Dataverse collection
+  - Attach rich metadata (e.g. study details, taxon provenance) to each tree
+  - Track updates and collaborate on tree data with full provenance
+  - Integrate seamlessly with ggtree and ape for downstream plotting and analysis
+
+### `ggtree` Package within the `treedataverse`
+
+`ggtree` is an extension of `ggplot2` tailored for phylogenetic trees. It lets you:
+
+  - Map tree data (branches, node labels, support values) to aesthetic scales
+  - Annotate clades with heatmaps, bar charts, or tip points (e.g. taxon abundances)
+  - Collapse or expand subtrees interactively
+  - Align associated data (e.g. trait matrices) alongside your tree in multi-panel layouts
+  - Leverage the full grammar of graphics for publication-quality figures
+
+---
+
 # Load Data
+
+>Note that I use `.RData` files to load some of the data below. You could load these same objects in the form of more widely applicable files, if you wish (*see below for explaination*).
+
+<details>
+<summary><emph>What is an .RData file?</emph></summary>
+<p>An `.RData` (or sometimes `.rda`) file is R’s native, binary workspace format. When you call `save()` on one or more R objects—data frames, matrices, lists, S4/S3 objects, etc.—R serializes them into a compact, platform-independent file. You can later restore those exact objects (with their names and attributes intact) by calling load("`your_file.RData`"). Using `.RData` is an efficient way to cache intermediate steps, share processed datasets with collaborators, or speed up analyses by skipping time-consuming recomputation.</p>
+</details>
 
 ```{r}
 tree <- read.tree("microeco/loris/refs_tree.treefile")
@@ -57,41 +139,76 @@ sample_data <- sample.table %>%
   mutate(across(where(is.character), ~factor(.))) %>%
   mutate(diet_name = fct_inorder(diet_name))
 ```
-
   
-
-# Phyloseq Object
+## Phyloseq Object
 
 ```{r}
 phylo <- phyloseq(
   tax_table(as.matrix(tax.table)),
   otu_table(as.matrix(otu.table), taxa_are_rows = TRUE),
-  sample_data(sample.table),
+  sample_data(sample_data),
   phy_tree(tree),
   refseq(seqs)
 )
 ```
 
+  geom_tippoint(aes(color = Phylum)) +
+## Preview Starting Data
+
+```{r}
+ggtree(phylo, branch.length = "none", aes(color = Phylum)) + 
+  scale_color_paletteer_d("trekcolors::lcars_series") +
+  theme_tree(legend.position = "none")
+```
+
+That looks like some very dense, messy taxonomic data!
+
+```{r results='asis'}
+skimr::skim(as_tibble(sam_data(phylo)))
+```
+
+
+---
+
+# Dereplicate Samples
+
+First we will create a version that merges the replicated samples so that we have one observation per subject per day. This function's default in phyloseq will aggregate the OTU counts across multiple samples as a sum of reads while taking mean values for everything in the metadata.
+
+>This pooling step creates **one composite sample per subject per day**, avoiding pseudo‐replication in downstream diversity metrics.
+
+```{r results='asis'}
+phylo_merged <- phylo %>%
+  merge_samples("subject_day")
+
+
+skimr::skim(as_tibble(sam_data(phylo_merged)))
+```
+
+
+# Clean up Taxonomy
+
 ## Rename Taxa as OTUs
 
 ```{r}
-taxa_names(phylo)[1:20]
-taxa_names(phylo) <- paste0("OTU", seq_along(taxa_names(phylo)))
-taxa_names(phylo)[1:20]
+taxa_names(phylo_merged)[1:20]
+taxa_names(phylo_merged) <- paste0("OTU", 1:ntaxa(phylo_merged))
+taxa_names(phylo_merged)[1:20]
 ```
 
 ## Prune Taxa
 
-Drop the OTUs with the lowest abundances. First let's see how many OTUs we lose at different thresholds
+Drop the OTUs with the lowest abundances. Constraining your dataset to taxa with >1 total read helps stabilize diversity estimates and speeds up tree operations.  
+  
+**First let's see how many OTUs we lose at different thresholds**
 
 ```{r}
-length(taxa_sums(phylo)[taxa_sums(phylo) <= 1])
-length(taxa_sums(phylo)[taxa_sums(phylo) <= 2])
+length(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 1])
+length(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 2])
 ```
 
 ```{r}
-rare_otus <- names(taxa_sums(phylo)[taxa_sums(phylo) <= 1])
-keep_otus <- names(taxa_sums(phylo)[taxa_sums(phylo) > 1])
+rare_otus <- names(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 1])
+keep_otus <- names(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) > 1])
 
 length(rare_otus)
 length(keep_otus)
@@ -100,24 +217,36 @@ length(keep_otus)
 We will remove 599 otus where the total abundance is less than or equal to 1 and keep the 1645 otus with a total abundance of at least 2.
 
 ```{r}
-phylo_pruned <- prune_taxa(keep_otus, phylo)
+phylo_pruned <- prune_taxa(keep_otus, phylo_merged)
 ```
 
-
-## Merge Samples by Subject + Day
-
->Note that I am using sum instead of mean so facilitate rarefaction after merging.
 
 ```{r}
-phylo_merged <- phylo_pruned %>%
-  merge_samples("subject_day", fun = sum)
+view_pruned <- ggtree(phylo_pruned, branch.length = "none", aes(color = Phylum)) + 
+  theme_tree(legend.position = "none")
+
+view_pruned
 ```
+
 
 ## Collapse Taxa to Genus Level
 
+Collapsing at genus level reduces complexity and allows genus‐scale ecological patterns to emerge with less interference from random error at the species-assignment level.
+
 ```{r}
-phylo_genus <- phylo_merged %>%
-  tax_glom("Genus")
+phylo_genus <- phylo_pruned %>% tax_glom("Genus")
+```
+
+```{r}
+taxa_names(phylo_merged)[1:20]
+taxa_names(phylo_merged) <- paste0("OTU", 1:ntaxa(phylo_merged))
+taxa_names(phylo_merged)[1:20]
+```
+
+
+```{r}
+ggtree(phylo_genus, branch.length = "none", aes(color = Phylum)) + 
+  theme_tree(legend.position = "none")
 ```
 
 ## Another Pruning Check
@@ -144,21 +273,97 @@ length(keep_genera)
 
 ```{r}
 phylo_clean <- prune_taxa(keep_genera, phylo_genus)
+
+
+ggtree(phylo_clean, branch.length = "none", aes(color = Phylum)) + 
+  theme_tree(legend.position = "none")
+
 ```
 
-## Export Clean Phyloseq Object
+## Extract and Save Clean Phyloseq Objects
+
+Exporting intermediate objects saves time if you need to re‐run later steps without re‐processing.
 
 ```{r}
-save(phylo_clean, file = "microeco/loris/phyloseq_genus.RData")
+phylo_melt_clean     <- psmelt(phylo_clean)
+clean_tree           <- phy_tree(phylo_clean)
+save(phylo_clean     , file = "microeco/loris/phyloseq_genus.RData")
+save(clean_tree      , file = "microeco/loris/tree_genus.RData")
+save(phylo_melt_clean, file = "microeco/loris/phyloseq_melt_genus.RData")
 ```
 
-# Extract Components
+```{r results='asis'}
+skimr::skim(phylo_melt_clean)
+```
+
+
+# Subset Additional Taxonomic Levels
+
+Working at multiple ranks lets you compare community structure from broad (Phylum) to fine (Genus) scales in the same pipeline.
 
 ```{r}
-clean_samples <- phylo_clean@sam_data
-clean_otu     <- phylo_clean@otu_table
-clean_tree    <- phylo_clean@phy_tree
-clean_seqs    <- phylo_clean@refseq
-clean_tax     <- phylo_clean@tax_table
+fam_phylo <- phylo_clean %>% tax_glom("Family")
+ord_phylo <- phylo_clean %>% tax_glom("Order")
+cla_phylo <- phylo_clean %>% tax_glom("Class")
+phy_phylo <- phylo_clean %>% tax_glom("Phylum")
 ```
+
+
+```{r}
+ggtree(fam_phylo, branch.length = "none", aes(color = Phylum)) + 
+  geom_label(aes(x = branch, label = Order)) +
+  theme_tree(legend.position = "none")
+```
+
+
+```{r}
+ggtree(ord_phylo, branch.length = "none")
+ggtree(cla_phylo, branch.length = "none")
+ggtree(phy_phylo, branch.length = "none")
+```
+
+## Extract and Save for Other Levels
+
+```{r}
+ggtree(fam_phylo, branch.length = "none") + 
+  geom_tippoint(aes(color = Phylum)) +
+  scale_color_paletteer_d("ggthemes::Hue_Circle") +
+  theme_tree(legend.position = "none")
+```
+
+
+```{r}
+fam_phylo_melt     <- psmelt(fam_phylo)
+ord_phylo_melt     <- psmelt(ord_phylo)
+cla_phylo_melt     <- psmelt(cla_phylo)
+phy_phylo_melt     <- psmelt(phy_phylo)
+
+fam_tree           <- phy_tree(fam_phylo)
+ord_tree           <- phy_tree(ord_phylo)
+cla_tree           <- phy_tree(cla_phylo)
+phy_tree           <- phy_tree(phy_phylo)
+
+save(fam_phylo     , file = "microeco/loris/phyloseq_family.RData")
+save(ord_phylo     , file = "microeco/loris/phyloseq_order.RData")
+save(cla_phylo     , file = "microeco/loris/phyloseq_class.RData")
+save(phy_phylo     , file = "microeco/loris/phyloseq_phylum.RData")
+
+save(fam_tree      , file = "microeco/loris/tree_family.RData")
+save(ord_tree      , file = "microeco/loris/tree_order.RData")
+save(cla_tree      , file = "microeco/loris/tree_class.RData")
+save(phy_tree      , file = "microeco/loris/tree_phylum.RData")
+
+save(fam_phylo_melt, file = "microeco/loris/phyloseq_melt_family.RData")
+save(ord_phylo_melt, file = "microeco/loris/phyloseq_melt_order.RData")
+save(cla_phylo_melt, file = "microeco/loris/phyloseq_melt_class.RData")
+save(phy_phylo_melt, file = "microeco/loris/phyloseq_melt_phylum.RData")
+```
+
+---
+
+# Next Steps
+
+In the [`microbiome_metrics` tutorial](https://rich-molecular-health-lab.github.io/tutorials/microbiome_metrics.html) you will learn how to choose and apply rarefaction or relative-abundance normalization, and then calculate fundamental diversity statistics (α-diversity indices, β-diversity distances, UniFrac, etc.).  Refer to that section to decide when and how to rarefy your merged tables, or to work directly on normalized counts for non-phylogenetic metrics.
+
+
 
