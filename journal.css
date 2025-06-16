@@ -1,3 +1,11 @@
+
+table.table-condensed.table-hover {
+  display: block;        /* so max-height/overflow can work */
+  max-height: 200px;     /* limit height */
+  overflow-y: auto;      /* vertical scroll when content is tall */
+  margin-bottom: 1em;    /* a bit of breathing room below */
+}
+
 @charset "UTF-8";
 /*!
  * Bootswatch v5.3.6 (https://bootswatch.com)

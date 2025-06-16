@@ -8,28 +8,47 @@ output:
       bslib: true
     toc: true
     toc_depth: 3
-    df_print: paged
+    toc_float: true
+    df_print: kable
     css: journal.css
+    code_download: true
   
 ---
 
 ```{r setup, include=FALSE}
 library(conflicted)
 library(tidyverse)
-library(bslib)
-library(htmltools)
 library(seqinr)
 library(ape)
-library(gtExtras)
 library(treedataverse)
 library(phyloseq)
 library(Biostrings)
-library(ggsci)
+library(paletteer)
 library(skimr)
 
-source("setup/knit_engines_simple.R")
 source("setup/conflicted.R")
 
+
+knitr::opts_chunk$set(
+  message       = FALSE,
+  warning       = FALSE,
+  echo          = TRUE,
+  include       = TRUE,
+  eval          = TRUE,
+  comment       = ""  ,
+  df_print      = "kable",
+  skimr_digits  = 2        )
+
+knitr::opts_knit$set(
+  message       = FALSE,
+  warning       = FALSE,
+  echo          = TRUE,
+  include       = TRUE,
+  eval          = TRUE,
+  comment       = ""  ,
+  df_print      = "kable",
+  skimr_digits  = 2        
+  )
 ```
 
 
@@ -49,19 +68,22 @@ In this section we will take raw microbiome count data and turn it into a clean,
     - produced in the [`metadata_setup` tutorial](https://rich-molecular-health-lab.github.io/tutorials/metadata_setup.html) and then prepared for microbiomes in [`microbiome_alignments`]((https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html).
   - An OTU count table (`otu_table.RData`)
     - produced in the [`microbiome_alignments` tutorial](https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html).
+    
+2.  **Subset Samples**
+
+  - Exclude any samples not produced by male *Culi* so that we can normalize within this subset that we are currently looking at for our case study.
 	
-2.	**Merge replicate samples**
+3.	**Merge replicate samples**
 
-  - Pool all reads for the same subject on the same day into a single sample.  OTU counts are summed, and numeric metadata are averaged.
+  - Pool all reads for the same subject (here just Culi) on the same day into a single sample.  OTU counts are summed, and numeric metadata are averaged.
 
-3.	**Clean up taxonomy & prune**
+4.	**Clean up taxonomy & prune**
 
-  - Rename each tip to a simple “OTU1…OTUn” label
   - Remove very low-abundance OTUs (e.g. total count ≤ 1)
   - Collapse your count table and tree to the Genus rank
   - Perform a second pruning step so that only genera with meaningful counts remain
 
-4.	**Save analysis-ready objects**
+5.	**Save analysis-ready objects**
 
   - A cleaned, genus-level phyloseq object (`phyloseq_genus.RData`)
   - Its melted version (`phyloseq_melt_genus.RData`) for ggplot workflows
@@ -114,24 +136,56 @@ The `treedataverse` suite provides tools for managing, sharing, and visualizing 
 I created the functions below because I repeatedly use these code chunks to view summaries of my data after each step of processing.
 
 ```{r}
-my_skim <- skim_with(numeric = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
+
+my_skim <- skim_with(numeric  = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
 
 skim_phyloseq <- function(phyloseq) {
- psmelt(phyloseq) %>% 
+options(
+  digits            = 2,
+  pillar.sigfig     = 2,
+  pillar.subtle_num = TRUE
+  )
+ skim <- psmelt(phyloseq) %>% 
     select(-c(
       subject_certainty, 
+      subject_sex,
       subject_studbook_id, 
       subject_dam_id, 
       subject_sire_id, 
       subject_birth_location, 
       subject_age)) %>%
-    group_by(subject) %>% my_skim() %>% select(-complete_rate) %>% mutate(across(where(is.numeric), ~round(., 2)))
+    group_by(diet_name) %>% 
+    my_skim() %>%
+    select(-complete_rate)
+ 
+ return(skim)
 }
 
-view_tree <- function(phyloseq) {
-  ggtree(phyloseq, branch.length = "none", aes(color = Phylum)) + 
-  scale_color_ucscgb("default", na.value = "#00000080") +
-  theme_tree(legend.position = "none")
+view_tree <- function(phyloseq, level = NULL, palette = "rcartocolor::Prism") {
+  phylum.cols <-  sample(paletteer::paletteer_d(paste0(palette)), size = length(get_taxa_unique(phyloseq, "Phylum")), replace = TRUE) %>%
+    set_names(., get_taxa_unique(phyloseq, "Phylum"))
+  
+  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum))
+  
+  if (is.null(level)) {
+    tree2 <- tree1
+  } else if (level == "Class") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  } else if (level == "Phylum") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
+  } else if (level == "Order") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Order, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  }
+  
+  tree.out <- tree2 +
+    scale_color_manual(values = phylum.cols, na.value = "#00000080") +
+    scale_fill_manual( values = alpha(c(phylum.cols), 0.3)) +
+    theme_tree(legend.position = "none")
+  
+  return(tree.out)
 }
 ```
 
@@ -196,14 +250,21 @@ That looks like some very dense, messy taxonomic data!
 
 ---
 
-# Dereplicate Samples
+# Subset and Dereplicate Samples
 
-First we will create a version that merges the replicated samples so that we have one observation per subject per day. This function's default in phyloseq will aggregate the OTU counts across multiple samples as a sum of reads while taking mean values for everything in the metadata.
+First, we will take a subset of our samples, **keeping only those for Culi**, as I am currently only looking for patterns over time in his gut, not comparing Culi and Warble (yet).
+
+```{r}
+phylo_culi <- phylo %>% subset_samples(subject == "culi")
+```
+
+
+Next we will create a version that merges the replicated samples so that we have one observation per day. This function's default in phyloseq will aggregate the OTU counts across multiple samples as a sum of reads while taking mean values for everything in the metadata.
 
 >This pooling step creates **one composite sample per subject per day**, avoiding pseudo‐replication in downstream diversity metrics.
 
-```{r results='asis'}
-phylo_merged <- phylo %>% merge_samples("subject_day")
+```{r}
+phylo_merged <- phylo_culi %>% merge_samples("subject_day")
 
 skim_phyloseq(phylo_merged)
 ```
@@ -213,19 +274,43 @@ skim_phyloseq(phylo_merged)
 
 ## Prune Taxa
 
-Drop the OTUs with the lowest abundances. Constraining your dataset to taxa with >1 total read helps stabilize diversity estimates and speeds up tree operations.  
+Drop the OTUs with the lowest abundances to help stabilize diversity estimates and speed up tree operations. We will constrain based on:
+
+  1.  Total sum of OTU counts across all samples
+  2.  Proportion of samples where OTU is present
+  
+```{r}
+# custom function for filtering thresholds
+
+keep_taxa <- function(phyloseq, tax_thresh, samp_thresh) {
+  taxa_names(phyloseq)[
+  taxa_sums(phyloseq) > tax_thresh &
+  apply(otu_table(phyloseq), 1, function(x) sum(x > 0)) > nsamples(phyloseq)*samp_thresh
+]
+}
+
+report_threshold <- function(phyloseq, keep) {
+  cat(paste0(
+    "starting with ", ntaxa(phyloseq), " OTUs, discarding ", (ntaxa(phyloseq) - length(keep)), " OTUs, keeping ", length(keep), " OTUs"
+  ))
+}
+```
+
   
 **First let's see how many OTUs we lose at different thresholds**
 
 ```{r}
-rare_otus <- names(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) <= 1])
-keep_otus <- names(taxa_sums(phylo_merged)[taxa_sums(phylo_merged) > 1])
-
-length(rare_otus)
-length(keep_otus)
+keep_otus <- keep_taxa(phylo_merged, 10, 0.1)
+report_threshold(phylo_merged, keep_otus)
 ```
 
-We will remove 599 otus where the total abundance is less than or equal to 1 and keep the 1645 otus with a total abundance of at least 2. (*You can change the value in the `keep_otus` function above to use a higher/lower threshold.*)
+
+```{r}
+keep_otus <- keep_taxa(phylo_merged, 5, 0.05)
+report_threshold(phylo_merged, keep_otus)
+```
+
+For now, we will remove 1,574 species where the total abundance is less than or equal to 5 or the species only appears in less than 5% of all samples. (*You can change the value in the `keep_taxa` function above to use a higher/lower threshold.*)
 
 ```{r}
 phylo_pruned <- prune_taxa(keep_otus, phylo_merged)
@@ -253,32 +338,23 @@ view_tree(phylo_genus) + ggtitle("Genus-Level OTUs")
 
 ## Another Pruning Check
 
-Let's look at our OTUs now that we merged to the Genus level
+Let's look at our OTUs now that we merged to the Genus level and consider filtering again at this level.
 
 
 ```{r}
-rare_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) <= 2])
-keep_genera <- names(taxa_sums(phylo_genus)[taxa_sums(phylo_genus) > 2])
-length(rare_genera)
-length(keep_genera)
+keep_genera <- keep_taxa(phylo_genus, 10, 0.1)
+report_threshold(phylo_genus, keep_genera)
 ```
 
-Let's do one more pruning step to only keep the genera with total abundances greater than 2 (613 genera total).
+Let's do one more pruning step to only keep the genera with total abundances greater than 10 and presence in at least 10% of all samples (233 genera total).
 
 ```{r}
-phylo_clean <- prune_taxa(keep_genera, phylo_genus)
-skim_phyloseq(phylo_clean)
-```
-```{r}
-view_tree <- function(phyloseq) {
-  ggtree(phyloseq, branch.length = "none", aes(color = Phylum)) + 
-  scale_color_ucscgb("default", na.value = "#00000080") +
-  theme_tree(legend.position = "none")
-}
+culi_genus <- prune_taxa(keep_genera, phylo_genus)
+skim_phyloseq(culi_genus)
 ```
 
-```{r}
-view_tree(phylo_clean) + ggtitle("Genus-Level OTUs")
+```{r results='asis'}
+view_tree(culi_genus) + ggtitle("Genus-Level OTUs")
 ```
 
 
@@ -287,11 +363,11 @@ view_tree(phylo_clean) + ggtitle("Genus-Level OTUs")
 Exporting intermediate objects saves time if you need to re‐run later steps without re‐processing.
 
 ```{r}
-phylo_melt_clean     <- psmelt(phylo_clean)
-clean_tree           <- phy_tree(phylo_clean)
-save(phylo_clean     , file = "microeco/loris/phyloseq_genus.RData")
-save(clean_tree      , file = "microeco/loris/tree_genus.RData")
-save(phylo_melt_clean, file = "microeco/loris/phyloseq_melt_genus.RData")
+culi_melt_genus     <- psmelt(culi_genus)
+culi_tree           <- phy_tree(culi_genus)
+save(culi_genus     , file = "microeco/loris/culi/culi_genus.RData")
+save(culi_tree      , file = "microeco/loris/culi/culi_tree.RData")
+save(culi_melt_genus, file = "microeco/loris/culi/culi_melt_genus.RData")
 ```
 
 # Subset Additional Taxonomic Levels
@@ -299,43 +375,50 @@ save(phylo_melt_clean, file = "microeco/loris/phyloseq_melt_genus.RData")
 Working at multiple ranks lets you compare community structure from broad (Phylum) to fine (Genus) scales in the same pipeline.
 
 ```{r}
-fam_phylo <- phylo_clean %>% tax_glom("Family")
-ord_phylo <- phylo_clean %>% tax_glom("Order")
-cla_phylo <- phylo_clean %>% tax_glom("Class")
-phy_phylo <- phylo_clean %>% tax_glom("Phylum")
-view_tree(fam_phylo) + ggtitle("Family-Level OTUs") 
-view_tree(ord_phylo) + ggtitle("Order-Level OTUs") 
-view_tree(cla_phylo) + ggtitle("Class-Level OTUs")  + geom_text(aes(label = Class ), hjust = -0.05, size = 2) + coord_cartesian(clip = "off") + theme(plot.margin = margin(5, 65, 5, 5, "pt"))
-view_tree(phy_phylo) + ggtitle("Phylum-Level OTUs") + geom_text(aes(label = Phylum), hjust = -0.05, size = 3) + coord_cartesian(clip = "off") + theme(plot.margin = margin(5, 65, 5, 5, "pt"))
+fam_culi <- culi_genus %>% tax_glom("Family")
+ord_culi <- culi_genus %>% tax_glom("Order")
+cla_culi <- culi_genus %>% tax_glom("Class")
+phy_culi <- culi_genus %>% tax_glom("Phylum")
+
+view_tree(fam_culi) + ggtitle("Family-Level OTUs") 
+view_tree(ord_culi, "Order") + ggtitle("Order-Level OTUs") + 
+      coord_cartesian(clip = "off") + 
+      theme(plot.margin = margin(5, 65, 5, 5, "pt"))
+view_tree(cla_culi, "Class") + ggtitle("Class-Level OTUs") + 
+      coord_cartesian(clip = "off") + 
+      theme(plot.margin = margin(5, 65, 5, 5, "pt"))
+view_tree(phy_culi, "Phylum") + ggtitle("Phylum-Level OTUs") +  
+      coord_cartesian(clip = "off") + 
+      theme(plot.margin = margin(5, 65, 5, 5, "pt"))
 ```
 
 ## Extract and Save for Other Levels
 
 ```{r}
-fam_phylo_melt     <- psmelt(fam_phylo)
-ord_phylo_melt     <- psmelt(ord_phylo)
-cla_phylo_melt     <- psmelt(cla_phylo)
-phy_phylo_melt     <- psmelt(phy_phylo)
+fam_culi_melt     <- psmelt(fam_culi)
+ord_culi_melt     <- psmelt(ord_culi)
+cla_culi_melt     <- psmelt(cla_culi)
+phy_culi_melt     <- psmelt(phy_culi)
 
-fam_tree           <- phy_tree(fam_phylo)
-ord_tree           <- phy_tree(ord_phylo)
-cla_tree           <- phy_tree(cla_phylo)
-phy_tree           <- phy_tree(phy_phylo)
+fam_culi_tree           <- phy_tree(fam_culi)
+ord_culi_tree           <- phy_tree(ord_culi)
+cla_culi_tree           <- phy_tree(cla_culi)
+phy_culi_tree           <- phy_tree(phy_culi)
 
-save(fam_phylo     , file = "microeco/loris/phyloseq_family.RData")
-save(ord_phylo     , file = "microeco/loris/phyloseq_order.RData")
-save(cla_phylo     , file = "microeco/loris/phyloseq_class.RData")
-save(phy_phylo     , file = "microeco/loris/phyloseq_phylum.RData")
+save(fam_culi     , file = "microeco/loris/culi/fam_culi.RData")
+save(ord_culi     , file = "microeco/loris/culi/ord_culi.RData")
+save(cla_culi     , file = "microeco/loris/culi/cla_culi.RData")
+save(phy_culi     , file = "microeco/loris/culi/phy_culi.RData")
 
-save(fam_tree      , file = "microeco/loris/tree_family.RData")
-save(ord_tree      , file = "microeco/loris/tree_order.RData")
-save(cla_tree      , file = "microeco/loris/tree_class.RData")
-save(phy_tree      , file = "microeco/loris/tree_phylum.RData")
+save(fam_culi_tree      , file = "microeco/loris/culi/fam_culi_tree.RData")
+save(ord_culi_tree      , file = "microeco/loris/culi/ord_culi_tree.RData")
+save(cla_culi_tree      , file = "microeco/loris/culi/cla_culi_tree.RData")
+save(phy_culi_tree      , file = "microeco/loris/culi/phy_culi_tree.RData")
 
-save(fam_phylo_melt, file = "microeco/loris/phyloseq_melt_family.RData")
-save(ord_phylo_melt, file = "microeco/loris/phyloseq_melt_order.RData")
-save(cla_phylo_melt, file = "microeco/loris/phyloseq_melt_class.RData")
-save(phy_phylo_melt, file = "microeco/loris/phyloseq_melt_phylum.RData")
+save(fam_culi_melt, file = "microeco/loris/culi/fam_culi_melt.RData")
+save(ord_culi_melt, file = "microeco/loris/culi/ord_culi_melt.RData")
+save(cla_culi_melt, file = "microeco/loris/culi/cla_culi_melt.RData")
+save(phy_culi_melt, file = "microeco/loris/culi/phy_culi_melt.RData")
 ```
 
 ---

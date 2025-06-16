@@ -1,0 +1,885 @@
+---
+title: "Microbiome Data Normalization and Basic Metrics"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: kable
+    css: journal.css
+    code_download: true
+  
+---
+
+```{r setup, include=FALSE}
+library(conflicted)
+library(tidyverse)
+library(seqinr)
+library(ape)
+library(treedataverse)
+library(phyloseq)
+library(microeco)
+library(mecodev)
+library(file2meco)
+library(Biostrings)
+library(paletteer)
+library(skimr)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+
+source("setup/conflicted.R")
+
+
+knitr::opts_chunk$set(
+  message       = FALSE,
+  warning       = FALSE,
+  echo          = TRUE,
+  include       = TRUE,
+  eval          = TRUE,
+  comment       = ""  ,
+  df_print      = "kable",
+  skimr_digits  = 2        )
+
+```
+
+# Overview
+
+In this workflow we’ll take our cleaned, genus‐level `phyloseq` object and explore the key strategies for making counts comparable across samples, then compute and visualize fundamental diversity statistics.  You’ll learn how to:
+
+- Equalize sampling depth with rarefaction for unbiased richness estimates
+- Transform to relative abundances (TSS) for composition‐based analyses
+- Apply advanced methods (CSS, DESeq2 VST, CLR) to mitigate library‐size and compositional biases
+- Calculate α‐diversity indices (Observed, Chao1, Shannon, Simpson) and β‐diversity distances (Bray–Curtis, UniFrac)
+- Generate ordination plots (PCoA, PCA) to reveal community patterns
+
+By the end, you’ll know when to use each normalization approach and how to interpret your Oxford Nanopore full-length 16S results through both statistical metrics and intuitive visualizations.
+
+
+# Packages Used
+
+In this script we mostly use the `phyloseq` and `microeco` packages, both designed for microbiome analysis.
+
+## `phyloseq` Package
+
+- Integrates OTU/ASV tables, sample metadata, taxonomy, phylogenetic trees, and (optionally) reference sequences in one S4 object.
+- Provides convenient methods for merging, pruning, rarefaction, distance calculations, and plotting.
+- Under the hood, relies on Bioconductor classes (DataFrames, XStringSets, phylo).
+
+>Note: there is much overlap between `phyloseq`, `microeco`, and `microbiome`, but each makes some steps more streamlined than others, so I prefer to switch between them for different stages of analysis.
+
+## `microeco` Package
+
+The [`microeco` R package](https://chiliubio.github.io/microeco_tutorial/) provides an elegant and comprehensive solution by integrating many of the most current and popular microbiome analysis approaches into a unified framework. This package simplifies workflows, making it easy to prepare datasets, calculate metrics, and create publication-quality visualizations. Importantly, microeco is designed to work seamlessly with ggplot2 and other widely used R packages, offering flexibility for customization and compatibility with established workflows. If you click the link above, you will find a very comprehensive tutorial presenting the full array of analysis options.
+
+### First Use
+
+`microeco` installation can be a bit tricky the first time, simply because of the number of dependencies. I created a [separate tutorial to walk you through the packages you will need](https://rich-molecular-health-lab.github.io/tutorials/firstuse_microeco.html), but the tutorial on [MicroEco's page does an even better job of explaining things](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence). If this is your first time on this workflow, I recommend you start with that, ensure all packages have been installed, and then proceed with this.  
+
+# Helper Functions
+
+I created the functions below because I repeatedly use these code chunks to view summaries of my data.
+
+```{r}
+
+line.pal <- function() {
+  list(
+    line = list(
+      a = "#AD5A6BFF",
+      b = "#384351FF",
+      c = "#4D8F8BFF"
+    ),
+    fill = list(
+      a = "#C993A2FF",
+      b = "#365C83FF",
+      c = "#CDD6ADFF"
+    ),
+    arrowstyle = 2
+  )
+}
+
+col.pal <- function(vector, type, palette) {
+  if (type == "continuous") {
+    pal <- as.character(paletteer::paletteer_c(palette, n = length(unique(vector)))) %>%
+    set_names(., unique(vector))
+  } else if (type == "discrete") {
+    pal <- sample(paletteer::paletteer_d(paste0(palette)), size = length(unique(vector)), replace = TRUE) %>%
+    set_names(., unique(vector))
+  }
+  
+  return(pal)
+  
+}
+
+my_skim <- skim_with(numeric  = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
+
+skim_phyloseq <- function(phyloseq) {
+options(
+  digits            = 2,
+  pillar.sigfig     = 2,
+  pillar.subtle_num = TRUE
+  )
+ skim <- psmelt(phyloseq) %>% 
+    select(-c(
+      subject_certainty, 
+      subject_studbook_id, 
+      subject_dam_id, 
+      subject_sire_id, 
+      subject_birth_location, 
+      subject_age)) %>%
+    group_by(subject) %>% 
+    my_skim() %>%
+    select(-complete_rate)
+ 
+ return(skim)
+}
+
+view_tree <- function(phyloseq, level = NULL, palette = "rcartocolor::Prism") {
+  phylum.cols <-  sample(paletteer::paletteer_d(paste0(palette)), size = length(get_taxa_unique(phyloseq, "Phylum")), replace = TRUE) %>%
+    set_names(., get_taxa_unique(phyloseq, "Phylum"))
+  
+  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum))
+  
+  if (is.null(level)) {
+    tree2 <- tree1
+  } else if (level == "Class") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  } else if (level == "Phylum") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
+  }
+  
+  tree.out <- tree2 +
+    scale_color_manual(values = phylum.cols, na.value = "#00000080") +
+    scale_fill_manual( values = alpha(c(phylum.cols), 0.3)) +
+    theme_tree(legend.position = "none")
+  
+  return(tree.out)
+}
+```
+
+---
+
+# Load Data
+
+>Note that I use `.RData` files to load some of the data below. You could load these same objects in the form of more widely applicable files, if you wish (*see below for explaination*).
+
+<details>
+<summary><emph>What is an .RData file?</emph></summary>
+<p>An `.RData` (or sometimes `.rda`) file is R’s native, binary workspace format. When you call `save()` on one or more R objects—data frames, matrices, lists, S4/S3 objects, etc.—R serializes them into a compact, platform-independent file. You can later restore those exact objects (with their names and attributes intact) by calling load("`your_file.RData`"). Using `.RData` is an efficient way to cache intermediate steps, share processed datasets with collaborators, or speed up analyses by skipping time-consuming recomputation.</p>
+</details>
+
+```{r}
+load("microeco/loris/culi/culi_genus.RData")
+```
+
+## Prepare Loaded Dataset
+
+First we will convert to a `microeco` object and then remove extraneous metadata columns before renaming the taxa so that the taxids do not confuse us after collapsing to genus.
+
+```{r}
+data_genus <- phyloseq2meco(culi_genus, auto_tidy = TRUE)
+```
+
+```{r}
+```
+
+```{r}
+start <- min(as_date(data_genus$sample_table$collection_date))
+end   <- ceiling_date(max(as_date(data_genus$sample_table$collection_date)), "month")
+
+months <- map(seq(start, end, by = "month"), \(x) interval(floor_date(x, "months"), (ceiling_date(x, "months") - days(1)))) %>%
+  enframe(name = "collection_month", value = "interval") %>%
+  unnest(interval) %>%
+  rowwise() %>%
+  mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
+  unnest_longer(collection_date) %>%
+  select(-interval)
+weeks  <- map(seq(start, end, by = "week"), \(x) interval(floor_date(x, "weeks"), (ceiling_date(x, "weeks") - days(1)))) %>%
+  enframe(name = "collection_week", value = "interval") %>%
+  unnest(interval) %>%
+  rowwise() %>%
+  mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
+  unnest_longer(collection_date) %>%
+  select(-interval) %>%
+  left_join(months, by = "collection_date")
+
+sample_table <- data_genus$sample_table %>%
+  rownames_to_column("SampleID") %>%
+  select(-starts_with("subject"),
+         -bristol_min,
+         -bristol_max) %>%
+  mutate(collection_date = as_date(collection_date),
+         SampleID        = as.character(SampleID)) %>%
+  arrange(collection_day) %>%
+  left_join(weeks, by = "collection_date") %>%
+  relocate(collection_month, collection_week, collection_day, collection_date, .after = SampleID) %>%
+  column_to_rownames("SampleID")
+
+otu_table <- data_genus$otu_table %>%
+  rownames_to_column("OTU") %>%
+  pivot_longer(!OTU) %>%
+  mutate(collection_day = as.integer(str_remove_all(name, "[^\\d+]"))) %>%
+  arrange(collection_day) %>%
+  select(-collection_day) %>%
+  pivot_wider(names_from = "name", values_from = "value") %>%
+  column_to_rownames("OTU")
+  
+```
+
+```{r}
+summary <- sample_table %>%
+  rownames_to_column("SampleID") %>%
+  right_join(weeks, by = join_by(collection_date, collection_month, collection_week))
+
+sample_timeline <- plot_ly(sample_table) %>%
+  add_histogram(
+    x        = ~collection_date , 
+    histfunc = "count",
+    nbinsx   = max(sample_table$collection_month)
+    ) %>%
+  add_histogram(
+    x        = ~collection_date , 
+    histfunc = "count",
+    nbinsx   = max(sample_table$collection_week),
+    xaxis    = "x2",
+    yaxis    = "y2"
+    ) %>%
+  layout(
+    bargap   = 0.1,
+    yaxis    = list(
+      title      = "N per Month",
+      ticks      = "outside",
+      showgrid   = F,
+      showline   = T
+    ),
+    yaxis2    = list(
+      title      = "N per Week",
+      ticks      = "outside",
+      overlaying = "y",
+      side       = "right",
+      showgrid   = F,
+      showline   = T
+    ),
+    xaxis = list(
+    title         = "Study Month",
+    tickvals      = seq((start - months(1)), (end + months(1)), by = "months"),
+    ticktext      = 0:(max(sample_table$collection_month) + 1),
+    ticklabelmode = "period",
+    ticks         = "outside"
+    ),
+    xaxis2 = list(
+    title         = "Study Week",
+    tickvals      = seq((start - weeks(1)), (end + weeks(1)), by = "weeks"),
+    ticktext      = 0:(max(sample_table$collection_week) + 1),
+    overlaying    = "x",
+    visible       = F
+    )
+  )
+
+sample_timeline
+```
+
+
+
+```{r}
+data_genus$tidy_dataset()
+data_genus$rename_taxa(newname_prefix = "Genus_")
+```
+---
+
+# Alpha Diversity
+
+We will normalize our counts for alpha diversity using rarefaction.
+
+## Rarefaction
+
+>**Rarefaction** is the random subsampling of each sample down to a fixed library size.
+
+- **pros**: Puts all samples at the same depth; simple.
+- **cons**: You randomly discard reads and “lose” low‐abundance taxa. This can obscure beta-diversity patterns if depths vary widely.
+- **Use when**:
+  - Computing richness (Observed, Chao1) or any metric sensitive to depth.
+  - You want a fair comparison of presence/absence or incidence-based phylo-metrics.
+
+```{r}
+genus_rarefied <- clone(data_genus)
+
+rarefaction <- trans_rarefy$new(
+  genus_rarefied, 
+  alphadiv = "Observed",
+  depth    = c(seq.int(0, 8000, by = 500))
+  )
+
+meta <- genus_rarefied$sample_table %>%
+  rownames_to_column("SampleID")
+
+rarefact <- rarefaction$res_rarefy %>%
+  left_join(meta, by = "SampleID")
+```
+
+In the chunk above, I set `alphadiv` to `"Observed"` so that our outcome variable is simply the total number of unique species kept in the data at that depth value (i.e., *Richness*). We can also use alpha diversity metrics that incorporate evenness (e.g., *Shannon Index*) and compare both.
+
+```{r}
+rarefaction_shannon <- trans_rarefy$new(
+  genus_rarefied, 
+  alphadiv = "Shannon",
+  depth    = c(seq.int(0, 8000, by = 500))
+  )
+
+rarefact_shannon <- rarefaction_shannon$res_rarefy %>%
+  left_join(meta, by = "SampleID")
+```
+
+
+We can use the depth summaries from above to inform our decision, but the `mecodev` extension of `microeco` also has some handy functions built in to generate rarefaction curves. These are also useful for supplementary data to demonstrate the robustness of your sample size relative to your specific population/taxa. You can use the `trans_rarefy$plot_rarefy()` function built into `mecodev`. That uses ggplot2 to produce a plot though, and I prefer to plot with `plotly`, so I will plot the data built into the rarefaction object manually.  
+  
+I will plot the default rarefaction plot first, which shows each sample as an individual line plotted as the series of potential read count values for or rarefaction threshold on the x axis and the number of species retained in the data for that sample (Species Richness) on the y axis or the number and evenness of genera (Shannon Diversity).
+
+
+```{r}
+rarefaction_plot <- plot_ly(data = rarefact) %>%
+  add_trace(
+    x           = ~seqnum,
+    y           = ~Observed,
+    color       = ~diet_name,
+    colors      = col.pal(rarefact$diet_name, "continuous", "pals::isol"),
+    split       = ~SampleID,
+    name        = ~SampleID,
+    text        = ~diet_name,
+    type        = "scatter",
+    mode        = "lines+markers",
+    line  = list(
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 1,
+      opacity   = 0.8
+    ),
+    marker      = list(
+      size      = 4,
+      opacity   = 0.8
+    )
+  ) %>%
+  layout(
+    xaxis = list(
+      title         = "Depth Threshold",
+      hoverformat   = ".2s",
+      tickformat    = ".2s",
+      zeroline      = F,
+      showline      = T,
+      showgrid      = T,
+      gridcolor     = "#0000001A",
+      gridwidth     = 0.5,
+      ticks         = "outside",
+      rangeslider   = T
+    ),
+    yaxis = list(
+      title         = "Richness",
+      hoverformat   = ".0f",
+      tickformat    = ".0f",
+      zeroline      = F,
+      showline      = T,
+      showgrid      = F,
+      ticks         = "outside"
+    )
+  ) %>%
+  hide_legend() %>%
+  hide_colorbar()
+
+rarefaction_shannon_plot <- plot_ly(data = rarefact_shannon) %>%
+  add_trace(
+    x           = ~seqnum,
+    y           = ~Shannon,
+    color       = ~diet_name,
+    colors      = col.pal(rarefact_shannon$diet_name, "continuous", "pals::isol"),
+    split       = ~SampleID,
+    name        = ~SampleID,
+    text        = ~diet_name,
+    type        = "scatter",
+    mode        = "lines+markers",
+    line  = list(
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 1,
+      opacity   = 0.8
+    ),
+    marker      = list(
+      size      = 4,
+      opacity   = 0.8
+    )
+  ) %>%
+  layout(
+    xaxis = list(
+      title         = "Depth Threshold",
+      hoverformat   = ".2s",
+      tickformat    = ".2s",
+      zeroline      = F,
+      showline      = T,
+      showgrid      = T,
+      gridcolor     = "#0000001A",
+      gridwidth     = 0.5,
+      ticks         = "outside",
+      rangeslider   = T
+    ),
+    yaxis = list(
+      title         = "Shannon Diversity",
+      hoverformat   = ".2f",
+      tickformat    = ".1f",
+      zeroline      = F,
+      showline      = T,
+      showgrid      = F,
+      ticks         = "outside"
+    )
+  ) %>%
+  hide_legend() %>%
+  hide_colorbar()
+
+rarefaction_both <- subplot(
+  nrows = 2,
+  rarefaction_plot,
+  rarefaction_shannon_plot,
+  shareX = T,
+  shareY = F,
+  titleY = T
+)
+
+
+save_html(rarefaction_both, "visuals/loris_rarefaction.html")
+
+rarefaction_both
+```
+
+I find it easier to simplify this plot into a version that helps us visualize the tradeoff between the number of taxa represented and the number of samples represented at any given threshold. To generate this plot, I will extract the dataframe stored in our rarefaction object and calculate a summary table for plotting.
+
+```{r}
+rare_shannon <- rarefaction_shannon$res_rarefy %>%
+  group_by(seqnum) %>%
+  summarize(n_samples = n_distinct(SampleID),
+            min_div  = min(Shannon),
+            mean_div = mean(Shannon),
+            max_div  = max(Shannon)) %>%
+  ungroup()
+
+rare_data <- rarefaction$res_rarefy %>%
+  group_by(seqnum) %>%
+  summarize(n_samples = n_distinct(SampleID),
+            min_taxa  = min(Observed),
+            mean_taxa = mean(Observed),
+            max_taxa  = max(Observed)) %>%
+  ungroup() %>%
+  left_join(rare_shannon, by = join_by(seqnum, n_samples))
+
+rare_data_long <- rare_data %>%
+  select(
+    seqnum,
+    n_samples,
+    starts_with("mean")
+  ) %>%
+  rename_with(~str_remove_all(., "mean_")) %>%
+  pivot_longer(c(n_samples, taxa, div),
+               names_to     = "metric")
+rare_data_summary <- rare_data_long %>%
+  group_by(metric) %>%
+  summarize(min  = min(value),
+            mean = mean(value),
+            max  = max(value)) %>%
+  ungroup() %>%
+  pivot_longer(c("min", "mean", "max"),
+               names_to = "measure") %>%
+  left_join(rare_data_long, by = join_by(metric, closest(x$value <= y$value))) %>%
+  mutate(metric_name = case_match(metric, "div" ~ "Shannon", "n_samples" ~ "Samples", "taxa" ~ "Richness")) %>%
+  mutate(name = as.character(str_glue("{metric_name} {str_to_title(measure)}"))) %>%
+  select(name, metric, measure, value = value.y, seqnum) 
+
+```
+
+
+```{r}
+rare_lines <- line.pal()
+rare_summary_plot <- plot_ly(data = rare_data) %>%
+  add_trace(
+    x           = ~seqnum,
+    y           = ~n_samples,
+    zorder      = 2,
+    name        = "Samples",
+    type        = "scatter",
+    mode        = "lines+markers",
+    line  = list(
+      color     = rare_lines$line$a,
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 2.5
+    ),
+    marker      = list(
+      size = 7,
+      line = list(
+      color     = rare_lines$line$a,
+      width     = 2
+      ),
+      opacity   = 0.8,
+      color     = rare_lines$fill$a
+    ),
+    showlegend  = FALSE
+  ) %>%
+  add_trace(
+    x           = ~seqnum,
+    y           = ~mean_taxa,
+    zorder      = 1,
+    yaxis       = "y2",
+    name        = "Richness",
+    type        = "scatter",
+    mode        = "lines+markers",
+    line  = list(
+      color     = rare_lines$line$b,
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 2
+    ),
+    marker      = list(
+      size = 6,
+      line = list(
+      color     = rare_lines$line$b,
+      width     = 1.5
+      ),
+      opacity   = 0.8,
+      color     = rare_lines$fill$b
+    ),
+    color       = rare_lines$line$b,
+    showlegend  = FALSE
+  ) %>%
+  add_ribbons(
+    x           = ~seqnum,
+    ymin        = ~min_taxa,
+    ymax        = ~max_taxa,
+    zorder      = 0,
+    yaxis       = "y2",
+    name        = "Richness",
+    fillcolor   = rare_lines$fill$b,
+    opacity     = 0.1,
+    line  = list(
+      color     = rare_lines$line$b,
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 0.3
+    ),
+    hoverinfo     = "none"
+  ) %>%
+  add_trace(
+    x           = ~seqnum,
+    y           = ~mean_div,
+    zorder      = 1,
+    yaxis       = "y3",
+    name        = "Shannon",
+    type        = "scatter",
+    mode        = "lines+markers",
+    line  = list(
+      color     = rare_lines$line$c,
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 2
+    ),
+    marker      = list(
+      size = 6,
+      line = list(
+      color     = rare_lines$line$c,
+      width     = 1.5
+      ),
+      opacity   = 0.8,
+      color     = rare_lines$fill$c
+    ),
+    color       = rare_lines$line$c,
+    showlegend  = FALSE
+  ) %>%
+  add_ribbons(
+    x           = ~seqnum,
+    ymin        = ~min_div,
+    ymax        = ~max_div,
+    zorder      = 0,
+    yaxis       = "y3",
+    name        = "Shannon",
+    fillcolor   = rare_lines$line$c,
+    opacity     = 0.1,
+    line  = list(
+      color     = rare_lines$line$c,
+      shape     = "spline",
+      smoothing = 1.3,
+      width     = 0.3
+    ),
+    hoverinfo     = "none"
+  ) %>%
+add_markers(
+  data   = filter(rare_data_summary, metric == "n_samples"),
+  x      = ~seqnum,
+  y      = ~value,
+  zorder = 3,
+  yaxis  = "y",
+  name   = ~name,
+  marker = list(
+    size   = 13,
+    color  = rare_lines$line$a,
+    symbol = "asterisk-open"
+  ),
+  hoverlabel = list(namelength = -1)
+) %>%
+  add_markers(
+  data   = filter(rare_data_summary, metric == "taxa"),
+  x      = ~seqnum,
+  y      = ~value,
+  zorder = 3,
+  yaxis  = "y2",
+  name   = ~name,
+  marker = list(
+    size   = 13,
+    color  = rare_lines$line$b,
+    symbol = "asterisk-open"
+  ),
+  hoverlabel = list(namelength = -1)
+) %>%
+  add_markers(
+  data   = filter(rare_data_summary, metric == "div"),
+  x      = ~seqnum,
+  y      = ~value,
+  zorder = 3,
+  yaxis  = "y3",
+  name   = ~name,
+  marker = list(
+    size   = 13,
+    color  = rare_lines$line$c,
+    symbol = "asterisk-open"
+  ),
+  hoverlabel = list(namelength = -1)
+) %>%
+  layout(
+    showlegend = FALSE,
+    hovermode  = "x unified",
+    xaxis = list(
+      title         = "Depth Threshold",
+      hoverformat   = ".2s",
+      tickformat    = ".2s",
+      zeroline      = F,
+      showline      = T,
+      showgrid      = T,
+      gridcolor     = "#0000001A",
+      gridwidth     = 0.5,
+      ticks         = "outside",
+      domain        = c(0, 0.8),
+      rangeslider   = T
+    ),
+    yaxis = list(
+      title         = list(
+        text      = "N Samples",
+        font      = list(color = rare_lines$line$a)
+        ),
+      hoverformat   = ".0f",
+      tickformat    = ".0f",
+      zeroline      = F,
+      showline      = T,
+      linecolor     = rare_lines$line$a,
+      showgrid      = F,
+      ticks         = "outside",
+      tickcolor     = rare_lines$line$a
+    ),
+    yaxis2 = list(
+      title         = list(
+        text      = "Richness",
+        font      = list(color = rare_lines$line$b)
+        ),
+      overlaying    = "y",
+      side          = "right",
+      hoverformat   = ".0f",
+      tickformat    = ".0f",
+      zeroline      = F,
+      showline      = T,
+      linecolor     = rare_lines$line$b,
+      showgrid      = F,
+      ticks         = "inside",
+      tickcolor     = rare_lines$line$b,
+      automargin    = T
+    ),
+    yaxis3 = list(
+      title         = list(
+        text      = "Shannon Diversity",
+        font      = list(color = rare_lines$line$c)
+        ),
+      overlaying    = "y",
+      side          = "right",
+      hoverformat   = ".2f",
+      tickformat    = ".1f",
+      zeroline      = F,
+      showline      = T,
+      linecolor     = rare_lines$line$c,
+      showgrid      = F,
+      ticks         = "inside",
+      tickcolor     = rare_lines$line$c,
+      automargin    = T,
+      anchor        = "free",
+      position      = 0.9
+    )
+  ) %>%
+  hide_colorbar() %>%
+  hide_legend()
+
+save_html(rare_summary_plot, "visuals/loris_culi_rarefaction_summary.html")
+
+rare_summary_plot
+```
+
+
+Now you should qualitatively analyze your graph and try to find the ideal inflection points to maximize how many samples you keep in your data and how much of the true species richness you will be able to represent. I am going to go with 2.5K reads in this case. That keeps sample size, richness, and shannon diversity fairly balanced. It is a low number of reads, but keep in mind that we already filtered many reads based on taxonomic thresholds in the previous script, causing the steep negative slope we see with sample size as we increase the depth.
+
+```{r}
+genus_rarefied$rarefy_samples(sample.size = 2500)
+```
+
+## Diversity Stats
+
+Now we will calculate alpha diversity on our filtered, rarefied dataset, which is only considering diversity at the Genus level.
+
+```{r}
+genus_rarefied$cal_alphadiv(PD = TRUE)
+```
+
+## Extract and Save Results
+
+```{r}
+save(genus_rarefied, file = "microeco/loris/culi/rarefied/genus_rarefied.RData")
+genus_rarefied$save_alphadiv(dirpath = "microeco/loris/culi/rarefied")
+```
+
+---
+
+# Beta Diversity
+
+Rarefaction is less desirable for computing beta diversity, so we will not use that for normalization here. Our best options for normalizing our beta diversity values depends on which distance metric we decide to use. Some of our preferred combinations might look like this:
+
+| Normalization                       | Rationale                                                      | Distance        |
+|-------------------------------------|--------------------------------------------------------------- |  ---------------|
+|**TSS (Total‐sum scaling)**          |Convert to proportions (no reads discarded)                     | Bray-Curtis     |
+|**TSS (Total‐sum scaling)**          |Convert to proportions (no reads discarded)                     | Weighted UniFrac|
+|**CSS (Cumulative sum scaling)**     |Reduces bias from very abundant features                        | Bray-Curtis     |
+|**DESeq2 (median-ratio / RLE)**      |Borrowed from RNA-seq: handles size factors & dispersion        | Euclidean       |
+|**CLR (Centered log‐ratio)**         |Puts data in Euclidean space; compositionally aware             | Aitchison       |
+|**rCLR (Robust centered log‐ratio)** |Only considers taxa observed; compositionally aware and robust to zero-inflated data | Aitchison       |
+
+
+| Distance Metric | Type                              | Key features                                                                                                   | Use when |
+|-----------------|-----------------------------------|----------------------------------------------------------------------------------------------------------------|----------|
+| **Bray-Curtis** | Non-phylogenetic, abundance-based | Ranges 0 (identical) to 1 (no shared taxa). Sensitive to differences in abundant taxa; ignores joint absences. | You want a robust, interpretable metric for community composition. Your focus is on abundance shifts (vs. presence/absence). |
+| **Euclidean**   | Non-phylogenetic, geometrical | Straight‐line distance in multivariate space. Only appropriate after a transformation that yields homoscedastic, real-valued data. | You want to run a PCA (which assumes Euclidean geometry). Your downstream methods assume normality (e.g. PERMANOVA on Euclidean distances). |
+| **Aitchison**   | Non-phylogenetic, compositional | Respects the simplex geometry of compositional data. Distances are subcompositionally coherent (robust to dropping taxa). | You need a theoretically sound compositional metric. You want ordinations that respect log‐ratio geometry (e.g. PCA on CLR = PCA in Aitchison space). |
+| **Weighted UniFrac** | Phylogenetic, abundance‐weighted | Incorporates both phylogenetic distance and relative abundance. Ranges 0 (identical communities with identical phylogenetic structure) upward. | You care about how deeply communities differ on the tree, not just which taxa. You want to detect shifts in lineage abundance (vs. mere presence/absence of clades). |
+
+In practice it can be useful to compute all four beta diversity metrics and compare which best separates the experimental groups. Often Bray–Curtis and Weighted UniFrac give complementary views—one purely taxonomic, the other phylo-abundance based—while PCA on CLR (Aitchison) gives the mathematically “cleanest” compositional ordination. For now, we will perform the following:
+
+1.  TSS + Bray-Curtis
+2.  TSS + Weighted UniFrac
+3.  DESeq2 + Euclidean
+4.  rCLR + Aitchison
+
+## Normalization
+
+### TSS (Total-sum scaling)
+
+```{r}
+genus_bray <- clone(data_genus)
+genus_bray$cal_abund()
+```
+
+### DESeq2
+
+`DESeq2` requires a grouping variable or model formula to inform the dispersion calculations. Here is my plan for this:
+
+- For this first pass of ordination, I will do **blind VST (~1)**.  That gives me the most unbiased, stable Euclidean PCA to explore all potential drivers (time, diet, treatment).
+
+- Once I’ve settled on a hypothesis—for example, “does week × diet produce different community structure?”—I can combe back to re-run VST with a targeted formula (~ study_week + diet_name) or directly test differences on the blind-VST PCA or distance matrix via PERMANOVA.
+
+```{r}
+genus_eucl <- clone(data_genus)
+genus_tmp  <- trans_norm$new(genus_eucl)
+genus_deseq2 <- genus_tmp$norm(
+  method = "DESeq2",
+  formula = 1
+)
+```
+
+### rCLR (Robust centered log-ratio)
+
+For some reason the `rclr` method for `trans_norm$norm` glitches when working with a transformed dataset, so the github discussion boards recommend initiating a new dataset with the sample_data formatted as a dataframe.
+
+```{r}
+samples_rclr <- as_tibble(data_genus$sample_table) %>%
+  rownames_to_column("SampleID") %>%
+  mutate(SampleID = as.character(SampleID)) %>%
+  arrange(SampleID) %>%
+  as.data.frame() %>%
+  column_to_rownames("SampleID") %>%
+  select(-bristol_min, -bristol_max)
+
+otu_rclr <- data_genus$otu_table %>%
+  rownames_to_column("OTU") %>%
+  pivot_longer(!OTU) %>%
+  mutate(SampleID = as.character(name)) %>%
+  arrange(SampleID) %>%
+  select(-name) %>%
+  pivot_wider(names_from = "SampleID", values_from = "value") %>%
+  as.data.frame() %>%
+  column_to_rownames("OTU")
+```
+
+
+```{r}
+genus_aitch <- microtable$new(
+  otu_table    = data_genus$otu_table,
+  sample_table = data_genus$sample_table,
+  tax_table    = data_genus$tax_table,
+  phylo_tree   = data_genus$phylo_tree,
+  rep_fasta    = data_genus$rep_fasta,
+  auto_tidy    = TRUE
+)
+```
+
+```{r}
+genus_tmp   <- trans_norm$new(dataset = genus_aitch)
+genus_rclr  <- genus_tmp$norm(method = "rclr")
+```
+
+
+```{r}
+genus_aitch <- clone(data_genus)
+genus_aitch$cal_abund()
+genus_aitch$tidy_dataset()
+```
+
+```{r}
+all(rownames(genus_tmp$dataset$sample_table) == colnames(genus_tmp$dataset$otu_table))
+# should be TRUE for every sample
+```
+
+
+```{r}
+genus_rclr  <- genus_tmp$norm(method = "rclr")
+```
+
+
+
+## Distance
+
+### Bray-Curtis and Weighted UniFrac
+
+>`microeco` computes both simultaneously. It will also include unweighted unifrac.
+
+```{r}
+genus_bray$cal_betadiv(method = "bray", unifrac = TRUE)
+```
+
+```{r}
+save(genus_bray, file = "microeco/loris/tss/genus_bray.RData")
+genus_bray$save_betadiv(dirpath = "microeco/loris/tss")
+```
+
+

@@ -1,0 +1,102 @@
+---
+title: "Microbiome Data Normalization and Basic Metrics"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: kable
+    css: journal.css
+    code_download: true
+  
+---
+
+```{r setup, include=FALSE}
+library(conflicted)
+library(tidyverse)
+library(seqinr)
+library(ape)
+library(treedataverse)
+library(phyloseq)
+library(Biostrings)
+library(paletteer)
+library(skimr)
+
+source("setup/conflicted.R")
+
+
+knitr::opts_chunk$set(
+  message       = FALSE,
+  warning       = FALSE,
+  echo          = TRUE,
+  include       = TRUE,
+  eval          = TRUE,
+  comment       = ""  ,
+  df_print      = "kable",
+  skimr_digits  = 2        )
+
+```
+
+
+# Helper Functions
+
+I created the functions below because I repeatedly use these code chunks to view summaries of my data after each step of processing.
+
+```{r}
+
+my_skim <- skim_with(numeric  = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
+
+skim_phyloseq <- function(phyloseq) {
+options(
+  digits            = 2,
+  pillar.sigfig     = 2,
+  pillar.subtle_num = TRUE
+  )
+ skim <- psmelt(phyloseq) %>% 
+    select(-c(
+      subject_certainty, 
+      subject_studbook_id, 
+      subject_dam_id, 
+      subject_sire_id, 
+      subject_birth_location, 
+      subject_age)) %>%
+    group_by(subject) %>% 
+    my_skim() %>%
+    select(-complete_rate)
+ 
+ return(skim)
+}
+
+view_tree <- function(phyloseq, level = NULL, palette = "rcartocolor::Prism") {
+  phylum.cols <-  sample(paletteer::paletteer_d(paste0(palette)), size = length(get_taxa_unique(phyloseq, "Phylum")), replace = TRUE) %>%
+    set_names(., get_taxa_unique(phyloseq, "Phylum"))
+  
+  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum))
+  
+  if (is.null(level)) {
+    tree2 <- tree1
+  } else if (level == "Class") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  } else if (level == "Phylum") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
+  }
+  
+  tree.out <- tree2 +
+    scale_color_manual(values = phylum.cols, na.value = "#00000080") +
+    scale_fill_manual( values = alpha(c(phylum.cols), 0.3)) +
+    theme_tree(legend.position = "none")
+  
+  return(tree.out)
+}
+```
+
+---
+
+
+
