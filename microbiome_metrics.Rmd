@@ -190,8 +190,8 @@ data_genus <- phyloseq2meco(culi_genus, auto_tidy = TRUE)
 ```
 
 ```{r}
-start <- min(as_date(data_genus$sample_table$collection_date))
-end   <- ceiling_date(max(as_date(data_genus$sample_table$collection_date)), "month")
+start <- floor_date(min(as_date(data_genus$sample_table$collection_date)), "month")
+end   <- ceiling_date(max(as_date(data_genus$sample_table$collection_date)), "month") - days(1)
 
 months <- map(seq(start, end, by = "month"), \(x) interval(floor_date(x, "months"), (ceiling_date(x, "months") - days(1)))) %>%
   enframe(name = "collection_month", value = "interval") %>%
@@ -200,9 +200,10 @@ months <- map(seq(start, end, by = "month"), \(x) interval(floor_date(x, "months
   mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
   unnest_longer(collection_date) %>%
   select(-interval)
-weeks  <- map(seq(start, end, by = "week"), \(x) interval(floor_date(x, "weeks"), (ceiling_date(x, "weeks") - days(1)))) %>%
+weeks  <- map(seq(start, end, by = "week"), \(x) interval(floor_date(x, "weeks"), (floor_date(x, "weeks") + days(6)))) %>%
   enframe(name = "collection_week", value = "interval") %>%
   unnest(interval) %>%
+  filter(int_end(interval) <= end) %>%
   rowwise() %>%
   mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
   unnest_longer(collection_date) %>%
@@ -232,23 +233,132 @@ otu_table <- data_genus$otu_table %>%
   
 ```
 
-```{r}
-summary <- sample_table %>%
-  rownames_to_column("SampleID") %>%
-  right_join(weeks, by = join_by(collection_date, collection_month, collection_week))
 
+```{r}
+weeks_intervals <- weeks %>%
+  select(collection_date, collection_week) %>%
+  group_by(collection_week) %>%
+  reframe(dates = list(collection_date))
+
+months_intervals <- weeks %>%
+  select(collection_date, collection_month) %>%
+  group_by(collection_month) %>%
+  reframe(dates = list(collection_date))
+
+
+counts_weekly <- sample_table %>%
+  rownames_to_column("SampleID") %>%
+  select(SampleID, collection_date, collection_week) %>%
+  arrange(collection_date) %>%
+  group_by(collection_week) %>%
+  reframe(samples = n_distinct(SampleID)) %>%
+  right_join(weeks_intervals, by = "collection_week") %>%
+  arrange(collection_week) %>%
+  mutate(samples = replace_na(samples, 0)) %>%
+  rowwise() %>%
+  mutate(start   = first(dates)) %>%
+  ungroup()
+
+counts_monthly <- sample_table %>%
+  rownames_to_column("SampleID") %>%
+  arrange(collection_date) %>%
+  select(SampleID, collection_month) %>%
+  right_join(months_intervals, by = "collection_month") %>%
+  arrange(collection_month) 
+```
+
+  
+  
+```{r}
+
+
+  add_trace(
+    type             = "bar",
+    data             = counts_monthly,
+    x                = ~dates , 
+    y                = ~samples, 
+    opacity          = 0.3,
+    xaxis            = "x",
+    yaxis            = "y2",
+    xperiodalignment = "middle"
+    ) %>%
+```
+
+
+```{r}
+sample_timeline <- plot_ly() %>%
+  add_markers(
+    data             = counts_weekly,
+    x                = ~start,
+    y                = ~samples,
+    xperiodalignment = "start"
+  ) %>%
+  add_histogram(
+  data             = sample_table,
+  x                = ~collection_date,
+  histfunc         = "count",
+  xperiod          = "M1",
+  xperiodalignment = "start",
+  opacity          = 0.3,
+  xaxis            = "x2",
+  yaxis            = "y2"
+) %>%
+  layout(
+    barmode  = "overlay",
+    yaxis    = list(
+      title      = "N per Week",
+      ticks      = "outside",
+      showgrid   = F,
+      zeroline   = F,
+      showline   = T
+    ),
+    yaxis2    = list(
+      title      = "N per Month",
+      ticks      = "outside",
+      overlaying = "y",
+      side       = "right",
+      showgrid   = F,
+      zeroline   = F,
+      showline   = T
+    ),
+    xaxis = list(
+    title          = "Study Week",
+    ticklabelmode  = "period",
+    ticks          = "inside",
+    showticklabels = T,
+    showgrid       = F,
+    visible        = T,
+    showline       = T
+    ),
+    xaxis2 = list(
+    title          = "Study Month",
+    ticks          = "outside",
+    showticklabels = F,
+    overlaying     = "x",
+    showgrid       = F,
+    visible        = F
+    )
+  )
+
+sample_timeline
+```
+
+
+```{r}
 sample_timeline <- plot_ly(sample_table) %>%
   add_histogram(
-    x        = ~collection_date , 
-    histfunc = "count",
-    nbinsx   = max(sample_table$collection_month)
+    x                = ~collection_date , 
+    histfunc         = "count",
+    xperiod          = "M1",
+    xperiodalignment = "middle",
+    opacity          = 0.3
     ) %>%
   add_histogram(
-    x        = ~collection_date , 
-    histfunc = "count",
-    nbinsx   = max(sample_table$collection_week),
-    xaxis    = "x2",
-    yaxis    = "y2"
+    x                = ~collection_date , 
+    histfunc         = "count",
+    xperiod          = 6.048e+8,
+    xperiodalignment = "middle",
+    opacity          = 0.7
     ) %>%
   layout(
     bargap   = 0.1,
@@ -268,24 +378,24 @@ sample_timeline <- plot_ly(sample_table) %>%
     ),
     xaxis = list(
     title         = "Study Month",
-    tickvals      = seq((start - months(1)), (end + months(1)), by = "months"),
-    ticktext      = 0:(max(sample_table$collection_month) + 1),
-    ticklabelmode = "period",
     ticks         = "outside"
     ),
     xaxis2 = list(
     title         = "Study Week",
-    tickvals      = seq((start - weeks(1)), (end + weeks(1)), by = "weeks"),
-    ticktext      = 0:(max(sample_table$collection_week) + 1),
     overlaying    = "x",
-    visible       = F
+    visible       = T
     )
   )
 
 sample_timeline
 ```
 
+    ticklabelmode = "period",
+    tickvals      = seq((start - months(1)), (end + months(1)), by = "months"),
+    ticktext      = 0:(max(sample_table$collection_month) + 1),
 
+    tickvals      = seq((start - weeks(1)), (end + weeks(1)), by = "weeks"),
+    ticktext      = 0:(max(sample_table$collection_week) + 1)
 
 ```{r}
 data_genus$tidy_dataset()
