@@ -259,63 +259,61 @@ otu_table <- data_genus$otu_table %>%
 ```
 
 ```{r}
-source("metadata/loris/diet_schedule.R")
+source("metadata/loris/diet_trials.R")
 ```
 
 ```{r}
+plot_monthly <- plot_ly(sample_table) %>%
+  months_histo(sample_table) %>%
+  add_trace(
+    x         = ~collection_date,
+    histfunc  = "count",
+    visible   = FALSE,
+    nbinsx    = ceiling(max(sample_table$collection_day)/7)
+  ) %>%
+  layout(
+    xaxis       = list(visible = FALSE, matches = "x"),
+    xaxis2      = xmonths,
+    yaxis       = list(visible = FALSE),
+    yaxis2      = ymonths,
+    shapes      = diet_shapes,
+    annotations = diet_annotate,
+    margin      = list(t = 110)
+  )
+  
+```
+
+
+```{r}
+diet_trials[[1]]$begin <- start
 ends   <- diet_trials %>% discard_at(1) %>%
   map(\(x) list_assign(x, end = x$begin - day(1))) %>%
   map(\(x) keep_at(x, "end")) %>%
   list_flatten() %>%
-  list(., list(end = max(sample_table$collection_date))) %>%
+  list(., list(end = ceiling_date(max(sample_table$collection_date), "months"))) %>%
   list_flatten()
 
-diets <- map2(diet_trials, ends, \(x, y) list_assign(x, end = y))
+diets <- map2(diet_trials, ends, \(x, y) list_assign(x, end = y, dates = seq(x$begin, y)))
 
-diets[[1]]$begin <- start
 
-col.diet <- as.list(paletteer_d("ggthemes::Classic_Cyclic", n = n_distinct(map(diets, "diet")))) %>%
+col.diet <- as.list(paletteer_c("scico::hawaii", n = n_distinct(map(diets, "diet")), direction = -1)) %>%
   set_names(., unique(map(diets, "diet")))
-```
 
+diets <- map(diets, \(x) list_assign(x, color = pluck(col.diet, paste0(x$diet))))
 
-```{r}
-diets <- map2(diet_trials, ends, \(x, y) list_assign(x, end = y)) %>%
-  map2(as.list(paletteer_d("ggthemes::Classic_Cyclic", n = length(.))), \(x, y) list_assign(x, fill = y, span = seq(x$begin, x$end)))
-
-diets[[1]]$span <- seq(diets[[1]]$begin, diets[[1]]$end)
-
-```
-
-```{r}
-diets_tbl <- enframe(diets, name = NULL) %>%
-  unnest_wider(value) %>%
-  unnest_longer(span) %>%
-  mutate(label = as.character(str_glue(
-    "{diet}<br>({month(begin)}/{day(begin)}-{month(end)}/{day(end)})"
-    ))) %>%
-  select(date = span, diet, label) %>%
-  filter(date <= max(sample_table$collection_date))
-```
-
-
-```{r}
 diet_shapes <- diets %>%
   map(\(x) list(
    type      = "rect",
    layer     = "between",
-   fillcolor = col.diet[[paste0(x$diet)]], 
-   line      = list(width = 2, color = col.diet[[paste0(x$diet)]]), 
+   fillcolor = x$color, 
+   line      = list(width = 2, color = x$color), 
    opacity   = 0.7,
-   name      = x$diet,
-   label     = list(
-     text         = paste0(x$diet, " (", x$begin, ")")
-   ),
+   text      = x$diet,
    x0        = x$begin, 
    x1        = x$end, 
-   xref      = "x",
-   y0        = 1, 
-   y1        = 1.1, 
+   xref      = "x2",
+   y0        = 0.96, 
+   y1        = 1.02, 
    yref      = "paper"
    )
   )
@@ -324,60 +322,19 @@ diet_annotate <- diets %>%
   map(\(x) list(
    x         = x$begin,
    xref      = "x2",
-   xanchor   = "center",
-   y         = 1,
+   xanchor   = "left",
+   y         = 1.02,
    yref      = "paper",
    yanchor   = "bottom",
    showarrow = FALSE,
-   opacity   = 0,
-   text      = paste0(x$diet, " (", x$begin, ")"),
-   hovertext = paste0(x$diet, " (", x$begin, ")")
+   text      = x$diet,
+   textangle = -60
   ))
-
-
-weeks_histo <- function(plot, sample_table) {
-  plot %>%
-  add_trace(
-    x         = ~collection_date,
-    histfunc  = "count",
-    name      = "N/week",
-    nbinsx    = ceiling(max(sample_table$collection_day)/7),
-    zorder    = 5,
-    marker    = list(
-      pattern = list(
-        fillmode  = "replace",
-        shape     = "/",
-        fgcolor   = "#000000FF",
-        fgopacity = 0.6
-      ),
-      line    = list(width = 0.5, color = "#000000FF")
-    )
-  )
-}
-
-months_histo <- function(plot, sample_table) {
-  plot %>%
-  add_trace(
-    x                = ~collection_date,
-    histfunc         = "count",
-    name             = "N/month",
-    opacity          = 0.5,
-    zorder           = 0,
-    xperiod          = "M1",
-    xperiodalignment = "middle",
-    xaxis            = "x2",
-    yaxis            = "y2",
-    marker           = list( 
-    color    = "#bcbcbc",
-    line     = list(width = 1, color = "#000000FF")
-    )
-  )
-}
-
 
 xweeks <- list(
   title          = "Study Week",
   ticks          = "inside",
+  matches        = "x",
   showticklabels = T,
   showgrid       = F,
   visible        = T,
@@ -388,6 +345,8 @@ xweeks <- list(
 xmonths <- list(
   title          = "Study Month",
   ticks          = "outside",
+  side           = "top",
+  matches        = "x",
   showticklabels = F,
   overlaying     = "x",
   showgrid       = F,
@@ -415,21 +374,59 @@ ymonths <- list(
   automargin  = T
 )
 
+weeks_histo <- function(plot, sample_table) {
+  plot %>%
+  add_trace(
+    x         = ~collection_date,
+    histfunc  = "count",
+    name      = "N/week",
+    opacity   = 0.5,
+    nbinsx    = ceiling(max(sample_table$collection_day)/7),
+    zorder    = 3,
+    marker    = list(
+      color   = "#068D9DFF",
+    line     = list(width = 1, color = "#000000FF")
+    )
+  )
+}
+
+
+months_histo <- function(plot, sample_table) {
+  plot %>%
+  add_trace(
+    x                = ~collection_date,
+    histfunc         = "count",
+    name             = "N/month",
+    opacity          = 0.6,
+    zorder           = 0,
+    xperiod          = "M1",
+    xperiodalignment = "middle",
+    xaxis            = "x2",
+    yaxis            = "y2",
+    marker           = list( 
+    color    = "#BCC2A5FF",
+    line     = list(width = 2, color = "#BCC2A5FF")
+    )
+  )
+}
+
+
 sample_timeline <- plot_ly(sample_table) %>%
   weeks_histo(sample_table) %>%
   months_histo(sample_table) %>%
   layout(
-    bargap      = 0.15,
     xaxis       = xweeks,
     xaxis2      = xmonths,
     yaxis       = yweeks,
     yaxis2      = ymonths,
     shapes      = diet_shapes,
-    annotations = diet_annotate
-  ) %>%
-  hide_legend()
+    annotations = diet_annotate,
+    margin      = list(t = 110)
+  )
 sample_timeline
+
 ```
+
 
 
 
