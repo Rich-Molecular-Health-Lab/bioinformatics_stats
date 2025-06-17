@@ -1,5 +1,5 @@
 diet_trials <- list(
-  list(begin = ymd(path$day1   ), diet = "Baseline"),
+  list(begin = ymd("2023-10-26"), diet = "Baseline"),
   list(begin = ymd("2023-11-23"), diet = "Oatmeal Gel"), 
   list(begin = ymd("2023-12-14"), diet = "Baseline"),
   list(begin = ymd("2024-01-25"), diet = "Oatmeal Gel"),
@@ -15,7 +15,7 @@ diet_trials <- list(
 ) %>% .[order(map_dbl(., ~ .x$begin))] 
 
 warble_trials <- list(
-  list(begin = ymd(path$day1   ), diet = "Baseline")
+  list(begin = ymd("2023-10-26"), diet = "Baseline")
 ) %>% enframe(name = NULL) %>% 
   unnest_wider(value) %>%
   mutate(diet_name = diet, .keep = "unused") %>%
@@ -30,7 +30,7 @@ supplement_details <- list(
 )
 
 supplements <- list(
-  list(begin = ymd(path$day1   ),  probiotic = 00.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00),
+  list(begin = ymd("2023-10-26"),  probiotic = 00.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00),
   list(begin = ymd("2023-11-02"),  probiotic = 05.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00),
   list(begin = ymd("2023-11-07"),  probiotic = 10.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00),
   list(begin = ymd("2023-12-14"),  probiotic = 00.0, steroid = 00.1, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00),
@@ -54,7 +54,7 @@ supplements <- list(
 )
 
 warble_supplements <- list(
-  list(begin = ymd(path$day1   ),  probiotic = 00.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00)
+  list(begin = ymd("2023-10-26"),  probiotic = 00.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00)
 ) %>% enframe(name = NULL) %>% 
   unnest_wider(value) %>%
   mutate(end = today(), subject = "warble")
@@ -66,7 +66,7 @@ new_holding_start <- list(
 )
 
 pair_access <- list(
-  list(begin = ymd(path$day1)   , end = ymd("2023-10-29")),
+  list(begin = ymd("2023-10-26"), end = ymd("2023-10-29")),
   list(begin = ymd("2024-04-02"), end = ymd("2024-04-15"))
 )
 
@@ -79,7 +79,7 @@ access_dates <- enframe(pair_access, name = NULL) %>%
 
 cycles <- list(
   estrus = list(
-    list(begin = ymd(path$day1)   , end = ymd("2023-10-29")),
+    list(begin = ymd("2023-10-26"), end = ymd("2023-10-29")),
     list(begin = ymd("2024-03-21"), end = ymd("2024-04-06"))
   ),
   pregnant = list(

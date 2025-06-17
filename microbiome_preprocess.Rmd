@@ -265,7 +265,9 @@ Next we will create a version that merges the replicated samples so that we have
 
 ```{r}
 phylo_merged <- phylo_culi %>% merge_samples("subject_day")
+```
 
+```{r}
 skim_phyloseq(phylo_merged)
 ```
 
