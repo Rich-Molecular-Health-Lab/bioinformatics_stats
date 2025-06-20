@@ -25,6 +25,7 @@ library(phyloseq)
 library(Biostrings)
 library(paletteer)
 library(skimr)
+library(plotly)
 
 source("setup/conflicted.R")
 
@@ -161,33 +162,141 @@ options(
  return(skim)
 }
 
-view_tree <- function(phyloseq, level = NULL, palette = "rcartocolor::Prism") {
+view_tree <- function(phyloseq, level = NULL, title = NULL, palette = "rcartocolor::Prism") {
   phylum.cols <-  sample(paletteer::paletteer_d(paste0(palette)), size = length(get_taxa_unique(phyloseq, "Phylum")), replace = TRUE) %>%
     set_names(., get_taxa_unique(phyloseq, "Phylum"))
   
-  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum))
-  
-  if (is.null(level)) {
-    tree2 <- tree1
-  } else if (level == "Class") {
-    tree2 <- tree1 +
-      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
-  } else if (level == "Phylum") {
-    tree2 <- tree1 +
-      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
-  } else if (level == "Order") {
-    tree2 <- tree1 +
-      geom_label(aes(label = Order, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  if (is.null(title) & !is.null(level)) {
+    title <- level
+  } else if (is.null(title) & is.null(level)) {
+    title <- "16S Phylogenetic Tree"
+  } else if (!is.null(title)) {
+    title <- title
   }
   
-  tree.out <- tree2 +
+  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum)) + geom_tippoint(aes(color = Phylum))
+  
+  if (is.null(level)) {
+    tree2 <- tree1 +
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum
+              ),
+            parse = TRUE)
+      )
+  } else if (level == "Species") {
+    tree2 <- tree1 + 
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum,
+              "<br>"  , Class,
+              "<br>"  , Order,
+              "<br> " , Family,
+              "<br>"  , Genus,
+              "<br>"  , Species
+              ),
+            parse = TRUE)
+      )
+  } else if (level == "Genus") {
+    tree2 <- tree1 + 
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum,
+              "<br>"  , Class,
+              "<br>"  , Order,
+              "<br> " , Family,
+              "<br>"  , Genus
+              ),
+            parse = TRUE)
+      )
+  } else if (level == "Family") {
+    tree2 <- tree1 + 
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum,
+              "<br>"  , Class,
+              "<br>"  , Order,
+              "<br> " , Family
+              ),
+            parse = TRUE)
+      )
+  } else if (level == "Order") {
+    tree2 <- tree1 + 
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum,
+              "<br>"  , Class,
+              "<br>"  , Order
+              ),
+            parse = TRUE)
+      ) +
+      geom_label(aes(label = Order, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  }  else if (level == "Class") {
+    tree2 <- tree1 + 
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum,
+              "<br>"  , Class
+              ),
+            parse = TRUE)
+      )  +
+      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  } else if (level == "Phylum") {
+    tree2 <- tree1 + 
+      geom_text2(
+        data = td_filter(isTip & !is.na(label)),
+        aes(color = Phylum, 
+            label  = paste0(
+              "<strong>", label, "</strong>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum
+              ),
+            parse = TRUE)
+      )  +
+      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
+  }
+  
+  tree3 <- tree2 +
     scale_color_manual(values = phylum.cols, na.value = "#00000080") +
     scale_fill_manual( values = alpha(c(phylum.cols), 0.3)) +
-    theme_tree(legend.position = "none")
+    theme_tree(legend.position = "none") +
+    ggtitle(title)
+  
+  tree.out <- ggplotly(tree3, tooltip = c("colour", "text", "label")) %>%
+  layout(
+    hoverdistance = 1,
+    hoverlabel    = list(font = list(size = 10)),
+    hovermode     = "y unified"
+    )
   
   return(tree.out)
 }
 ```
+
 
 ---
 
@@ -237,14 +346,24 @@ phylo <- phyloseq(
 
 ## Preview Starting Data
 
+<details>
+<summary>**Expand to view `skimr` Summary**</summary>
+
 ```{r}
 skim_phyloseq(phylo)
 ```
 
+</details>
 
 ```{r}
-view_tree(phylo) + ggtitle("Species-Level OTUs before Filtering")
+tree_initial <- view_tree(phylo, "Species", "Species-Level OTUs before Filtering")
+tree_initial
 ```
+
+```{r}
+tree_initial
+```
+
 
 That looks like some very dense, messy taxonomic data!
 
@@ -267,9 +386,14 @@ Next we will create a version that merges the replicated samples so that we have
 phylo_merged <- phylo_culi %>% merge_samples("subject_day")
 ```
 
+<details>
+<summary>**Expand to view `skimr` Summary**</summary>
+
 ```{r}
 skim_phyloseq(phylo_merged)
 ```
+
+</details>
 
 
 # Clean up Taxonomy
@@ -320,7 +444,9 @@ skim_phyloseq(phylo_pruned)
 ```
 
 ```{r}
-view_tree(phylo_pruned) + ggtitle("Species-Level OTUs after Filtering")
+tree_species <- view_tree(phylo_pruned) + ggtitle("Species-Level OTUs after Filtering")
+
+ggplotly(tree_species)
 ```
 
 
@@ -330,9 +456,16 @@ Collapsing at genus level reduces complexity and allows genus‐scale ecological
 
 ```{r}
 phylo_genus <- phylo_pruned %>% tax_glom("Genus")
+```
+
+<details>
+<summary>**Expand to view `skimr` Summary**</summary>
+
+```{r}
 skim_phyloseq(phylo_genus)
 ```
 
+</details>
 
 ```{r}
 view_tree(phylo_genus) + ggtitle("Genus-Level OTUs")
@@ -352,8 +485,17 @@ Let's do one more pruning step to only keep the genera with total abundances gre
 
 ```{r}
 culi_genus <- prune_taxa(keep_genera, phylo_genus)
+```
+
+<details>
+<summary>**Expand to view `skimr` Summary**</summary>
+
+```{r}
 skim_phyloseq(culi_genus)
 ```
+
+</details>
+
 
 ```{r results='asis'}
 view_tree(culi_genus) + ggtitle("Genus-Level OTUs")
