@@ -1,0 +1,86 @@
+---
+title: "scratch"
+output: html_document
+---
+
+phylo, "Species", "Species-Level OTUs before Filtering"
+
+```{r}
+tree_data <- as_tibble(as.treedata(ggtree(culi_genus))) %>%
+  mutate(hover = as.character(str_glue("<b>{label}</b><br>{Kingdom}<br>{Phylum}<br>{Class}<br>{Order}<br>{Family}<br>{Genus}"))) %>%
+  relocate(hover, .after = label)
+```
+```{r}
+ggdata <- as.treedata(ggtree(culi_genus)) %>%
+  as_tibble() %>%
+  relocate(Kingdom, Phylum, Class, Order, Family, Genus, hjust, .after = label)
+```
+
+```{r}
+skimr::skim(select(ggdata, parent:Genus))
+```
+
+
+
+```{r}
+phylo_tree <- phy_tree(culi_genus)
+```
+
+```{r}
+phyloinf <- CladisticInfo(phylo_tree)
+```
+
+
+```{r}
+tax_data <- tax_table(culi_genus) %>%
+  unclass() %>%
+  as_tibble(rownames = "label") %>%
+  select(-Species)
+```
+
+```{r}
+tree_data <- as.treedata(phylo_tree)
+```
+
+
+```{r}
+tree_data <- as_tibble(phylo_tree) %>%
+  left_join(tax_data, by = "label") %>%
+  as.treedata()
+```
+
+
+
+```{r}
+tree_phylo <- as.phylo(tree_data)
+```
+
+
+
+
+```{r}
+tree1 <- ggtree(culi_genus, branch.length = "none", aes(color = Phylum,
+                                                        
+            text  = paste0(
+              "<b>", label, "</b>",
+              "<br>"  , Kingdom,
+              "<br>"  , Phylum,
+              "<br>"  , Class,
+              "<br>"  , Order,
+              "<br> " , Family,
+              "<br>"  , Genus
+              ),
+            parse = TRUE)) + 
+  scale_color_paletteer_d("ggsci::default_igv", na.value = "#00000080") +
+    theme_tree(legend.position = "none") +
+    ggtitle("Genus-Level OTUs")
+```
+
+
+```{r warning=FALSE}
+tree.out <- ggplotly(tree1, tooltip = "text") %>%
+  layout(hoverlabel = list(font = list(size = 10)), hovermode = "y unified"
+    )
+tree.out
+```
+

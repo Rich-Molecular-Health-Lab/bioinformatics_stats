@@ -440,13 +440,20 @@ For now, we will remove 1,574 species where the total abundance is less than or 
 
 ```{r}
 phylo_pruned <- prune_taxa(keep_otus, phylo_merged)
+```
+
+<details>
+<summary>**Expand to view `skimr` Summary**</summary>
+
+```{r}
 skim_phyloseq(phylo_pruned)
 ```
 
+</details>
+
 ```{r}
 tree_species <- view_tree(phylo_pruned) + ggtitle("Species-Level OTUs after Filtering")
-
-ggplotly(tree_species)
+tree_species
 ```
 
 
