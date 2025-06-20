@@ -1,0 +1,242 @@
+---
+title: "pipeline_plans"
+output: html_document
+---
+
+Below is a start‑to‑finish “long‑read ASV” pipeline for full‑length ONT 16S runs (SUP base‑calling, 24‑plex).  It keeps every step reproducible inside an R Markdown (.Rmd) file, where CPU‑heavy tasks live in your custom terminal engine so you can copy‐and‐paste them straight into a Slurm batch or an interactive node.
+
+⸻
+
+High‑level flow  (keep this at the top of the .Rmd)
+
+#+ pipeline_overview, echo = FALSE, results = "asis"
+cat(knitr::knit_expand(text = "
+1  Base‑calling & demultiplex (Dorado)                     ✔ done
+2  Length / quality filter (NanoFilt | Chopper)            ✔ done
+3  Primer trimming (cutadapt)                             ◀ NEW
+4  Re‑orientation (all reads --> 5'–3')                   ◀ NEW
+5  Denoising to ASVs   ⤳ pick ONE route  
+     A. **DADA2‑longread** (R)  
+     B. **NanoCLUST**       (batch)  
+     C. **isONclust + Medaka** (consensus)  
+6  ASV QC, chimera removal (built into routes A‑C)
+7  Taxonomy (SILVA 138.1/GTDBrs202) via **assignTaxonomy()**
+8  Multiple‑sequence alignment (DECIPHER::AlignSeqs)
+9  Phylogeny (phangorn: NJ → GTR+Γ ML)
+10  Build phyloseq object for α/β‑diversity, mixed models
+"))
+
+
+⸻
+
+1  Primer trimming (cutadapt)
+
+Goal: remove the 27F / 1492R universal primers before denoising—DADA2 (and friends) expect primer‑free reads of consistent length.
+
+#!/bin/bash
+#SBATCH -J trim16s
+#SBATCH -t 02:00:00
+#SBATCH --mem 32G
+#SBATCH -c 8
+module load cutadapt/4.7
+
+FWD=AGAGTTTGATCMTGGCTCAG      # ONT 27F
+REV=TACGGYTACCTTGTTACGACTT    # ONT 1492R (reverse‑complement later)
+
+for fq in reads/filtered/${seqrun}/*.fastq.gz; do
+  samp=$(basename ${fq} .fastq.gz)
+  cutadapt                                                     \
+      -g ${FWD} -G ${REV}                                      \
+      -m 1400 -M 1700                                          \
+      -q 12,12                                                 \
+      --discard-untrimmed                                      \
+      -o trimmed/${samp}_R1.fastq.gz                           \
+      -p trimmed/${samp}_R2.fastq.gz                           \
+      ${fq} ${fq}   # trick: same file twice for single-end
+done
+
+
+⸻
+
+2  Re‑orient all reads (make them 5’–3’)
+
+ONT reads appear in mixed orientations.  DADA2’s long‑read mode assumes a single orientation.
+
+#!/bin/bash
+#SBATCH -J orient16s
+#SBATCH -t 01:00:00
+#SBATCH --mem 16G
+module load seqkit/2.5
+
+for fq in trimmed/*_R1.fastq.gz; do
+  samp=$(basename $fq _R1.fastq.gz)
+  seqkit orient --match 27F --quiet ${fq} \
+        | pigz > oriented/${samp}.fastq.gz
+done
+
+
+⸻
+
+3  Pick ONE denoising route
+
+Route	When to choose	Pros	Cons
+A  DADA2‑longread	≥Q12, ≤3–5 Gb per run; want R‑native	Familiar, integrated into phyloseq	Needs 8–16 GB RAM/sample; assumes moderate error
+B  NanoCLUST	Mixed Q, low depth (~2–10 k reads/sample)	Handles ONT error with clustering + Medaka polish	Extra deps; Python/Snakemake
+C  isONclust + Medaka	Very high error or very long reads (>2 kb)	True consensus per cluster	Slower; more steps
+
+Below I give full code for route A (DADA2).  For B & C I only show Slurm snippets.
+
+⸻
+
+3A  DADA2 long‑read pipeline (in R)
+
+Add an R chunk (not terminal) so you stay in the same .Rmd:
+
+#+ dada2_longread, eval = FALSE, message = FALSE
+library(dada2); packageVersion("dada2")  # ≥1.28
+
+fqs   <- list.files("oriented", "*.fastq.gz", full.names = TRUE)
+samps <- gsub(".fastq.gz", "", basename(fqs))
+
+# -- error‑model learning -------------------------------------------------
+err <- learnErrors(fqs, nbases = 1e8, multithread = TRUE, MAX_CONSIST = 20)
+
+# -- dereplication & denoising -------------------------------------------
+dds <- vector("list", length(fqs))
+names(dds) <- samps
+for(i in seq_along(fqs)) {
+  drp      <- derepFastq(fqs[i])
+  dds[[i]] <- dada(drp, err = err, selfConsist = TRUE,
+                   BAND_SIZE = 32, OMEGA_A = 1e-40)   # PacBio/ONT defaults
+}
+
+# -- make ASV table, remove chimeras -------------------------------------
+seqtab     <- makeSequenceTable(dds)
+seqtab.noC <- removeBimeraDenovo(seqtab, method = "consensus",
+                                 multithread = TRUE)
+
+saveRDS(seqtab.noC, "dada2/seqtab_nochim.rds")
+
+Taxonomy
+
+#+ assign_tax, eval = FALSE
+tax <- assignTaxonomy(seqtab.noC,
+                      "db/silva_138.1_nr99_train.fa.gz",
+                      multithread = TRUE)
+saveRDS(tax, "dada2/tax_silva.rds")
+
+
+⸻
+
+3B  NanoCLUST batch (Nextflow/Snakemake)
+
+#!/bin/bash
+#SBATCH -J nanoclust
+#SBATCH -t 04:00:00
+#SBATCH --mem 64G
+#SBATCH -c 16
+
+module load singularity
+nextflow run nanoclust/main.nf                        \
+  --fastq_dir oriented                                \
+  --outdir nanoclust                                  \
+  --min_reads_cluster 3                               \
+  --threads 16
+
+Outputs: rep_seqs.fasta, cluster_table.tsv (ASV ≈ cluster consensus).
+
+⸻
+
+3C  isONclust → racon → medaka
+
+#SBATCH -J ison_medaka
+#SBATCH -t 06:00:00
+#SBATCH --mem 128G
+#SBATCH -c 24
+
+module load isonclust/0.0.8 racon/1.5 medaka/1.11
+
+isonclust --ont -i oriented/all_reads.fastq.gz -o clusters -t 24
+for clu in clusters/*.fasta; do
+  racon $(gzip -dc oriented/all_reads.fastq.gz) $clu > ${clu%.fasta}_racon.fasta
+  medaka_consensus -i oriented/all_reads.fastq.gz \
+                   -d ${clu%.fasta}_racon.fasta  \
+                   -o ${clu%.fasta}_medaka -t 24
+done
+
+cat clusters/*_medaka/consensus.fasta > isonclust_ASV.fasta
+
+Convert FASTA → feature table with vsearch --usearch_global.
+
+⸻
+
+4  Multiple‑sequence alignment & phylogeny
+
+Works for any route that produces ASV_Fasta and abundance table.
+
+#+ tree_build, eval = FALSE
+library(DECIPHER); library(phangorn)
+
+asv_seqs <- getSequences(seqtab.noC)          # or your own FASTA
+names(asv_seqs) <- paste0("ASV", seq_len(length(asv_seqs)))
+
+aln <- AlignSeqs(DNAStringSet(asv_seqs), processors = 8)
+phydat <- phyDat(as(aln, "matrix"), type = "DNA")
+dm     <- dist.ml(phydat)
+tree0  <- NJ(dm)
+fitGTR <- pml(tree0, phydat) %>% optim.pml(model = "GTR", optGamma = TRUE)
+phyl_tree <- fitGTR$tree
+saveRDS(phyl_tree, "phylo/asv_tree.rds")
+
+
+⸻
+
+5  Make a phyloseq object (for α/β‑diversity & mixed models)
+
+#+ phyloseq_build, eval = FALSE
+library(phyloseq)
+otu  <- otu_table(seqtab.noC, taxa_are_rows = FALSE)
+tax  <- tax_table(tax)
+phy  <- phyloseq(otu, tax, sample_data(sample.table), phy_tree(phyl_tree))
+saveRDS(phy, "phyloseq/asv_phyloseq.rds")
+
+You can now:
+
+estimate_richness(phy, measures = c("Shannon","Simpson","Faith"))
+distance(phy, method = "wUniFrac")
+
+Feed those into lme4, divnet, or adonis2 with subject‐level strata.
+
+⸻
+
+Recommended checkpoints  (print these in your .Rmd)
+
+#+ checkpoints, echo = FALSE
+cat("
+✔  Trimmed reads ≥ Q12 & length 1 400–1 700 bp  
+✔  All reads in forward orientation  
+✔  ASV table sparsity < 90 %  
+✔  ASV chimeras < 5 % of total reads  
+✔  Negative controls yield ≤ 1 % of total ASVs  
+")
+
+
+⸻
+
+6  Best‑practice tips
+	1.	Depth vs. accuracy – For ONT 16S, 2 000–10 000 reads/sample is fine when coupled with a denoiser that models errors (DADA2) or polishes consensus (NanoCLUST).
+	2.	RAM planning – DADA2: ~4 GB per 10 000 reads; allow ≥16 GB node for safety.
+	3.	Benchmark – Keep a 96‑well Zymo mock run; pass it through the pipeline with every software upgrade.
+	4.	Document – Export sessionInfo() and every Slurm script verbatim in the final HTML; journals increasingly ask for it.
+
+⸻
+
+Deliverables for downstream ecology
+
+File	Purpose
+seqtab_nochim.rds	abundance matrix (samples × ASVs)
+tax_silva.rds	taxonomic table
+asv_tree.rds	rooted phylogeny
+asv_phyloseq.rds	phyloseq object (all‑in‑one)
+
+With these you can run Faith’s PD, UniFrac, Aitchison β‑diversity, DivNet Shannon, and mixed‑effects models—all from a dataset whose error profile has been rigorously tamed for long‑read quirks.
