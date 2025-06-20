@@ -382,3 +382,1096 @@ ancestors_genus <- map(nodes_genus, \(x) getMRCA(phylo_tree, x)) %>%
 
 
 
+```{r}
+months <- map(seq(start, end, by = "month"), \(x) interval(floor_date(x, "months"), (ceiling_date(x, "months") - days(1)))) %>%
+  enframe(name = "collection_month", value = "interval") %>%
+  unnest(interval) %>%
+  rowwise() %>%
+  mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
+  unnest_longer(collection_date) %>%
+  select(-interval)
+weeks  <- map(seq(start, end, by = "week"), \(x) interval(floor_date(x, "weeks"), (floor_date(x, "weeks") + days(6)))) %>%
+  enframe(name = "collection_week", value = "interval") %>%
+  unnest(interval) %>%
+  filter(int_end(interval) <= end) %>%
+  rowwise() %>%
+  mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
+  unnest_longer(collection_date) %>%
+  select(-interval) %>%
+  left_join(months, by = "collection_date")
+```
+
+```{r}
+sample_table <- data_genus$sample_table %>%
+  rownames_to_column("SampleID") %>%
+  select(-starts_with("subject"),
+         -bristol_min,
+         -bristol_max) %>%
+  mutate(collection_date = as_date(collection_date),
+         SampleID        = as.character(SampleID)) %>%
+  arrange(collection_day) %>%
+  left_join(weeks, by = "collection_date") %>%
+  relocate(collection_month, collection_week, collection_day, collection_date, .after = SampleID) %>%
+  column_to_rownames("SampleID")
+
+otu_table <- data_genus$otu_table %>%
+  rownames_to_column("OTU") %>%
+  pivot_longer(!OTU) %>%
+  mutate(collection_day = as.integer(str_remove_all(name, "[^\\d+]"))) %>%
+  arrange(collection_day) %>%
+  select(-collection_day) %>%
+  pivot_wider(names_from = "name", values_from = "value") %>%
+  column_to_rownames("OTU")
+  
+```
+
+
+```{r}
+weeks_histo <- function(plot, sample_table) {
+  plot %>%
+  add_trace(
+    x         = ~collection_date,
+    histfunc  = "count",
+    name      = "N/week",
+    opacity   = 0.5,
+    nbinsx    = ceiling(max(sample_table$collection_day)/7),
+    zorder    = 3,
+    marker    = list(
+      color   = "#068D9DFF",
+    line     = list(width = 1, color = "#000000FF")
+    )
+  )
+}
+
+
+months_histo <- function(plot, sample_table) {
+  plot %>%
+  add_trace(
+    x                = ~collection_date,
+    histfunc         = "count",
+    name             = "N/month",
+    opacity          = 0.6,
+    zorder           = 0,
+    xperiod          = "M1",
+    xperiodalignment = "middle",
+    xaxis            = "x2",
+    yaxis            = "y2",
+    marker           = list( 
+    color    = "#BCC2A5FF",
+    line     = list(width = 2, color = "#BCC2A5FF")
+    )
+  )
+}
+```
+
+```{r}
+xweeks <- list(
+  title          = "Study Week",
+  ticks          = "outside",
+  matches        = "x",
+  showticklabels = T,
+  showgrid       = F,
+  visible        = T,
+  showline       = T,
+  hoverformat    = "%U",
+  layer          = "below traces"
+)
+xmonths <- list(
+  title          = "Study Month",
+  ticks          = "outside",
+  matches        = "x",
+  showticklabels = F,
+  overlaying     = "x",
+  showgrid       = F,
+  visible        = F,
+  hoverformat    = "%b-%y",
+  ticklabelmode  = "instant",
+  layer          = "below traces"
+)
+
+yweeks <- list(
+  title      = "N/Week",
+  ticks      = "outside",
+  showgrid   = F,
+  zeroline   = F,
+  showline   = T
+)
+ymonths <- list(
+  title       = "N/Month",
+  ticks       = "outside",
+  overlaying  = "y",
+  showgrid    = F,
+  zeroline    = F,
+  showline    = T,
+  automargin  = T
+)
+```
+
+
+```{r}
+sample_timeline <- plot_ly(sample_table) %>%
+  weeks_histo(sample_table) %>%
+  months_histo(sample_table) %>%
+  layout(
+    xaxis       = xweeks,
+    xaxis2      = xmonths,
+    yaxis       = yweeks,
+    yaxis2      = ymonths,
+    shapes      = diet_shapes,
+    annotations = diet_annotate,
+    margin      = list(t = 110)
+  )
+sample_timeline
+
+```
+
+```{r}
+start <- floor_date(min(as_date(data_genus$sample_table$collection_date)), "month")
+end   <- ceiling_date(max(as_date(data_genus$sample_table$collection_date)), "month") - days(1)
+```
+
+
+```{r}
+weeks_intervals <- weeks %>%
+  select(collection_date, collection_week) %>%
+  group_by(collection_week) %>%
+  reframe(dates = list(collection_date))
+
+months_intervals <- weeks %>%
+  select(collection_date, collection_month) %>%
+  group_by(collection_month) %>%
+  reframe(dates = list(collection_date))
+
+
+counts_weekly <- sample_table %>%
+  rownames_to_column("SampleID") %>%
+  select(SampleID, collection_date, collection_week) %>%
+  arrange(collection_date) %>%
+  group_by(collection_week) %>%
+  reframe(samples = n_distinct(SampleID)) %>%
+  right_join(weeks_intervals, by = "collection_week") %>%
+  arrange(collection_week) %>%
+  mutate(samples = replace_na(samples, 0)) %>%
+  rowwise() %>%
+  mutate(start   = first(dates)) %>%
+  ungroup()
+
+counts_monthly <- sample_table %>%
+  rownames_to_column("SampleID") %>%
+  arrange(collection_date) %>%
+  select(SampleID, collection_month) %>%
+  right_join(months_intervals, by = "collection_month") %>%
+  arrange(collection_month) 
+```
+
+```{r}
+meds <- map(supplements, \(x) keep(x, \(y) all(y > 0)))
+
+probiotic <- map(meds, \(x) list_assign(x, dose = x$probiotic, begin = x$begin, ))
+```
+
+
+```{r}
+meds <- list_transpose(supplements) %>%
+  list_assign(end = .$begin - days(1)) %>%
+  map(\(x) as.list(x))
+
+pluck(meds$end, 1) <- zap()
+pluck(meds$end, 21) <- ceiling_date(max(sample_table$collection_date), "months")
+```
+
+
+```{r}
+meds_t <- list_transpose(meds) %>%
+  map(\(x) keep(x, \(y) all(y > 0))) %>%
+  keep(\(x) all(length(x) > 2)) %>%
+  list_transpose()
+```
+
+
+```{r}
+meds <- enframe(supplements, name = NULL) %>%
+  unnest_wider(value) %>%
+  mutate(end = lead(begin) - days(1)) %>%
+  mutate(end = replace_na(end, ceiling_date(max(sample_table$collection_date), "months")))
+
+
+```
+
+
+
+```{r}
+add_segments(
+  x     = ~begin,
+  xend  = ~end,
+  y     = 0,
+  yend  = monthly_max + 1,
+  color = 
+)
+```
+
+```{r}
+monthly_max <- count(sample_table, month(collection_date)) %>%
+  pull(n) %>%
+  max()
+weekly_max <- count(sample_table, epiweek(collection_date)) %>%
+  pull(n) %>%
+  max()
+```
+
+```{r}
+col.diet <- as.list(paletteer_c("scico::hawaii", n = n_distinct(map(diets, "diet")), direction = -1)) %>%
+  set_names(., unique(map(diets, "diet")))
+
+diets <- map(diets, \(x) list_assign(x, color = pluck(col.diet, paste0(x$diet))))
+
+```
+
+
+```{r}
+diet_shapes_weeks <- diets %>%
+  map(\(x) list(
+   type      = "rect",
+   layer     = "between",
+   fillcolor = x$color, 
+   line      = list(width = 2, color = x$color), 
+   opacity   = 0.7,
+   text      = x$diet,
+   x0        = x$begin, 
+   x1        = x$end, 
+   xref      = "x",
+   y0        = -0.05, 
+   y1        = 0.03, 
+   yref      = "paper"
+   )
+  )
+
+diet_shapes_months <- diets %>%
+  map(\(x) list(
+   type      = "rect",
+   layer     = "between",
+   fillcolor = x$color, 
+   line      = list(width = 2, color = x$color), 
+   opacity   = 0.7,
+   text      = x$diet,
+   x0        = x$begin, 
+   x1        = x$end, 
+   xref      = "x",
+   y0        = 1.01, 
+   y1        = 1.07, 
+   yref      = "paper"
+   )
+  )
+
+diet_annotate <- diets %>%
+  map(\(x) list(
+   x         = x$begin,
+   xref      = "x",
+   xanchor   = "left",
+   y         = 1.06,
+   yref      = "paper",
+   yanchor   = "bottom",
+   showarrow = FALSE,
+   text      = x$diet,
+   textangle = -40
+  ))
+
+
+
+
+```
+
+
+
+```{r}
+meds <- map2(supplements_long, list(
+  "pals::ocean.dense",
+  "pals::ocean.oxy",
+  "pals::ocean.solar",
+  "pals::ocean.turbid",
+  "scico::acton"
+), \(x, y) color.dose(x, y)) %>%
+  imap(\(x, idx) map(x, \(y) list_assign(y, name = idx))) %>%
+  list_flatten()
+```
+
+```{r}
+meds <- map2(supplements_long, list(
+  "pals::ocean.dense",
+  "pals::ocean.oxy",
+  "pals::ocean.solar",
+  "pals::ocean.turbid",
+  "scico::acton"
+), \(x, y) color.dose(x, y)) %>%
+  imap(\(x, idx) map(x, \(y) list_assign(y, name = idx))) %>%
+  map(\(x) enframe(x, name = NULL)) %>%
+  map(\(x) unnest_wider(x, value))
+```
+
+```{r}
+color.dose <- function(med, palette) {
+  levels <- map(med, "dose") %>% unlist() %>% unique()
+  cols <- as.character(paletteer_c(palette, n = length(levels), direction = -1)) %>%
+    set_names(levels)
+  col.pal <- map(med, \(x) list_modify(x, color = pluck(cols, as.character(x$dose))))
+  return(col.pal)
+}
+```
+
+```{r}
+meds_shapes <- meds  %>%
+  map(\(x) list(
+   type      = "rect",
+   layer     = "below",
+   fillcolor = x$color, 
+   line      = list(width = 2, color = x$color), 
+   opacity   = 0.2,
+   text      = x$name,
+   x0        = x$begin, 
+   x1        = x$end, 
+   xref      = "x",
+   y0        = 0, 
+   y1        = 1, 
+   yref      = "paper"
+))
+
+meds_annotate <- supplements_long %>%
+  imap(\(x, idx) map(x, \(y) list_assign(y, name = idx))) %>%
+  list_flatten() %>%
+  map(\(x) list(
+   x         = x$begin,
+   xref      = "x",
+   xanchor   = "left",
+   y         = 0.95,
+   yref      = "paper",
+   yanchor   = "bottom",
+   showarrow = TRUE,
+   arrowsize = 0.6,
+   clicktoshow = "onoff",
+   text      = str_to_title(x$name)
+  ))
+
+```
+
+
+
+```{r}
+add_med_weekly <- function(plot, x) {
+  doses  <- pluck(x, "data") %>% pull(dose) %>% unique()
+  colors <- pluck(x, "colors") %>% set_names(doses)
+  ymax <- count(sample_table, epiweek(collection_date)) %>%
+  pull(n) %>%
+  max()
+ trace <- plot %>%
+    add_segments(
+      data   = pluck(x, "data"),
+      x      = ~begin,
+      xend   = ~end,
+      xref   = "x",
+      y      = ymax + (ymax*0.1) + (ymax*pluck(x, "y")),
+      yend   = ymax + (ymax*0.1) + (ymax*pluck(x, "y")),
+      name   = ~paste0(str_to_title(name), " (Dose: ", dose, ")"),
+      text   = ~paste0("Dose: ", dose),
+      color  = ~as.character(dose),
+      colors = colors,
+      line   = list(width = 5)
+    )
+ 
+ return(trace)
+}
+
+```
+
+
+
+```{r}
+trace_cols <- select(meds_tbl, group, trace) %>% 
+  distinct() %>% deframe() %>% as.list() %>%
+  imap(\(x, idx) pluck(med_cols, idx)) %>%
+  unlist()
+```
+
+```{r}
+add_meds <- function(plot, meds_tbl) {
+   trace <- plot %>% layout(shapes = meds_shapes)
+  return(trace)
+}
+
+add_diets <- function(plot, diets) {
+  plot %>%
+  add_segments(
+    data    = diets,
+    x       = ~begin,
+    xend    = ~end,
+    xref    = "x",
+    y       = -0.1,
+    yend    = -0.1,
+    color   = ~diet,
+    colors  = col.diet,
+    opacity = 0.7,
+    line    = list(width = 15)
+) %>%
+    layout(shapes = diets_shapes)
+}
+
+```
+
+
+```{r}
+meds_tbl <- supplements_long %>%
+  imap(\(x, idx) map(x, \(y) list_assign(y, name = idx))) %>%
+  map(\(x) enframe(x, name = NULL)) %>%
+  map(\(x) unnest_wider(x, value)) %>%
+  list_rbind() %>%
+  arrange(name, dose) %>%
+  mutate(dose_level = dense_rank(dose), .by = "name") %>%
+  mutate(group = as.character(str_glue("{name}{dose_level}"))) %>%
+  mutate(group = case_when(max(dose_level) == 1 ~ name, .default = group), .by = "name") %>%
+  rowwise() %>%
+  mutate(color = pluck(med_cols, paste0(group))) %>%
+  ungroup() %>%
+  arrange(begin, name, end) %>%
+  mutate(name  = fct_inorder(as_factor(name ))) %>%
+  mutate(trace = as_factor(dense_rank(name))) %>%
+  pivot_longer(c("begin", "end"),
+               names_to  = "order",
+               values_to = "date",
+               values_transform = ymd) %>%
+  select(-order) %>%
+  arrange(date, trace) %>%
+  mutate(ngroup = n_distinct(group)) %>%
+  rowwise() %>%
+  mutate(y_monthly = monthly_max + as.numeric(trace) * ((monthly_max * 0.1) / (ngroup - 1)),
+         y_weekly  = weekly_max + as.numeric(trace) * ((weekly_max * 0.1) / (ngroup - 1))) %>%
+  group_by(group)
+```
+
+
+
+
+```{r}
+add_meds <- function(plot, x, interval) {
+  doses  <- pluck(x, "data") %>% pull(dose) %>% unique()
+  colors <- pluck(x, "colors") %>% set_names(doses)
+  if (interval == "monthly") {
+    ymax <- count(sample_table, month(collection_date)) %>% pull(n) %>% max()
+  } else if (interval == "weekly") {
+    ymax <- count(sample_table, week(collection_date)) %>% pull(n) %>% max()
+  }
+  
+  yval <- ymax + (pluck(x, "y") * ymax)
+  
+ trace <- plot %>%
+    add_segments(
+      data   = pluck(x, "data"),
+      x      = ~begin,
+      xend   = ~end,
+      xref   = "x",
+      y      = yval,
+      yend   = yval,
+      name   = ~paste0(str_to_title(name), " (Dose: ", dose, ")"),
+      text   = ~paste0("Dose: ", dose),
+      color  = ~as.character(dose),
+      colors = colors,
+      line   = list(width = 1.5)
+    ) %>%
+   add_markers(
+      data    = pluck(x, "data"),
+      x       = ~begin,
+      xref    = "x",
+      y       = yval,
+      name    = ~paste0(str_to_title(name), " (Dose: ", dose, ")"),
+      text    = ~paste0("Dose: ", dose),
+      color   = ~as.character(dose),
+      colors  = colors,
+      opacity = 0.6,
+      marker  = list(size = 9, symbol = c("line-ns"))
+   ) %>%
+   add_markers(
+      data    = pluck(x, "data"),
+      x       = ~end,
+      xref    = "x",
+      y       = yval,
+      yref    = "paper",
+      name    = ~paste0(str_to_title(name), " (Dose: ", dose, ")"),
+      text    = ~paste0("Dose: ", dose),
+      color   = ~as.character(dose),
+      colors  = colors, 
+      opacity = 0.6,
+      marker  = list(size = 9, symbol = c("line-ns"))
+   )
+ 
+ return(trace)
+}
+```
+
+```{r}
+med_key <- list(
+  probiotic     = list(color = c("#B4D9CCFF", "#287274FF"), y = 0),
+  steroid       = list(color = c("#F8B58BFF", "#F66356FF"), y = .02),
+  fiber         = list(color = c("#E4C7F1FF", "#826DBAFF"), y = .04),
+  antibiotic    = list(color = c("#DDAA33FF")             , y = .06),
+  antidiarrheal = list(color = c("#004488FF")             , y = .08)
+)
+
+meds <- supplements_long %>%
+  imap(\(x, idx) map(x, \(y) list_assign(y, name = idx))) %>%
+  map(\(x) list(data = enframe(x, name = NULL))) %>%
+  map_depth(2, \(x) unnest_wider(x, value)) %>%
+  map_depth(2, \(x) arrange(x, dose, begin)) %>%
+  imap(\(x, idx) list_assign(
+    x,
+    colors = pluck(med_key[[paste0(idx)]], "color"),
+    y      = pluck(med_key[[paste0(idx)]], "y")
+  ))
+```
+
+```{r}
+add_diets <- function(plot) {
+  plot %>%
+  add_segments(
+    data   = diets,
+    x      = ~begin,
+    xend   = ~end,
+    xref   = "x",
+    y      = 0,
+    yend   = 0,
+    color  = ~diet,
+    colors = col.diet,
+    line   = list(width = 5)
+)
+}
+```
+
+I created the functions below because I repeatedly use these code chunks to view summaries of my data.
+
+```{r}
+
+
+
+my_skim <- skim_with(numeric  = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
+
+skim_phyloseq <- function(phyloseq) {
+options(
+  digits            = 2,
+  pillar.sigfig     = 2,
+  pillar.subtle_num = TRUE
+  )
+ skim <- psmelt(phyloseq) %>% 
+    select(-c(
+      subject_certainty, 
+      subject_studbook_id, 
+      subject_dam_id, 
+      subject_sire_id, 
+      subject_birth_location, 
+      subject_age)) %>%
+    group_by(subject) %>% 
+    my_skim() %>%
+    select(-complete_rate)
+ 
+ return(skim)
+}
+
+view_tree <- function(phyloseq, level = NULL, palette = "rcartocolor::Prism") {
+  phylum.cols <-  sample(paletteer::paletteer_d(paste0(palette)), size = length(get_taxa_unique(phyloseq, "Phylum")), replace = TRUE) %>%
+    set_names(., get_taxa_unique(phyloseq, "Phylum"))
+  
+  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum))
+  
+  if (is.null(level)) {
+    tree2 <- tree1
+  } else if (level == "Class") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
+  } else if (level == "Phylum") {
+    tree2 <- tree1 +
+      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
+  }
+  
+  tree.out <- tree2 +
+    scale_color_manual(values = phylum.cols, na.value = "#00000080") +
+    scale_fill_manual( values = alpha(c(phylum.cols), 0.3)) +
+    theme_tree(legend.position = "none")
+  
+  return(tree.out)
+}
+```
+
+
+```{r}
+ meds_hover <- function(plot, meds_tbl) {
+   data <- meds_tbl %>%
+     mutate(line = row_number()) %>%
+     pivot_longer(c("begin", "end"),
+                  names_to         = "order",
+                  values_to        = "date",
+                  values_transform = ymd)
+   trace <- plot %>%
+   add_trace(
+     type    = "scatter",
+     mode    = "lines+markers",
+     data    = data,
+     x       = ~date,
+     y       = 1,
+     yref    = "paper",
+     split   = ~line,
+     opacity = 0,
+     hoveron = "points",
+     name    = "Supplement",
+     text    = ~str_to_title(name),
+     hoverinfo = "text"
+   )
+   return(trace)
+ }
+
+```
+
+```{r}
+med_cols <- list(
+  probiotic     = list("#75884BFF", "#1E5A46FF"),
+  steroid       = list("#D48F90FF", "#732F30FF"),
+  fiber         = list("#D8B847FF", "#B38711FF"),
+  antibiotic    = list("#1E395FFF")             ,
+  antidiarrheal = list("#59385CFF") 
+) %>%
+  list_flatten(name_spec = "{outer}{inner}")
+
+
+meds_tbl <- supplements_long %>%
+  imap(\(x, idx) map(x, \(y) list_assign(y, name = idx))) %>%
+  map(\(x) enframe(x, name = NULL)) %>%
+  map(\(x) unnest_wider(x, value)) %>%
+  list_rbind() %>%
+  arrange(name, dose) %>%
+  mutate(dose_level = dense_rank(dose), .by = "name") %>%
+  mutate(group = as.character(str_glue("{name}{dose_level}"))) %>%
+  mutate(group = case_when(max(dose_level) == 1 ~ name, .default = group), .by = "name") %>%
+  rowwise() %>%
+  mutate(color = pluck(med_cols, paste0(group))) %>%
+  ungroup() %>%
+  mutate(name  = fct_inorder(as_factor(name))) %>%
+  arrange(begin, name, end) %>%
+  mutate(trace = dense_rank(name)) %>%
+  rowwise() %>%
+  mutate(y = (trace/45) + 1, name = as.character(name)) %>%
+  ungroup()
+
+ meds_shapes <- pmap(meds_tbl, list) %>%
+  map(\(x) list(
+   type      = "line",
+   layer     = "above",
+   opacity   = 0.8,
+   line      = list(width = 6, color = x$color), 
+   x0        = x$begin, 
+   x1        = x$end, 
+   xref      = "x",
+   y0        = x$y, 
+   y1        = x$y, 
+   yref      = "paper"
+))
+```
+
+
+
+```{r}
+meds_markers <- function(plot, meds) {
+  plot %>%
+    add_trace(
+      inherit   = FALSE,
+      type      = "scatter",
+      mode      = "markers",
+      data      = meds,
+      x         = ~dates,
+      y         = ~y,
+      color     = ~supplement,
+      colors    = meds.pal,
+      size      = ~dose_level,
+      hoveron   = "points",
+      name      = "Supplement",
+      text      = ~str_to_title(supplement),
+      hoverinfo = "text",
+      yaxis     = "y2",
+      xaxis     = "x3",
+     xperiod   = 604800000,
+     xperiodalignment = "middle"
+    )
+}
+
+diets_hover <- function(plot, diets) {
+   data <- diets %>%
+     select(diet, dates) %>%
+     unnest_longer(dates) %>%
+     arrange(dates)
+   trace <- plot %>%
+   add_trace(
+     inherit = FALSE, 
+     type    = "scatter",
+     mode    = "markers",
+     data    = data,
+     x       = ~dates,
+     y       = 18,
+     yref    = "paper",
+     opacity = 0,
+     hoveron = "points",
+     name    = "Diet",
+     text    = ~str_to_title(diet),
+     hoverinfo = "text",
+     yaxis     = "y2",
+     xaxis     = "x3",
+     xperiod   = 604800000,
+     xperiodalignment = "middle"
+   )
+   return(trace)
+ }
+
+ 
+xshared <- list(
+      title          = "Date Interval",
+      tickformat     ="%b<br>%Y",
+      ticklabelmode  = "period",
+      dtick          = "M1",
+      showticklabels = T,
+      showgrid       = F,
+      showline       = T,
+      matches        = "x2",
+      overlaying     = "x",
+      layer          = "below traces"
+    )
+
+xshared2 <- list_modify(xshared , matches = "x")
+xshared3 <- list_modify(
+  xshared2, 
+  matches    = "x", 
+  overlaying = "x2"
+  )
+
+ymarkers <- list(
+  visible     = F,
+  range       = list(0, 22),
+  layer       = "below traces",
+  overlaying  = "y",
+  scaleanchor = "y",
+  domain      = c(0, 1)
+)
+
+plot_monthly <- plot_ly()  %>%
+  add_trace(
+    x                = ~collection_date,
+    data             = sample_table,
+    type             = "histogram",
+    histfunc         = "count",
+    name             = "N",
+    opacity          = 0.6,
+    xhoverformat     = "%b-%Y",
+    hoverinfo        = "x+y+text",
+    yaxis            = "y",
+    marker           = list(color  = "#444444", line = list(width = 3, color = "#444444"))
+  ) %>% 
+  meds_markers(meds) %>%
+  diets_hover(diets) %>%
+  layout(
+    yaxis = list(
+      barmode     = "overlay",
+      title       = "N/Month",
+      ticks       = "outside",
+      showgrid    = F,
+      zeroline    = F,
+      showline    = T,
+      automargin  = T,
+      overlaying  = "y",
+      domain     = c(0, 0.9),
+      scaleanchor = "y"
+    ),
+    xaxis     = xshared,
+    xaxis2    = xshared2,
+    xaxis3    = xshared3,
+    shapes    = diets_shapes,
+    hovermode = "x",
+    yaxis2    = ymarkers
+  )
+plot_weekly <- plot_ly()  %>%
+  add_trace(
+    x            = ~collection_date,
+    data         = sample_table,
+    type         = "histogram",
+    histfunc     = "count",
+    name         = "N",
+    opacity      = 0.6,
+    nbinsx       = ceiling(max(sample_table$collection_day)/7),
+    xhoverformat = "%U",
+    hoverinfo    = "x+y+text",
+    yaxis        = "y",
+    marker       = list(color = "#444444", line = list(width = 0.5, color = "#000000FF"))
+  ) %>%
+  meds_markers(meds) %>%
+  diets_hover(diets) %>%
+  layout(
+    barmode     = "overlay",
+    yaxis       = list(
+      title      = "N/Week",
+      ticks      = "outside",
+      showgrid   = F,
+      zeroline   = F,
+      showline   = T,
+      overlaying  = "y",
+      domain     = c(0, 0.9),
+      scaleanchor = "y"
+    ),
+    xaxis     = xshared2,
+    xaxis2    = xshared2,
+    xaxis3    = xshared3,
+    shapes    = diets_shapes,
+    hovermode = "x",
+    yaxis2    = ymarkers
+  )
+plot_combined <- subplot(
+  nrows  = 2,
+  plot_monthly,
+  plot_weekly,
+  shareX = T,
+  shareY = F,
+  titleY = T
+) %>%
+  layout(
+    barmode = "overlay",
+    xaxis   = xshared,
+    xaxis2  = xshared2,
+    xaxis3  = xshared3
+  ) %>%
+  hide_legend()
+plot_combined
+```
+
+
+
+```{r}
+save_html(plot_combined, "visuals/loris_culi_sample_timeline.html")
+```
+
+```{r}
+
+annotate_plot <- function(plot) {
+  
+
+plot_out <- plot %>%
+    add_trace(
+      inherit   = F,
+      type      = "scatter",
+      mode      = "markers",
+      data      = meds,
+      x         = ~dates,
+      y         = ~y,
+      color     = ~supplement,
+      colors    = meds.pal,
+      size      = ~dose_level,
+      sizes     = c(6, 12),
+      marker    = list(
+        opacity      = 0.9, 
+        sizemode     = 'area',
+        maxdisplayed = n_bins("weeks"),
+        line         = list(width = 0.5, color = "#000000FF")
+        ),
+      name      = ~str_to_title(supplement),
+      text      = ~paste0(str_to_title(supplement), "(L.", dose_level, ")"),
+      hoverinfo = "text"
+    ) %>% 
+    add_trace(
+      type       = "scatter",
+      mode       = "markers",
+      data       = diets_long,
+      x          = ~dates,
+      y          = 9,
+      color      = ~diet,
+      colors     = unlist(col.diet),
+      opacity    = 0,
+      text       = ~str_to_title(diet),
+      hoverinfo  = "text",
+      showlegend = F
+    ) %>% 
+  layout(
+    hovermode = "x",
+    yaxis     = ymarkers,
+    xaxis     = xmarkers,
+    shapes    = diets_shapes
+  )
+return(plot_out)
+  
+}
+```
+```{r}
+
+
+range_dates <- function() {
+  c(floor_date(min(sample_table$collection_date), "months"), 
+  ceiling_date(max(sample_table$collection_date), "months"))
+}
+
+xdefault <- list(
+      title       = "Date Interval",
+      ticks       = "outside",
+      dtick       = "M1",
+      showgrid    = F,
+      showline    = T,
+      layer       = "above traces",
+      overlaying  = "x"
+    )
+
+xlimited <- list_assign(
+  xdefault,
+  showticklabels = F,
+  title          = NULL
+)
+ydefault <- list(
+      title       = "N",
+      ticks       = "outside",
+      barmode     = "overlay",
+      showgrid    = F,
+      showline    = T,
+      layer       = "above traces",
+      overlaying  = "y"
+    )
+
+  xmarkers <- list(
+      visible     = F,
+      autorange   = F,
+      range       = range_dates(),
+      overlaying  = "x"
+      )
+  ymarkers <- list(
+      visible     = F,
+      autorange   = F,
+      range       = c(0, 15),
+      overlaying  = "y"
+      )
+  
+
+```
+
+
+```{r}
+marker_trace <- function(plot, interval) {
+
+    plot_out <- plot %>%
+    add_trace(
+      inherit   = F,
+      type      = "scatter",
+      mode      = "markers",
+      data      = meds,
+      x         = ~dates,
+      y         = ~y,
+      color     = ~supplement,
+      colors    = meds.pal,
+      size      = ~dose_level,
+      sizes     = c(3, 5),
+      marker    = list(
+        opacity      = 0.9, 
+        sizemode     = 'area',
+        maxdisplayed = n_bins("weeks"),
+        symbol       = "diamond-wide"
+        ),
+      name      = ~str_to_title(supplement),
+      text      = ~paste0(str_to_title(supplement), "(L.", dose_level, ")"),
+      hoverinfo = "text",
+      xaxis      = "x2",
+      yaxis      = "y2"
+    ) %>% 
+    add_trace(
+      type       = "scatter",
+      mode       = "markers",
+      data       = diets_long,
+      x          = ~dates,
+      y          = 9,
+      color      = ~diet,
+      colors     = unlist(col.diet),
+      opacity    = 0,
+      text       = ~str_to_title(diet),
+      hoverinfo  = "text",
+      showlegend = F,
+      xaxis      = "x2",
+      yaxis      = "y2"
+    ) %>% 
+  layout(
+    hovermode = "x",
+    yaxis      = ydefault,
+    xaxis      = xdefault,
+    yaxis2     = xmarkers,
+    xaxis2     = ymarkers,
+    shapes     = diets_shapes
+  )
+  
+  return(plot_out)
+}
+```
+
+```{r}
+
+
+histo_plot <- function(interval) {
+
+ plot_ly() %>%
+  add_trace(
+    x                = ~collection_date,
+    data             = sample_table,
+    type             = "histogram",
+    histfunc         = "count",
+    name             = str_to_title(interval),
+    nbinsx           = n_bins(interval = interval),
+    hoverinfo        = "x+y+text",
+    showlegend       = F,
+    marker           = list(
+      color   = "#40606DFF", 
+      opacity = 0.6,
+      line    = list(width = 1, color = "#000000FF")
+    )
+  ) %>%
+    add_trace(
+      inherit   = F,
+      type      = "scatter",
+      mode      = "markers",
+      data      = meds,
+      x         = ~dates,
+      y         = ~y,
+      color     = ~supplement,
+      colors    = meds.pal,
+      size      = ~dose_level,
+      sizes     = c(3, 5),
+      marker    = list(
+        opacity      = 0.9, 
+        sizemode     = 'area',
+        maxdisplayed = n_bins("weeks"),
+        symbol       = "diamond-wide"
+        ),
+      name      = ~str_to_title(supplement),
+      text      = ~paste0(str_to_title(supplement), "(L.", dose_level, ")"),
+      hoverinfo = "text",
+      xaxis      = "x2",
+      yaxis      = "y2"
+    ) %>% 
+    add_trace(
+      type       = "scatter",
+      mode       = "markers",
+      data       = diets_long,
+      x          = ~dates,
+      y          = 9,
+      color      = ~diet,
+      colors     = unlist(col.diet),
+      opacity    = 0,
+      text       = ~str_to_title(diet),
+      hoverinfo  = "text",
+      showlegend = F,
+      xaxis      = "x2",
+      yaxis      = "y2"
+    ) %>% 
+  layout(
+    hovermode  = "x",
+    bargap     = 0.03,
+    yaxis      = ydefault,
+    xaxis      = xdefault,
+    xaxis2     = xmarkers,
+    yaxis2     = ymarkers,
+    shapes     = diets_shapes
+  )
+}
+
+```
+

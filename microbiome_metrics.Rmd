@@ -31,8 +31,10 @@ library(skimr)
 library(plotly)
 library(htmltools)
 library(htmlwidgets)
+library(ggnewscale)
 
 source("setup/conflicted.R")
+
 
 
 knitr::opts_chunk$set(
@@ -80,11 +82,36 @@ The [`microeco` R package](https://chiliubio.github.io/microeco_tutorial/) provi
 
 `microeco` installation can be a bit tricky the first time, simply because of the number of dependencies. I created a [separate tutorial to walk you through the packages you will need](https://rich-molecular-health-lab.github.io/tutorials/firstuse_microeco.html), but the tutorial on [MicroEco's page does an even better job of explaining things](https://chiliubio.github.io/microeco_tutorial/intro.html#dependence). If this is your first time on this workflow, I recommend you start with that, ensure all packages have been installed, and then proceed with this.  
 
-# Helper Functions
+# Helper Functions and Scripts
 
-I created the functions below because I repeatedly use these code chunks to view summaries of my data.
+## External metadata lists
 
 ```{r}
+source("metadata/loris/diet_trials.R")
+source("metadata/loris/supplements.R")
+```
+
+## Plotting functions
+
+### Color Palettes
+
+```{r}
+col.pal.list <- function(list, variable, palette = NULL, direction = -1) {
+  if (is.null(palette)) {
+    palette <- "grDevices::Dynamic"
+  } else if (!is.null(palette)) {
+    palette <- palette
+  }
+  pal <- as.list(
+  paletteer_c(
+    palette, 
+    n         = n_distinct(map(list, variable)), 
+    direction = direction
+    )
+  ) %>%
+  set_names(., unique(map(list, variable)))
+  return(pal)
+}
 
 line.pal <- function() {
   list(
@@ -115,53 +142,195 @@ col.pal <- function(vector, type, palette) {
   
 }
 
-my_skim <- skim_with(numeric  = sfl(p25 = NULL, p50 = NULL, p75 = NULL))
+```
 
-skim_phyloseq <- function(phyloseq) {
-options(
-  digits            = 2,
-  pillar.sigfig     = 2,
-  pillar.subtle_num = TRUE
-  )
- skim <- psmelt(phyloseq) %>% 
-    select(-c(
-      subject_certainty, 
-      subject_studbook_id, 
-      subject_dam_id, 
-      subject_sire_id, 
-      subject_birth_location, 
-      subject_age)) %>%
-    group_by(subject) %>% 
-    my_skim() %>%
-    select(-complete_rate)
- 
- return(skim)
+
+### Sample Count Timeline
+
+```{r}
+n_bins <- function(interval) {
+  length(seq(floor_date(min(sample_table$collection_date), "months"), 
+           ceiling_date(max(sample_table$collection_date), "months"), 
+           by = interval))
 }
 
-view_tree <- function(phyloseq, level = NULL, palette = "rcartocolor::Prism") {
-  phylum.cols <-  sample(paletteer::paletteer_d(paste0(palette)), size = length(get_taxa_unique(phyloseq, "Phylum")), replace = TRUE) %>%
-    set_names(., get_taxa_unique(phyloseq, "Phylum"))
+
+histo_trace <- function(plot, interval) {
+  plot %>%
+  add_trace(
+    x                = ~collection_date,
+    type             = "histogram",
+    histfunc         = "count",
+    name             = str_to_title(interval),
+    nbinsx           = n_bins(interval = interval),
+    hoverinfo        = "x+y+text",
+    showlegend       = F,
+    marker           = list(
+      color   = "#40606D66", 
+      line    = list(width = 1, color = "#000000FF")
+    ),
+    xaxis      = "x",
+    yaxis      = "y",
+    domain     = list(x = c(0, 1), y = c(0, 0.8))
+  )
+}
+
+context_trace <- function(plot, meds, diets_long) {
   
-  tree1 <- ggtree(phyloseq, branch.length = "none", aes(color = Phylum))
+  meds.pal <- as.character(paletteer_d("MoMAColors::Ohchi", n = 5)) %>%
+  set_names("probiotic", "steroid", "fiber", "antibiotic", "antidiarrheal")
   
-  if (is.null(level)) {
-    tree2 <- tree1
-  } else if (level == "Class") {
-    tree2 <- tree1 +
-      geom_label(aes(label = Class, fill = Phylum), hjust = -0.05, size = 2, colour = "#000000FF")
-  } else if (level == "Phylum") {
-    tree2 <- tree1 +
-      geom_label(aes(label = Phylum, fill = Phylum), hjust = -0.05, size = 3, colour = "#000000FF")
-  }
+  meds.fill <- imap(meds.pal, \(x, idx) str_replace_all(x, "FF", "CC"))
   
-  tree.out <- tree2 +
-    scale_color_manual(values = phylum.cols, na.value = "#00000080") +
-    scale_fill_manual( values = alpha(c(phylum.cols), 0.3)) +
-    theme_tree(legend.position = "none")
-  
-  return(tree.out)
+  diet.pal <- c(
+  paletteer_c("grDevices::Dynamic", n = length(unique(diets_long$diet)), direction = -1)
+  ) %>%
+  set_names(., unique(diets_long$diet))
+
+  plot %>%
+    add_trace(
+      inherit   = F,
+      type      = "scatter",
+      mode      = "markers",
+      data      = meds,
+      x         = ~dates,
+      y         = ~y,
+      color     = ~supplement,
+      colors    = meds.fill,
+      size      = ~size_ref,
+      marker    = list(
+        sizemode     = 'area',
+        sizeref      = 7,
+        maxdisplayed = n_bins("weeks"),
+        line         = list(color = meds.pal, width = 1),
+        symbol       = "circle-dot"
+        ),
+      name      = ~str_to_title(supplement),
+      text      = ~paste0(str_to_title(supplement), "(L.", dose_level, ")"),
+      hoverinfo = "text",
+      xaxis      = "x2",
+      yaxis      = "y2",
+      domain     = list(x = c(0, 1), y = c(0.8, 1))
+    ) %>% 
+    add_trace(
+      type       = "scatter",
+      mode       = "markers",
+      data       = diets_long,
+      x          = ~dates,
+      y          = 0.5,
+      color      = ~diet,
+      colors     = diet.pal,
+      opacity    = 0,
+      text       = ~str_to_title(diet),
+      hoverinfo  = "text",
+      showlegend = F,
+      xaxis      = "x2",
+      yaxis      = "y2",
+      domain     = list(x = c(0, 1), y = c(0.8, 1))
+    )
+}
+
+diet_shape <- function(x, col.pal) {
+  color <- pluck(col.pal, paste0(x$diet))
+  shape <- list(
+   type      = "rect",
+   layer     = 0,
+   fillcolor = color, 
+   line      = list(width = 2, color = color), 
+   opacity   = 0.15,
+   x0        = x$begin, 
+   x1        = x$end, 
+   xref      = "x2",
+   y0        = 0, 
+   y1        = 1, 
+   yref      = "paper"
+)
+  return(shape)
+}
+
+diet_background <- function(list) {
+  col.pal <- col.pal.list(list, "diet")
+  shapes <- map(list, \(x) diet_shape(x, col.pal))
+  return(shapes)
+}
+
+line_transect <- function() {
+  list(
+     type      = "line",
+     layer     = "above",
+     line      = list(dash = "dot", width = 1), 
+     opacity   = 0.9,
+     x0        = 0, 
+     x1        = 1, 
+     xref      = "paper",
+     y0        = 2, 
+     y1        = 2, 
+     yref      = "y"
+  )
 }
 ```
+
+
+```{r}
+combined_layout <- function(plot, diets) {
+  plot %>%
+  layout(
+    shapes      =  c(diet_background(diets), list(line_transect())),
+    annotations = list(
+      x          = 1,
+      xref       = "paper",
+      xanchor    = "center",
+      y          = 2,
+      ax         = 30,
+      ay         = -30, 
+      arrowwidth = 0.8,
+      arrowsize  = 1.2,
+      yref       = "y",
+      xanchor    = "bottom",
+      text       = "N=2<br><i>(min group size)</i>",
+      font       = list(size = 9)
+    ),
+    hovermode     = "x",
+    hoverdistance = 5,
+    bargap     = 0.03,
+    barmode    = "overlay",
+    yaxis      = list(
+      title       = "N",
+      ticks       = "outside",
+      showgrid    = F,
+      showline    = T,
+      layer       = "below traces"
+    ),
+    xaxis      = list(
+      title       = "Date Interval",
+      ticks       = "outside",
+      dtick       = "M1",
+      showgrid    = F,
+      showline    = T,
+      layer       = "below traces"
+    ),
+    xaxis2     = list(
+      visible     = F,
+      autorange   = F,
+      range       = range_dates,
+      layer       = "below traces",
+      overlaying  = "x"
+      ),
+    yaxis2     = list(
+      autorange   = F,
+      range       = c(0, 1),
+      side        = "right",
+      showgrid    = F,
+      showline    = F,
+      layer       = "below traces",
+      overlaying  = "y"
+      )
+  )
+  
+}
+```
+
+
 
 ---
 
@@ -184,42 +353,17 @@ First we will convert to a `microeco` object and then remove extraneous metadata
 
 ```{r}
 data_genus <- phyloseq2meco(culi_genus, auto_tidy = TRUE)
-```
 
-```{r}
-start <- floor_date(min(as_date(data_genus$sample_table$collection_date)), "month")
-end   <- ceiling_date(max(as_date(data_genus$sample_table$collection_date)), "month") - days(1)
-```
-
-
-```{r}
-months <- map(seq(start, end, by = "month"), \(x) interval(floor_date(x, "months"), (ceiling_date(x, "months") - days(1)))) %>%
-  enframe(name = "collection_month", value = "interval") %>%
-  unnest(interval) %>%
-  rowwise() %>%
-  mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
-  unnest_longer(collection_date) %>%
-  select(-interval)
-weeks  <- map(seq(start, end, by = "week"), \(x) interval(floor_date(x, "weeks"), (floor_date(x, "weeks") + days(6)))) %>%
-  enframe(name = "collection_week", value = "interval") %>%
-  unnest(interval) %>%
-  filter(int_end(interval) <= end) %>%
-  rowwise() %>%
-  mutate(collection_date = list(seq(int_start(interval), int_end(interval), "day"))) %>%
-  unnest_longer(collection_date) %>%
-  select(-interval) %>%
-  left_join(months, by = "collection_date")
-```
-
-```{r}
-sample_table <- data_genus$sample_table %>%
+sample_data <- data_genus$sample_table %>%
   rownames_to_column("SampleID") %>%
   select(-starts_with("subject"),
          -bristol_min,
          -bristol_max) %>%
   mutate(collection_date = as_date(collection_date),
          SampleID        = as.character(SampleID)) %>%
-  arrange(collection_day) %>%
+  arrange(collection_day)
+
+sample_table <- sample_data %>%
   column_to_rownames("SampleID")
 
 otu_table <- data_genus$otu_table %>%
@@ -230,357 +374,208 @@ otu_table <- data_genus$otu_table %>%
   select(-collection_day) %>%
   pivot_wider(names_from = "name", values_from = "value") %>%
   column_to_rownames("OTU")
+
+tax_table <- data_genus$tax_table %>%
+  select(-Species) %>%
+  tidy_taxonomy()
+
+data_genus$sample_table <- sample_table
+data_genus$otu_table    <- otu_table
+data_genus$tax_table    <- tax_table
+data_genus$tidy_dataset()
+data_genus$rename_taxa(newname_prefix = "Genus_")
 ```
 
-
-
-```{r}
-sample_table <- data_genus$sample_table %>%
-  rownames_to_column("SampleID") %>%
-  select(-starts_with("subject"),
-         -bristol_min,
-         -bristol_max) %>%
-  mutate(collection_date = as_date(collection_date),
-         SampleID        = as.character(SampleID)) %>%
-  arrange(collection_day) %>%
-  left_join(weeks, by = "collection_date") %>%
-  relocate(collection_month, collection_week, collection_day, collection_date, .after = SampleID) %>%
-  column_to_rownames("SampleID")
-
-otu_table <- data_genus$otu_table %>%
-  rownames_to_column("OTU") %>%
-  pivot_longer(!OTU) %>%
-  mutate(collection_day = as.integer(str_remove_all(name, "[^\\d+]"))) %>%
-  arrange(collection_day) %>%
-  select(-collection_day) %>%
-  pivot_wider(names_from = "name", values_from = "value") %>%
-  column_to_rownames("OTU")
-  
-```
+## Visualize Sampling Timeline
 
 ```{r}
-source("metadata/loris/diet_trials.R")
-```
-
-```{r}
-plot_monthly <- plot_ly(sample_table) %>%
-  months_histo(sample_table) %>%
-  add_trace(
-    x         = ~collection_date,
-    histfunc  = "count",
-    visible   = FALSE,
-    nbinsx    = ceiling(max(sample_table$collection_day)/7)
-  ) %>%
-  layout(
-    xaxis       = list(visible = FALSE, matches = "x"),
-    xaxis2      = xmonths,
-    yaxis       = list(visible = FALSE),
-    yaxis2      = ymonths,
-    shapes      = diet_shapes,
-    annotations = diet_annotate,
-    margin      = list(t = 110)
-  )
-  
-```
-
-
-```{r}
-diet_trials[[1]]$begin <- start
+diet_trials[[1]]$begin <- floor_date(min(as_date(data_genus$sample_table$collection_date)), "month")
 ends   <- diet_trials %>% discard_at(1) %>%
   map(\(x) list_assign(x, end = x$begin - day(1))) %>%
   map(\(x) keep_at(x, "end")) %>%
   list_flatten() %>%
   list(., list(end = ceiling_date(max(sample_table$collection_date), "months"))) %>%
   list_flatten()
-
 diets <- map2(diet_trials, ends, \(x, y) list_assign(x, end = y, dates = seq(x$begin, y)))
 
+diets_long <- diets %>%
+  enframe(name = NULL) %>%
+  unnest_wider(value) %>%
+  select(diet, dates) %>%
+  unnest_longer(dates) %>%
+  filter(wday(dates, label = TRUE) == "Wed")
 
-col.diet <- as.list(paletteer_c("scico::hawaii", n = n_distinct(map(diets, "diet")), direction = -1)) %>%
-  set_names(., unique(map(diets, "diet")))
-
-diets <- map(diets, \(x) list_assign(x, color = pluck(col.diet, paste0(x$diet))))
-
-diet_shapes <- diets %>%
-  map(\(x) list(
-   type      = "rect",
-   layer     = "between",
-   fillcolor = x$color, 
-   line      = list(width = 2, color = x$color), 
-   opacity   = 0.7,
-   text      = x$diet,
-   x0        = x$begin, 
-   x1        = x$end, 
-   xref      = "x2",
-   y0        = 0.96, 
-   y1        = 1.02, 
-   yref      = "paper"
-   )
-  )
-
-diet_annotate <- diets %>%
-  map(\(x) list(
-   x         = x$begin,
-   xref      = "x2",
-   xanchor   = "left",
-   y         = 1.02,
-   yref      = "paper",
-   yanchor   = "bottom",
-   showarrow = FALSE,
-   text      = x$diet,
-   textangle = -60
-  ))
-
-xweeks <- list(
-  title          = "Study Week",
-  ticks          = "inside",
-  matches        = "x",
-  showticklabels = T,
-  showgrid       = F,
-  visible        = T,
-  showline       = T,
-  hoverformat    = "%U",
-  layer          = "above traces"
-)
-xmonths <- list(
-  title          = "Study Month",
-  ticks          = "outside",
-  side           = "top",
-  matches        = "x",
-  showticklabels = F,
-  overlaying     = "x",
-  showgrid       = F,
-  visible        = F,
-  hoverformat    = "%b-%y",
-  ticklabelmode  = "instant",
-  layer          = "below traces"
-)
-
-yweeks <- list(
-  title      = "N/Week",
-  ticks      = "outside",
-  showgrid   = F,
-  zeroline   = F,
-  showline   = T
-)
-ymonths <- list(
-  title       = "N/Month",
-  ticks       = "outside",
-  overlaying  = "y",
-  side        = "right",
-  showgrid    = F,
-  zeroline    = F,
-  showline    = T,
-  automargin  = T
-)
-
-weeks_histo <- function(plot, sample_table) {
-  plot %>%
-  add_trace(
-    x         = ~collection_date,
-    histfunc  = "count",
-    name      = "N/week",
-    opacity   = 0.5,
-    nbinsx    = ceiling(max(sample_table$collection_day)/7),
-    zorder    = 3,
-    marker    = list(
-      color   = "#068D9DFF",
-    line     = list(width = 1, color = "#000000FF")
-    )
-  )
-}
+ends   <- supplements %>% discard_at(1) %>%
+  map(\(x) list(x$begin - day(1))) %>%
+  list_flatten()
 
 
-months_histo <- function(plot, sample_table) {
-  plot %>%
-  add_trace(
-    x                = ~collection_date,
-    histfunc         = "count",
-    name             = "N/month",
-    opacity          = 0.6,
-    zorder           = 0,
-    xperiod          = "M1",
-    xperiodalignment = "middle",
-    xaxis            = "x2",
-    yaxis            = "y2",
-    marker           = list( 
-    color    = "#BCC2A5FF",
-    line     = list(width = 2, color = "#BCC2A5FF")
-    )
-  )
-}
-
-
-sample_timeline <- plot_ly(sample_table) %>%
-  weeks_histo(sample_table) %>%
-  months_histo(sample_table) %>%
-  layout(
-    xaxis       = xweeks,
-    xaxis2      = xmonths,
-    yaxis       = yweeks,
-    yaxis2      = ymonths,
-    shapes      = diet_shapes,
-    annotations = diet_annotate,
-    margin      = list(t = 110)
-  )
-sample_timeline
-
-```
-
-
-
-
-```{r}
-weeks_intervals <- weeks %>%
-  select(collection_date, collection_week) %>%
-  group_by(collection_week) %>%
-  reframe(dates = list(collection_date))
-
-months_intervals <- weeks %>%
-  select(collection_date, collection_month) %>%
-  group_by(collection_month) %>%
-  reframe(dates = list(collection_date))
-
-
-counts_weekly <- sample_table %>%
-  rownames_to_column("SampleID") %>%
-  select(SampleID, collection_date, collection_week) %>%
-  arrange(collection_date) %>%
-  group_by(collection_week) %>%
-  reframe(samples = n_distinct(SampleID)) %>%
-  right_join(weeks_intervals, by = "collection_week") %>%
-  arrange(collection_week) %>%
-  mutate(samples = replace_na(samples, 0)) %>%
+meds <- supplements %>% discard_at(21) %>%
+  map2(ends, \(x, y) list_assign(x, end = y, dates = seq(x$begin, y))) %>%
+  map_depth(1, \(x) keep(x, \(y) all(y > 0))) %>%
+  discard(\(x) all(length(x) < 4)) %>%
+  enframe(name= NULL) %>%
+  unnest_wider(value) %>%
+  pivot_longer(
+    c("probiotic", "steroid", "fiber", "antibiotic", "antidiarrheal"),
+    names_to       = "supplement",
+    values_to      = "dose",
+    values_drop_na = T
+    ) %>%
+  select(dates, supplement, dose) %>%
+  arrange(supplement, dose) %>%
+  mutate(dose_level = dense_rank(dose), 
+         count = n(),
+         .by = "supplement") %>%
+  mutate(size_ref = dose_level/max(dose_level), .by = "supplement") %>%
+  arrange(desc(count)) %>%
+  mutate(ybase = (consecutive_id(supplement) - 1)/5) %>%
   rowwise() %>%
-  mutate(start   = first(dates)) %>%
-  ungroup()
+  mutate(y     = ybase) %>%
+  ungroup() %>%
+  select(-count) %>%
+  unnest_longer(dates) %>%
+  arrange(dates, supplement)
 
-counts_monthly <- sample_table %>%
-  rownames_to_column("SampleID") %>%
-  arrange(collection_date) %>%
-  select(SampleID, collection_month) %>%
-  right_join(months_intervals, by = "collection_month") %>%
-  arrange(collection_month) 
+range_dates <- c(floor_date(min(sample_table$collection_date), "months"), 
+  (ceiling_date(max(sample_table$collection_date), "months") - days(1)))
 ```
 
-  
+```{r}
+monthly_plot <- plot_ly(sample_table) %>%
+  histo_trace("months") %>%
+  combined_layout(diets) %>%
+  context_trace(meds, diets_long) %>%
+  combined_layout(diets)
+monthly_plot
+```
 
 ```{r}
-sample_timeline <- plot_ly() %>%
-  add_markers(
-    data             = counts_weekly,
-    x                = ~start,
-    y                = ~samples,
-    xperiodalignment = "start"
+diet_names <- unique(map(diet_trials, \(x) pluck(x, "diet")))
+
+diet_factor <- as.character(1:length(diet_names)) %>%
+  set_names(diet_names)
+
+sample_plotting <- sample_data %>%
+  mutate(diet_name = fct_recode(factor(diet_name), !!!diet_factor),
+         collection_date = ymd(collection_date))
+
+
+diets_long <- diets %>%
+  enframe(name = NULL) %>%
+  unnest_wider(value) %>%
+  select(diet, dates) %>%
+  unnest_longer(dates)
+```
+
+
+  geom_rug(
+    data     = diets_long,
+    aes(x     = dates, 
+        group = factor(diet), 
+        color = factor(diet)),
+    sides       = "b",
+    show.legend = F) +
+
+```{r}
+monthly_plot <- ggplot(
+  sample_plotting, aes(collection_date, fill = diet_name, color = diet_name)) +
+  geom_histogram(bins = n_bins("months")) +
+  scale_x_date(date_breaks = "2 months", date_label = "%b-%y") +
+  scale_fill_paletteer_d("MoMAColors::Ohchi") +
+  scale_color_paletteer_d("MoMAColors::Ohchi") +
+  theme_classic()
+
+ggplotly(monthly_plot)
+```
+
+
+  geom_rug(
+    data     = meds,
+    aes(x     = dates, 
+        group = supplement, 
+        color = supplement),
+    sides       = "tb",
+    show.legend = F,
+    alpha = 0.6) +
+
+```{r}
+weekly_ggplot <- ggplot(sample_plotting) +
+  geom_histogram(
+    data = sample_plotting,
+    aes(collection_date, 
+        group = diet_name,
+        fill = diet_name),
+    bins  = n_bins("weeks"),
+    alpha = 0.8
+    ) +
+  scale_fill_paletteer_d("ggsci::default_jama") +
+  scale_x_date(
+    date_breaks       = "2 months", 
+    date_label        = "%b/%y",
+    expand            = c(0, 0)
+    ) +
+  scale_y_continuous(expand = c(0.01, 0)) +
+  geom_count(
+    data     = meds,
+    stat = after_stat("count"),
+    aes(x     = dates, 
+        group = supplement, 
+        color = supplement,
+        size  = dose_level),
+    alpha       = 0.3,
+    position    = position_nudge(y = 6)
+    ) +
+  scale_color_paletteer_d("MoMAColors::Ohchi") +
+  scale_size_area(max_size = 3) +
+  theme_classic()
+
+weekly_plot <- weekly_ggplot %>%
+  ggplotly() %>%
+  layout(
+    yaxis = list(
+      title = list(
+        text = "N",
+        font = list(size = 12)
+        ),
+      rangemode   = "tozero",
+      showgrid    = F,
+      showline    = T
+      ),
+    xaxis = list(
+      title = list(
+        text = "Study Week",
+        font = list(size = 12)
+        ),
+      showgrid    = F,
+      showline    = T,
+      hoverformat = "%d-%b-%Y"
+      )
   ) %>%
-  add_histogram(
-  data             = sample_table,
-  x                = ~collection_date,
-  histfunc         = "count",
-  xperiod          = "M1",
-  xperiodalignment = "start",
-  opacity          = 0.3,
-  xaxis            = "x2",
-  yaxis            = "y2"
-) %>%
-  layout(
-    barmode  = "overlay",
-    yaxis    = list(
-      title      = "N per Week",
-      ticks      = "outside",
-      showgrid   = F,
-      zeroline   = F,
-      showline   = T
-    ),
-    yaxis2    = list(
-      title      = "N per Month",
-      ticks      = "outside",
-      overlaying = "y",
-      side       = "right",
-      showgrid   = F,
-      zeroline   = F,
-      showline   = T
-    ),
-    xaxis = list(
-    title          = "Study Week",
-    ticklabelmode  = "period",
-    ticks          = "inside",
-    showticklabels = T,
-    showgrid       = F,
-    visible        = T,
-    showline       = T
-    ),
-    xaxis2 = list(
-    title          = "Study Month",
-    ticks          = "outside",
-    showticklabels = F,
-    overlaying     = "x",
-    showgrid       = F,
-    visible        = F
-    )
-  )
+  hide_legend()
+weekly_plot
+```
 
-sample_timeline
+
+  scale_x_date(date_breaks = "2 months", date_label = "%b-%y") +
+  new_scale_color() +
+
+
+```{r}
+weekly_plot <- plot_ly(sample_table) %>%
+  histo_trace("weeks") %>%
+  context_trace(meds, diets_long) %>%
+  combined_layout(diets)
+weekly_plot
 ```
 
 
 ```{r}
-sample_timeline <- plot_ly(sample_table) %>%
-  add_histogram(
-    x                = ~collection_date , 
-    histfunc         = "count",
-    xperiod          = "M1",
-    xperiodalignment = "middle",
-    opacity          = 0.3
-    ) %>%
-  add_histogram(
-    x                = ~collection_date , 
-    histfunc         = "count",
-    xperiod          = 6.048e+8,
-    xperiodalignment = "middle",
-    opacity          = 0.7
-    ) %>%
-  layout(
-    bargap   = 0.1,
-    yaxis    = list(
-      title      = "N per Month",
-      ticks      = "outside",
-      showgrid   = F,
-      showline   = T
-    ),
-    yaxis2    = list(
-      title      = "N per Week",
-      ticks      = "outside",
-      overlaying = "y",
-      side       = "right",
-      showgrid   = F,
-      showline   = T
-    ),
-    xaxis = list(
-    title         = "Study Month",
-    ticks         = "outside"
-    ),
-    xaxis2 = list(
-    title         = "Study Week",
-    overlaying    = "x",
-    visible       = T
-    )
-  )
-
-sample_timeline
+save_html(monthly_plot, "visuals/loris_culi_samples_bymonth.html")
+save_html(weekly_plot, "visuals/loris_culi_samples_byweek.html")
 ```
 
-    ticklabelmode = "period",
-    tickvals      = seq((start - months(1)), (end + months(1)), by = "months"),
-    ticktext      = 0:(max(sample_table$collection_month) + 1),
 
-    tickvals      = seq((start - weeks(1)), (end + weeks(1)), by = "weeks"),
-    ticktext      = 0:(max(sample_table$collection_week) + 1)
-
-```{r}
-data_genus$tidy_dataset()
-data_genus$rename_taxa(newname_prefix = "Genus_")
-```
 ---
 
 # Alpha Diversity

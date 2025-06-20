@@ -53,6 +53,94 @@ supplements <- list(
   list(begin = ymd("2024-12-28"),  probiotic = 00.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00)
 )
 
+supplements_long <- list(
+  probiotic     = list(
+    list(
+      begin = "2023-11-02",
+      dose  = 05.0,
+      end   = "2023-11-06"
+    ),
+    list(
+      begin = "2023-11-07",
+      dose  = 10.0,
+      end   = "2023-12-13"
+    ),
+    list(
+      begin = "2024-01-25",
+      dose  = 10.0,
+      end   = "2024-02-19"
+    ),
+    list(
+      begin = "2024-02-23",
+      dose  = 10.0,
+      end   = "2024-05-28"
+    ),
+    list(
+      begin = "2024-08-24",
+      dose  = 05.0,
+      end   = "2024-08-28"
+    ),
+    list(
+      begin = "2024-08-29",
+      dose  = 10.0,
+      end   = "2024-09-06"
+    )
+  ),
+  steroid       = list(
+    list(
+      begin = "2023-12-14",
+      dose  = 00.1,
+      end   = "2024-01-03"
+    ),
+    list(
+      begin = "2024-01-04",
+      dose  = 00.2,
+      end   = "2024-05-28"
+    ),
+    list(
+      begin = "2024-09-07",
+      dose  = 00.2,
+      end   = "2024-09-20"
+    ),
+    list(
+      begin = "2024-10-19",
+      dose  = 00.2,
+      end   = "2024-11-15"
+    ),
+    list(
+      begin = "2024-11-16",
+      dose  = 00.1,
+      end   = "2024-12-27"
+    )
+  ),
+  fiber         = list(
+    list(
+      begin = "2024-07-27",
+      dose  = 00.5,
+      end   = "2024-07-31"
+    ),
+    list(
+      begin = "2024-08-01",
+      dose  = 01.0,
+      end   = "2024-08-09"
+    )
+  ),
+  antibiotic    = list(
+    list(
+      begin = "2024-04-29",
+      dose  = 12.5,
+      end   = "2024-05-05"
+    )
+  ),
+  antidiarrheal = list(
+    list(
+      begin = "2024-09-07",
+      dose  = 00.08,
+      end   = "2024-09-20"
+    )
+  )
+)
+
 warble_supplements <- list(
   list(begin = ymd("2023-10-26"),  probiotic = 00.0, steroid = 00.0, fiber = 00.0, antibiotic = 00.0, antidiarrheal = 00.00)
 ) %>% enframe(name = NULL) %>% 
