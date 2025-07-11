@@ -1,0 +1,47 @@
+Diet,Feeds,Fed (g)
+Baseline,BISCUIT ROTATION,13.2
+Baseline,"INVERTEBRATE, MISC",10
+Baseline,MAZURI ENRICH GUM ARABIC (5B35),12
+Baseline,PROTEIN ROTATION,2.1
+Baseline,SEASONAL VEGETABLES,15
+Biscuit elimination,BISCUIT ROTATION,0
+Biscuit elimination,"INVERTEBRATE, MISC",18
+Biscuit elimination,MAZURI ENRICH GUM ARABIC (5B35),17
+Biscuit elimination,PROTEIN ROTATION,5
+Biscuit elimination,SEASONAL VEGETABLES,30
+"Less bugs, more egg",BISCUIT ROTATION,13.2
+"Less bugs, more egg","INVERTEBRATE, MISC",5
+"Less bugs, more egg",MAZURI ENRICH GUM ARABIC (5B35),10
+"Less bugs, more egg",SEASONAL VEGETABLES,10
+"Less bugs, more egg","EGG, WHOLE, COOKED (MEAT PREP)",15
+"Sweet potato, green beans, carrots, pumpkin",BISCUIT ROTATION,13.2
+"Sweet potato, green beans, carrots, pumpkin","INVERTEBRATE, MISC",8
+"Sweet potato, green beans, carrots, pumpkin",MAZURI ENRICH GUM ARABIC (5B35),10
+"Sweet potato, green beans, carrots, pumpkin","EGG, WHOLE, COOKED (MEAT PREP)",5
+"Sweet potato, green beans, carrots, pumpkin","POTATO, SWEET",5
+"Sweet potato, green beans, carrots, pumpkin","BEAN, GREEN FRESH",10
+"Sweet potato, green beans, carrots, pumpkin",CARROT,5
+"Sweet potato, green beans, carrots, pumpkin","PUMPKIN, CANNED",5
+"36% gum, 37% veg, 27% insects",BISCUIT ROTATION,0
+"36% gum, 37% veg, 27% insects","INVERTEBRATE, MISC",18
+"36% gum, 37% veg, 27% insects",MAZURI ENRICH GUM ARABIC (5B35),24
+"36% gum, 37% veg, 27% insects",SEASONAL VEGETABLES,25
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","EGG, WHOLE, RAW (MEAT PREP)",9
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","INVERTEBRATE, MISC",9
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",MAZURI ENRICH GUM ARABIC (5B35),18
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","SEASONAL VEGETABLES, ROOT",30
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","SEASONAL VEGETABLES, NON-ROOT",30
+Low lectin,BISCUIT ROTATION,0
+Low lectin,"INVERTEBRATE, MISC",18
+Low lectin,MAZURI ENRICH GUM ARABIC (5B35),17
+Low lectin,"EGG, WHITE ONLY, COOKED",5
+Low lectin,CARROT,10
+Low lectin,"POTATO, SWEET, COOKED",5
+Low lectin,CELERY,5
+Low lectin,"LETTUCE, ROMAINE",5
+Oatmeal Gel,BISCUIT ROTATION,13.2
+Oatmeal Gel,"INVERTEBRATE, MISC",8
+Oatmeal Gel,MAZURI ENRICH GUM ARABIC (5B35),12
+Oatmeal Gel,OHDZ OATMEAL GEL,5
+Oatmeal Gel,PROTEIN ROTATION,2.14
+Oatmeal Gel,SEASONAL VEGETABLES,20

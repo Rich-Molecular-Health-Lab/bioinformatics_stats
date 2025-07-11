@@ -1,0 +1,345 @@
+Diet,Nutrient Class,Nutrient,,,,
+Baseline,Total,Total,29.347505,g DM,,
+Baseline,Total,Total,90,kcal,,
+Baseline,Total,Total,52.3,g as fed,29.35,g DM
+Baseline,Protein,Total,5.0590675,g,17.24,%
+Baseline,Protein,Taurine,0.017952,g,0.06,%
+Baseline,Protein,Methionine,0.0903356,g,0.31,%
+Baseline,Fat,Total,1.6857462,g,5.74,%
+Baseline,Fat,Omega 3 (ALA + EPA + DHA),634.668,mg,2.16,mg/g
+Baseline,Fat,Omega 6 (LA + GLA + AA),3369.84,mg,11.48,mg/g
+Baseline,"CHO, by diff",Total,1.5861385,g,5.4,%
+Baseline,"CHO, by diff",WSC,,g,,%
+Baseline,"CHO, by diff",Starch,2.72961,g,9.3,%
+Baseline,"CHO, by diff",NDF,9.4258233,g,32.12,%
+Baseline,"CHO, by diff",ADF,2.3736048,g,8.09,%
+Baseline,"CHO, by diff",Crude Fiber,12.395,g,42.24,%
+Baseline,"CHO, by diff",TDF,0.5337435,g,1.82,%
+Baseline,Ash,Total,1.8134195,g,6.18,%
+Baseline,Ash,Calcium,0.3217702,g,1.1,%
+Baseline,Ash,Phosphorus,0.1671484,g,0.57,%
+Baseline,Ash,Potassium,0.322689,g,1.1,%
+Baseline,Ash,Magnesium,0.1573827,g,0.54,%
+Baseline,Ash,Copper,0.4593334,mg,15.65,mg/kg
+Baseline,Ash,Iron,5.5137864,mg,187.88,mg/kg
+Baseline,Ash,Zinc,2.5222424,mg,85.94,mg/kg
+Baseline,Ash,Manganese,1.4727425,mg,50.18,mg/kg
+Baseline,Ash,Iodine,0.0217234,mg,0.74,mg/kg
+Baseline,Ash,Ca:P,1.9250565,,,
+Baseline,Vitamins,"Vit A, IU",640.9324571,IU,21.84,IU/g
+Baseline,Vitamins,Vit D3,130.834,IU,4.46,IU/g
+Baseline,Vitamins,Vit E,5.5752825,mg,189.97,mg/kg
+Baseline,Vitamins,Vit K,0.048859,mg,1.66,mg/kg
+Baseline,Vitamins,"Vit B1, Thiamin",0.1960026,mg,6.68,mg/kg
+Baseline,Vitamins,"Vit B2, Riboflavin",0.2945504,mg,10.04,mg/kg
+Baseline,Vitamins,"Vit B3, Niacin",1.9571923,mg,66.69,mg/kg
+Baseline,Vitamins,Choline,37.5455667,mg,1279.34,mg/kg
+Baseline,Vitamins,"Vit B5, Pantothenic Acid",1.1950879,mg,40.72,mg/kg
+Baseline,Vitamins,"Vit B6, Pyridoxine",0.26034,mg,8.87,mg/kg
+Baseline,Vitamins,"Vit B7, Biotin",0.008388,mg,0.29,mg/kg
+Baseline,Vitamins,Folic Acid,0.24385,mg,8.31,mg/kg
+Baseline,Vitamins,Vit B12,56.301165,mcg,1.92,mcg/g
+Baseline,Vitamins,Vit C,11.7287727,mg,399.65,mg/kg
+Baseline,Vitamins,Beta carotene,0.2790919,mg,9.51,mg/kg
+Baseline,Vitamins,Lycopene,19.2825,mcg,0.66,mcg/g
+Biscuit elimination,Total,Total,28.2426667,g DM,,
+Biscuit elimination,Total,Total,90,kcal,,
+Biscuit elimination,Total,Total,70,g as fed,28.24,g DM
+Biscuit elimination,Protein,Total,4.4440375,g,15.74,%
+Biscuit elimination,Protein,Taurine,,g,,%
+Biscuit elimination,Protein,Methionine,0.0637905,g,0.23,%
+Biscuit elimination,Fat,Total,1.8613351,g,6.59,%
+Biscuit elimination,Fat,Omega 3 (ALA + EPA + DHA),1.513,mg,0.01,mg/g
+Biscuit elimination,Fat,Omega 6 (LA + GLA + AA),5.44,mg,0.02,mg/g
+Biscuit elimination,"CHO, by diff",Total,3.305837,g,11.71,%
+Biscuit elimination,"CHO, by diff",WSC,,g,,%
+Biscuit elimination,"CHO, by diff",Starch,1.1757,g,4.16,%
+Biscuit elimination,"CHO, by diff",NDF,9.2431987,g,32.73,%
+Biscuit elimination,"CHO, by diff",ADF,0.7638552,g,2.7,%
+Biscuit elimination,"CHO, by diff",Crude Fiber,15.3,g,54.17,%
+Biscuit elimination,"CHO, by diff",TDF,1.0736203,g,3.8,%
+Biscuit elimination,Ash,Total,1.4312226,g,5.07,%
+Biscuit elimination,Ash,Calcium,0.2573158,g,0.91,%
+Biscuit elimination,Ash,Phosphorus,0.1579131,g,0.56,%
+Biscuit elimination,Ash,Potassium,0.3347115,g,1.19,%
+Biscuit elimination,Ash,Magnesium,0.2577786,g,0.91,%
+Biscuit elimination,Ash,Copper,0.1416519,mg,5.02,mg/kg
+Biscuit elimination,Ash,Iron,4.3330927,mg,153.42,mg/kg
+Biscuit elimination,Ash,Zinc,1.182964,mg,41.89,mg/kg
+Biscuit elimination,Ash,Manganese,0.3503925,mg,12.41,mg/kg
+Biscuit elimination,Ash,Iodine,,mg,,mg/kg
+Biscuit elimination,Ash,Ca:P,1.6294769,,,
+Biscuit elimination,Vitamins,"Vit A, IU",731.5023809,IU,25.9,IU/g
+Biscuit elimination,Vitamins,Vit D3,97.252,IU,3.44,IU/g
+Biscuit elimination,Vitamins,Vit E,4.464869,mg,158.09,mg/kg
+Biscuit elimination,Vitamins,Vit K,0.0203387,mg,0.72,mg/kg
+Biscuit elimination,Vitamins,"Vit B1, Thiamin",0.0547905,mg,1.94,mg/kg
+Biscuit elimination,Vitamins,"Vit B2, Riboflavin",0.2131262,mg,7.55,mg/kg
+Biscuit elimination,Vitamins,"Vit B3, Niacin",0.9618952,mg,34.06,mg/kg
+Biscuit elimination,Vitamins,Choline,33.015,mg,1168.98,mg/kg
+Biscuit elimination,Vitamins,"Vit B5, Pantothenic Acid",0.4986679,mg,17.66,mg/kg
+Biscuit elimination,Vitamins,"Vit B6, Pyridoxine",0.09611,mg,3.4,mg/kg
+Biscuit elimination,Vitamins,"Vit B7, Biotin",0.00603,mg,0.21,mg/kg
+Biscuit elimination,Vitamins,Folic Acid,0.01125,mg,0.4,mg/kg
+Biscuit elimination,Vitamins,Vit B12,99.9165834,mcg,3.54,mcg/g
+Biscuit elimination,Vitamins,Vit C,8.1985455,mg,290.29,mg/kg
+Biscuit elimination,Vitamins,Beta carotene,0.3645357,mg,12.91,mg/kg
+Biscuit elimination,Vitamins,Lycopene,38.565,mcg,1.37,mcg/g
+"Less bugs, more egg",Total,Total,53.2,g DM,,
+"Less bugs, more egg",Total,Total,92,kcal,,
+"Less bugs, more egg",Total,Total,53.2,g as fed,27.98,g DM
+"Less bugs, more egg",Protein,Total,5.6928438,g,20.34,%
+"Less bugs, more egg",Protein,Taurine,0.017952,g,0.06,%
+"Less bugs, more egg",Protein,Methionine,0.1303407,g,0.47,%
+"Less bugs, more egg",Fat,Total,2.6556941,g,9.49,%
+"Less bugs, more egg",Fat,Omega 3 (ALA + EPA + DHA),634.49,mg,2.27,mg/g
+"Less bugs, more egg",Fat,Omega 6 (LA + GLA + AA),3369.2,mg,12.04,mg/g
+"Less bugs, more egg","CHO, by diff",Total,0.9916957,g,3.54,%
+"Less bugs, more egg","CHO, by diff",WSC,,g,,%
+"Less bugs, more egg","CHO, by diff",Starch,2.4885667,g,8.89,%
+"Less bugs, more egg","CHO, by diff",NDF,8.1378422,g,29.08,%
+"Less bugs, more egg","CHO, by diff",ADF,2.1965413,g,7.85,%
+"Less bugs, more egg","CHO, by diff",Crude Fiber,10.595,g,37.86,%
+"Less bugs, more egg","CHO, by diff",TDF,0.2706957,g,0.97,%
+"Less bugs, more egg",Ash,Total,1.7218616,g,6.15,%
+"Less bugs, more egg",Ash,Calcium,0.2902252,g,1.04,%
+"Less bugs, more egg",Ash,Phosphorus,0.1487603,g,0.53,%
+"Less bugs, more egg",Ash,Potassium,0.2643191,g,0.94,%
+"Less bugs, more egg",Ash,Magnesium,0.113786,g,0.41,%
+"Less bugs, more egg",Ash,Copper,0.4252843,mg,15.2,mg/kg
+"Less bugs, more egg",Ash,Iron,4.5029909,mg,160.92,mg/kg
+"Less bugs, more egg",Ash,Zinc,2.351652,mg,84.04,mg/kg
+"Less bugs, more egg",Ash,Manganese,1.3876565,mg,49.59,mg/kg
+"Less bugs, more egg",Ash,Iodine,0.0217234,mg,0.78,mg/kg
+"Less bugs, more egg",Ash,Ca:P,1.9509588,,,
+"Less bugs, more egg",Vitamins,"Vit A, IU",593.1098381,IU,21.2,IU/g
+"Less bugs, more egg",Vitamins,Vit D3,131.596,IU,4.7,IU/g
+"Less bugs, more egg",Vitamins,Vit E,5.002253,mg,178.76,mg/kg
+"Less bugs, more egg",Vitamins,Vit K,0.04627,mg,1.65,mg/kg
+"Less bugs, more egg",Vitamins,"Vit B1, Thiamin",0.1923424,mg,6.87,mg/kg
+"Less bugs, more egg",Vitamins,"Vit B2, Riboflavin",0.312621,mg,11.17,mg/kg
+"Less bugs, more egg",Vitamins,"Vit B3, Niacin",1.7052595,mg,60.94,mg/kg
+"Less bugs, more egg",Vitamins,Choline,72.2827111,mg,2583.16,mg/kg
+"Less bugs, more egg",Vitamins,"Vit B5, Pantothenic Acid",1.2738143,mg,45.52,mg/kg
+"Less bugs, more egg",Vitamins,"Vit B6, Pyridoxine",0.2550283,mg,9.11,mg/kg
+"Less bugs, more egg",Vitamins,"Vit B7, Biotin",0.006713,mg,0.24,mg/kg
+"Less bugs, more egg",Vitamins,Folic Acid,0.240725,mg,8.6,mg/kg
+"Less bugs, more egg",Vitamins,Vit B12,28.7107,mcg,1.03,mcg/g
+"Less bugs, more egg",Vitamins,Vit C,10.1472818,mg,362.63,mg/kg
+"Less bugs, more egg",Vitamins,Beta carotene,0.2193652,mg,7.84,mg/kg
+"Less bugs, more egg",Vitamins,Lycopene,12.855,mcg,0.46,mcg/g
+"Sweet potato, green beans, carrots, pumpkin",Total,Total,90,kcal,,
+"Sweet potato, green beans, carrots, pumpkin",Total,Total,28.4545,g DM,,
+"Sweet potato, green beans, carrots, pumpkin",Total,Total,61.2,g as fed,28.45,g DM
+"Sweet potato, green beans, carrots, pumpkin",Protein,Total,5.1327667,g,18.04,%
+"Sweet potato, green beans, carrots, pumpkin",Protein,Taurine,0.017952,g,0.06,%
+"Sweet potato, green beans, carrots, pumpkin",Protein,Methionine,0.10163,g,0.36,%
+"Sweet potato, green beans, carrots, pumpkin",Fat,Total,1.8069793,g,6.35,%
+"Sweet potato, green beans, carrots, pumpkin",Fat,Omega 3 (ALA + EPA + DHA),634.49,mg,2.23,mg/g
+"Sweet potato, green beans, carrots, pumpkin",Fat,Omega 6 (LA + GLA + AA),3369.2,mg,11.84,mg/g
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",Total,2.6425,g,9.29,%
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",WSC,,g,,%
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",Starch,2.9316667,g,10.3,%
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",NDF,8.539042,g,30.01,%
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",ADF,2.3873171,g,8.39,%
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",Crude Fiber,10.595,g,37.23,%
+"Sweet potato, green beans, carrots, pumpkin","CHO, by diff",TDF,0.8202,g,2.88,%
+"Sweet potato, green beans, carrots, pumpkin",Ash,Total,1.7643623,g,6.2,%
+"Sweet potato, green beans, carrots, pumpkin",Ash,Calcium,0.2972016,g,1.04,%
+"Sweet potato, green beans, carrots, pumpkin",Ash,Phosphorus,0.1593716,g,0.56,%
+"Sweet potato, green beans, carrots, pumpkin",Ash,Potassium,0.3202303,g,1.13,%
+"Sweet potato, green beans, carrots, pumpkin",Ash,Magnesium,0.0513928,g,0.18,%
+"Sweet potato, green beans, carrots, pumpkin",Ash,Copper,0.4542768,mg,15.97,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Ash,Iron,4.92512,mg,173.09,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Ash,Zinc,2.4425499,mg,85.84,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Ash,Manganese,1.4535593,mg,51.08,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Ash,Iodine,0.0217234,mg,0.76,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Ash,Ca:P,1.8648341,,,
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit A, IU",2694.5646,IU,94.7,IU/g
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Vit D3,122.896,IU,4.32,IU/g
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Vit E,5.155396,mg,181.18,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Vit K,0.050741,mg,1.78,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit B1, Thiamin",0.19914,mg,7,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit B2, Riboflavin",0.30534,mg,10.73,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit B3, Niacin",1.89955,mg,66.76,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Choline,48.8966,mg,1718.41,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit B5, Pantothenic Acid",1.25365,mg,44.06,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit B6, Pyridoxine",0.27178,mg,9.55,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,"Vit B7, Biotin",0.007718,mg,0.27,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Folic Acid,0.2426,mg,8.53,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Vit B12,45.2497,mcg,1.59,mcg/g
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Vit C,10.1506,mg,356.73,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Beta carotene,1.32197,mg,46.46,mg/kg
+"Sweet potato, green beans, carrots, pumpkin",Vitamins,Lycopene,0.05,mcg,0,mcg/g
+"36% gum, 37% veg, 27% insects",Total,Total,87,kcal,,
+"36% gum, 37% veg, 27% insects",Total,Total,32.1274167,g DM,,
+"36% gum, 37% veg, 27% insects",Total,Total,67,g as fed,32.13,g DM
+"36% gum, 37% veg, 27% insects",Protein,Total,3.7470375,g,11.66,%
+"36% gum, 37% veg, 27% insects",Protein,Taurine,,g,,%
+"36% gum, 37% veg, 27% insects",Protein,Methionine,0.0500143,g,0.16,%
+"36% gum, 37% veg, 27% insects",Fat,Total,1.0166014,g,3.16,%
+"36% gum, 37% veg, 27% insects",Fat,Omega 3 (ALA + EPA + DHA),2.136,mg,0.01,mg/g
+"36% gum, 37% veg, 27% insects",Fat,Omega 6 (LA + GLA + AA),7.68,mg,0.02,mg/g
+"36% gum, 37% veg, 27% insects","CHO, by diff",Total,2.0592391,g,6.41,%
+"36% gum, 37% veg, 27% insects","CHO, by diff",WSC,,g,,%
+"36% gum, 37% veg, 27% insects","CHO, by diff",Starch,0.8314167,g,2.59,%
+"36% gum, 37% veg, 27% insects","CHO, by diff",NDF,12.3113376,g,38.32,%
+"36% gum, 37% veg, 27% insects","CHO, by diff",ADF,0.7111775,g,2.21,%
+"36% gum, 37% veg, 27% insects","CHO, by diff",Crude Fiber,21.6,g,67.23,%
+"36% gum, 37% veg, 27% insects","CHO, by diff",TDF,0.7559391,g,2.35,%
+"36% gum, 37% veg, 27% insects",Ash,Total,1.6476457,g,5.13,%
+"36% gum, 37% veg, 27% insects",Ash,Calcium,0.3324672,g,1.03,%
+"36% gum, 37% veg, 27% insects",Ash,Phosphorus,0.1439393,g,0.45,%
+"36% gum, 37% veg, 27% insects",Ash,Potassium,0.3291767,g,1.02,%
+"36% gum, 37% veg, 27% insects",Ash,Magnesium,0.22829,g,0.71,%
+"36% gum, 37% veg, 27% insects",Ash,Copper,0.1331631,mg,4.14,mg/kg
+"36% gum, 37% veg, 27% insects",Ash,Iron,3.6697973,mg,114.23,mg/kg
+"36% gum, 37% veg, 27% insects",Ash,Zinc,1.0912407,mg,33.97,mg/kg
+"36% gum, 37% veg, 27% insects",Ash,Manganese,0.3266482,mg,10.17,mg/kg
+"36% gum, 37% veg, 27% insects",Ash,Iodine,,mg,,mg/kg
+"36% gum, 37% veg, 27% insects",Ash,Ca:P,2.3097733,,,
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit A, IU",596.7380952,IU,18.57,IU/g
+"36% gum, 37% veg, 27% insects",Vitamins,Vit D3,133.344,IU,4.15,IU/g
+"36% gum, 37% veg, 27% insects",Vitamins,Vit E,5.6886545,mg,177.07,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,Vit K,0.0261725,mg,0.81,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit B1, Thiamin",0.044981,mg,1.4,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit B2, Riboflavin",0.1989524,mg,6.19,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit B3, Niacin",0.7986238,mg,24.86,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,Choline,28.2752778,mg,880.1,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit B5, Pantothenic Acid",0.4487357,mg,13.97,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit B6, Pyridoxine",0.0809433,mg,2.52,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,"Vit B7, Biotin",0.00603,mg,0.19,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,Folic Acid,0.01125,mg,0.35,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,Vit B12,99.9,mcg,3.11,mcg/g
+"36% gum, 37% veg, 27% insects",Vitamins,Vit C,7.0394545,mg,219.11,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,Beta carotene,0.3017381,mg,9.39,mg/kg
+"36% gum, 37% veg, 27% insects",Vitamins,Lycopene,32.1375,mcg,1,mcg/g
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Total,Total,88,kcal,,
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Total,Total,30.1369107,g DM,,
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Total,Total,96,g as fed,30.14,g DM
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Protein,Total,3.7658299,g,12.5,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Protein,Taurine,,g,,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Protein,Methionine,0.0704979,g,0.23,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Fat,Total,1.6558524,g,5.49,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Fat,Omega 3 (ALA + EPA + DHA),1.602,mg,0.01,mg/g
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Fat,Omega 6 (LA + GLA + AA),5.76,mg,0.02,mg/g
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",Total,5.548425,g,18.41,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",WSC,,g,,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",Starch,2.6192526,g,8.69,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",NDF,9.6570615,g,32.04,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",ADF,0.7985034,g,2.65,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",Crude Fiber,16.2,g,53.75,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum","CHO, by diff",TDF,1.40835,g,4.67,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Total,1.5603139,g,5.18,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Calcium,0.2545206,g,0.84,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Phosphorus,0.1071639,g,0.36,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Potassium,0.3305429,g,1.1,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Magnesium,0.3569876,g,1.18,%
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Copper,0.110766,mg,3.68,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Iron,2.53316,mg,84.06,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Zinc,0.7866908,mg,26.1,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Manganese,0.2648292,mg,8.79,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Iodine,,mg,,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Ash,Ca:P,2.3750577,,,
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit A, IU",2002.585714,IU,66.45,IU/g
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Vit D3,107.838,IU,3.58,IU/g
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Vit E,4.1797806,mg,138.69,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Vit K,0.0238224,mg,0.79,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit B1, Thiamin",0.0606971,mg,2.01,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit B2, Riboflavin",0.1715343,mg,5.69,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit B3, Niacin",0.7195957,mg,23.88,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Choline,46.2547273,mg,1534.82,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit B5, Pantothenic Acid",0.5137129,mg,17.05,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit B6, Pyridoxine",0.1147593,mg,3.81,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,"Vit B7, Biotin",0.003015,mg,0.1,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Folic Acid,0.005625,mg,0.19,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Vit B12,50.0499,mcg,1.66,mcg/g
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Vit C,11.9245,mg,395.68,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Beta carotene,1.02329,mg,33.95,mg/kg
+"31% watery veg, 31% root veg, 19% insects/egg, 19% gum",Vitamins,Lycopene,59.3576923,mcg,1.97,mcg/g
+Oatmeal Gel,Total,Total,90,kcal,,
+Oatmeal Gel,Total,Total,29.9045833,g DM,,
+Oatmeal Gel,Total,Total,60.3428571,g as fed,29.9,g DM
+Oatmeal Gel,Protein,Total,4.8265357,g,16.14,%
+Oatmeal Gel,Protein,Taurine,0.017952,g,0.06,%
+Oatmeal Gel,Protein,Methionine,0.0865872,g,0.29,%
+Oatmeal Gel,Fat,Total,1.6189643,g,5.41,%
+Oatmeal Gel,Fat,Omega 3 (ALA + EPA + DHA),634.668,mg,2.12,mg/g
+Oatmeal Gel,Fat,Omega 6 (LA + GLA + AA),3369.84,mg,11.27,mg/g
+Oatmeal Gel,"CHO, by diff",Total,2.0051413,g,6.71,%
+Oatmeal Gel,"CHO, by diff",WSC,,g,,%
+Oatmeal Gel,"CHO, by diff",Starch,3.102919,g,10.38,%
+Oatmeal Gel,"CHO, by diff",NDF,9.6292364,g,32.2,%
+Oatmeal Gel,"CHO, by diff",ADF,2.4352033,g,8.14,%
+Oatmeal Gel,"CHO, by diff",Crude Fiber,12.395,g,41.45,%
+Oatmeal Gel,"CHO, by diff",TDF,0.6061627,g,2.03,%
+Oatmeal Gel,Ash,Total,1.8162534,g,6.07,%
+Oatmeal Gel,Ash,Calcium,0.3196625,g,1.07,%
+Oatmeal Gel,Ash,Phosphorus,0.1571573,g,0.53,%
+Oatmeal Gel,Ash,Potassium,0.3224338,g,1.08,%
+Oatmeal Gel,Ash,Magnesium,0.1909311,g,0.64,%
+Oatmeal Gel,Ash,Copper,0.4560094,mg,15.25,mg/kg
+Oatmeal Gel,Ash,Iron,5.318909,mg,177.86,mg/kg
+Oatmeal Gel,Ash,Zinc,2.4372909,mg,81.5,mg/kg
+Oatmeal Gel,Ash,Manganese,1.4686281,mg,49.11,mg/kg
+Oatmeal Gel,Ash,Iodine,0.0217234,mg,0.73,mg/kg
+Oatmeal Gel,Ash,Ca:P,2.0340287,,,
+Oatmeal Gel,Vitamins,"Vit A, IU",760.412219,IU,25.43,IU/g
+Oatmeal Gel,Vitamins,Vit D3,130.858,IU,4.38,IU/g
+Oatmeal Gel,Vitamins,Vit E,6.9704754,mg,233.09,mg/kg
+Oatmeal Gel,Vitamins,Vit K,0.0495347,mg,1.66,mg/kg
+Oatmeal Gel,Vitamins,"Vit B1, Thiamin",0.1969305,mg,6.59,mg/kg
+Oatmeal Gel,Vitamins,"Vit B2, Riboflavin",0.2770376,mg,9.26,mg/kg
+Oatmeal Gel,Vitamins,"Vit B3, Niacin",1.9250905,mg,64.37,mg/kg
+Oatmeal Gel,Vitamins,Choline,35.4238222,mg,1184.56,mg/kg
+Oatmeal Gel,Vitamins,"Vit B5, Pantothenic Acid",1.1736679,mg,39.25,mg/kg
+Oatmeal Gel,Vitamins,"Vit B6, Pyridoxine",0.2617895,mg,8.75,mg/kg
+Oatmeal Gel,Vitamins,"Vit B7, Biotin",0.008218,mg,0.27,mg/kg
+Oatmeal Gel,Vitamins,Folic Acid,0.2426,mg,8.11,mg/kg
+Oatmeal Gel,Vitamins,Vit B12,45.2013072,mcg,1.51,mcg/g
+Oatmeal Gel,Vitamins,Vit C,12.6026779,mg,421.43,mg/kg
+Oatmeal Gel,Vitamins,Beta carotene,0.3394605,mg,11.35,mg/kg
+Oatmeal Gel,Vitamins,Lycopene,25.71,mcg,0.86,mcg/g
+Low lectin,Total,Total,93,kcal,,
+Low lectin,Total,Total,29.79975,g DM,,
+Low lectin,Total,Total,65,g as fed,29.8,g DM
+Low lectin,Protein,Total,7.3752042,g,24.75,%
+Low lectin,Protein,Taurine,,g,,%
+Low lectin,Protein,Methionine,0.19855,g,0.67,%
+Low lectin,Fat,Total,1.0188493,g,3.42,%
+Low lectin,Fat,Omega 3 (ALA + EPA + DHA),1.513,mg,0.01,mg/g
+Low lectin,Fat,Omega 6 (LA + GLA + AA),5.44,mg,0.02,mg/g
+Low lectin,"CHO, by diff",Total,2.4855,g,8.34,%
+Low lectin,"CHO, by diff",WSC,,g,,%
+Low lectin,"CHO, by diff",Starch,0.8631667,g,2.9,%
+Low lectin,"CHO, by diff",NDF,9.141782,g,30.68,%
+Low lectin,"CHO, by diff",ADF,0.6812886,g,2.29,%
+Low lectin,"CHO, by diff",Crude Fiber,15.3,g,51.34,%
+Low lectin,"CHO, by diff",TDF,0.8742,g,2.93,%
+Low lectin,Ash,Total,1.5317611,g,5.14,%
+Low lectin,Ash,Calcium,0.2547411,g,0.85,%
+Low lectin,Ash,Phosphorus,0.1463536,g,0.49,%
+Low lectin,Ash,Potassium,0.3663858,g,1.23,%
+Low lectin,Ash,Magnesium,0.0502238,g,0.17,%
+Low lectin,Ash,Copper,0.1363007,mg,4.57,mg/kg
+Low lectin,Ash,Iron,3.39732,mg,114,mg/kg
+Low lectin,Ash,Zinc,1.0755473,mg,36.09,mg/kg
+Low lectin,Ash,Manganese,0.3085885,mg,10.36,mg/kg
+Low lectin,Ash,Iodine,0.00014,mg,0,mg/kg
+Low lectin,Ash,Ca:P,1.7405865,,,
+Low lectin,Vitamins,"Vit A, IU",2837.95,IU,95.23,IU/g
+Low lectin,Vitamins,Vit D3,94.452,IU,3.17,IU/g
+Low lectin,Vitamins,Vit E,4.395832,mg,147.51,mg/kg
+Low lectin,Vitamins,Vit K,0.024125,mg,0.81,mg/kg
+Low lectin,Vitamins,"Vit B1, Thiamin",0.043,mg,1.44,mg/kg
+Low lectin,Vitamins,"Vit B2, Riboflavin",0.30765,mg,10.32,mg/kg
+Low lectin,Vitamins,"Vit B3, Niacin",0.81165,mg,27.24,mg/kg
+Low lectin,Vitamins,Choline,27.825,mg,933.73,mg/kg
+Low lectin,Vitamins,"Vit B5, Pantothenic Acid",0.53635,mg,18,mg/kg
+Low lectin,Vitamins,"Vit B6, Pyridoxine",0.08041,mg,2.7,mg/kg
+Low lectin,Vitamins,"Vit B7, Biotin",0.00613,mg,0.21,mg/kg
+Low lectin,Vitamins,Folic Acid,0.01125,mg,0.38,mg/kg
+Low lectin,Vitamins,Vit B12,99.9245,mcg,3.35,mcg/g
+Low lectin,Vitamins,Vit C,2.784,mg,93.42,mg/kg
+Low lectin,Vitamins,Beta carotene,1.5285,mg,51.29,mg/kg
+Low lectin,Vitamins,Lycopene,0.1,mcg,0,mcg/g

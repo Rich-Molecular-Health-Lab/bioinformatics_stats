@@ -1,0 +1,66 @@
+---
+title: "Microbiome Composition Data - Culi"
+authors:
+  - name: "Alicia M. Rich, Ph.D."
+    affiliation: "Rich Lab, University of Nebraska Omaha"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: paged
+    css: journal.css
+    code_download: true
+params:
+  sampleset: "loris"
+                     
+---
+
+```{r setup, message=FALSE, comment=""}
+library(conflicted)
+library(tidyverse)
+library(fs)
+library(downloadthis)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(paletteer)
+library(bslib)
+
+source("setup/conflicted.R")
+source("setup/knit_engines_simple.R")
+
+load("metadata/loris/culi/metadata_culi.RData")
+load("../read_processing/samples/loris/inventories/compilation_seq_records.RData")
+loris_otu_genus <- read_tsv("../read_processing/processed/loris/wf16s/abundance_table_genus.tsv")
+```
+
+```{r}
+save(loris_otu_genus, file = "data/loris/loris_otu_genus.RData")
+```
+
+```{r}
+samples_culi <- compilation_seq_records %>%
+  filter(subject == "culi") %>%
+  select(sampleID, collection_date, filtered_samples) %>%
+  unnest(filtered_samples) %>%
+  select(
+    sampleID,
+    collection_date,
+    alias,
+    read_count
+  ) %>%
+  arrange(collection_date) %>%
+  left_join(metadata_culi, by = "collection_date")
+```
+
+
+```{r}
+otu_culi <- loris_otu_genus %>%
+  pivot_longer(!tax,
+               names_to  = "sampleID",
+               values_to = "count")
+```
+

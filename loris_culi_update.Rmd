@@ -1,0 +1,233 @@
+---
+title: "Project Loris: Update on Culi"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: paged
+    css: journal.css
+    code_download: true
+params:
+  sampleset: "loris"
+  
+---
+
+
+```{r setup, message=FALSE, comment=""}
+library(conflicted)
+library(tidyverse)
+library(fs)
+library(downloadthis)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(paletteer)
+
+source("setup/conflicted.R")
+source("setup/knit_engines_simple.R")
+source("setup/inputs_samplesets.R")
+
+seqruns <- seqruns %>% keep_at(params$sampleset)  %>% list_flatten(name_spec = "")
+
+subject_list <- keep_at(subjects, paste0(params$sampleset)) %>% list_flatten(name_spec = "{inner}")
+
+load("metadata/loris/culi/metadata_culi.RData")
+load("data/loris/sample_records.RData")
+```
+
+```{r}
+samples_culi <- compilation %>%
+  filter(subject == "culi")
+```
+
+
+```{r}
+nested <- metadata_culi %>%
+  nest(nutrition_details = c(Total_total:Vitamins_lycopene)) %>%
+  left_join(samples_culi, by = join_by(collection_date)) %>%
+  mutate(collected = if_else(is.na(extracted), 0, extracted)) %>%
+  mutate(extracted = replace_na(extracted, 0)) %>%
+  mutate(sequenced = replace_na(sequenced, 0))
+```
+
+
+```{r}
+sample_progress <- nested %>%
+  select(
+    study_month,
+    study_week,
+    study_day,
+    collection_date,
+    collected,
+    extracted,
+    sequenced,
+    sampleID,
+    bristol,
+    diet,
+    antibiotic,
+    antidiarrheal,
+    fiber,
+    probiotic,
+    steroid,
+    holding,
+    warb_cycle,
+    keeper_note,
+    nutrition_details
+  )
+```
+
+```{r}
+meds <- sample_progress %>%
+  select(
+    study_month,
+    study_week,
+    study_day,
+    collection_date,
+    antibiotic,
+    antidiarrheal,
+    fiber,
+    probiotic,
+    steroid
+    ) %>%
+  pivot_longer(c(
+    antibiotic,
+    antidiarrheal,
+    fiber,
+    probiotic,
+    steroid
+  ),
+  names_to = "treatment",
+  values_to = "rel_dose") %>%
+  group_by(study_week, treatment) %>%
+  summarize(
+    dose = max(rel_dose)
+  ) %>%
+  ungroup() %>%
+  pivot_wider(
+    names_from = treatment,
+    values_from = dose
+  )
+```
+
+
+```{r}
+sampling_weekly <- sample_progress %>%
+  group_by(study_week) %>%
+  summarize(sequenced = sum(sequenced),
+            collected = sum(collected))
+```
+
+```{r}
+plot_samples <- plot_ly() %>%
+  add_trace(
+    data = sample_progress,
+    x = ~study_week,
+    y = max(sampling_weekly$sequenced) + 0.5,
+    type = "bar",
+    color = ~diet,
+    text  = ~diet
+  ) %>%
+  add_trace(
+    data = sampling_weekly,
+    x    = ~study_week,
+    y    = ~sequenced,
+    text = ~sequenced,
+    type = "scatter",
+    mode = "lines+markers",
+    fill = "tozeroy",
+      fillcolor = "#0000004A",
+    line = list(
+      color = "#000000FF",
+      width = 1,
+      shape = "spline"
+    ),
+    marker = list(
+      line = list(
+      color = "#000000FF",
+      width = 1
+      ),
+      color = "#0000004A"
+    ),
+    showlegend = FALSE
+  ) %>%
+  add_trace(
+    data = filter(meds, probiotic > 0),
+    x    = ~study_week,
+    y    = ~probiotic + max(sampling_weekly$sequenced),
+    type = "scatter",
+    mode = "markers",
+    name = "Probiotic"
+  ) %>%
+  add_trace(
+    data = filter(meds, steroid > 0),
+    x    = ~study_week,
+    y    = ~steroid + max(sampling_weekly$sequenced),
+    type = "scatter",
+    mode = "markers",
+    name = "Steroid"
+  ) %>%
+  layout(
+    title   = "Culi Sample Collection (Oct 2023 - June 2024)",
+    barmode = "overlay",
+    bargap  = 0,
+    hovermode = "x",
+    xaxis = list(
+      title = "Study Week (max: 29)"
+    ),
+    yaxis = list(
+      title = "Total Samples Sequenced"
+    )
+  )
+
+save_html(plot_samples, "visuals/loris/loris_updates/culi_samples.html")
+```
+
+
+```{r}
+plot_samples <- ggplot(sample_progress) +
+  geom_col(aes(x = study_week, y = collected)) +
+  geom_col(aes(x = study_week, y = sequenced))
+
+plot_samples
+```
+```{r}
+abundances <- read_tsv("../read_processing/processed/loris/wf16s/abundance_table_genus.tsv")
+```
+
+```{r}
+library(microeco)
+```
+
+```{r}
+sample_table <- compilation %>%
+  select(subject,
+         collection_date,
+         dorado_results) %>%
+  unnest(dorado_results) %>%
+  filter(!is.na(alias)) %>%
+  select(collection_date, alias, subject) %>%
+  left_join(metadata_culi, by = "collection_date") %>%
+  filter(subject == "culi")
+```
+
+
+```{r}
+otu_table <- abundances %>%
+  pivot_longer(!tax,
+               names_to = "alias") %>%
+  filter(alias %in% c(sample_table$alias)) %>%
+  pivot_wider(names_from = alias,
+              values_from = value)
+```
+
+```{r}
+data_culi <- microeco
+```
+
+
+

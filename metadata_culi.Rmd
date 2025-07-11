@@ -1,0 +1,197 @@
+---
+title: "Constructing Metadata Files for Culi Only"
+authors:
+  - name: "Alicia M. Rich, Ph.D."
+    affiliation: "Rich Lab, University of Nebraska Omaha"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: paged
+    css: journal.css
+    code_download: true
+params:
+  sampleset: "loris"
+                     
+---
+
+```{r setup, message=FALSE, comment=""}
+library(conflicted)
+library(tidyverse)
+
+source("setup/conflicted.R")
+source("setup/knit_engines_simple.R")
+
+source("metadata/loris/culi/culi_schedule.R")
+```
+
+
+# Organizing Dates
+
+```{r}
+collection_start  <- ymd("2023-10-26")
+collection_end   <- ymd("2024-05-14")
+```
+
+```{r}
+collection <- tibble(collection_date = seq.Date(
+                                from = collection_start, 
+                                to   = collection_end, 
+                                by   = "day")
+                      ) %>%
+  mutate(study_day  = row_number(),
+         day_week   = wday(collection_date, label = TRUE),
+         month      = month(collection_date, label = TRUE),
+         study_week = if_else(day_week == "Thu", (study_day + 6)/7, NA),
+         study_month = consecutive_id(month)
+         ) %>%
+  fill(study_week) %>%
+  select(
+    collection_date,
+    study_month,
+    study_week,
+    study_day
+  )
+```
+
+
+# Health
+
+## Diet
+
+```{r}
+diet_trials[[1]]$begin <- floor_date(collection_start, "month")
+
+nutrition_wide <- nutrition %>%
+  mutate(diet = fct_recode(as.factor(diet_name), !!!diet_factors)) %>%
+  relocate(diet) %>%
+  select(-diet_name) %>%
+  filter(diet != "Other")
+
+ends   <- diet_trials %>% discard_at(1) %>%
+  map(\(x) list_assign(x, end = x$begin - day(1))) %>%
+  map(\(x) keep_at(x, "end")) %>%
+  list_flatten() %>%
+  list(., list(end = (ceiling_date(collection_end, "month") - days(1)))) %>%
+  list_flatten()
+diets <- map2(diet_trials, ends, \(x, y) list_assign(x, end = y, dates = seq(x$begin, y))) %>%
+  enframe(name = NULL)  %>%
+  unnest_wider(value) %>%
+  select(diet, dates) %>%
+  unnest_longer(dates)
+
+```
+
+## Supplements
+
+
+```{r}
+ends   <- supplements %>% discard_at(1) %>%
+  map(\(x) list(x$begin - day(1))) %>%
+  list_flatten()
+
+meds <-  supplements %>% discard_at(21) %>%
+  map2(ends, \(x, y) list_assign(x, end = y, dates = seq(x$begin, y))) %>%
+  map_depth(1, \(x) keep(x, \(y) all(y > 0))) %>%
+  discard(\(x) all(length(x) < 4)) %>%
+  enframe(name= NULL) %>%
+  unnest_wider(value) %>%
+  pivot_longer(
+    c("probiotic", "steroid", "fiber", "antibiotic", "antidiarrheal"),
+    names_to       = "supplement",
+    values_to      = "dose",
+    values_drop_na = T
+    ) %>%
+  select(dates, supplement, dose) %>%
+  arrange(supplement, dose) %>%
+  left_join(supplement_details, by = "supplement") %>%
+  rowwise() %>%
+  mutate(dose_rel = dose/dose_high) %>%
+  ungroup() %>%
+  unnest_longer(dates)
+
+meds_wide <- meds %>%
+  select(dates, supplement, dose_rel) %>%
+  pivot_wider(names_from = "supplement", values_from = "dose_rel", values_fill = 0)
+```
+
+
+## Diet + Meds
+
+```{r}
+nutrition_meds <- collection %>%
+  select(collection_date) %>%
+  left_join(diets, by = join_by(collection_date == dates)) %>%
+  left_join(meds_wide, by = join_by(collection_date == dates)) %>%
+  mutate(across(where(is.numeric), ~replace_na(., 0))) %>%
+  left_join(nutrition_wide, by = "diet")
+```
+
+## Bristols
+
+```{r}
+bristols <- read_tsv("metadata/loris/bristols.tsv") %>%
+  mutate(date = ymd(date)) %>%
+  filter(subject == "culi") %>%
+  select(date, bristol = bristol_mean) %>%
+  right_join(collection, by = join_by(date == collection_date)) %>%
+  arrange(date) %>%
+  mutate(mean_weekly = mean(bristol), .by = "study_week") %>%
+  mutate(mean_monthly = mean(bristol), .by = "study_month") %>%
+  rowwise() %>%
+  mutate(bristol = replace_na(bristol, mean_weekly)) %>%
+  mutate(bristol = replace_na(bristol, mean_monthly)) %>%
+  ungroup() %>%
+  fill(mean_weekly, mean_monthly) %>%
+  rowwise() %>%
+  mutate(bristol = replace_na(bristol, mean_weekly)) %>%
+  mutate(bristol = replace_na(bristol, mean_monthly)) %>%
+  ungroup() %>%
+  select(collection_date = date, bristol)
+
+```
+
+# Social/Repro
+
+```{r}
+dates_pair <- select(collection, collection_date) %>%
+  left_join(warble_cycles, by = join_by(collection_date == date)) %>%
+  mutate(warb_cycle = replace_na(warb_status, "anestrus"), .keep = "unused") %>%
+  mutate(holding = if_else(collection_date < new_holding_start$culi, "old", "new")) %>%
+  left_join(filter(keeper_notes, subject == "culi"), by = join_by(collection_date == date)) %>%
+  select(collection_date, warb_cycle, holding, keeper_note)
+```
+
+# Compilation of All Metadata
+
+```{r}
+metadata_culi <- collection %>%
+  left_join(nutrition_meds, by = "collection_date") %>%
+  left_join(bristols, by = "collection_date") %>%
+  left_join(dates_pair, by = "collection_date") %>%
+  relocate(
+    bristol,
+    holding, 
+    warb_cycle, 
+    keeper_note,
+    .after = steroid
+  )
+
+save(metadata_culi, file = "metadata/loris/culi/metadata_culi.RData")
+
+write_csv(metadata_culi, "metadata/loris/culi/metadata_culi.csv")
+
+metadata_culi
+```
+
+# Next Steps
+
+>Now you should proceed to a Bioinformatics or Statistical Workflow to Begin Merging Metadata with Results for Analysis.
+
+
+
+
+

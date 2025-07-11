@@ -1,0 +1,140 @@
+---
+title: "Summarizing Metadata and Sequencing Success"
+authors:
+  - name: "Alicia M. Rich, Ph.D."
+    affiliation: "Rich Lab, University of Nebraska Omaha"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: paged
+    css: journal.css
+    code_download: true
+params:
+  sampleset: "loris"
+                     
+---
+
+```{r setup, message=FALSE, comment=""}
+library(conflicted)
+library(tidyverse)
+library(fs)
+library(downloadthis)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(paletteer)
+library(bslib)
+library(xts)
+library(dygraphs)
+library(apexcharter)
+
+source("setup/conflicted.R")
+source("setup/knit_engines_simple.R")
+
+load("metadata/loris/metadata.RData")
+load("metadata/loris/meta_timeline.RData")
+
+meta_culi     <- metadata %>% filter(subject == "culi")
+timeline_culi <- meta_timeline %>% filter(subject == "culi")
+```
+
+# Apex
+
+```{r}
+plot_timeline <- apex(
+  data    = timeline_culi,
+  mapping = aes(x     = category, 
+                start = start, 
+                end   = end,
+                fill  = x),
+  type    = "timeline"
+)
+
+plot_timeline
+```
+
+# Dygraph
+
+```{r}
+meta_vars <- c(          
+"antibiotic"            ,              
+"antidiarrheal"         ,             
+"fiber"                 ,              
+"probiotic"             ,             
+"steroid"               ,              
+"bristol"               ,             
+"holding"               ,              
+"warb_cycle"            ,             
+"keeper_note"           ,                       
+"pair_access" 
+)
+
+meta_xts <- xts(
+  x        = meta_culi[, meta_vars],
+  order.by = meta_culi$collection_date
+)
+```
+
+```{r}
+events <- timeline_culi %>%
+  filter(category == "note") %>%
+  select(start, end, note = x, tag)
+```
+
+```{r}
+diet_colors <- as.character(paletteer_d("Redmonder::qMSOPap", n = length(unique(meta_culi$diet)))) %>%
+  set_names(unique(meta_culi$diet)) %>%
+  map(\(x) str_replace_all(x, "FF", "33"))
+suppl_colors <- as.character(paletteer_d("PrettyCols::Lively", 
+                                         n = length(unique(pull(filter(meta_timeline, category == "supplements"), x)))
+                                         )) %>%
+  set_names(unique(pull(filter(meta_timeline, category == "supplements"), x)))
+```
+
+
+```{r}
+timeline_list <- timeline_culi %>%
+  filter(category != "note") %>%
+  select(start, end, label = x, category) %>%
+  split(.$category) %>%
+  map(\(x) rowwise(x)) %>%
+  map(\(x) group_split(x)) %>%
+  map_depth(2, \(x) list(start = x$start[1], end = x$end[1], label = x$label[1])) %>%
+  map_depth(1, \(x) set_names(x, map(x, \(y) pluck(y, "label")))) %>%
+  map_at("diet", \(x) imap(x, \(y, idy) list_assign(y, color = diet_colors[[idy]]))) %>%
+  map_at("supplements", \(x) imap(x, \(y, idy) list_assign(y, color = suppl_colors[[idy]])))
+```
+
+```{r}
+diet_shade <- function(graph, x) {
+  graph %>%
+  dyShading(
+    from  = x$start,
+    to    = x$end,
+    color = x$color
+  )
+}
+```
+
+```{r}
+base_dygraph <- dygraph(meta_xts) %>% 
+  dySeries("bristol", 
+           color      = "#00000033", 
+           fillGraph  = TRUE, 
+           drawPoints = TRUE) %>%
+  dyStackedLineGroup(
+          name = c("probiotic", "steroid", "antibiotic", "fiber", "antidiarrheal"), 
+          fillGraph         = TRUE, 
+          stepPlot          = TRUE, 
+          strokeWidth       = 1.5)
+
+diet_dygraph <- reduce(timeline_list$diet, diet_shade, .init = base_dygraph)
+
+diet_dygraph
+```
+
+
