@@ -1,0 +1,220 @@
+---
+title: "Refining taxonomy tables for 16S data"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: paged
+    css: journal.css
+    code_download: true
+  
+---
+
+```{r setup, message=FALSE, comment=""}
+library(conflicted)
+library(tidyverse)
+library(fs)
+library(downloadthis)
+library(skimr)
+library(phyloseq)
+library(ape)
+library(treedataverse)
+
+source("setup/conflicted.R")
+source("setup/knit_engines_simple.R")
+
+load("ref_databases/taxa_itgdb.RData")
+load("data/loris/sample_table.RData")
+```
+
+```{r, eval=FALSE}
+taxa_itgdb <- read_tsv("ref_databases/taxa_itgdb_taxa.txt", col_names = c("Accession", "tax")) %>%
+  separate_wider_delim(tax, "; ", names_sep = "_", too_few = "align_start") %>%
+  pivot_longer(starts_with("tax"), names_to = NULL, values_to = "tax") %>%
+  separate_wider_delim(tax, "_", names = c("level", "name"), too_many = "merge", too_few = "align_start") %>%
+  mutate(name = as.character(str_sub(name, 2L, -1L))) %>%
+  mutate(level = case_match(
+    level,
+    "k" ~ "Kingdom",
+    "p" ~ "Phylum",
+    "o" ~ "Order",
+    "c" ~ "Class",
+    "f" ~ "Family",
+    "g" ~ "Genus",
+    "s" ~ "Species"
+    )) %>%
+  pivot_wider(names_from = "level", values_from = "name") %>%
+  mutate(Position = as.character(str_extract_all(Accession, "(?<=\\d\\.)(\\d{2}.+)|(?<=\\d\\.)(\\d{2}.+\\.\\d{2}.+)"))) %>%
+  mutate(Accession = as.character(str_remove_all(Accession, "\\.\\d{2}.+"))) %>%
+  separate_wider_delim(Position, ".", too_few = "align_start", names_sep = "_") %>%
+  mutate(across(c("Position_1", "Position_2"), ~as.integer(.))) %>%
+  arrange(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species
+  ) %>%
+  select(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species,
+    Accession,
+    Position_1,
+    Position_2
+  )
+save(taxa_itgdb, file = "databases/taxa_itgdb.RData")
+write_tsv(taxa_itgdb, "databases/taxa_itgdb.tsv")
+```
+
+```{r}
+tax_table <- read_tsv("data/loris/culi/banana_out/taxonomy.tsv",
+                    col_names = c(
+                      "cluster",
+                      "tax",
+                      "Pident",
+                      "Length",
+                      "Mismatches",
+                      "Gaps",
+                      "Q_start",
+                      "Q_end",
+                      "S_start",
+                      "S_end",
+                      "Strand",
+                      "Unaligned"
+                    )) %>%
+  separate_wider_delim(tax, ";", names = c("Accession", "tax"), too_many = "drop") %>%
+  mutate(tax = str_remove_all(tax, "tax=")) %>%
+  separate_wider_delim(tax, ",", names_sep = "_", too_few = "align_start") %>%
+  pivot_longer(starts_with("tax"), names_to = NULL, values_to = "tax") %>%
+  separate_wider_delim(tax, ":", names = c("level", "name")) %>%
+  mutate(level = case_match(
+    level,
+    "k" ~ "Kingdom",
+    "p" ~ "Phylum",
+    "o" ~ "Order",
+    "c" ~ "Class",
+    "f" ~ "Family",
+    "g" ~ "Genus",
+    "s" ~ "Species"
+    )) %>%
+  pivot_wider(names_from = "level", values_from = "name") %>%
+  arrange(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species
+  ) %>%
+  mutate(Position = as.character(str_extract_all(Accession, "(?<=\\d\\.)(\\d{2}.+)|(?<=\\d\\.)(\\d{2}.+\\.\\d{2}.+)"))) %>%
+  mutate(Accession = as.character(str_remove_all(Accession, "\\.\\d{2}.+"))) %>%
+  separate_wider_delim(Position, ".", too_few = "align_start", names_sep = "_") %>%
+  mutate(across(c("Position_1", "Position_2"), ~as.integer(.))) %>%
+  select(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species,
+    Accession,
+    Position_1,
+    Position_2,
+    cluster,
+    Pident,
+    Length,
+    Mismatches,
+    Gaps,
+    Q_start,
+    Q_end,
+    S_start,
+    S_end
+  )
+```
+
+```{r}
+tax_working <- tax_table %>%
+  select(
+    Genus_sintax = Genus,
+    Species_sintax = Species,
+    Accession,
+    Position_1,
+    Position_2,
+    cluster,
+    Pident,
+    Length,
+    Mismatches,
+    Gaps,
+    Q_start,
+    Q_end,
+    S_start,
+    S_end
+  ) %>%
+  left_join(taxa_itgdb, by = join_by(Accession, Position_1, Position_2)) %>%
+  mutate(Genus_species = if_else(
+    str_detect(Species_sintax, "_"),
+    Species_sintax,
+    as.character(str_glue("{Genus}_{Species}"))
+  )) %>%
+  select(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species,
+    Genus_species,
+    Accession,
+    cluster,
+    Pident,
+    Length,
+    Mismatches,
+    Gaps,
+    Q_start,
+    Q_end,
+    S_start,
+    S_end
+  ) %>%
+  arrange(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Genus_species,
+    Species
+  ) %>%
+  nest(replicates = c(
+    "Accession",
+    "cluster",
+    "Pident",
+    "Length",
+    "Mismatches",
+    "Gaps",
+    starts_with("Q_"),
+    starts_with("S_")
+    ))
+```
+
+
+
+```{r}
+tax_table <- read_tsv()
+```
+

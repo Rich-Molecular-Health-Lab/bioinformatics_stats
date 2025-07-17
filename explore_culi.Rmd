@@ -1,0 +1,166 @@
+---
+title: "Explore Culi Data"
+author: "Alicia M. Rich, Ph.D."
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bslib: true
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    df_print: paged
+    css: journal.css
+    code_download: true
+  
+---
+
+```{r setup, message=FALSE, comment=""}
+library(conflicted)
+library(tidyverse)
+library(fs)
+library(downloadthis)
+library(plotly)
+library(htmltools)
+library(htmlwidgets)
+library(paletteer)
+library(ape)
+library(phyloseq)
+library(treedataverse)
+library(rentrez)
+
+source("setup/conflicted.R")
+source("setup/knit_engines_simple.R")
+```
+
+```{r}
+load("data/loris/sample_table.RData")
+otu_table <- read_tsv("data/loris/culi/banana_out/otu_table.tsv") %>%
+  rename_with(~str_remove_all(., "-culi"))
+```
+
+```{r}
+tax_raw <- read_tsv("data/loris/culi/banana_out/taxonomy.tsv",
+                    col_names = c(
+                      "cluster",
+                      "tax",
+                      "Pident",
+                      "Length",
+                      "Mismatches",
+                      "Gaps",
+                      "Q_start",
+                      "Q_end",
+                      "S_start",
+                      "S_end",
+                      "Strand",
+                      "Unaligned"
+                    )) %>%
+  separate_wider_delim(tax, ";", names = c("Accession_long", "tax"), too_many = "drop") %>%
+  mutate(tax = str_remove_all(tax, "tax=")) %>%
+  separate_wider_delim(tax, ",", names_sep = "_", too_few = "align_start") %>%
+  pivot_longer(starts_with("tax"), names_to = NULL, values_to = "tax") %>%
+  separate_wider_delim(tax, ":", names = c("level", "name")) %>%
+  mutate(level = case_match(
+    level,
+    "k" ~ "Kingdom",
+    "p" ~ "Phylum",
+    "o" ~ "Order",
+    "c" ~ "Class",
+    "f" ~ "Family",
+    "g" ~ "Genus",
+    "s" ~ "Species"
+    )) %>%
+  pivot_wider(names_from = "level", values_from = "name") %>%
+  arrange(
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species
+  ) %>%
+  mutate(OTU       = as.character(str_glue("OTU{row_number()}")),
+         Accession = as.character(str_remove_all(
+           Accession_long, "\\.\\d{2}.+"
+           ))
+         ) %>%
+  select(
+    OTU,
+    Kingdom,
+    Phylum,
+    Order,
+    Class,
+    Family,
+    Genus,
+    Species,
+    Accession,
+    Accession_long,
+    cluster,
+    Pident,
+    Length,
+    Mismatches,
+    Gaps,
+    Q_start,
+    Q_end,
+    S_start,
+    S_end
+  )
+```
+
+```{r}
+get_taxonomy_from_acc <- function(acc) {
+  tryCatch({
+    summary <- entrez_summary(db = "nuccore", id = acc)
+    taxid   <- summary$taxid
+    tax_lineage <- entrez_link(dbfrom = "taxonomy", db = "taxonomy", id = taxid)
+    list(
+      accession = acc, 
+      taxid     = taxid, 
+      summary   = summary,
+      lineage   = tax_lineage)
+  }, error = function(e) {
+    list(accession = acc, taxid = NA)
+  })
+}
+```
+
+```{r}
+tax_acc <- pull(tax_raw, Accession)
+
+tax_summaries <- map(tax_acc, \(x) get_taxonomy_from_acc(x))
+```
+
+```{r}
+tax_enrez <- tax_summaries %>%
+  set_names(map(., \(x) pluck(x, "accession")))
+```
+
+```{r}
+missing_taxid <- tax_enrez %>%
+  keep(\(x) is.na(x[["taxid"]]))
+```
+
+
+
+```{r}
+tax_table <- read_tsv("data/loris/culi/banana_out/taxonomy_table.tsv")
+```
+
+
+```{r}
+otu_seqs  <- read.fasta("data/loris/culi/banana_out/otus_aligned.fasta")
+tree      <- read.iqtree("data/loris/culi/banana_out/otus_aligned.fasta.treefile")
+```
+
+```{r}
+phylo <- phyloseq(
+  tax_table(as.matrix(tax_table)),
+  otu_table(as.matrix(otu_table), taxa_are_rows = TRUE),
+  sample_data(sample_data),
+  phy_tree(tree),
+  refseq(otu_seqs)
+)
+```
+
+

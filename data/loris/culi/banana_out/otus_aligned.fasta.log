@@ -1,0 +1,740 @@
+IQ-TREE multicore version 2.4.0 for Linux x86 64-bit built Feb  7 2025
+Developed by Bui Quang Minh, Nguyen Lam Tung, Olga Chernomor, Heiko Schmidt,
+Dominik Schrempf, Michael Woodhams, Ly Trong Nhan, Thomas Wong
+
+Host:    c2026.swan.hcc.unl.edu (AVX512, FMA3, 250 GB RAM)
+Command: /iqtree-2.4.0-Linux-intel/bin/iqtree2 -s /data/final/otus_aligned.fasta -nt AUTO -m TEST -bb 1000 -alrt 1000
+Seed:    727516 (Using SPRNG - Scalable Parallel Random Number Generator)
+Time:    Wed Jul 16 09:43:38 2025
+Kernel:  AVX+FMA - auto-detect threads (8 CPU cores detected)
+
+Reading alignment file /data/final/otus_aligned.fasta ... Fasta format detected
+Reading fasta file: done in 0.00913075 secs using 86.28% CPU
+Alignment most likely contains DNA/RNA sequences
+Alignment has 425 sequences with 1960 columns, 1497 distinct patterns
+1114 parsimony-informative, 180 singleton sites, 666 constant sites
+                                  Gap/Ambiguity  Composition  p-value
+Analyzing sequences: done in 0.000203026 secs using 508.8% CPU
+   1  cluster9_HDZ-culi-065-S4           23.01%    passed     69.23%
+   2  cluster0_HDZ-culi-348-S259         23.16%    passed     37.50%
+   3  cluster17_HDZ-culi-057-S233        23.27%    passed     66.54%
+   4  cluster50_HDZ-culi-273-S313        23.52%    passed     89.61%
+   5  cluster5_HDZ-culi-354-S177         24.13%    failed      1.10%
+   6  cluster14_HDZ-culi-240-S140        24.18%    passed      6.20%
+   7  cluster1_HDZ-culi-408-S338         24.29%    passed     14.88%
+   8  cluster25_HDZ-culi-444-S296        24.29%    failed      0.93%
+   9  cluster44_HDZ-culi-240-S140        24.29%    passed     41.78%
+  10  cluster93_HDZ-culi-224-S123        24.29%    passed     93.87%
+  11  cluster104_HDZ-culi-166-S197       24.34%    passed     18.75%
+  12  cluster60_HDZ-culi-166-S197        24.34%    passed      5.49%
+  13  cluster99_HDZ-culi-169-S244        24.34%    passed     73.06%
+  14  cluster9_HDZ-culi-438-S275         24.34%    passed     20.27%
+  15  cluster3_HDZ-culi-438-S275         24.39%    passed     47.61%
+  16  cluster26_HDZ-culi-211-S106        24.49%    failed      2.76%
+  17  cluster1820_HDZ-culi-054-S192      24.54%    passed     76.69%
+  18  cluster71_HDZ-culi-430-S292        24.54%    passed     33.14%
+  19  cluster12_HDZ-culi-320-S131        24.59%    passed     11.35%
+  20  cluster1465_HDZ-culi-330-S323      24.59%    passed     94.67%
+  21  cluster2737_HDZ-culi-097-S91       24.59%    passed     91.11%
+  22  cluster274_HDZ-culi-398-S329       24.59%    passed     89.41%
+  23  cluster0_HDZ-culi-364-S210         24.64%    passed     84.22%
+  24  cluster122_HDZ-culi-377-S287       24.64%    passed     62.94%
+  25  cluster319_HDZ-culi-377-S287       24.69%    passed     95.42%
+  26  cluster1040_HDZ-culi-182-S52       24.74%    passed     63.84%
+  27  cluster349_HDZ-culi-308-S117       24.74%    passed     72.80%
+  28  cluster426_HDZ-culi-192-S75        24.74%    passed     79.77%
+  29  cluster716_HDZ-culi-317-S155       24.74%    passed     49.67%
+  30  cluster91_HDZ-culi-198-S88         24.74%    passed     36.37%
+  31  cluster94_HDZ-culi-437-S253        24.74%    passed     32.05%
+  32  cluster1071_HDZ-culi-174-S247      24.80%    passed     78.75%
+  33  cluster1085_HDZ-culi-097-S91       24.80%    passed     62.95%
+  34  cluster108_HDZ-culi-437-S253       24.80%    passed     44.80%
+  35  cluster1292_HDZ-culi-226-S124      24.80%    passed     91.63%
+  36  cluster444_HDZ-culi-398-S329       24.80%    passed     67.70%
+  37  cluster503_HDZ-culi-054-S192       24.80%    passed     69.65%
+  38  cluster59_HDZ-culi-405-S335        24.80%    passed     58.33%
+  39  cluster690_HDZ-culi-040-S187       24.80%    passed     68.64%
+  40  cluster903_HDZ-culi-262-S165       24.80%    passed     79.16%
+  41  cluster1482_HDZ-culi-174-S247      24.85%    passed     69.23%
+  42  cluster1628_HDZ-culi-014-S18       24.85%    passed     58.16%
+  43  cluster181_HDZ-culi-452-S344       24.85%    passed     93.37%
+  44  cluster1820_HDZ-culi-262-S165      24.85%    passed     74.70%
+  45  cluster33_HDZ-culi-438-S275        24.85%    passed     10.94%
+  46  cluster3774_HDZ-culi-097-S91       24.85%    passed     71.41%
+  47  cluster499_HDZ-culi-203-S203       24.85%    passed     63.09%
+  48  cluster566_HDZ-culi-192-S75        24.85%    passed     78.07%
+  49  cluster256_HDZ-culi-395-S272       24.90%    passed     64.44%
+  50  cluster33_HDZ-culi-322-S133        24.90%    failed      0.08%
+  51  cluster341_HDZ-culi-330-S323       24.90%    passed     65.47%
+  52  cluster530_HDZ-culi-204-S249       24.90%    passed     74.02%
+  53  cluster868_HDZ-culi-054-S192       24.90%    passed     60.16%
+  54  cluster117_HDZ-culi-373-S219       24.95%    passed     98.72%
+  55  cluster1348_HDZ-culi-219-S81       24.95%    passed     73.91%
+  56  cluster1362_HDZ-culi-181-S74       24.95%    passed     66.76%
+  57  cluster1796_HDZ-culi-087-S78       24.95%    passed     70.14%
+  58  cluster2423_HDZ-culi-013-S8        24.95%    passed     42.34%
+  59  cluster2598_HDZ-culi-040-S187      24.95%    failed      0.09%
+  60  cluster3613_HDZ-culi-226-S124      24.95%    passed     69.51%
+  61  cluster92_HDZ-culi-221-S90         24.95%    passed     62.37%
+  62  cluster120_HDZ-culi-336-S159       25.00%    passed     53.72%
+  63  cluster1227_HDZ-culi-047-S190      25.00%    passed     63.48%
+  64  cluster223_HDZ-culi-235-S282       25.00%    passed     89.23%
+  65  cluster2_HDZ-culi-433-S229         25.00%    passed     36.14%
+  66  cluster467_HDZ-culi-358-S181       25.00%    passed     61.13%
+  67  cluster571_HDZ-culi-330-S323       25.00%    passed     73.13%
+  68  cluster580_HDZ-culi-342-S171       25.00%    passed     58.50%
+  69  cluster690_HDZ-culi-405-S335       25.00%    passed     73.21%
+  70  cluster1066_HDZ-culi-249-S149      25.05%    passed     59.16%
+  71  cluster1323_HDZ-culi-166-S197      25.05%    passed     45.16%
+  72  cluster1381_HDZ-culi-250-S150      25.05%    passed     62.78%
+  73  cluster1413_HDZ-culi-264-S167      25.05%    passed     63.85%
+  74  cluster15_HDZ-culi-444-S296        25.05%    passed     25.57%
+  75  cluster1920_HDZ-culi-063-S1        25.05%    passed     54.22%
+  76  cluster195_HDZ-culi-429-E1-S355    25.05%    passed     35.28%
+  77  cluster20_HDZ-culi-452-S344        25.05%    passed     46.93%
+  78  cluster302_HDZ-culi-452-S344       25.05%    passed     35.03%
+  79  cluster3300_HDZ-culi-097-S91       25.05%    passed     62.04%
+  80  cluster58_HDZ-culi-091-S236        25.05%    passed     62.66%
+  81  cluster68_HDZ-culi-328-S158        25.05%    passed     66.80%
+  82  cluster778_HDZ-culi-264-S167       25.05%    passed     65.47%
+  83  cluster8_HDZ-culi-438-S275         25.05%    passed     23.11%
+  84  cluster118_HDZ-culi-430-S292       25.10%    failed      3.78%
+  85  cluster11_HDZ-culi-249-S149        25.10%    passed     64.49%
+  86  cluster1224_HDZ-culi-442-S294      25.10%    passed     67.02%
+  87  cluster146_HDZ-culi-433-S229       25.10%    passed     56.59%
+  88  cluster1514_HDZ-culi-085-S92       25.10%    passed     72.48%
+  89  cluster1812_HDZ-culi-184-S248      25.10%    passed     63.77%
+  90  cluster217_HDZ-culi-336-S159       25.10%    passed     44.66%
+  91  cluster28_HDZ-culi-357-S180        25.10%    passed     59.00%
+  92  cluster338_HDZ-culi-452-S344       25.10%    passed     54.42%
+  93  cluster451_HDZ-culi-042-S188       25.10%    passed     66.59%
+  94  cluster679_HDZ-culi-245-S145       25.10%    passed     70.68%
+  95  cluster7_HDZ-culi-430-S292         25.10%    passed      9.84%
+  96  cluster925_HDZ-culi-249-S149       25.10%    passed     76.93%
+  97  cluster116_HDZ-culi-438-S275       25.15%    passed     21.23%
+  98  cluster1821_HDZ-culi-330-S323      25.15%    passed     64.45%
+  99  cluster1907_HDZ-culi-184-S248      25.15%    passed     67.48%
+ 100  cluster294_HDZ-culi-240-S140       25.15%    passed     30.58%
+ 101  cluster64_HDZ-culi-087-S78         25.15%    passed     59.32%
+ 102  cluster1676_HDZ-culi-252-S152      25.20%    passed     69.48%
+ 103  cluster2646_HDZ-culi-241-S141      25.20%    passed     65.18%
+ 104  cluster57_HDZ-culi-088-S234        25.20%    passed     78.57%
+ 105  cluster692_HDZ-culi-444-S296       25.20%    passed     59.05%
+ 106  cluster1633_HDZ-culi-327-S138      25.26%    passed     68.63%
+ 107  cluster2349_HDZ-culi-317-S155      25.26%    passed     55.96%
+ 108  cluster2642_HDZ-culi-184-S248      25.26%    passed     60.20%
+ 109  cluster1234_HDZ-culi-250-S150      25.31%    passed     63.94%
+ 110  cluster1977_HDZ-culi-437-S253      25.31%    passed     85.84%
+ 111  cluster2617_HDZ-culi-040-S187      25.36%    passed     59.15%
+ 112  cluster1656_HDZ-culi-224-S123      25.46%    failed      2.85%
+ 113  cluster2309_HDZ-culi-354-S177      25.46%    passed     75.19%
+ 114  cluster1838_HDZ-culi-230-S277      25.51%    failed      0.00%
+ 115  cluster4805_HDZ-culi-097-S91       25.51%    passed     25.82%
+ 116  cluster80_HDZ-culi-365-S211        25.51%    passed     39.12%
+ 117  cluster1515_HDZ-culi-166-S197      25.56%    passed     88.06%
+ 118  cluster1793_HDZ-culi-184-S248      25.56%    failed      0.00%
+ 119  cluster1812_HDZ-culi-308-S117      25.56%    passed     13.99%
+ 120  cluster112_HDZ-culi-429-E1-S355b   25.61%    passed     54.48%
+ 121  cluster618_HDZ-culi-450-S322       25.61%    passed     83.42%
+ 122  cluster1308_HDZ-culi-373-S219      25.66%    passed     86.74%
+ 123  cluster13_HDZ-culi-089-S64         25.66%    passed     86.86%
+ 124  cluster2581_HDZ-culi-258-S162      25.66%    passed     62.19%
+ 125  cluster356_HDZ-culi-224-S123       25.66%    passed     12.18%
+ 126  cluster675_HDZ-culi-452-S344       25.66%    passed     40.65%
+ 127  cluster1029_HDZ-culi-452-S344      25.71%    passed     87.14%
+ 128  cluster1099_HDZ-culi-396-S273      25.71%    passed     98.90%
+ 129  cluster2249_HDZ-culi-272-S312      25.71%    passed     82.31%
+ 130  cluster2661_HDZ-culi-408-S338      25.71%    passed     36.39%
+ 131  cluster277_HDZ-culi-322-S133       25.71%    failed      0.00%
+ 132  cluster3209_HDZ-culi-184-S248      25.71%    passed     22.84%
+ 133  cluster3512_HDZ-culi-350-S174      25.71%    passed     32.25%
+ 134  cluster4019_HDZ-culi-219-S81       25.71%    passed     95.66%
+ 135  cluster4950_HDZ-culi-065-S4        25.71%    passed     87.06%
+ 136  cluster901_HDZ-culi-250-S150       25.71%    passed     51.25%
+ 137  cluster1031_HDZ-culi-381-S327      25.77%    passed     86.09%
+ 138  cluster1034_HDZ-culi-089-S64       25.77%    passed     85.25%
+ 139  cluster104_HDZ-culi-021-S7         25.77%    passed     82.69%
+ 140  cluster110_HDZ-culi-372-S218       25.77%    passed     90.63%
+ 141  cluster1181_HDZ-culi-430-S292      25.77%    passed     50.54%
+ 142  cluster1302_HDZ-culi-269-S309      25.77%    passed     46.64%
+ 143  cluster1314_HDZ-culi-390-S267      25.77%    passed     88.47%
+ 144  cluster1550_HDZ-culi-269-S309      25.77%    passed     86.05%
+ 145  cluster173_HDZ-culi-310-S119       25.77%    passed     75.99%
+ 146  cluster2577_HDZ-culi-272-S312      25.77%    passed     94.72%
+ 147  cluster2645_HDZ-culi-250-S150      25.77%    failed      1.06%
+ 148  cluster2952_HDZ-culi-310-S119      25.77%    passed     75.98%
+ 149  cluster3389_HDZ-culi-166-S197      25.77%    passed     68.26%
+ 150  cluster3517_HDZ-culi-224-S123      25.77%    passed     85.25%
+ 151  cluster913_HDZ-culi-089-S64        25.77%    passed     95.71%
+ 152  cluster1008_HDZ-culi-396-S273      25.82%    passed     96.72%
+ 153  cluster1103_HDZ-culi-089-S64       25.82%    passed     83.12%
+ 154  cluster1137_HDZ-culi-396-S273      25.82%    passed     93.00%
+ 155  cluster1254_HDZ-culi-430-S292      25.82%    passed     97.08%
+ 156  cluster1362_HDZ-culi-450-S322      25.82%    passed     98.41%
+ 157  cluster1439_HDZ-culi-450-S322      25.82%    passed     91.92%
+ 158  cluster2396_HDZ-culi-253-S153      25.82%    passed     95.32%
+ 159  cluster2508_HDZ-culi-272-S312      25.82%    passed     91.92%
+ 160  cluster3291_HDZ-culi-224-S123      25.82%    passed     92.90%
+ 161  cluster3312_HDZ-culi-314-S126      25.82%    passed     94.70%
+ 162  cluster5639_HDZ-culi-326-S137      25.82%    passed     98.43%
+ 163  cluster651_HDZ-culi-372-S218       25.82%    passed     96.80%
+ 164  cluster1156_HDZ-culi-389-S266      25.87%    passed     90.09%
+ 165  cluster1314_HDZ-culi-373-S219      25.87%    passed     89.37%
+ 166  cluster1428_HDZ-culi-373-S219      25.87%    passed     93.79%
+ 167  cluster1439_HDZ-culi-350-S174      25.87%    passed     45.05%
+ 168  cluster1684_HDZ-culi-392-S269      25.87%    passed     10.52%
+ 169  cluster2380_HDZ-culi-026-S15       25.87%    passed     68.83%
+ 170  cluster4133_HDZ-culi-241-S141      25.87%    passed     94.17%
+ 171  cluster7557_HDZ-culi-013-S8        25.87%    passed     41.22%
+ 172  cluster857_HDZ-culi-336-S159       25.87%    passed     95.40%
+ 173  cluster1036_HDZ-culi-396-S273      25.92%    passed     98.20%
+ 174  cluster106_HDZ-culi-373-S219       25.92%    passed     97.89%
+ 175  cluster115_HDZ-culi-211-S106       25.92%    passed     93.06%
+ 176  cluster1164_HDZ-culi-381-S327      25.92%    passed     95.13%
+ 177  cluster1323_HDZ-culi-089-S64       25.92%    passed     98.41%
+ 178  cluster1624_HDZ-culi-047-S190      25.92%    passed     81.01%
+ 179  cluster1659_HDZ-culi-269-S309      25.92%    passed     39.25%
+ 180  cluster1757_HDZ-culi-342-S171      25.92%    passed     98.30%
+ 181  cluster1907_HDZ-culi-089-S64       25.92%    passed     96.97%
+ 182  cluster302_HDZ-culi-373-S219       25.92%    passed     98.30%
+ 183  cluster3347_HDZ-culi-258-S162      25.92%    passed     56.64%
+ 184  cluster787_HDZ-culi-389-S266       25.92%    passed      7.16%
+ 185  cluster1360_HDZ-culi-408-S338      25.97%    passed     43.80%
+ 186  cluster2331_HDZ-culi-065-S4        25.97%    passed     72.19%
+ 187  cluster278_HDZ-culi-322-S133       25.97%    failed      0.00%
+ 188  cluster3603_HDZ-culi-224-S123      25.97%    passed     92.33%
+ 189  cluster1315_HDZ-culi-384-S261      26.02%    passed     16.67%
+ 190  cluster224_HDZ-culi-322-S133       26.02%    passed     75.16%
+ 191  cluster588_HDZ-culi-452-S344       26.02%    passed      7.91%
+ 192  cluster80_HDZ-culi-311-S120        26.02%    passed     21.94%
+ 193  cluster10094_HDZ-culi-321-S132     26.07%    passed     96.62%
+ 194  cluster1270_HDZ-culi-381-S327      26.07%    passed     74.77%
+ 195  cluster1302_HDZ-culi-396-S273      26.07%    passed     43.60%
+ 196  cluster1469_HDZ-culi-450-S322      26.07%    passed     46.86%
+ 197  cluster2741_HDZ-culi-308-S117      26.07%    passed     14.16%
+ 198  cluster3093_HDZ-culi-319-S157      26.07%    passed     69.25%
+ 199  cluster3236_HDZ-culi-088-S234      26.07%    passed     28.45%
+ 200  cluster341_HDZ-culi-322-S133       26.07%    failed      2.04%
+ 201  cluster5_HDZ-culi-046-S48          26.07%    passed     63.82%
+ 202  cluster859_HDZ-culi-375-S285       26.07%    passed     20.80%
+ 203  cluster1448_HDZ-culi-437-S253      26.12%    passed     52.58%
+ 204  cluster1596_HDZ-culi-430-S292      26.12%    passed     24.75%
+ 205  cluster2795_HDZ-culi-318-S156      26.12%    passed     88.91%
+ 206  cluster2632_HDZ-culi-314-S126      26.17%    failed      0.00%
+ 207  cluster433_HDZ-culi-322-S133       26.17%    passed     96.69%
+ 208  cluster1229_HDZ-culi-202-E1-S348   26.22%    passed     79.61%
+ 209  cluster2213_HDZ-culi-047-S190      26.22%    failed      2.45%
+ 210  cluster228_HDZ-culi-322-S133       26.22%    passed     92.95%
+ 211  cluster2324_HDZ-culi-437-S253      26.22%    passed     69.76%
+ 212  cluster2398_HDZ-culi-037-S186      26.22%    failed      0.00%
+ 213  cluster3042_HDZ-culi-408-S338      26.22%    passed     65.12%
+ 214  cluster3244_HDZ-culi-028-S16       26.22%    passed     69.85%
+ 215  cluster434_HDZ-culi-322-S133       26.22%    passed      8.49%
+ 216  cluster4382_HDZ-culi-169-S244      26.22%    failed      0.14%
+ 217  cluster4439_HDZ-culi-060-S80       26.22%    passed     36.24%
+ 218  cluster76_HDZ-culi-322-S133        26.22%    passed     73.15%
+ 219  cluster3501_HDZ-culi-229-S130      26.28%    passed     99.34%
+ 220  cluster3575_HDZ-culi-254-S154      26.28%    failed      0.00%
+ 221  cluster3583_HDZ-culi-350-S174      26.28%    failed      0.00%
+ 222  cluster362_HDZ-culi-322-S133       26.28%    failed      0.48%
+ 223  cluster3753_HDZ-culi-262-S165      26.28%    passed     42.66%
+ 224  cluster413_HDZ-culi-322-S133       26.28%    passed     75.90%
+ 225  cluster4372_HDZ-culi-350-S174      26.28%    passed     45.79%
+ 226  cluster5069_HDZ-culi-060-S80       26.28%    failed      0.00%
+ 227  cluster10724_HDZ-culi-020-S12      26.33%    failed      0.31%
+ 228  cluster1368_HDZ-culi-370-S216      26.33%    failed      0.00%
+ 229  cluster2734_HDZ-culi-437-S253      26.33%    failed      0.33%
+ 230  cluster352_HDZ-culi-322-S133       26.33%    failed      0.72%
+ 231  cluster4255_HDZ-culi-252-S152      26.33%    failed      0.05%
+ 232  cluster4460_HDZ-culi-196-S76       26.33%    passed     52.83%
+ 233  cluster504_HDZ-culi-322-S133       26.33%    failed      2.39%
+ 234  cluster2085_HDZ-culi-269-S309      26.38%    passed     67.52%
+ 235  cluster4115_HDZ-culi-354-S177      26.38%    failed      0.64%
+ 236  cluster4363_HDZ-culi-167-S198      26.38%    passed     70.36%
+ 237  cluster458_HDZ-culi-322-S133       26.38%    failed      3.50%
+ 238  cluster10282_HDZ-culi-020-S12      26.43%    failed      0.00%
+ 239  cluster1228_HDZ-culi-314-S126      26.43%    passed     67.31%
+ 240  cluster1241_HDZ-culi-211-S106      26.43%    passed     64.39%
+ 241  cluster2302_HDZ-culi-091-S236      26.43%    passed     67.05%
+ 242  cluster2544_HDZ-culi-311-S120      26.43%    passed     78.45%
+ 243  cluster3025_HDZ-culi-319-S157      26.43%    passed     74.15%
+ 244  cluster3211_HDZ-culi-437-S253      26.43%    passed     54.00%
+ 245  cluster598_HDZ-culi-322-S133       26.43%    failed      2.56%
+ 246  cluster9613_HDZ-culi-226-S124      26.43%    failed      3.03%
+ 247  cluster1685_HDZ-culi-408-S338      26.48%    failed      0.00%
+ 248  cluster1748_HDZ-culi-269-S309      26.48%    passed     97.89%
+ 249  cluster2576_HDZ-culi-400-S331      26.48%    passed     75.18%
+ 250  cluster2793_HDZ-culi-318-S156      26.48%    passed     62.86%
+ 251  cluster2871_HDZ-culi-198-S88       26.48%    passed     98.21%
+ 252  cluster4076_HDZ-culi-330-S323      26.48%    passed     78.88%
+ 253  cluster4659_HDZ-culi-167-S198      26.48%    passed     53.21%
+ 254  cluster4995_HDZ-culi-330-S323      26.48%    passed     27.32%
+ 255  cluster514_HDZ-culi-364-S210       26.48%    failed      0.19%
+ 256  cluster6582_HDZ-culi-085-S92       26.48%    passed     67.42%
+ 257  cluster6859_HDZ-culi-013-S8        26.48%    passed     18.97%
+ 258  cluster1016_HDZ-culi-429-E1-S355   26.53%    passed     82.94%
+ 259  cluster1080_HDZ-culi-364-S210      26.53%    passed     14.89%
+ 260  cluster1086_HDZ-culi-057-S233      26.53%    passed      9.44%
+ 261  cluster1143_HDZ-culi-372-S218      26.53%    passed     88.55%
+ 262  cluster1288_HDZ-culi-377-S287      26.53%    passed     74.36%
+ 263  cluster1850_HDZ-culi-401-S332      26.53%    passed     77.15%
+ 264  cluster2169_HDZ-culi-328-S158      26.53%    passed     68.52%
+ 265  cluster2186_HDZ-culi-197-S202      26.53%    failed      0.00%
+ 266  cluster2417_HDZ-culi-350-S174      26.53%    passed     86.60%
+ 267  cluster289_HDZ-culi-322-S133       26.53%    passed     30.60%
+ 268  cluster2932_HDZ-culi-085-S92       26.53%    passed     52.61%
+ 269  cluster3185_HDZ-culi-408-S338      26.53%    passed     25.05%
+ 270  cluster3275_HDZ-culi-437-S253      26.53%    passed     24.13%
+ 271  cluster3411_HDZ-culi-400-S331      26.53%    passed     93.32%
+ 272  cluster439_HDZ-culi-322-S133       26.53%    passed     85.58%
+ 273  cluster749_HDZ-culi-322-S133       26.53%    failed      0.42%
+ 274  cluster8750_HDZ-culi-065-S4        26.53%    passed     97.23%
+ 275  cluster179_HDZ-culi-322-S133       26.58%    passed     38.56%
+ 276  cluster273_HDZ-culi-322-S133       26.58%    passed     34.20%
+ 277  cluster2743_HDZ-culi-091-S236      26.58%    passed     65.23%
+ 278  cluster2935_HDZ-culi-437-S253      26.58%    passed     55.78%
+ 279  cluster3403_HDZ-culi-437-S253      26.58%    passed     21.02%
+ 280  cluster451_HDZ-culi-322-S133       26.58%    passed     51.86%
+ 281  cluster613_HDZ-culi-364-S210       26.58%    passed     81.45%
+ 282  cluster12294_HDZ-culi-013-S8       26.63%    passed     45.48%
+ 283  cluster1432_HDZ-culi-271-S311      26.63%    failed      0.00%
+ 284  cluster1961_HDZ-culi-390-S267      26.63%    passed     79.12%
+ 285  cluster2514_HDZ-culi-445-S297      26.63%    failed      0.10%
+ 286  cluster2722_HDZ-culi-243-S143      26.63%    passed     27.64%
+ 287  cluster2967_HDZ-culi-035-S185      26.63%    failed      0.00%
+ 288  cluster3361_HDZ-culi-245-S145      26.63%    passed     74.20%
+ 289  cluster3775_HDZ-culi-408-S338      26.63%    failed      1.99%
+ 290  cluster4260_HDZ-culi-219-S81       26.63%    passed     36.98%
+ 291  cluster4475_HDZ-culi-169-S244      26.63%    passed     59.00%
+ 292  cluster10336_HDZ-culi-321-S132     26.68%    passed     36.59%
+ 293  cluster10870_HDZ-culi-014-S18      26.68%    passed     77.07%
+ 294  cluster1230_HDZ-culi-429-E1-S355   26.68%    passed     50.13%
+ 295  cluster1484_HDZ-culi-377-S287      26.68%    failed      0.03%
+ 296  cluster1869_HDZ-culi-047-S190      26.68%    passed     77.03%
+ 297  cluster2456_HDZ-culi-362-S208      26.68%    passed     60.42%
+ 298  cluster2730_HDZ-culi-319-S157      26.68%    failed      0.07%
+ 299  cluster3287_HDZ-culi-437-S253      26.68%    passed     12.01%
+ 300  cluster4305_HDZ-culi-224-S123      26.68%    passed     17.92%
+ 301  cluster4771_HDZ-culi-219-S81       26.68%    passed     50.67%
+ 302  cluster5037_HDZ-culi-219-S81       26.68%    failed      2.03%
+ 303  cluster635_HDZ-culi-322-S133       26.68%    passed     39.76%
+ 304  cluster6873_HDZ-culi-174-S247      26.68%    passed     79.86%
+ 305  cluster6986_HDZ-culi-065-S4        26.68%    failed      0.06%
+ 306  cluster727_HDZ-culi-364-S210       26.68%    passed     31.70%
+ 307  cluster1325_HDZ-culi-377-S287      26.73%    passed     52.83%
+ 308  cluster1829_HDZ-culi-330-S323      26.73%    passed     28.43%
+ 309  cluster2278_HDZ-culi-437-S253      26.73%    passed     37.85%
+ 310  cluster2454_HDZ-culi-400-S331      26.73%    passed     48.40%
+ 311  cluster2604_HDZ-culi-388-S265      26.73%    passed     66.85%
+ 312  cluster2664_HDZ-culi-408-S338      26.73%    passed     22.45%
+ 313  cluster3150_HDZ-culi-408-S338      26.73%    passed     34.10%
+ 314  cluster3913_HDZ-culi-405-S335      26.73%    passed     52.93%
+ 315  cluster5325_HDZ-culi-330-S323      26.73%    passed     42.97%
+ 316  cluster1772_HDZ-culi-192-S75       26.79%    passed     70.97%
+ 317  cluster1824_HDZ-culi-408-S338      26.79%    passed     48.96%
+ 318  cluster2144_HDZ-culi-197-S202      26.79%    passed     42.81%
+ 319  cluster2736_HDZ-culi-243-S143      26.79%    passed     61.38%
+ 320  cluster3588_HDZ-culi-098-S238      26.79%    passed     53.00%
+ 321  cluster4115_HDZ-culi-270-S310      26.79%    passed     39.95%
+ 322  cluster4202_HDZ-culi-258-S162      26.79%    passed     58.05%
+ 323  cluster739_HDZ-culi-322-S133       26.79%    failed      0.77%
+ 324  cluster1245_HDZ-culi-202-E1-S348   26.84%    passed     66.34%
+ 325  cluster2620_HDZ-culi-408-S338      26.84%    passed      5.43%
+ 326  cluster3670_HDZ-culi-408-S338      26.84%    passed     31.41%
+ 327  cluster3685_HDZ-culi-408-S338      26.84%    passed     29.29%
+ 328  cluster1196_HDZ-culi-322-S133      26.89%    passed     54.83%
+ 329  cluster1766_HDZ-culi-269-S309      26.89%    passed      5.90%
+ 330  cluster1908_HDZ-culi-269-S309      26.89%    passed     48.57%
+ 331  cluster3169_HDZ-culi-408-S338      26.89%    passed     71.75%
+ 332  cluster3985_HDZ-culi-437-S253      26.89%    passed     57.46%
+ 333  cluster4740_HDZ-culi-271-S311      26.89%    passed     70.44%
+ 334  cluster4799_HDZ-culi-219-S81       26.89%    passed     57.10%
+ 335  cluster5594_HDZ-culi-437-S253      26.89%    passed     96.45%
+ 336  cluster992_HDZ-culi-450-S322       26.89%    failed      0.00%
+ 337  cluster1059_HDZ-culi-322-S133      26.94%    passed     25.65%
+ 338  cluster1319_HDZ-culi-364-S210      26.94%    failed      0.68%
+ 339  cluster2906_HDZ-culi-088-S234      26.94%    passed     68.18%
+ 340  cluster4949_HDZ-culi-437-S253      26.94%    passed     87.35%
+ 341  cluster3138_HDZ-culi-308-S117      26.99%    passed     26.35%
+ 342  cluster4097_HDZ-culi-437-S253      26.99%    failed      0.48%
+ 343  cluster5273_HDZ-culi-327-S138      26.99%    passed     74.10%
+ 344  cluster5589_HDZ-culi-330-S323      26.99%    passed     74.15%
+ 345  cluster5799_HDZ-culi-262-S165      26.99%    passed     70.18%
+ 346  cluster5814_HDZ-culi-330-S323      26.99%    passed     70.36%
+ 347  cluster6312_HDZ-culi-219-S81       26.99%    passed     59.45%
+ 348  cluster1680_HDZ-culi-364-S210      27.04%    failed      0.00%
+ 349  cluster3603_HDZ-culi-357-S180      27.04%    failed      1.42%
+ 350  cluster4105_HDZ-culi-230-S277      27.04%    passed     78.42%
+ 351  cluster1225_HDZ-culi-322-S133      27.09%    passed     25.59%
+ 352  cluster1711_HDZ-culi-364-S210      27.09%    passed     54.70%
+ 353  cluster2294_HDZ-culi-400-S331      27.09%    failed      0.00%
+ 354  cluster4525_HDZ-culi-408-S338      27.09%    passed     42.14%
+ 355  cluster4663_HDZ-culi-167-S198      27.09%    passed     79.30%
+ 356  cluster4782_HDZ-culi-437-S253      27.14%    passed     71.24%
+ 357  cluster1376_HDZ-culi-322-S133      27.19%    passed     95.79%
+ 358  cluster1634_HDZ-culi-176-S51       27.19%    passed     49.40%
+ 359  cluster3621_HDZ-culi-328-S158      27.30%    passed     31.45%
+ 360  cluster4342_HDZ-culi-408-S338      27.30%    failed      2.54%
+ 361  cluster4617_HDZ-culi-445-S297      27.30%    failed      0.26%
+ 362  cluster5290_HDZ-culi-437-S253      27.30%    passed     55.35%
+ 363  cluster8130_HDZ-culi-249-S149      27.30%    failed      0.00%
+ 364  cluster5020_HDZ-culi-270-S310      27.35%    passed     51.65%
+ 365  cluster1837_HDZ-culi-389-S266      27.40%    passed     28.16%
+ 366  cluster4559_HDZ-culi-437-S253      27.40%    passed     78.89%
+ 367  cluster4852_HDZ-culi-341-S170      27.40%    failed      0.00%
+ 368  cluster4939_HDZ-culi-311-S120      27.40%    passed     49.24%
+ 369  cluster8600_HDZ-culi-224-S123      27.40%    passed     59.79%
+ 370  cluster1463_HDZ-culi-322-S133      27.45%    passed     95.51%
+ 371  cluster1514_HDZ-culi-364-S210      27.45%    passed     90.81%
+ 372  cluster3186_HDZ-culi-381-S327      27.45%    failed      0.13%
+ 373  cluster3929_HDZ-culi-250-S150      27.45%    failed      0.16%
+ 374  cluster4874_HDZ-culi-398-S329      27.50%    failed      0.12%
+ 375  cluster5037_HDZ-culi-361-S184      27.50%    failed      0.22%
+ 376  cluster5394_HDZ-culi-203-S203      27.55%    passed     55.40%
+ 377  cluster2675_HDZ-culi-392-S269      27.60%    failed      0.36%
+ 378  cluster3718_HDZ-culi-437-S253      27.60%    failed      0.00%
+ 379  cluster5018_HDZ-culi-398-S329      27.60%    failed      0.00%
+ 380  cluster1983_HDZ-culi-233-S280      27.65%    failed      0.00%
+ 381  cluster3840_HDZ-culi-328-S158      27.65%    passed     41.26%
+ 382  cluster6367_HDZ-culi-408-S338      27.65%    failed      0.00%
+ 383  cluster6469_HDZ-culi-262-S165      27.65%    failed      0.00%
+ 384  cluster1559_HDZ-culi-322-S133      27.70%    passed     92.83%
+ 385  cluster2092_HDZ-culi-336-S159      27.70%    failed      0.00%
+ 386  cluster2092_HDZ-culi-444-S296      27.70%    failed      0.00%
+ 387  cluster5385_HDZ-culi-437-S253      27.70%    passed     73.23%
+ 388  cluster5893_HDZ-culi-437-S253      27.70%    passed     48.76%
+ 389  cluster9340_HDZ-culi-054-S192      27.70%    failed      0.00%
+ 390  cluster1424_HDZ-culi-322-S133      27.76%    failed      0.00%
+ 391  cluster16113_HDZ-culi-020-S12      27.76%    failed      0.00%
+ 392  cluster3977_HDZ-culi-166-S197      27.91%    failed      0.00%
+ 393  cluster1454_HDZ-culi-322-S133      28.01%    failed      0.20%
+ 394  cluster1495_HDZ-culi-322-S133      28.01%    failed      0.17%
+ 395  cluster6020_HDZ-culi-024-S19       28.01%    passed     33.22%
+ 396  cluster1721_HDZ-culi-322-S133      28.11%    passed     62.88%
+ 397  cluster5217_HDZ-culi-398-S329      28.16%    passed     39.13%
+ 398  cluster5714_HDZ-culi-354-S177      28.27%    failed      0.48%
+ 399  cluster1841_HDZ-culi-322-S133      28.37%    passed     77.53%
+ 400  cluster1824_HDZ-culi-322-S133      28.42%    passed      7.34%
+ 401  cluster2093_HDZ-culi-322-S133      28.47%    passed     76.90%
+ 402  cluster2108_HDZ-culi-322-S133      28.47%    passed     67.67%
+ 403  cluster2196_HDZ-culi-322-S133      28.57%    passed     52.49%
+ 404  cluster1492_HDZ-culi-322-S133      28.78%    failed      0.40%
+ 405  cluster1592_HDZ-culi-322-S133      28.78%    passed      7.20%
+ 406  cluster1884_HDZ-culi-322-S133      28.83%    failed      1.38%
+ 407  cluster2105_HDZ-culi-322-S133      28.93%    failed      1.73%
+ 408  cluster2276_HDZ-culi-322-S133      28.93%    passed     37.82%
+ 409  cluster1789_HDZ-culi-322-S133      28.98%    passed     46.23%
+ 410  cluster2380_HDZ-culi-322-S133      28.98%    passed     29.14%
+ 411  cluster1344_HDZ-culi-322-S133      29.03%    failed      4.87%
+ 412  cluster1443_HDZ-culi-322-S133      29.03%    passed      9.87%
+ 413  cluster1987_HDZ-culi-322-S133      29.03%    failed      0.85%
+ 414  cluster2058_HDZ-culi-322-S133      29.08%    passed     10.32%
+ 415  cluster2477_HDZ-culi-322-S133      29.23%    passed     56.63%
+ 416  cluster3889_HDZ-culi-263-S166      29.23%    passed     17.37%
+ 417  cluster2290_HDZ-culi-322-S133      29.29%    passed     48.94%
+ 418  cluster2297_HDZ-culi-322-S133      29.34%    passed     59.28%
+ 419  cluster2395_HDZ-culi-322-S133      29.34%    passed     39.84%
+ 420  cluster2458_HDZ-culi-322-S133      29.34%    passed     36.64%
+ 421  cluster2841_HDZ-culi-322-S133      29.80%    passed      5.96%
+ 422  cluster2215_HDZ-culi-322-S133      29.85%    passed     10.71%
+ 423  cluster1675_HDZ-culi-322-S133      30.46%    passed     42.65%
+ 424  cluster7247_HDZ-culi-220-S85       30.77%    failed      0.32%
+ 425  cluster3927_HDZ-culi-273-S313      33.06%    passed      6.49%
+****  TOTAL                              26.24%  80 sequences failed composition chi2 test (p-value<5%; df=3)
+
+
+Create initial parsimony tree by phylogenetic likelihood library (PLL)... 0.137 seconds
+Measuring multi-threading efficiency up to 8 CPU cores
+Increase to 10 rounds for branch lengths
+8 trees examined
+Threads: 1 / Time: 8.513 sec / Speedup: 1.000 / Efficiency: 100% / LogL: -297906
+Threads: 2 / Time: 5.047 sec / Speedup: 1.687 / Efficiency: 84% / LogL: -297906
+Threads: 3 / Time: 4.469 sec / Speedup: 1.905 / Efficiency: 63% / LogL: -297906
+Threads: 4 / Time: 3.827 sec / Speedup: 2.225 / Efficiency: 56% / LogL: -297906
+Threads: 5 / Time: 3.101 sec / Speedup: 2.745 / Efficiency: 55% / LogL: -297906
+Threads: 6 / Time: 2.922 sec / Speedup: 2.914 / Efficiency: 49% / LogL: -297906
+BEST NUMBER OF THREADS: 5
+
+Perform fast likelihood tree search using GTR+I+G model...
+Estimate model parameters (epsilon = 5.000)
+Perform nearest neighbor interchange...
+Estimate model parameters (epsilon = 1.000)
+1. Initial log-likelihood: -108172.725
+Optimal log-likelihood: -108172.024
+Rate parameters:  A-C: 0.81814  A-G: 2.36992  A-T: 1.37348  C-G: 0.89300  C-T: 3.93042  G-T: 1.00000
+Base frequencies:  A: 0.255  C: 0.233  G: 0.316  T: 0.196
+Proportion of invariable sites: 0.246
+Gamma shape alpha: 0.637
+Parameters optimization took 1 rounds (0.298 sec)
+Time for fast ML tree search: 2.540 seconds
+
+NOTE: ModelFinder requires 88 MB RAM!
+ModelFinder will test up to 88 DNA models (sample size: 1960 epsilon: 0.100) ...
+ No. Model         -LnL         df  AIC          AICc         BIC
+  1  GTR+F         128080.278   855 257870.556   259196.425   262642.054
+  2  GTR+F+I       120479.363   856 242670.727   244000.903   247447.806
+  3  GTR+F+G4      108710.486   856 219132.972   220463.148   223910.051
+  4  GTR+F+I+G4    108171.871   857 218057.741   219392.235   222840.401
+  8  SYM+I+G4      108260.626   854 218229.252   219550.827   222995.170
+ 12  TVM+F+I+G4    108410.281   856 218532.562   219862.737   223309.641
+ 16  TVMe+I+G4     108282.693   853 218271.386   219588.677   223031.723
+ 20  TIM3+F+I+G4   108210.102   855 218130.204   219456.073   222901.702
+ 24  TIM3e+I+G4    108288.785   852 218281.571   219594.590   223036.327
+ 28  TIM2+F+I+G4   108257.130   855 218224.261   219550.130   222995.759
+ 32  TIM2e+I+G4    108304.423   852 218312.846   219625.865   223067.602
+ 36  TIM+F+I+G4    108251.550   855 218213.100   219538.970   222984.599
+ 40  TIMe+I+G4     108284.070   852 218272.139   219585.158   223026.896
+ 44  TPM3u+F+I+G4  108448.292   854 218604.583   219926.158   223370.501
+ 48  TPM3+I+G4     108311.080   851 218324.160   219632.918   223073.336
+ 52  TPM2u+F+I+G4  108501.252   854 218710.504   220032.079   223476.422
+ 56  TPM2+I+G4     108326.588   851 218355.176   219663.934   223104.351
+ 60  K3Pu+F+I+G4   108494.992   854 218697.985   220019.559   223463.902
+ 64  K3P+I+G4      108306.340   851 218314.681   219623.439   223063.856
+ 68  TN+F+I+G4     108268.488   854 218244.977   219566.551   223010.894
+ 72  TNe+I+G4      108306.084   851 218314.168   219622.926   223063.343
+ 76  HKY+F+I+G4    108511.350   853 218728.699   220045.990   223489.036
+ 80  K2P+I+G4      108328.460   850 218356.920   219661.428   223100.514
+ 84  F81+F+I+G4    111132.098   852 223968.195   225281.214   228722.951
+ 88  JC+I+G4       110953.717   849 223605.434   224905.705   228343.448
+Akaike Information Criterion:           GTR+F+I+G4
+Corrected Akaike Information Criterion: GTR+F+I+G4
+Bayesian Information Criterion:         GTR+F+I+G4
+Best-fit model: GTR+F+I+G4 chosen according to BIC
+
+All model information printed to /data/final/otus_aligned.fasta.model.gz
+CPU time for ModelFinder: 180.568 seconds (0h:3m:0s)
+Wall-clock time for ModelFinder: 48.398 seconds (0h:0m:48s)
+Generating 1000 samples for ultrafast bootstrap (seed: 727516)...
+
+NOTE: 88 MB RAM (0 GB) is required!
+Estimate model parameters (epsilon = 0.100)
+Thoroughly optimizing +I+G parameters from 10 start values...
+Init pinv, alpha: 0.000, 0.636 / Estimate: 0.246, 0.635 / LogL: -108171.959
+Init pinv, alpha: 0.038, 0.636 / Estimate: 0.246, 0.636 / LogL: -108171.982
+Init pinv, alpha: 0.076, 0.636 / Estimate: 0.246, 0.637 / LogL: -108172.021
+Init pinv, alpha: 0.113, 0.636 / Estimate: 0.246, 0.638 / LogL: -108172.025
+Init pinv, alpha: 0.151, 0.636 / Estimate: 0.246, 0.637 / LogL: -108172.004
+Init pinv, alpha: 0.189, 0.636 / Estimate: 0.246, 0.636 / LogL: -108171.979
+Init pinv, alpha: 0.227, 0.636 / Estimate: 0.246, 0.633 / LogL: -108171.961
+Init pinv, alpha: 0.264, 0.636 / Estimate: 0.247, 0.629 / LogL: -108171.936
+Init pinv, alpha: 0.302, 0.636 / Estimate: 0.247, 0.626 / LogL: -108171.854
+Init pinv, alpha: 0.340, 0.636 / Estimate: 0.247, 0.624 / LogL: -108171.846
+Optimal pinv,alpha: 0.247, 0.624 / LogL: -108171.846
+
+Parameters optimization took 13.377 sec
+Wrote distance file to... 
+Computing ML distances based on estimated model parameters...
+Calculating distance matrix: done in 0.162984 secs using 499.9% CPU
+Computing ML distances took 0.164120 sec (of wall-clock time) 0.814931 sec (of CPU time)
+Setting up auxiliary I and S matrices: done in 0.000895856 secs using 451.4% CPU
+Computing RapidNJ tree took 0.128948 sec (of wall-clock time) 0.251897 sec (of CPU time)
+Log-likelihood of RapidNJ tree: -109665.865
+--------------------------------------------------------------------
+|             INITIALIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Generating 98 parsimony trees... 13.633 second
+Computing log-likelihood of 98 initial trees ... 4.984 seconds
+Current best score: -108171.846
+
+Do NNI search on 20 best initial trees
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 1: -108163.500
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 2: -108066.734
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 3: -108050.776
+Iteration 10 / LogL: -108140.868 / Time: 0h:1m:46s
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 13: -108050.248
+Iteration 20 / LogL: -108162.883 / Time: 0h:2m:12s
+Finish initializing candidate tree set (20)
+Current best tree score: -108050.248 / CPU time: 69.132
+Number of iterations: 20
+--------------------------------------------------------------------
+|               OPTIMIZING CANDIDATE TREE SET                      |
+--------------------------------------------------------------------
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 21: -108046.015
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 22: -107996.534
+Iteration 30 / LogL: -108129.910 / Time: 0h:2m:25s (0h:5m:8s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 37: -107994.420
+Iteration 40 / LogL: -108016.863 / Time: 0h:2m:39s (0h:4m:35s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 42: -107990.453
+Iteration 50 / LogL: -108046.952 / Time: 0h:2m:52s (0h:3m:52s left)
+Log-likelihood cutoff on original alignment: -108186.404
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 55: -107987.910
+Iteration 60 / LogL: -108055.769 / Time: 0h:3m:7s (0h:3m:43s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 65: -107961.755
+Iteration 70 / LogL: -107995.393 / Time: 0h:3m:21s (0h:3m:30s left)
+Iteration 80 / LogL: -108144.568 / Time: 0h:3m:34s (0h:2m:58s left)
+Iteration 90 / LogL: -107980.755 / Time: 0h:3m:47s (0h:2m:30s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 91: -107956.573
+Iteration 100 / LogL: -107976.299 / Time: 0h:4m:0s (0h:2m:56s left)
+Log-likelihood cutoff on original alignment: -108145.133
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.959
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 110 / LogL: -108051.024 / Time: 0h:4m:13s (0h:2m:49s left)
+Iteration 120 / LogL: -108028.036 / Time: 0h:4m:27s (0h:2m:27s left)
+Iteration 130 / LogL: -107974.074 / Time: 0h:4m:41s (0h:2m:6s left)
+Iteration 140 / LogL: -107976.514 / Time: 0h:4m:53s (0h:1m:45s left)
+Iteration 150 / LogL: -107987.575 / Time: 0h:5m:7s (0h:1m:26s left)
+Log-likelihood cutoff on original alignment: -108145.133
+Iteration 160 / LogL: -108369.799 / Time: 0h:5m:20s (0h:1m:8s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 164: -107950.946
+Iteration 170 / LogL: -107966.452 / Time: 0h:5m:33s (0h:2m:38s left)
+Iteration 180 / LogL: -108040.897 / Time: 0h:5m:47s (0h:2m:20s left)
+Iteration 190 / LogL: -107967.653 / Time: 0h:6m:2s (0h:2m:2s left)
+Iteration 200 / LogL: -107982.217 / Time: 0h:6m:15s (0h:1m:45s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.995
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 209: -107948.735
+Iteration 210 / LogL: -107975.527 / Time: 0h:6m:30s (0h:2m:41s left)
+Iteration 220 / LogL: -108002.620 / Time: 0h:6m:43s (0h:2m:24s left)
+Iteration 230 / LogL: -108183.759 / Time: 0h:6m:56s (0h:2m:6s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 238: -107947.181
+Iteration 240 / LogL: -107956.376 / Time: 0h:7m:8s (0h:2m:36s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 247: -107944.960
+Iteration 250 / LogL: -107974.546 / Time: 0h:7m:21s (0h:2m:33s left)
+Log-likelihood cutoff on original alignment: -108121.355
+Iteration 260 / LogL: -107968.324 / Time: 0h:7m:35s (0h:2m:16s left)
+Iteration 270 / LogL: -108008.249 / Time: 0h:7m:48s (0h:2m:0s left)
+Iteration 280 / LogL: -107979.499 / Time: 0h:8m:1s (0h:1m:44s left)
+Iteration 290 / LogL: -107981.206 / Time: 0h:8m:14s (0h:1m:27s left)
+Iteration 300 / LogL: -108001.854 / Time: 0h:8m:26s (0h:1m:12s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.990
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 307: -107943.968
+Iteration 310 / LogL: -107969.129 / Time: 0h:8m:41s (0h:2m:28s left)
+Iteration 320 / LogL: -108010.789 / Time: 0h:8m:54s (0h:2m:12s left)
+Iteration 330 / LogL: -107959.691 / Time: 0h:9m:7s (0h:1m:56s left)
+Iteration 340 / LogL: -107965.307 / Time: 0h:9m:20s (0h:1m:41s left)
+Iteration 350 / LogL: -107952.168 / Time: 0h:9m:32s (0h:1m:25s left)
+Log-likelihood cutoff on original alignment: -108121.355
+Iteration 360 / LogL: -107999.608 / Time: 0h:9m:46s (0h:1m:10s left)
+Iteration 370 / LogL: -107996.069 / Time: 0h:9m:59s (0h:0m:55s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 375: -107935.071
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 378: -107927.323
+Iteration 380 / LogL: -108279.758 / Time: 0h:10m:12s (0h:2m:25s left)
+Iteration 390 / LogL: -107958.611 / Time: 0h:10m:25s (0h:2m:10s left)
+Iteration 400 / LogL: -107946.142 / Time: 0h:10m:39s (0h:1m:55s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.984
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 410 / LogL: -107986.240 / Time: 0h:10m:53s (0h:2m:13s left)
+Iteration 420 / LogL: -107939.562 / Time: 0h:11m:7s (0h:1m:58s left)
+Iteration 430 / LogL: -107950.095 / Time: 0h:11m:21s (0h:1m:43s left)
+Iteration 440 / LogL: -108312.395 / Time: 0h:11m:35s (0h:1m:28s left)
+Iteration 450 / LogL: -107980.442 / Time: 0h:11m:47s (0h:1m:13s left)
+Log-likelihood cutoff on original alignment: -108121.355
+Iteration 460 / LogL: -107960.579 / Time: 0h:12m:2s (0h:0m:58s left)
+Iteration 470 / LogL: -107959.439 / Time: 0h:12m:15s (0h:0m:43s left)
+Iteration 480 / LogL: -107957.817 / Time: 0h:12m:28s (0h:0m:29s left)
+Iteration 490 / LogL: -107956.707 / Time: 0h:12m:40s (0h:0m:14s left)
+Iteration 500 / LogL: -107964.874 / Time: 0h:12m:53s (0h:0m:0s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.982
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 510 / LogL: -108086.158 / Time: 0h:13m:8s (0h:2m:10s left)
+Iteration 520 / LogL: -108145.690 / Time: 0h:13m:21s (0h:1m:56s left)
+Iteration 530 / LogL: -107949.696 / Time: 0h:13m:34s (0h:1m:41s left)
+Iteration 540 / LogL: -108055.205 / Time: 0h:13m:46s (0h:1m:26s left)
+Iteration 550 / LogL: -107966.022 / Time: 0h:14m:0s (0h:1m:12s left)
+Log-likelihood cutoff on original alignment: -108121.355
+Iteration 560 / LogL: -107938.842 / Time: 0h:14m:14s (0h:0m:57s left)
+Iteration 570 / LogL: -107937.019 / Time: 0h:14m:27s (0h:0m:43s left)
+Iteration 580 / LogL: -107994.056 / Time: 0h:14m:40s (0h:0m:28s left)
+Iteration 590 / LogL: -107969.212 / Time: 0h:14m:53s (0h:0m:14s left)
+Iteration 600 / LogL: -107937.402 / Time: 0h:15m:6s (0h:0m:0s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.981
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 610 / LogL: -107939.110 / Time: 0h:15m:20s (0h:2m:8s left)
+Iteration 620 / LogL: -108114.114 / Time: 0h:15m:32s (0h:1m:54s left)
+Iteration 630 / LogL: -107977.231 / Time: 0h:15m:45s (0h:1m:39s left)
+Iteration 640 / LogL: -107955.950 / Time: 0h:15m:57s (0h:1m:25s left)
+Estimate model parameters (epsilon = 0.100)
+BETTER TREE FOUND at iteration 647: -107926.203
+Iteration 650 / LogL: -108097.417 / Time: 0h:16m:10s (0h:2m:17s left)
+Log-likelihood cutoff on original alignment: -108121.355
+Iteration 660 / LogL: -107952.107 / Time: 0h:16m:24s (0h:2m:3s left)
+Iteration 670 / LogL: -108143.534 / Time: 0h:16m:37s (0h:1m:49s left)
+Iteration 680 / LogL: -108073.415 / Time: 0h:16m:50s (0h:1m:34s left)
+Iteration 690 / LogL: -107967.911 / Time: 0h:17m:4s (0h:1m:20s left)
+Iteration 700 / LogL: -108030.164 / Time: 0h:17m:17s (0h:1m:6s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.988
+NOTE: UFBoot does not converge, continue at least 100 more iterations
+Iteration 710 / LogL: -107974.818 / Time: 0h:17m:33s (0h:2m:7s left)
+Iteration 720 / LogL: -108038.058 / Time: 0h:17m:46s (0h:1m:53s left)
+Iteration 730 / LogL: -107937.782 / Time: 0h:17m:59s (0h:1m:39s left)
+Iteration 740 / LogL: -108036.788 / Time: 0h:18m:12s (0h:1m:24s left)
+Iteration 750 / LogL: -108135.646 / Time: 0h:18m:25s (0h:1m:10s left)
+Log-likelihood cutoff on original alignment: -108121.355
+Iteration 760 / LogL: -107975.846 / Time: 0h:18m:41s (0h:0m:56s left)
+Iteration 770 / LogL: -108038.888 / Time: 0h:18m:55s (0h:0m:42s left)
+Iteration 780 / LogL: -108108.164 / Time: 0h:19m:8s (0h:0m:28s left)
+Iteration 790 / LogL: -107932.801 / Time: 0h:19m:21s (0h:0m:14s left)
+Iteration 800 / LogL: -107969.366 / Time: 0h:19m:35s (0h:0m:0s left)
+Log-likelihood cutoff on original alignment: -108121.355
+NOTE: Bootstrap correlation coefficient of split occurrence frequencies: 0.994
+TREE SEARCH COMPLETED AFTER 800 ITERATIONS / Time: 0h:19m:36s
+
+--------------------------------------------------------------------
+|                    FINALIZING TREE SEARCH                        |
+--------------------------------------------------------------------
+Performs final model parameters optimization
+Estimate model parameters (epsilon = 0.010)
+1. Initial log-likelihood: -107926.203
+Optimal log-likelihood: -107926.198
+Rate parameters:  A-C: 0.80722  A-G: 2.37330  A-T: 1.36165  C-G: 0.87233  C-T: 3.92377  G-T: 1.00000
+Base frequencies:  A: 0.255  C: 0.233  G: 0.316  T: 0.196
+Proportion of invariable sites: 0.246
+Gamma shape alpha: 0.628
+Parameters optimization took 1 rounds (0.159 sec)
+BEST SCORE FOUND : -107926.198
+
+Testing tree branches by SH-like aLRT with 1000 replicates...
+Alternative NNI shows better log-likelihood -107926.050 > -107926.198
+2.696 sec.
+Creating bootstrap support values...
+Split supports printed to NEXUS file /data/final/otus_aligned.fasta.splits.nex
+Total tree length: 48.483
+
+Total number of iterations: 800
+CPU time used for tree search: 5250.665 sec (1h:27m:30s)
+Wall-clock time used for tree search: 1113.796 sec (0h:18m:33s)
+Total CPU time used: 5518.981 sec (1h:31m:58s)
+Total wall-clock time used: 1180.748 sec (0h:19m:40s)
+
+Computing bootstrap consensus tree...
+Reading input file /data/final/otus_aligned.fasta.splits.nex...
+425 taxa and 2026 splits.
+Consensus tree written to /data/final/otus_aligned.fasta.contree
+Reading input trees file /data/final/otus_aligned.fasta.contree
+Log-likelihood of consensus tree: -107926.749
+
+Analysis results written to: 
+  IQ-TREE report:                /data/final/otus_aligned.fasta.iqtree
+  Maximum-likelihood tree:       /data/final/otus_aligned.fasta.treefile
+  Likelihood distances:          /data/final/otus_aligned.fasta.mldist
+
+Ultrafast bootstrap approximation results written to:
+  Split support values:          /data/final/otus_aligned.fasta.splits.nex
+  Consensus tree:                /data/final/otus_aligned.fasta.contree
+  Screen log file:               /data/final/otus_aligned.fasta.log
+
+Date and Time: Wed Jul 16 10:03:20 2025
